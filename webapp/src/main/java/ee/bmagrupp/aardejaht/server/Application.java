@@ -1,0 +1,52 @@
+package ee.bmagrupp.aardejaht.server;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import javax.sql.DataSource;
+
+//import org.apache.commons.dbcp.BasicDataSource;
+@Configuration
+// @EnableBatchProcessing
+@ComponentScan
+// spring boot configuration
+@EnableAutoConfiguration
+// file that contains the properties
+@PropertySource("classpath:application.properties")
+public class Application {
+
+	/**
+	 * Load the properties
+	 */
+	@Value("${database.driver}")
+	private String databaseDriver;
+	@Value("${database.url}")
+	private String databaseUrl;
+	@Value("${database.username}")
+	private String databaseUsername;
+	@Value("${database.password}")
+	private String databasePassword;
+
+	public static void main(String[] args) {
+		 SpringApplication.run(Application.class, args);
+	}
+
+	@Bean
+	public DataSource dataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		// clever way to set the password from environment variables
+		databasePassword = "root";
+		dataSource.setDriverClassName(databaseDriver);
+		dataSource.setUrl(databaseUrl);
+		dataSource.setUsername(databaseUsername);
+		dataSource.setPassword(databasePassword);
+		return dataSource;
+	}
+
+}
