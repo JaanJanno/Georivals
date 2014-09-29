@@ -1,9 +1,19 @@
 package ee.bmagrupp.aardejaht.server.domain;
 
-public class Treasure {
-	private int ID;
+import java.io.Serializable;
+
+import javax.persistence.*;
+
+@Entity
+public class Treasure implements Serializable {
+	@Id
+	@GeneratedValue
+	private int id;
+	@Column(nullable = false)
 	private float latitude;
+	@Column(nullable = false)
 	private float longitude;
+	@Column(nullable = false)
 	private String pictureLink;
 
 	public Treasure(float latitude, float longitude, String pictureLink) {
@@ -13,8 +23,12 @@ public class Treasure {
 		this.pictureLink = pictureLink;
 	}
 
-	public int getID() {
-		return ID;
+	protected Treasure() {
+
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public float getLatitude() {
@@ -31,7 +45,7 @@ public class Treasure {
 
 	@Override
 	public String toString() {
-		return "Treasure [ID=" + ID + ", latitude=" + latitude + ", longitude="
+		return "Treasure [id=" + id + ", latitude=" + latitude + ", longitude="
 				+ longitude + ", pictureLink=" + pictureLink + "]";
 	}
 

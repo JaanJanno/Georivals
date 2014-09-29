@@ -1,21 +1,34 @@
 package ee.bmagrupp.aardejaht.server.domain;
 
 import java.util.Date;
+import java.io.Serializable;
 
-public class Trek {
-	private int ID;
-	private int treasure_id;
-	private int user_id;
+import javax.persistence.*;
+
+@Entity
+public class Trek implements Serializable {
+	@Id
+	@GeneratedValue
+	private int id;
+	@Column(nullable = false)
 	private Date startTime;
 	private Date endTime;
 	private int difference;
 	private int score;
+	@ManyToOne
+	private User user;
+	@ManyToOne
+	private Treasure treasure;
 
-	public Trek(int treasure_id, int user_id, Date startTime) {
+	public Trek(User user, Treasure treasure) {
 		super();
-		this.treasure_id = treasure_id;
-		this.user_id = user_id;
-		this.startTime = startTime;
+		this.startTime = new Date();
+		this.user = user;
+		this.treasure = treasure;
+	}
+
+	protected Trek() {
+
 	}
 
 	public Date getEndTime() {
@@ -42,26 +55,27 @@ public class Trek {
 		this.score = score;
 	}
 
-	public int getID() {
-		return ID;
-	}
-
-	public int getTreasure_id() {
-		return treasure_id;
-	}
-
-	public int getUser_id() {
-		return user_id;
+	public int getId() {
+		return id;
 	}
 
 	public Date getStartTime() {
 		return startTime;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public Treasure getTreasure() {
+		return treasure;
+	}
+
 	@Override
 	public String toString() {
-		return "Trek [ID=" + ID + ", treasure_id=" + treasure_id + ", user_id="
-				+ user_id + ", startTime=" + startTime + ", endTime=" + endTime
-				+ ", difference=" + difference + ", score=" + score + "]";
+		return "Trek [id=" + id + ", startTime=" + startTime + ", endTime="
+				+ endTime + ", difference=" + difference + ", score=" + score
+				+ ", user=" + user + ", treasure=" + treasure + "]";
 	}
+
 }

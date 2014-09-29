@@ -1,20 +1,31 @@
 package ee.bmagrupp.aardejaht.server.domain;
 
-public class User {
+import java.io.Serializable;
 
-	private int ID;
+import javax.persistence.*;
+
+@Entity
+public class User implements Serializable {
+
+	@Id
+	@GeneratedValue
+	private int id;
+	@Column(nullable = false)
 	private String username;
+	@Column(nullable = false)
 	private String email;
 
-	public User(String email) {
-		super();
-		this.email = email;
-		this.username = "lollakas";
-		this.ID = 0;
+	protected User() {
 	}
 
-	public int getID() {
-		return ID;
+	public User(String email, String username) {
+		super();
+		this.email = email;
+		this.username = username;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getUsername() {
@@ -35,7 +46,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [ID=" + ID + ", username=" + username + ", email=" + email
+		return "User [id=" + id + ", username=" + username + ", email=" + email
 				+ "]";
 	}
 }
