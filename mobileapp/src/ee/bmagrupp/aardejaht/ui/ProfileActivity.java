@@ -1,16 +1,17 @@
-package ee.bmagrupp.aardejaht;
+package ee.bmagrupp.aardejaht.ui;
 
+import ee.bmagrupp.aardejaht.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class ResultActivity extends Activity {
+public class ProfileActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.result_layout);
+		setContentView(R.layout.profile_layout);
 	}
 
 	@Override

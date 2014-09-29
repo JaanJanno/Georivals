@@ -1,5 +1,6 @@
-package ee.bmagrupp.aardejaht;
+package ee.bmagrupp.aardejaht.ui;
 
+import ee.bmagrupp.aardejaht.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

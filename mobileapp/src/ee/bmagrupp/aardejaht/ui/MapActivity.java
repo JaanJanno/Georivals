@@ -1,4 +1,4 @@
-package ee.bmagrupp.aardejaht;
+package ee.bmagrupp.aardejaht.ui;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +18,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+
+import ee.bmagrupp.aardejaht.R;
 
 import android.support.v4.app.FragmentActivity;
 import android.content.Context;

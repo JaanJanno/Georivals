@@ -1,16 +1,17 @@
-package ee.bmagrupp.aardejaht;
+package ee.bmagrupp.aardejaht.ui;
 
+import ee.bmagrupp.aardejaht.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class HighscoreActivity extends Activity {
+public class SelectionActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.highscore_layout);
+		setContentView(R.layout.selection_layout);
 	}
 
 	@Override

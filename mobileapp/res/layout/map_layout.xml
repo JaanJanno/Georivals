@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ee.bmagrupp.aardejaht.MapActivity" >
+    tools:context="ee.bmagrupp.aardejaht.ui.MapActivity" >
 
     <fragment
         android:id="@+id/map"
