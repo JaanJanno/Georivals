@@ -5,8 +5,7 @@
 
 	<groupId>ee.bmagrupp</groupId>
 	<artifactId>aardejaht</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>0.1.0</version>
 
 	<name>aardejaht-server</name>
 	<description>Aardejaht-server</description>
