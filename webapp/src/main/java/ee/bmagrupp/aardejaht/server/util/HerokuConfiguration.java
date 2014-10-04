@@ -29,18 +29,18 @@ public class HerokuConfiguration {
 
 	@Bean
 	public DataSource dataSource() {
-		String databaseUrl = System.getenv("DATABASE_MYSQL");
+		String databaseUrl = System.getenv("DATABASE_URL");
 		//LOG.info("Using Heroku configuration with variable: " + databaseUrl);
 
 		String[] a = databaseUrl.split("@");
 		String[] b = a[0].split(":");
 		String username = b[1].replace("//", "");
 		String password = b[2];
-		String db = "jdbc:mysql://" + a[1];
+		String db = "jdbc:postgresql://" + a[1];
 
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		// clever way to set the password from environment variables
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setDriverClassName("org.postgresql.Driver");
 		dataSource.setUrl(db);
 		dataSource.setUsername(username);
 		dataSource.setPassword(password);
