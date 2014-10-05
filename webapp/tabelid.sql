@@ -1,6 +1,6 @@
 create database test;
 /* tabeleid pole vaja MySQL andmebaasi sisestada, seda teeb Hibernate automaatselt */
-CREATE TABLE `test`.`user` (
+CREATE TABLE `test`.`app_user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
   `email` VARCHAR(50) NOT NULL,
@@ -36,15 +36,15 @@ CREATE TABLE `test`.`user` (
     REFERENCES `test`.`treasure` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trek_user`
+  CONSTRAINT `fk_trek_app_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `test`.`user` (`id`)
+    REFERENCES `test`.`app_user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
 
-INSERT INTO test.user (`id`,`username`,`email`) VALUES (1,'sad','ahven');
-INSERT INTO test.user (`id`,`username`,`email`) VALUES (2,'sadafafs','ahasdaff');
+INSERT INTO test.app_user (`id`,`username`,`email`) VALUES (1,'sad','ahven');
+INSERT INTO test.app_user (`id`,`username`,`email`) VALUES (2,'sadafafs','ahasdaff');
 INSERT INTO test.treasure (`id`,`latitude`,`longitude`,`picture_link`) VALUES (1,55.34,24.12,'http://codepump2.herokuapp.com');
 INSERT INTO test.trek (`id`,`treasure_id`,`user_id`,`start_time`,`end_time`,`difference`,`score`) VALUES (1,1,1,'2014-09-29 23:06:05','2014-09-29 23:10:16',0,0);
 
