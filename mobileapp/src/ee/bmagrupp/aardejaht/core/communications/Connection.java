@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.lang.Thread.State;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import ee.bmagrupp.aardejaht.core.communications.exceptions.DoubleRequestException;
 import android.os.StrictMode;
 import android.util.Log;
