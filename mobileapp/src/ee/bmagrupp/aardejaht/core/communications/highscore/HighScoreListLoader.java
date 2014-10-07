@@ -3,36 +3,24 @@ package ee.bmagrupp.aardejaht.core.communications.highscore;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import ee.bmagrupp.aardejaht.core.communications.Connection;
-import ee.bmagrupp.aardejaht.core.communications.exceptions.IncompleteRequestException;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 
-public class HighScoreListLoader implements Runnable {
+abstract class HighScoreListLoader implements Runnable {
 
-	private Thread thread;
-	private List<HighScoreEntry> entries;
 	private String url;
 
 	public HighScoreListLoader(String url) {
-		thread = new Thread(this);
 		this.url = url;
 	}
 
-	void startRetrieveHighScoreEntries() {
-		thread.start();
+	void retrieveHighScoreEntries() {
+		new Thread(this).start();
 	}
 
-	public List<HighScoreEntry> getEntries() {
-		if (entries == null)
-			throw new IncompleteRequestException("Request not completed.");
-		return entries;
-	}
-
-	List<HighScoreEntry> getListFromJSON(String json) {
+	private static List<HighScoreEntry> getListFromJSON(String json) {
 		Type listType = new TypeToken<ArrayList<HighScoreEntry>>() {
 		}.getType();
 		return new Gson().fromJson(json, listType);
@@ -47,10 +35,9 @@ public class HighScoreListLoader implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		entries = getListFromJSON(c.getResponse());
+		List<HighScoreEntry> list = getListFromJSON(c.getResponse());
+		handleResponseList(list);
 	}
 	
-	public void join() throws InterruptedException {
-		thread.join();
-	}
+	abstract void handleResponseList(List<HighScoreEntry> list);
 }
