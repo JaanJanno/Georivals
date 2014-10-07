@@ -20,9 +20,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 
 import ee.bmagrupp.aardejaht.R;
-
 import android.support.v4.app.FragmentActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -49,7 +49,6 @@ public class MapActivity extends FragmentActivity implements
 				.addOnConnectionFailedListener(this).build();
 		map = ((SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
-		map.getUiSettings().setScrollGesturesEnabled(false);
 		map.setMyLocationEnabled(true);
 
 		// set default camera location
@@ -140,6 +139,10 @@ public class MapActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			return true;
+		} else if (id == R.id.action_highscore) {
+			Intent highscoreIntent = new Intent(this, HighscoreActivity.class);
+			startActivity(highscoreIntent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

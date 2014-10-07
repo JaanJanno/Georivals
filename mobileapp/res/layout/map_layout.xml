@@ -9,31 +9,13 @@
     <fragment
         android:id="@+id/map"
         android:layout_width="fill_parent"
-        android:layout_height="0px"
-        android:layout_weight="8"
+        android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1" >
-
-        <TextView
-            android:id="@+id/timer"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="@string/timer"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <Button
-            android:id="@+id/compassButton"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/compass" />
     </LinearLayout>
 
 </LinearLayout>

@@ -7,5 +7,11 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
+    
+    <item
+        android:id="@+id/action_highscore"
+        android:icon="@drawable/ic_action_highscore"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_highscore"/>
 
 </menu>
