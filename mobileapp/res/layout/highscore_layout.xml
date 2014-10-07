@@ -6,7 +6,37 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ee.bmagrupp.aardejaht.ui.HighscoreActivity" >
-    
+    tools:context="ee.bmagrupp.aardejaht.ui.HighScoreActivity" >
+
+    <ListView
+        android:id="@+id/highscore_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/highscore_header" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/highscore_header"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="#F3F3F3" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:text="@string/highscore_header"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="1dp"
+            android:background="#DADADC" />
+    </RelativeLayout>
 
 </RelativeLayout>

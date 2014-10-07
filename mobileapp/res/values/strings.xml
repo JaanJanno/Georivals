@@ -4,5 +4,6 @@
     <string name="app_name">Aardejaht</string>
     <string name="action_settings">Settings</string>
     <string name="action_highscore">Highscore</string>
+    <string name="highscore_header">Highscores</string>
 
 </resources>

@@ -34,7 +34,7 @@ public class MapActivity extends FragmentActivity implements
 	private GoogleApiClient mGoogleApiClient;
 	private LocationRequest mLocationRequest;
 	private LocationManager locationManager;
-	private Toast mToast;
+	private Toast mToast = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class MapActivity extends FragmentActivity implements
 		setContentView(R.layout.map_layout);
 
 		// define needed variables
+
 		locationManager = (LocationManager) getApplicationContext()
 				.getSystemService(Context.LOCATION_SERVICE);
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -107,7 +108,8 @@ public class MapActivity extends FragmentActivity implements
 	@Override
 	public void onLocationChanged(Location location) {
 		focusOnLocation(location);
-		mToast.cancel();
+		if (mToast != null)
+			mToast.cancel();
 	}
 
 	// focuses the camera on the given location
@@ -141,7 +143,7 @@ public class MapActivity extends FragmentActivity implements
 		if (id == R.id.action_settings) {
 			return true;
 		} else if (id == R.id.action_highscore) {
-			Intent highscoreIntent = new Intent(this, HighscoreActivity.class);
+			Intent highscoreIntent = new Intent(this, HighScoreActivity.class);
 			startActivity(highscoreIntent);
 			return true;
 		}

@@ -58,11 +58,11 @@ abstract public class HighScoreListLoader implements Runnable {
 		c.sendRequest();
 		try {
 			c.join();
-		} catch (InterruptedException e) {
+			List<HighScoreEntry> list = getListFromJSON(c.getResponse());
+			handleResponseList(list);
+		} catch (InterruptedException | NullPointerException e) {
 			e.printStackTrace();
 		}
-		List<HighScoreEntry> list = getListFromJSON(c.getResponse());
-		handleResponseList(list);
 	}
 	
 	/**
