@@ -96,7 +96,7 @@ public class Connection implements Runnable {
 	 * Connects to given URL and returns its response string.
 	 */
 
-	public String httpRequest(String urlString) throws Exception {
+	private String httpRequest(String urlString) throws Exception {
 		HttpURLConnection connection = getConnection(urlString);
 		return readStream(connection.getInputStream());
 	}

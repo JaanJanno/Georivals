@@ -51,10 +51,10 @@ public class HighScoreEntry {
 	@Override
 	public String toString() {
 		String s = new String("{");
-		s += "{id:" + id + ";";
-		s += "{username:" + username + ";";
-		s += "{averageUnits:" + averageUnits + ";";
-		s += "{territoriesOwned:" + territoriesOwned + ";";
+		s += "id:" + id + ",";
+		s += "username:" + username + ",";
+		s += "averageUnits:" + averageUnits + ",";
+		s += "territoriesOwned:" + territoriesOwned;
 		return s + "}";
 	}
 }
