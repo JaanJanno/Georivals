@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import ee.bmagrupp.aardejaht.core.communications.Connection;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 
-abstract class HighScoreListLoader implements Runnable {
+abstract public class HighScoreListLoader implements Runnable {
 
 	private String url;
 
