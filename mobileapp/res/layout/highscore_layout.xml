@@ -28,7 +28,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="4dp"
             android:gravity="center"
-            android:text="@string/highscore_header"
+            android:text="@string/highscore_title"
             android:textSize="18sp" />
 
         <View

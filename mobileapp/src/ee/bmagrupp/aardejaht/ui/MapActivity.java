@@ -34,7 +34,8 @@ public class MapActivity extends FragmentActivity implements
 	private GoogleApiClient mGoogleApiClient;
 	private LocationRequest mLocationRequest;
 	private LocationManager locationManager;
-	private Toast mToast = null;
+	private static Toast mToast;
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class MapActivity extends FragmentActivity implements
 		setContentView(R.layout.map_layout);
 
 		// define needed variables
+		context = getApplicationContext();
 
 		locationManager = (LocationManager) getApplicationContext()
 				.getSystemService(Context.LOCATION_SERVICE);
@@ -62,9 +64,9 @@ public class MapActivity extends FragmentActivity implements
 			public boolean onMyLocationButtonClick() {
 				if (!locationManager
 						.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-					showMessage("GPS is disabled!");
+					showMessage(context, "GPS is disabled!");
 				} else {
-					showMessage("Waiting for location...");
+					showMessage(context, "Waiting for location...");
 					return false;
 				}
 				return false;
@@ -82,6 +84,13 @@ public class MapActivity extends FragmentActivity implements
 	protected void onStop() {
 		mGoogleApiClient.disconnect();
 		super.onStop();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (mToast != null)
+			mToast.cancel();
 	}
 
 	@Override
@@ -126,8 +135,8 @@ public class MapActivity extends FragmentActivity implements
 	}
 
 	// show toast message
-	private void showMessage(String message) {
-		mToast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+	public static void showMessage(Context context, String message) {
+		mToast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 		mToast.show();
 	}
 

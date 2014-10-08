@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 public class HighScoreActivity extends Activity {
-	private static List<HighScoreEntry> playerList = new ArrayList<HighScoreEntry>();;
+	private static List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
 	private Context context;
 
@@ -33,13 +33,14 @@ public class HighScoreActivity extends Activity {
 					@Override
 					public void run() {
 						playerList = list;
-						if (playerList.size() > 1) {
+						if (playerList != null) {
 							ListView listview = (ListView) findViewById(R.id.highscore_listView);
 							adapter = new HighScoreAdapter(context, playerList);
 							listview.setAdapter(adapter);
 						} else {
-							Log.v("DEBUG",
-									"Failed to retrieve highscore list from the server.");
+							MapActivity
+									.showMessage(context,
+											"Failed to retrieve the highscore list from the server.");
 						}
 					}
 				});

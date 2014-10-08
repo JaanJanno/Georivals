@@ -12,6 +12,6 @@
         android:id="@+id/action_highscore"
         android:icon="@drawable/ic_action_highscore"
         android:showAsAction="ifRoom"
-        android:title="@string/action_highscore"/>
+        android:title="@string/highscore_title"/>
 
 </menu>
