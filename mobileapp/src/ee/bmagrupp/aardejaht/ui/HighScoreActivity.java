@@ -1,6 +1,7 @@
 package ee.bmagrupp.aardejaht.ui;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ee.bmagrupp.aardejaht.R;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 public class HighScoreActivity extends Activity {
@@ -32,7 +34,7 @@ public class HighScoreActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						playerList = list;
+						sortEntries(list, "averageUnits");
 						if (playerList != null) {
 							ListView listview = (ListView) findViewById(R.id.highscore_listView);
 							adapter = new HighScoreAdapter(context, playerList);
@@ -48,6 +50,50 @@ public class HighScoreActivity extends Activity {
 		};
 		l.retrieveHighScoreEntries();
 
+	}
+
+	private void sortEntries(List<HighScoreEntry> list, final String sortBy) {
+		if (list != null) {
+			Collections.sort(list, new Comparator<HighScoreEntry>() {
+				@Override
+				public int compare(final HighScoreEntry entry1,
+						final HighScoreEntry entry2) {
+					double averageUnits1 = entry1.getAverageUnits();
+					double averageUnits2 = entry2.getAverageUnits();
+					Integer territoriesOwned1 = Integer.valueOf(entry1
+							.getTerritoriesOwned());
+					Integer territoriesOwned2 = Integer.valueOf(entry2
+							.getTerritoriesOwned());
+					if (sortBy.equals("averageUnits")) {
+						if (averageUnits1 < averageUnits2)
+							return 1;
+						else if (averageUnits1 > averageUnits2)
+							return -1;
+						else
+							return territoriesOwned1
+									.compareTo(territoriesOwned2);
+					} else {
+						if (territoriesOwned1 < territoriesOwned2)
+							return 1;
+						else if (territoriesOwned1 > territoriesOwned2)
+							return -1;
+						else
+							return Double.compare(averageUnits1, averageUnits2);
+					}
+				}
+			});
+			playerList = list;
+			if (adapter != null)
+				adapter.notifyDataSetChanged();
+		}
+	}
+
+	public void sortByUnits(View v) {
+		sortEntries(playerList, "averageUnits");
+	}
+
+	public void sortByTerritories(View v) {
+		sortEntries(playerList, "territoriesOwned");
 	}
 
 	@Override

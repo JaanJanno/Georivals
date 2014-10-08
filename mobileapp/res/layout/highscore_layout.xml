@@ -8,24 +8,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ee.bmagrupp.aardejaht.ui.HighScoreActivity" >
 
-    <ListView
-        android:id="@+id/highscore_listView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/highscore_header" >
-    </ListView>
-
     <RelativeLayout
-        android:id="@+id/highscore_header"
+        android:id="@+id/highscore_title_header"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:background="#F3F3F3" >
+        android:background="@color/light_gray" >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="4dp"
             android:gravity="center"
             android:text="@string/highscore_title"
@@ -36,7 +27,68 @@
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="1dp"
-            android:background="#DADADC" />
+            android:background="@color/gray" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/highscore_icon_header"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/highscore_title_header"
+        android:background="@color/light_gray" >
+
+        <ImageView
+            android:id="@+id/rank_icon"
+            android:layout_width="30sp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_rank" />
+
+        <TextView
+            android:id="@+id/name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/rank_icon"
+            android:text="@string/name_title"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <ImageButton
+            android:id="@+id/unit_sort_button"
+            android:layout_width="30sp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:background="@color/light_gray"
+            android:onClick="sortByUnits"
+            android:src="@drawable/ic_unit" />
+
+        <ImageButton
+            android:id="@+id/territories_sort_button"
+            android:layout_width="30sp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/unit_sort_button"
+            android:background="@color/light_gray"
+            android:onClick="sortByTerritories"
+            android:src="@drawable/ic_territories" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="1dp"
+            android:background="@color/gray" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/highscore_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/highscore_icon_header" >
+    </ListView>
 
 </RelativeLayout>

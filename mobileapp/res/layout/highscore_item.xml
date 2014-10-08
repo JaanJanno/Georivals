@@ -2,25 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="40dp"
-    android:background="#F3F3F3" >
+    android:background="@color/light_gray" >
 
     <TextView
         android:id="@+id/player_rank"
         android:layout_width="30sp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_margin="5dp"
         android:gravity="center"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/player_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/player_rank"
         android:gravity="center"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <TextView
@@ -30,7 +29,7 @@
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/average_units"
         android:gravity="center"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="12sp" />
 
     <TextView
@@ -40,7 +39,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:gravity="center"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="12sp" />
 
 </RelativeLayout>
