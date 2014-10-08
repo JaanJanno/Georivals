@@ -18,12 +18,13 @@ Current RELEASED (tagged) versions: none
 * Added data model to web server to support highscore view in mobile app
 
 - Extra notes
-* The web server uses heroku environment variables for connection with the database
+* The web server uses heroku environment variables for connection with the database (security)
 
 -- Mobile application side
 
-- Mobile app
-* The mobile can connect to the web server and send or receive data
+- Mobile ap
+* The mobile app can receive data from the server
+* The mobile app communicates with the server via JSON requests
 
 - Highscore view
 * Added highscore view
@@ -36,11 +37,10 @@ Current RELEASED (tagged) versions: none
 * You can scroll around the map
 
 - Login view
-* Added login view
-* You can press buttons in the login view
+* Added login view (in code, not working)
 
 - Profile view
-* Added profile view
+* Added profile view (in code, not working)
 
 - Extra notes
-* The server address is kept as a static constant in the mobile application
+* The server address is kept as a static constant in the mobile application (optimization)
