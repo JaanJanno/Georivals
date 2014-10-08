@@ -18,7 +18,7 @@ Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus ole
 ### Projekti seadistamine
 1. Tõmba alla giti repo
 2. Mine käsurealt webapp kausta
-3.  Mälus oleva andmebaasi kasutamiseks peab minema faili src/main/resources/application.properties ja võtma `#spring.profiles.active=test` eest # ära. `test` asemele võib panna `mysql`või `postgres`, mis paneb serveri ühenduma kohaliku andmebaasiga. 
+3.  Mälus oleva andmebaasi kasutamiseks peab minema faili src/main/resources/application.properties ja muutma rida `spring.profiles.active=default`. `default` asemele kirjuta `test`. Kohaliku andmebaasi kasutamiseks kirjuta `mysql`või `postgres`. 
 4. webapp kaustas käsk `mvn spring-boot:run`
 5. Nüüd peaks server olema ligipääsetav aadressil `localhost:8080`. Andmete nägemiseks võid proovida `localhost:8080/user`
 6. Käsk `mvn eclipse:eclipse` genereerib Eclipse jaoks vajalikud failid
