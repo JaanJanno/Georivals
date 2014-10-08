@@ -37,10 +37,10 @@ Current RELEASED (tagged) versions: none
 * You can scroll around the map
 
 - Login view
-* Added login view (in code, not working)
+* Added login view (in code, not implemented)
 
 - Profile view
-* Added profile view (in code, not working)
+* Added profile view (in code, not implemented)
 
 - Extra notes
 * The server address is kept as a static constant in the mobile application (optimization)
