@@ -1,0 +1,46 @@
+Aardejaht release notes
+
+Current RELEASED (tagged) versions: none
+
+---------- under development patch notes ----------
+
+--- new features
+
+-- Server side
+
+- Web application
+* The web server can send and receive data from/to the mobile application
+* The web server can save incoming data to the database
+* The web server can fetch data from the database and send it out
+* The web server can be used locally or non-locally
+
+- Highscore view
+* Added data model to web server to support highscore view in mobile app
+
+- Extra notes
+* The web server uses heroku environment variables for connection with the database
+
+-- Mobile application side
+
+- Mobile app
+* The mobile can connect to the web server and send or receive data
+
+- Highscore view
+* Added highscore view
+* Added data model to mobile application for highscore view
+* Mobile app can request highscore data from server
+
+- Map view
+* Added map view
+* Added basic (google) map to map view 
+* You can scroll around the map
+
+- Login view
+* Added login view
+* You can press buttons in the login view
+
+- Profile view
+* Added profile view
+
+- Extra notes
+* The server address is kept as a static constant in the mobile application
