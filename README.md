@@ -36,6 +36,32 @@ Herokus töötab andmebaas `DATABASE_URL` kaudu, nii et soovi kõrval võib Hero
 
 Selline string on näiteks `postgres://root:root@localhost:3306/test`.
 
+### Androidi seadistus
+
+# Androidi eeldused
+
+Projekti kompileerimiseks on esmalt vaja alla laadida ADT:
+	http://developer.android.com/sdk/index.html
+
+Android SDK Manageri (ADT's "Window" -> "Android SDK Manager") alt installida API 19 ja Google Play services. On tarvis Google Play services ka projektina ADT-sse laadida, et seda kompileerides library'na kasutada võimalik oleks. Abiks järgmise lingi alt alampeatükk "Add Google Play Services to Your Project" ja "Setting up a Library Project".
+	http://developer.android.com/google/play-services/setup.html
+	http://developer.android.com/tools/projects/projects-eclipse.html#SettingUpLibraryProject
+
+Androidi telefon, mille OS versioon on vähemalt 4.0
+
+# Androidi projekti importimine ja jooksutamine.
+
+Laadida alla giti repositoorium.
+
+Importida ADT'ga "mobileapp" alamkaust.
+Minna "Project"->"Properties"->"Android", et ADT genereeriks conf failid ning avada vajadusel ADT uuesti.
+
+Lisada eeldustes mainitud viisil "Google play services" projekti library'ks. (http://developer.android.com/tools/projects/projects-eclipse.html#SettingUpLibraryProject)
+
+Ühendada USB'ga telefon arvuti külge.
+
+Vajutada run ning valida enda telefon. Kui kõik on tehtud õigesti, siis rakendus installeerub automaatselt telefonil ja alustab tööd. (Veenduda, et telefonil on USB debugging sisse lülitatud! http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909)
+
 
 ## In English
 'Aardejaht' is a mobile application, which combines entertainment and sports by making people move and hunt for treasures.
