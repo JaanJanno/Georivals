@@ -1,8 +1,8 @@
-Aardejaht
+Vallutajad
 =========
 
 ## Eesti keeles
-'Aardejaht' on mobiilirakendus, mis ühendab endas meelelahutuse ja sportlikkuse, pannes inimesed liikuma ja aardeid jahtima.
+'Vallutajad' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks et alad oleksid alluvad ja et sul jätkuks sõjamehi tuleb neid pidevalt külastada.
 
 ### Serveri käivitamise juhised
 Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus olevat andmebaasi. 
@@ -63,5 +63,5 @@ Lisaks läheb vaja Android SDK Managerist:
 9. Kui oled kõiki samme õigesti järginud, peaks programm nüüd käivituma.
 
 ## In English
-'Aardejaht' is a mobile application, which combines entertainment and sports by making people move and hunt for treasures.
+'Vallutajad' is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be ruler of the provinces and gather soldiers, you need to visit them regularly.
 
