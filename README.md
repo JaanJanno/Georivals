@@ -37,7 +37,6 @@ Herokus töötab andmebaas `DATABASE_URL` kaudu, nii et soovi kõrval võib Hero
 Selline string on näiteks `postgres://root:root@localhost:3306/test`.
 
 ### Androidi seadistus
-Projekti kompileerimiseks on kaks varianti: Eclipse ADT ja Android Studio. Järgnev juhis on projekti seadistamisest ja kompileerimisest Eclipse'i kasutades.
 #### Vajalikud asjad
 * Eclipse, Eclipse ADT, Android SDK: http://developer.android.com/sdk/index.html
 
