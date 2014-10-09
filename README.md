@@ -2,7 +2,7 @@ Vallutajad
 =========
 
 ## Eesti keeles
-'Vallutajad' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks et alad oleksid alluvad ja et sul jätkuks sõjamehi tuleb neid pidevalt külastada.
+'Vallutajad' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng, kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks, et alad oleksid alluvad ja et sul jätkuks sõjamehi, tuleb neid pidevalt külastada.
 
 ### Serveri käivitamise juhised
 Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus olevat andmebaasi. 
@@ -57,11 +57,11 @@ Lisaks läheb vaja Android SDK Managerist:
 	2. Lülita USB debugging telefonis sisse. (http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909)
 6. Kui soovid Android emulaatorit kasutada:
 	1. Vali Android Virtual Device Manager.
-	2. Loo uus seade, valides Target'iks 'Google APIs - API Level 19' ja RAM'iks 256. Muu võid vabal valikul valida.
+	2. Loo uus seade, valides Target'iks 'Google APIs - API Level 19', RAM'iks 256 ja märgi "Use Host GPU". Muu võid vabal valikul valida.
 7. Vajuta Run > Run as Android application.
 8. Vali omale sobiv seade (oma telefon või emulaator) ja vajuta OK.
 9. Kui oled kõiki samme õigesti järginud, peaks programm nüüd käivituma.
 
 ## In English
-'Vallutajad' is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be ruler of the provinces and gather soldiers, you need to visit them regularly.
+'Vallutajad' is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be the ruler of the provinces and have enough soldiers, you need to visit the regions regularly.
 
