@@ -70,15 +70,15 @@ public class HighScoreActivity extends Activity {
 						else if (averageUnits1 > averageUnits2)
 							return -1;
 						else
-							return territoriesOwned1
-									.compareTo(territoriesOwned2);
+							return territoriesOwned2
+									.compareTo(territoriesOwned1);
 					} else {
 						if (territoriesOwned1 < territoriesOwned2)
 							return 1;
 						else if (territoriesOwned1 > territoriesOwned2)
 							return -1;
 						else
-							return Double.compare(averageUnits1, averageUnits2);
+							return Double.compare(averageUnits2, averageUnits1);
 					}
 				}
 			});
