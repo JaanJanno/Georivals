@@ -8,7 +8,7 @@ Vallutajad
 Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus olevat andmebaasi. 
 
 #### Vajalikud asjad
-* Maven. Hea seadistamise juhis siin http://www.mkyong.com/maven/how-to-install-maven-in-windows/
+* Maven. Hea seadistamise juhis siin http://www.mkyong.com/maven/how-to-install-maven-in-windows/. Linuxi peal järgida seda http://iambusychangingtheworld.blogspot.com/2014/04/install-and-configure-java-and-maven-in.html
 
 #### Soovitatud asjad
 * Eclipse (soovitavalt Spring Tool Suite)
