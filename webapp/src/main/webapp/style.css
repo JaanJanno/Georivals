@@ -1,0 +1,18 @@
+body{
+	margin: 0px;
+	background-color:black;
+}
+
+div{
+	text-align:center;
+	color: white;
+	width: 100%;
+}
+
+div#text{
+	margin-top: 40px;
+}
+
+img{
+	width: 100%;
+}
