@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ee.bmagrupp.aardejaht.server.domain.Treasure;
-import ee.bmagrupp.aardejaht.server.domain.Trek;
+import ee.bmagrupp.aardejaht.server.core.old.Treasure;
+import ee.bmagrupp.aardejaht.server.core.old.Trek;
 import ee.bmagrupp.aardejaht.server.repository.TrekService;
 import ee.bmagrupp.aardejaht.server.repository.UserService;
 

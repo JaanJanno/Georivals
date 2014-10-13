@@ -1,12 +1,15 @@
-package ee.bmagrupp.aardejaht.server.domain;
+package ee.bmagrupp.aardejaht.server.core.old;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@SuppressWarnings("serial")
 @Entity
-public class HighScoreEntry {
+public class HighScoreEntry implements Serializable {
 
 	@Id
 	@GeneratedValue

@@ -1,9 +1,10 @@
-package ee.bmagrupp.aardejaht.server.domain;
+package ee.bmagrupp.aardejaht.server.core.old;
 
 import java.io.Serializable;
 
 import javax.persistence.*;
 
+@SuppressWarnings("serial")
 @Entity
 public class Treasure implements Serializable {
 	@Id

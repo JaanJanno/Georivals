@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import ee.bmagrupp.aardejaht.server.domain.HighScoreEntry;
+import ee.bmagrupp.aardejaht.server.core.old.HighScoreEntry;
 
 
 public interface HighScoreService extends

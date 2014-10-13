@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ee.bmagrupp.aardejaht.server.domain.Treasure;
+import ee.bmagrupp.aardejaht.server.core.old.Treasure;
 import ee.bmagrupp.aardejaht.server.repository.TreasureService;
 
 @RestController

@@ -1,10 +1,11 @@
-package ee.bmagrupp.aardejaht.server.domain;
+package ee.bmagrupp.aardejaht.server.core.old;
 
 import java.util.Date;
 import java.io.Serializable;
 
 import javax.persistence.*;
 
+@SuppressWarnings("serial")
 @Entity
 public class Trek implements Serializable {
 	@Id

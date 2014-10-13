@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import ee.bmagrupp.aardejaht.server.domain.User;
+import ee.bmagrupp.aardejaht.server.core.old.User;
 
 public interface UserService extends CrudRepository<User, Long> {
 

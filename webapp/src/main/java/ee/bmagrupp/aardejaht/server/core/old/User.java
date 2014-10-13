@@ -1,11 +1,13 @@
-package ee.bmagrupp.aardejaht.server.domain;
+package ee.bmagrupp.aardejaht.server.core.old;
 
 import java.io.Serializable;
 
 import javax.persistence.*;
 
+
 @Entity
-@Table(name = "app_user")
+@Table(name = "user_data")
+@SuppressWarnings("serial")
 public class User implements Serializable {
 
 	@Id
