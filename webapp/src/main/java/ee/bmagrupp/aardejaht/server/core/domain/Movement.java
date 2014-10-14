@@ -35,20 +35,20 @@ public class Movement implements Serializable {
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date end;
+	private Date endDate;
 
 	protected Movement() {
 		super();
 	}
 
 	public Movement(Unit unit, Province origin, Province destination,
-			Date start, Date end) {
+			Date start, Date endDate) {
 		super();
 		this.unit = unit;
 		this.origin = origin;
 		this.destination = destination;
 		this.start = start;
-		this.end = end;
+		this.endDate = endDate;
 	}
 
 	public int getId() {
@@ -71,8 +71,8 @@ public class Movement implements Serializable {
 		return start;
 	}
 
-	public Date getEnd() {
-		return end;
+	public Date getEndDate() {
+		return endDate;
 	}
 
 }
