@@ -3,14 +3,12 @@ package ee.bmagrupp.aardejaht.ui;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.highscore.HighScoreListLoader;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;

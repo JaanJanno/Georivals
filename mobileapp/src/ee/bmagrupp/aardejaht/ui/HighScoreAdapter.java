@@ -1,11 +1,10 @@
 package ee.bmagrupp.aardejaht.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,7 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		this.playersArrayList = (ArrayList<HighScoreEntry>) playerList;
 	}
 
+	@SuppressLint("ViewHolder")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
