@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ee.bmagrupp.aardejaht.server.core.old.User;
+import ee.bmagrupp.aardejaht.server.core.old.TestUser;
 import ee.bmagrupp.aardejaht.server.repository.UserService;
 
 @RestController
@@ -24,29 +24,21 @@ public class UserController {
 	UserService userServ;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
-	public ResponseEntity<User> getById(@PathVariable int id) {
-		User user = userServ.findById(id);
-		return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+	public ResponseEntity<TestUser> getById(@PathVariable int id) {
+		TestUser user = userServ.findById(id);
+		return new ResponseEntity<TestUser>(user, HttpStatus.ACCEPTED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/email/{email}")
-	public ResponseEntity<User> getByEmail(@PathVariable String email) {
-		User user = userServ.findByEmail(email);
-		return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/{email}/{username}")
-	public ResponseEntity<User> insertUser(@PathVariable String email,
-			@PathVariable String username) {
-		User user = new User(email, username);
-		userServ.save(user);
-		return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+	public ResponseEntity<TestUser> getByEmail(@PathVariable String email) {
+		TestUser user = userServ.findByEmail(email);
+		return new ResponseEntity<TestUser>(user, HttpStatus.ACCEPTED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<User>> getAll() {
-		List<User> users = (List<User>) userServ.findAll();
-		return new ResponseEntity<List<User>>(users, HttpStatus.ACCEPTED);
+	public ResponseEntity<List<TestUser>> getAll() {
+		List<TestUser> users = (List<TestUser>) userServ.findAll();
+		return new ResponseEntity<List<TestUser>>(users, HttpStatus.ACCEPTED);
 	}
 
 	// login stuff

@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import ee.bmagrupp.aardejaht.server.core.old.User;
+import ee.bmagrupp.aardejaht.server.core.old.TestUser;
 
-public interface UserService extends CrudRepository<User, Long> {
+public interface UserService extends CrudRepository<TestUser, Long> {
 
-	User findByEmail(String email);
+	TestUser findByEmail(String email);
 
-	User findById(int id);
+	TestUser findById(int id);
 
-	List<User> findAll();
+	List<TestUser> findAll();
 }
