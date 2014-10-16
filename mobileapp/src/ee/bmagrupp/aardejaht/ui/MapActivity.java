@@ -126,11 +126,15 @@ public class MapActivity extends FragmentActivity implements
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
-		} else if (id == R.id.action_highscore) {
+		} else if (id == R.id.email) {
 			Intent highscoreIntent = new Intent(this, HighScoreActivity.class);
 			startActivity(highscoreIntent);
 			return true;
-		}
+		} else if (id == R.id.action_profile) {
+			Intent profileIntent = new Intent(this, ProfileActivity.class);
+			startActivity(profileIntent);
+			return true;
+		} 
 		return super.onOptionsItemSelected(item);
 	}
 
