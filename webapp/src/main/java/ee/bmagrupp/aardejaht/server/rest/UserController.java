@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.aardejaht.server.core.old.TestUser;
-import ee.bmagrupp.aardejaht.server.repository.UserService;
+import ee.bmagrupp.aardejaht.server.service.UserService;
 
 @RestController
 @RequestMapping("/user")

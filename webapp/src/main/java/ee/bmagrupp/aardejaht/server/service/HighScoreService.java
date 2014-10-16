@@ -1,4 +1,4 @@
-package ee.bmagrupp.aardejaht.server.repository;
+package ee.bmagrupp.aardejaht.server.service;
 
 import java.util.List;
 
