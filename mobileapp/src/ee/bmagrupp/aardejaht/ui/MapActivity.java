@@ -1,5 +1,6 @@
 package ee.bmagrupp.aardejaht.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,37 +42,9 @@ public class MapActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map_layout);
-
-		// define needed variables
 		context = getApplicationContext();
+		setupMap();
 
-		locationManager = (LocationManager) getApplicationContext()
-				.getSystemService(Context.LOCATION_SERVICE);
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(LocationServices.API).addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this).build();
-		map = ((SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.map)).getMap();
-		map.setMyLocationEnabled(true);
-
-		// set default camera location
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.437046,
-				24.753742), 16.0f));
-
-		// set 'my location' button listener
-		map.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
-			@Override
-			public boolean onMyLocationButtonClick() {
-				if (!locationManager
-						.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-					showMessage(context, "GPS is disabled!");
-				} else {
-					showMessage(context, "Waiting for location...");
-					return false;
-				}
-				return false;
-			}
-		});
 	}
 
 	@Override
@@ -83,6 +56,8 @@ public class MapActivity extends FragmentActivity implements
 	@Override
 	protected void onStop() {
 		mGoogleApiClient.disconnect();
+		if ("google_sdk".equals(Build.PRODUCT)) // if emulator is used
+			System.exit(0);
 		super.onStop();
 	}
 
@@ -157,5 +132,35 @@ public class MapActivity extends FragmentActivity implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void setupMap() {
+		locationManager = (LocationManager) getApplicationContext()
+				.getSystemService(Context.LOCATION_SERVICE);
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.addApi(LocationServices.API).addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this).build();
+		map = ((SupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.map)).getMap();
+		map.setMyLocationEnabled(true);
+
+		// set default camera location
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(59.437046,
+				24.753742), 16.0f));
+
+		// set 'my location' button listener
+		map.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
+			@Override
+			public boolean onMyLocationButtonClick() {
+				if (!locationManager
+						.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+					showMessage(context, "GPS is disabled!");
+				} else {
+					showMessage(context, "Waiting for location...");
+					return false;
+				}
+				return false;
+			}
+		});
 	}
 }
