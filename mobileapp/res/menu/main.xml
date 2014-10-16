@@ -13,7 +13,7 @@
         android:showAsAction="ifRoom"
         android:title="@string/profile_title"/>
     <item
-        android:id="@+id/email"
+        android:id="@+id/action_highscore"
         android:icon="@drawable/ic_action_highscore"
         android:showAsAction="ifRoom"
         android:title="@string/highscore_title"/>

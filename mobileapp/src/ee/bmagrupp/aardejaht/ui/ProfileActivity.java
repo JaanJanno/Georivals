@@ -5,6 +5,7 @@ import ee.bmagrupp.aardejaht.core.communications.Constants;
 import ee.bmagrupp.aardejaht.core.communications.highscore.ProfileEntryLoader;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,10 @@ public class ProfileActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			return true;
+		} else if (id == R.id.action_highscore) {
+			Intent highscoreIntent = new Intent(this, HighScoreActivity.class);
+			startActivity(highscoreIntent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

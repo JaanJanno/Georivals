@@ -3,11 +3,13 @@ package ee.bmagrupp.aardejaht.ui;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.highscore.HighScoreListLoader;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -105,7 +107,11 @@ public class HighScoreActivity extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
 			return true;
-		}
+		} else if (id == R.id.action_profile) {
+			Intent profileIntent = new Intent(this, ProfileActivity.class);
+			startActivity(profileIntent);
+			return true;
+		} 
 		return super.onOptionsItemSelected(item);
 	}
 }
