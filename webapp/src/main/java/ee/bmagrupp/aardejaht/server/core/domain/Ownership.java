@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,7 +21,7 @@ public class Ownership implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@ManyToOne(optional = false)
@@ -50,6 +51,7 @@ public class Ownership implements Serializable {
 		this.province = province;
 		this.units = units;
 		this.startDate = new Date();
+		this.lastVisit = new Date(); // TODO this might cause problems
 	}
 
 	public Date getLastVisit() {

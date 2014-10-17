@@ -60,7 +60,6 @@
 			<version>9.3-1101-jdbc41</version>
 		</dependency>
 
-
 	</dependencies>
 
 	<properties>
