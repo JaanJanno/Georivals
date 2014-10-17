@@ -5,6 +5,7 @@ import ee.bmagrupp.aardejaht.core.communications.Constants;
 import ee.bmagrupp.aardejaht.core.communications.highscore.ProfileEntryLoader;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,11 +13,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class ProfileActivity extends Activity {
+	private Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.profile_layout);
+		context = getApplicationContext();
 
 		ProfileEntryLoader l = new ProfileEntryLoader(Constants.PROFILE, 1) {
 			@Override
@@ -24,7 +27,12 @@ public class ProfileActivity extends Activity {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						populateLayout(profile);
+						if (profile != null)
+							populateLayout(profile);
+						else
+							MapActivity
+									.showMessage(context,
+											"Failed to retrieve the profile info from the server.");
 					}
 				});
 			}
