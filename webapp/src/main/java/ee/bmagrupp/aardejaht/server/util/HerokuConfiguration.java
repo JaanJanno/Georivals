@@ -24,6 +24,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @Profile("default")
 public class HerokuConfiguration {
 
+	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory
 			.getLogger(HerokuConfiguration.class);
 

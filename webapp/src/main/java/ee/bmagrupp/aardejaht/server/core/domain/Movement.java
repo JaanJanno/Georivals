@@ -5,7 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -17,7 +19,7 @@ public class Movement implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@ManyToOne(optional = false)
@@ -28,6 +30,9 @@ public class Movement implements Serializable {
 
 	@ManyToOne(optional = false)
 	private Province destination;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Player player;
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -42,13 +47,18 @@ public class Movement implements Serializable {
 	}
 
 	public Movement(Unit unit, Province origin, Province destination,
-			Date start, Date endDate) {
+			Player player, Date start, Date endDate) {
 		super();
 		this.unit = unit;
 		this.origin = origin;
 		this.destination = destination;
+		this.player = player;
 		this.start = start;
 		this.endDate = endDate;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public int getId() {
@@ -73,6 +83,13 @@ public class Movement implements Serializable {
 
 	public Date getEndDate() {
 		return endDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Movement [id=" + id + ", unit=" + unit + ", origin=" + origin
+				+ ", destination=" + destination + ", player=" + player
+				+ ", start=" + start + ", endDate=" + endDate + "]";
 	}
 
 }

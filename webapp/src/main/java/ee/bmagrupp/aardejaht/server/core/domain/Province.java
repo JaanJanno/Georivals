@@ -5,7 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 
 @Entity
 public class Province implements Serializable {
@@ -13,25 +16,32 @@ public class Province implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column(nullable = false)
-	private float latitude;
+	private double longitude;
 
 	@Column(nullable = false)
-	private float longitude;
+	private double latitude;
 
 	private String name;
 
 	protected Province() {
-
 	}
 
-	public Province(float latitude, float longitude) {
+	/**
+	 * Basic constructor for a Province. Name is set to a random alphanumeric
+	 * String.
+	 * 
+	 * @param longitude
+	 * @param latitude
+	 */
+	public Province(double longitude, double latitude) {
 		super();
-		this.latitude = latitude;
 		this.longitude = longitude;
+		this.latitude = latitude;
+		this.setName(NameGenerator.generate(6));
 	}
 
 	public String getName() {
@@ -46,11 +56,11 @@ public class Province implements Serializable {
 		return id;
 	}
 
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 

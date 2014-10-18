@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 public class Application {
 
+	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory.getLogger(Application.class);
 
 	public static void main(String[] args) {

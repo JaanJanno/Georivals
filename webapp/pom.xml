@@ -5,7 +5,7 @@
 
 	<groupId>ee.bmagrupp</groupId>
 	<artifactId>aardejaht</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 
 	<name>aardejaht-server</name>
 	<description>Aardejaht-server</description>
@@ -59,7 +59,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.3-1101-jdbc41</version>
 		</dependency>
-
 
 	</dependencies>
 

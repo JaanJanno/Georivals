@@ -1,25 +1,24 @@
-package ee.bmagrupp.aardejaht.server.core.old;
+package ee.bmagrupp.aardejaht.server.rest.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@SuppressWarnings("serial")
-@Entity
+/**
+ * Object for sending HighScore data to mobile app.
+ * 
+ * @author TKasekamp
+ *
+ */
 public class HighScoreEntry implements Serializable {
 
-	@Id
-	@GeneratedValue
-	private int id;
-	@Column(nullable = false)
-	private String username;
-	@Column(nullable = false)
-	private double averageUnits;
-	@Column(nullable = false)
-	private int territoriesOwned;
+	private static final long serialVersionUID = 1L;
+
+	private final int id;
+
+	private final String username;
+
+	private final double averageUnits;
+
+	private final int territoriesOwned;
 
 	public HighScoreEntry(int id, String username, double averageUnits,
 			int territoriesOwned) {
@@ -30,40 +29,20 @@ public class HighScoreEntry implements Serializable {
 		this.territoriesOwned = territoriesOwned;
 	}
 
-	protected HighScoreEntry() {
-
-	}
-
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getUsername() {
 		return username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public double getAverageUnits() {
 		return averageUnits;
 	}
 
-	public void setAverageUnits(double averageUnits) {
-		this.averageUnits = averageUnits;
-	}
-
 	public int getTerritoriesOwned() {
 		return territoriesOwned;
-	}
-
-	public void setTerritoriesOwned(int territoriesOwned) {
-		this.territoriesOwned = territoriesOwned;
 	}
 
 	@Override
