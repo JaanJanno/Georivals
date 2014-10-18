@@ -12,21 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ee.bmagrupp.aardejaht.server.core.domain.Player;
-import ee.bmagrupp.aardejaht.server.core.old.TestUser;
 import ee.bmagrupp.aardejaht.server.rest.domain.PlayerProfile;
 import ee.bmagrupp.aardejaht.server.service.ProfileService;
-import ee.bmagrupp.aardejaht.server.service.UserService;
 
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
 
-	private static Logger LOG = LoggerFactory.getLogger(UserController.class);
+	private static Logger LOG = LoggerFactory
+			.getLogger(ProfileController.class);
 	@Autowired
 	ProfileService profServ;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
 	public ResponseEntity<PlayerProfile> getById(@PathVariable int id) {
 
 		LOG.info("find player");
@@ -36,15 +34,16 @@ public class ProfileController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/special")
 	public String createSample() {
-		LOG.info("create data");
-		profServ.createSampleData();
-		return "tere";
+		LOG.info("create sample data");
+		// profServ.createSampleData();
+		return "This is a legacy method for generating sample data. Go to ProfileController to activate it.";
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Player>> getAll() {
-		LOG.info("all players");
-		List<Player> players = profServ.findAll();
-		return new ResponseEntity<List<Player>>(players, HttpStatus.ACCEPTED);
+	public ResponseEntity<List<PlayerProfile>> getAll() {
+		LOG.info("Get all player profiles");
+		List<PlayerProfile> players = profServ.findAll();
+		return new ResponseEntity<List<PlayerProfile>>(players,
+				HttpStatus.ACCEPTED);
 	}
 }

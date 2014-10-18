@@ -2,6 +2,12 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
 
 import java.util.Date;
 
+/**
+ * Object for sending profile data to mobile app.
+ * 
+ * @author TKasekamp
+ *
+ */
 public class PlayerProfile {
 
 	private final int id;

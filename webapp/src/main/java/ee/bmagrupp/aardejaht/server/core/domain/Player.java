@@ -2,6 +2,7 @@ package ee.bmagrupp.aardejaht.server.core.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -40,28 +41,30 @@ public class Player implements Serializable {
 	private Date registerDate;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	private Set<Ownership> provinces;
+	private Set<Ownership> ownedProvinces = new HashSet<>();
 
-	@OneToOne
+	@OneToOne(optional = false)
 	private HomeOwnership home;
 
 	protected Player() {
 		super();
 	}
 
-	public Player(String userName, String email, String sid) {
+	public Player(String userName, String email, String sid, Province province) {
 		super();
 		this.userName = userName;
 		this.email = email;
 		this.sid = sid;
 		this.registerDate = new Date();
+		this.createHome(province);
 	}
 
-	public Player(String userName, String sid) {
+	public Player(String userName, String sid, Province province) {
 		super();
 		this.userName = userName;
 		this.sid = sid;
 		this.registerDate = new Date();
+		this.createHome(province);
 	}
 
 	public String getUserName() {
@@ -96,8 +99,8 @@ public class Player implements Serializable {
 		return registerDate;
 	}
 
-	public Set<Ownership> getProvinces() {
-		return provinces;
+	public Set<Ownership> getOwnedProvinces() {
+		return ownedProvinces;
 	}
 
 	public HomeOwnership getHome() {
@@ -108,18 +111,35 @@ public class Player implements Serializable {
 		return sid;
 	}
 
-	public void setProvinces(Set<Ownership> provinces) {
-		this.provinces = provinces;
+	public void setOwnedProvinces(Set<Ownership> provinces) {
+		this.ownedProvinces = provinces;
 	}
 
 	public void setHome(HomeOwnership home) {
 		this.home = home;
 	}
 
+	/**
+	 * Creates a {@link HomeOwnership} with this {@link Province}. No
+	 * {@link Unit}s will be added.
+	 * 
+	 * @param province
+	 *            {@link Province} to set as Home Province.
+	 */
+	public void createHome(Province province) {
+		this.home = new HomeOwnership(province, null);
+	}
+
+	public boolean addOwnership(Ownership e) {
+		return ownedProvinces.add(e);
+	}
+
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", userName=" + userName + ", email="
-				+ email + ", sid=" + sid + ", lastLogin=" + lastLogin + "]";
+				+ email + ", sid=" + sid + ", lastLogin=" + lastLogin
+				+ ", registerDate=" + registerDate + ", provinces="
+				+ ownedProvinces + ", home=" + home + "]";
 	}
 
 }

@@ -1,18 +1,16 @@
 package ee.bmagrupp.aardejaht.server.service.imlp;
 
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+
 import org.springframework.stereotype.Service;
 
-import ee.bmagrupp.aardejaht.server.core.domain.HomeOwnership;
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
@@ -24,9 +22,10 @@ import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.PlayerProfile;
 import ee.bmagrupp.aardejaht.server.service.ProfileService;
+import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 
 @Service
-public class ProfileServiceImpl implements ProfileService{
+public class ProfileServiceImpl implements ProfileService {
 
 	private static Logger LOG = LoggerFactory
 			.getLogger(ProfileServiceImpl.class);
@@ -46,81 +45,37 @@ public class ProfileServiceImpl implements ProfileService{
 	UnitRepository unitRepo;
 
 	@Override
-	public void createSampleData() {
-		LOG.info("starting");
-		Province prov1 = new Province(58.374684, 26.719168);
-
-		Province prov2 = new Province(58.377261, 26.727258);
-		provRepo.save(prov1);
-		provRepo.save(prov2);
-		LOG.info("provinces saved");
-		Player player1 = new Player("Mr. TK", "tk@aardejaht.ee", "abcdef");
-		Player player2 = new Player("Doge", "doge@aardejaht.ee", "asddfd");
-		playerRepo.save(player1);
-		playerRepo.save(player2);
-		LOG.info("players saved");
-
-		Unit u = new Unit(2, player1);
-		unitRepo.save(u);
-		Set<Unit> units = new HashSet<Unit>();
-		units.add(u);
-		LOG.info("unit saved");
-		Ownership o1 = new Ownership(player1, prov1, units);
-		ownerRepo.save(o1);
-		LOG.info("ownership saved");
-		HomeOwnership home = new HomeOwnership(player1, prov2, null);
-		homeRepo.save(home);
-		LOG.info("home saved");
-		
-		player1.setHome(home);
-		LOG.info("home set");
-		Set<Ownership> own = new HashSet<Ownership>();
-		own.add(o1);
-
-		player1.setProvinces(own);
-		LOG.info("procinces set");
-
-	}
-
-	@Override
 	public PlayerProfile getPlayer(int id) {
 		LOG.info("trying to find user");
 		Player player = playerRepo.findOne(id);
 		LOG.info("user here");
+		return createProfileEntry(player);
+	}
+
+	@Override
+	public List<PlayerProfile> findAll() {
+		List<Player> pList = (List<Player>) playerRepo.findAll();
+
+		List<PlayerProfile> profiles = new ArrayList<>();
+		for (Player player : pList) {
+			profiles.add(createProfileEntry(player));
+		}
+		return profiles;
+	}
+
+	private PlayerProfile createProfileEntry(Player player) {
 		int totalUnits = 0;
 		int ownedProvinces = 0;
-		
-//		LOG.info(player.getProvinces().toString());
-		Hibernate.initialize(player.getProvinces());
-		Hibernate.initialize(player.getHome());
 
-		LOG.info(player.getProvinces().toString());
-		try {
-			for (Iterator iterator = player.getProvinces().iterator(); iterator
-					.hasNext();) {
-				Ownership o = (Ownership) iterator.next();
-				ownedProvinces += 1;
-				LOG.info("Owned " + ownedProvinces);
-				for (Unit unit : o.getUnits()) {
-					totalUnits += unit.getSize();
-					LOG.info("totalUnits " + totalUnits);
-				}
+		for (Ownership o : player.getOwnedProvinces()) {
 
-			}
-			
-			for (Iterator iterator = player.getHome().getUnits().iterator(); iterator
-					.hasNext();) {
-				Unit unit = (Unit) iterator.next();
-				totalUnits += unit.getSize();
+			ownedProvinces += 1;
+			totalUnits += countUnits(o.getUnits());
 
-			}
-			LOG.info("user has " + totalUnits + " at home");
+		}
 
-
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (player.getHome() != null) {
+			totalUnits += countUnits(player.getHome().getUnits());
 		}
 
 		return new PlayerProfile(player.getId(), player.getUserName(),
@@ -128,9 +83,105 @@ public class ProfileServiceImpl implements ProfileService{
 				player.getRegisterDate());
 	}
 
+	private int countUnits(Set<Unit> units) {
+		int unitCount = 0;
+		if (units != null) {
+			for (Unit unit : units) {
+				unitCount += unit.getSize();
+			}
+		}
+		return unitCount;
+	}
+
+	/**
+	 * This method is left in as a reminder of how to generate sample data.
+	 * 
+	 * @see ee.bmagrupp.aardejaht.server.service.ProfileService#createSampleData()
+	 */
 	@Override
-	public List<Player> findAll() {
-		return (List<Player>) playerRepo.findAll();
+	public void createSampleData() {
+		LOG.info("starting");
+		Province prov1 = new Province(58.374684, 26.719168);
+		Province prov2 = new Province(58.377261, 26.727258);
+		Province prov3 = new Province(59.338334, 26.358376);
+		Province prov4 = new Province(58.917478, 25.620758);
+		Province prov5 = new Province(58.374380, 26.749884);
+		Province prov6 = new Province(58.357904, 26.682507);
+		provRepo.save(prov1);
+		provRepo.save(prov2);
+		provRepo.save(prov3);
+		provRepo.save(prov4);
+		provRepo.save(prov5);
+		provRepo.save(prov6);
+		LOG.info("provinces saved");
+		Player player1 = new Player("Mr. TK", "mr.tk@pacific.ee",
+				NameGenerator.generate(6), prov1);
+		Player player2 = new Player("Doge", "doge@pacific.ee",
+				NameGenerator.generate(6), prov1);
+		Player player3 = new Player("Biitnik", "biitnik@pacific.ee",
+				NameGenerator.generate(6), prov2);
+		Player player4 = new Player("Spinning S-man", "spinning@pacific.ee",
+				NameGenerator.generate(6), prov3);
+		Player player5 = new Player("JohnnyZQ", "johnnyzq@pacific.ee",
+				NameGenerator.generate(6), prov4);
+		Player player6 = new Player("King Jaan", "kingjaan@pacific.ee",
+				NameGenerator.generate(6), prov5);
+		LOG.info("players created");
+		homeRepo.save(player1.getHome());
+		homeRepo.save(player2.getHome());
+		homeRepo.save(player3.getHome());
+		homeRepo.save(player4.getHome());
+		homeRepo.save(player5.getHome());
+		homeRepo.save(player6.getHome());
+
+		LOG.info("player homes saved");
+
+		Unit u1 = new Unit(4);
+		Unit u2 = new Unit(2);
+		Unit u3 = new Unit(6);
+		Unit u4 = new Unit(3);
+		Unit u5 = new Unit(1);
+		Unit u6 = new Unit(9);
+		Unit u7 = new Unit(14);
+		Unit u8 = new Unit(5);
+
+		unitRepo.save(u1);
+		unitRepo.save(u2);
+		unitRepo.save(u3);
+		unitRepo.save(u4);
+		unitRepo.save(u5);
+		unitRepo.save(u6);
+		unitRepo.save(u7);
+		unitRepo.save(u8);
+		LOG.info("units created and saved");
+
+		player1.addOwnership(new Ownership(prov1, u1));
+		player2.addOwnership(new Ownership(prov2, u2));
+		player3.addOwnership(new Ownership(prov3, u3));
+		player4.addOwnership(new Ownership(prov4, u4));
+		player5.addOwnership(new Ownership(prov5, u5));
+		player1.addOwnership(new Ownership(prov6, u6));
+		LOG.info("ownerships added");
+		ownerRepo.save(player1.getOwnedProvinces());
+		ownerRepo.save(player2.getOwnedProvinces());
+		ownerRepo.save(player3.getOwnedProvinces());
+		ownerRepo.save(player4.getOwnedProvinces());
+		ownerRepo.save(player5.getOwnedProvinces());
+		ownerRepo.save(player6.getOwnedProvinces());
+		LOG.info("ownerships saved");
+		player6.getHome().addUnit(u7);
+		player5.getHome().addUnit(u8);
+		LOG.info("home units added");
+
+		playerRepo.save(player1);
+		playerRepo.save(player2);
+		playerRepo.save(player3);
+		playerRepo.save(player4);
+		playerRepo.save(player5);
+		playerRepo.save(player6);
+
+		LOG.info("players saved");
+
 	}
 
 }

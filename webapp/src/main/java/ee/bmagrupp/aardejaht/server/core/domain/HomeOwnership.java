@@ -2,6 +2,7 @@ package ee.bmagrupp.aardejaht.server.core.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -24,10 +25,7 @@ public class HomeOwnership implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@ManyToOne(optional = false)
-	private Player owner;
-
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private Province province;
 
 	@Column(nullable = false)
@@ -39,19 +37,24 @@ public class HomeOwnership implements Serializable {
 	private Date startDate;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	private Set<Unit> units;
+	private Set<Unit> units = new HashSet<>();
 
 	protected HomeOwnership() {
 		super();
 	}
 
-	public HomeOwnership(Player owner, Province province, Set<Unit> units) {
+	public HomeOwnership(Province province, Unit unit) {
 		super();
-		this.owner = owner;
 		this.province = province;
-		this.units = units;
 		this.startDate = new Date();
 		this.lastVisit = new Date();
+
+		// unit cannot be null
+		if (unit == null) {
+			this.units = null;
+		} else {
+			this.units.add(unit);
+		}
 	}
 
 	public Date getLastVisit() {
@@ -74,16 +77,26 @@ public class HomeOwnership implements Serializable {
 		return id;
 	}
 
-	public Player getOwner() {
-		return owner;
-	}
-
 	public Province getProvince() {
 		return province;
 	}
 
 	public Date getStartDate() {
 		return startDate;
+	}
+
+	public boolean addUnit(Unit unit) {
+		if (this.units == null) {
+			this.units = new HashSet<>();
+		}
+		return units.add(unit);
+	}
+
+	@Override
+	public String toString() {
+		return "HomeOwnership [id=" + id + ", province=" + province
+				+ ", lastVisit=" + lastVisit + ", startDate=" + startDate
+				+ ", units=" + units + "]";
 	}
 
 }

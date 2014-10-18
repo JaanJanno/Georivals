@@ -9,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Unit implements Serializable {
@@ -23,8 +22,9 @@ public class Unit implements Serializable {
 	@Column(nullable = false)
 	private int size;
 
-	@ManyToOne(optional = false)
-	private Player owner;
+	@Column(nullable = false)
+	@Enumerated(EnumType.ORDINAL)
+	private UnitState state;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.ORDINAL)
@@ -34,11 +34,32 @@ public class Unit implements Serializable {
 		super();
 	}
 
-	public Unit(int size, Player owner) {
+	/**
+	 * Default Unit constructor. To be used when this Unit can be used by the
+	 * player.
+	 * 
+	 * @param size
+	 *            how large this Unit is.
+	 */
+	public Unit(int size) {
 		super();
 		this.size = size;
-		this.owner = owner;
 		this.type = UnitType.NORMAL;
+		this.state = UnitState.CLAIMED;
+	}
+
+	/**
+	 * Constructor for randomly generating Units that the Player can retrieve.
+	 * 
+	 * @param size
+	 * @param state
+	 *            {@link UnitState} should be UNCLAIMED
+	 */
+	public Unit(int size, UnitState state) {
+		super();
+		this.size = size;
+		this.type = UnitType.NORMAL;
+		this.state = state;
 	}
 
 	public int getSize() {
@@ -53,12 +74,22 @@ public class Unit implements Serializable {
 		return id;
 	}
 
-	public Player getOwner() {
-		return owner;
+	public UnitState getState() {
+		return state;
+	}
+
+	public void setState(UnitState state) {
+		this.state = state;
 	}
 
 	public UnitType getType() {
 		return type;
+	}
+
+	@Override
+	public String toString() {
+		return "Unit [id=" + id + ", size=" + size + ", state=" + state
+				+ ", type=" + type + "]";
 	}
 
 }
