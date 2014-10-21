@@ -7,6 +7,7 @@ import ee.bmagrupp.aardejaht.models.ProfileEntry;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +41,14 @@ public class ProfileFragment extends Fragment {
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							if (profile != null)
-								populateLayout(profile);
-							else
+							if (profile != null) {
+								try {
+									populateLayout(profile);
+								} catch (NullPointerException ex) {
+									Log.d("DEBUG",
+											"Nullpointer exception! Probably fragments were switched before one's thread finished.");
+								}
+							} else
 								MainActivity
 										.showMessage(activity,
 												"Failed to retrieve the profile info from the server.");
