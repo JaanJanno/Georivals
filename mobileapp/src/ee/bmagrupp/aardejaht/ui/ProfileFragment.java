@@ -7,20 +7,23 @@ import ee.bmagrupp.aardejaht.models.ProfileEntry;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment {
 	private Activity activity;
 	private ProfileEntryLoader profileEntryLoader;
+	private LinearLayout profileLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.profile_layout, container, false);
+		profileLayout = (LinearLayout) inflater.inflate(
+				R.layout.profile_layout, container, false);
+		return profileLayout;
 	}
 
 	@Override
@@ -42,12 +45,7 @@ public class ProfileFragment extends Fragment {
 						@Override
 						public void run() {
 							if (profile != null) {
-								try {
-									populateLayout(profile);
-								} catch (NullPointerException ex) {
-									Log.d("DEBUG",
-											"Nullpointer exception! Probably fragments were switched before one's thread finished.");
-								}
+								populateLayout(profile);
 							} else
 								MainActivity
 										.showMessage(activity,
@@ -66,17 +64,17 @@ public class ProfileFragment extends Fragment {
 		int totalUnits = profile.getTotalUnits();
 		int ownedProvinces = profile.getOwnedProvinces();
 
-		TextView usernameTextview = (TextView) getActivity().findViewById(
-				R.id.profile_username);
-		TextView emailTextview = (TextView) activity
+		TextView usernameTextview = (TextView) profileLayout
+				.findViewById(R.id.profile_username);
+		TextView emailTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_email);
-		TextView overallTimeTextview = (TextView) activity
+		TextView overallTimeTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_overall_time);
-		TextView totalUnitsTextview = (TextView) activity
+		TextView totalUnitsTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_total_units);
-		TextView averageUnitsTextview = (TextView) activity
+		TextView averageUnitsTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_average_units);
-		TextView provincesTextview = (TextView) activity
+		TextView provincesTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_provinces);
 
 		usernameTextview.setText(username);

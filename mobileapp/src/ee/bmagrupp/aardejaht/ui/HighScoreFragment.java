@@ -10,22 +10,25 @@ import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class HighScoreFragment extends Fragment {
 	private static List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
 	private Activity activity;
 	private HighScoreListLoader highScoreListLoader;
+	private RelativeLayout highscoreLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.highscore_layout, container, false);
+		highscoreLayout = (RelativeLayout) inflater.inflate(
+				R.layout.highscore_layout, container, false);
+		return highscoreLayout;
 	}
 
 	@Override
@@ -51,16 +54,11 @@ public class HighScoreFragment extends Fragment {
 							playerList = list;
 							sortEntries("averageUnits");
 							if (playerList != null) {
-								ListView listview = (ListView) activity
+								ListView listview = (ListView) highscoreLayout
 										.findViewById(R.id.highscore_listView);
 								adapter = new HighScoreAdapter(activity,
 										playerList);
-								try {
-									listview.setAdapter(adapter);
-								} catch (NullPointerException ex) {
-									Log.d("DEBUG",
-											"Nullpointer exception! Probably fragments were switched before one's thread finished.");
-								}
+								listview.setAdapter(adapter);
 							} else {
 								MainActivity
 										.showMessage(activity,
