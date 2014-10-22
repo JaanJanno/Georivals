@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ee.bmagrupp.aardejaht.ui.HighScoreActivity" >
+    tools:context="ee.bmagrupp.aardejaht.ui.HighScoreFragment" >
 
     <RelativeLayout
         android:id="@+id/highscore_title_header"

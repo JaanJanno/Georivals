@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ee.bmagrupp.aardejaht.server.core.domain.HomeOwnership;
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Unit;
@@ -44,9 +45,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 	}
 
 	private HighScoreEntry createHighScore(Player player) {
-		int provinces = 0;
-		int units = 0;
-		int average = 0;
+		double provinces = 0;
+		double units = 0;
+		double average = 0;
 
 		if (player.getOwnedProvinces() != null) {
 			for (Ownership own : player.getOwnedProvinces()) {
@@ -57,13 +58,22 @@ public class HighScoreServiceImpl implements HighScoreService {
 					}
 				}
 			}
+
 		}
+
+		if (player.getHome().getUnits() != null) {
+			for (Unit unit : player.getHome().getUnits()) {
+				units += unit.getSize();
+			}
+
+		}
+
 		if (provinces != 0) {
 			average = units / provinces;
 		}
 
 		return new HighScoreEntry(player.getId(), player.getUserName(),
-				average, provinces);
+				average, (int) provinces);
 	}
 
 }
