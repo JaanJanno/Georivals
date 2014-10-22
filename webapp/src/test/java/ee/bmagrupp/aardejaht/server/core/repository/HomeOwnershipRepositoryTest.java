@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.core.domain.HomeOwnership;
-import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 
 /**
  * Tests for {@link HomeOwnershipRepository}

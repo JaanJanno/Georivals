@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ee.bmagrupp.aardejaht.server.core.domain.HomeOwnership;
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Unit;
