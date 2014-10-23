@@ -36,9 +36,24 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Autowired
 	UnitRepository unitRepo;
 
-	/**
-	 * Sander, work you magic.
-	 */
+	
+	public void GetProvinces(double latitude, double longitude){
+		/*
+		 * 	round latitude and longitude to 0.001 precision
+		 *  Ownership[] list = getOwnershipsFromDatabase(latitude,longitude);
+		 *  for (Ownership a : list){
+		 *  	if (a == unowned){
+		 *  		calculate province strength
+		 *  	}
+		 *  	else{
+		 *  		find owner and strength
+		 *  	}
+		 *  }
+		 *  
+		 *  return SomeSortOfDataStructureContainingProvindes;
+		 */
+	}
+	
 	@Override
 	public void testStuff() {
 		LOG.info("This is province generation test");
