@@ -8,14 +8,16 @@ import android.app.FragmentTransaction;
 
 public class TabListener implements ActionBar.TabListener{
 	private Fragment fragment;
+	private String fragmentTag;
 
-	public TabListener(Fragment fragment) {
+	public TabListener(Fragment fragment, String fragmentTag) {
 		this.fragment = fragment;
+		this.fragmentTag = fragmentTag;
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		ft.replace(R.id.fragment_container, fragment);		
+		ft.replace(R.id.fragment_container, fragment, fragmentTag);		
 	}
 
 	@Override

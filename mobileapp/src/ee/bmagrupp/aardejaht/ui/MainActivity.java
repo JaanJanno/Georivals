@@ -38,17 +38,17 @@ public class MainActivity extends Activity {
 
 		mapFragment = new MapFragment();
 		Tab mapTab = actionBar.newTab().setText("Map")
-				.setTabListener(new TabListener(mapFragment));
+				.setTabListener(new TabListener(mapFragment, "MapFragment"));
 		actionBar.addTab(mapTab);
 
 		profileFragment = new ProfileFragment();
 		Tab profileTab = actionBar.newTab().setText("Profile")
-				.setTabListener(new TabListener(profileFragment));
+				.setTabListener(new TabListener(profileFragment, "ProfileFragment"));
 		actionBar.addTab(profileTab);
 
 		highscoreFragment = new HighScoreFragment();
 		Tab highscoreTab = actionBar.newTab().setText("Highscores")
-				.setTabListener(new TabListener(highscoreFragment));
+				.setTabListener(new TabListener(highscoreFragment, "HighscoreFragment"));
 		actionBar.addTab(highscoreTab);
 
 		actionBar.setSelectedNavigationItem(0);

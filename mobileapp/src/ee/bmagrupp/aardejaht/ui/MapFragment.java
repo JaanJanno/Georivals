@@ -122,6 +122,30 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		return super.onOptionsItemSelected(item);
 	}
 
+	public GoogleApiClient getGoogleApiClient() {
+		return googleApiClient;
+	}
+
+	public LocationRequest getLocationRequest() {
+		return locationRequest;
+	}
+
+	public LocationManager getLocationManager() {
+		return locationManager;
+	}
+
+	public LatLng getLastLatLng() {
+		return lastLatLng;
+	}
+
+	public float getLastZoom() {
+		return lastZoom;
+	}
+
+	public ButtonClickListener getButtonClickListener() {
+		return buttonClickListener;
+	}
+
 	private void setupMap() {
 		if (map == null) {
 			activity = getActivity();

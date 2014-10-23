@@ -17,6 +17,7 @@ public class ProfileFragment extends Fragment {
 	private Activity activity;
 	private ProfileEntryLoader profileEntryLoader;
 	private LinearLayout profileLayout;
+	private ProfileEntry profile;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,12 +41,13 @@ public class ProfileFragment extends Fragment {
 			activity = getActivity();
 			profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE, 1) {
 				@Override
-				public void handleResponseObject(final ProfileEntry profile) {
+				public void handleResponseObject(final ProfileEntry profileEntry) {
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							if (profile != null) {
-								populateLayout(profile);
+							if (profileEntry != null) {
+								profile = profileEntry;
+								populateLayout();
 							} else
 								MainActivity
 										.showMessage(activity,
@@ -58,7 +60,11 @@ public class ProfileFragment extends Fragment {
 		profileEntryLoader.retrieveProfileEntry();
 	}
 
-	private void populateLayout(ProfileEntry profile) {
+	private void populateLayout() {
+//		long time = System.currentTimeMillis();
+//		while (System.currentTimeMillis() < time + 5000) {
+//			// wait
+//		}
 		String username = profile.getUsername();
 		String email = profile.getEmail();
 		int totalUnits = profile.getTotalUnits();
@@ -85,5 +91,17 @@ public class ProfileFragment extends Fragment {
 				/ ownedProvinces));
 		provincesTextview.setText(Integer.toString(ownedProvinces));
 
+	}
+
+	public ProfileEntryLoader getProfileEntryLoader() {
+		return profileEntryLoader;
+	}
+
+	public LinearLayout getProfileLayout() {
+		return profileLayout;
+	}
+	
+	public ProfileEntry getProfile() {
+		return profile;
 	}
 }

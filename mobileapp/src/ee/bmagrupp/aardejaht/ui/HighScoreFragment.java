@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class HighScoreFragment extends Fragment {
-	private static List<HighScoreEntry> playerList;
+	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
 	private Activity activity;
 	private HighScoreListLoader highScoreListLoader;
@@ -105,6 +105,21 @@ public class HighScoreFragment extends Fragment {
 			if (adapter != null)
 				adapter.notifyDataSetChanged();
 		}
+	}
+
+	public List<HighScoreEntry> getPlayerList() {
+		return playerList;
+	}
+
+	public HighScoreAdapter getAdapter() {
+		return adapter;
+	}
+	public HighScoreListLoader getHighScoreListLoader() {
+		return highScoreListLoader;
+	}
+
+	public RelativeLayout getHighscoreLayout() {
+		return highscoreLayout;
 	}
 
 }
