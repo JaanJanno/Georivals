@@ -37,7 +37,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 	UnitRepository unitRepo;
 
 	
-	public void GetProvinces(double latitude, double longitude){
+	public void getProvinces(double latitude, double longitude){
 		/*
 		 * 	round latitude and longitude to 0.001 precision
 		 *  Ownership[] list = getOwnershipsFromDatabase(latitude,longitude);
@@ -63,6 +63,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 			LOG.info(provs.get(i).toString());
 		}
 
+	}
+
+	@Override
+	public List<ee.bmagrupp.aardejaht.server.rest.domain.Province> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
