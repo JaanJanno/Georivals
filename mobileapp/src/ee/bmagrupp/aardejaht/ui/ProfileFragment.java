@@ -61,10 +61,6 @@ public class ProfileFragment extends Fragment {
 	}
 
 	private void populateLayout() {
-//		long time = System.currentTimeMillis();
-//		while (System.currentTimeMillis() < time + 5000) {
-//			// wait
-//		}
 		String username = profile.getUsername();
 		String email = profile.getEmail();
 		int totalUnits = profile.getTotalUnits();
@@ -100,7 +96,7 @@ public class ProfileFragment extends Fragment {
 	public LinearLayout getProfileLayout() {
 		return profileLayout;
 	}
-	
+
 	public ProfileEntry getProfile() {
 		return profile;
 	}

@@ -114,6 +114,7 @@ public class HighScoreFragment extends Fragment {
 	public HighScoreAdapter getAdapter() {
 		return adapter;
 	}
+
 	public HighScoreListLoader getHighScoreListLoader() {
 		return highScoreListLoader;
 	}

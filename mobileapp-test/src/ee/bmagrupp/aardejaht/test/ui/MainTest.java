@@ -69,7 +69,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 		// test different fields
 		GoogleMap map = mapFragment.getMap();
-		assertNotNull(map);	
+		assertNotNull(map);
 		assertNotNull(mapFragment.getLocationRequest());
 		assertNotNull(mapFragment.getLocationManager());
 		assertNotNull(mapFragment.getGoogleApiClient());
@@ -95,10 +95,10 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		// test different fields
 		assertNotNull(profileFragment.getProfileEntryLoader());
 		assertNotNull(profileFragment.getProfileLayout());
-		
+
 		if (isNetworkAvailable()) {
 			waitForField(profileFragment.getProfile(), 1000);
-			
+
 			TextView username = (TextView) activity
 					.findViewById(R.id.profile_username);
 			TextView email = (TextView) activity
@@ -111,7 +111,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 					.findViewById(R.id.profile_average_units);
 			TextView provinces = (TextView) activity
 					.findViewById(R.id.profile_provinces);
-			
+
 			assertTrue(!username.getText().equals(""));
 			assertTrue(!email.getText().equals(""));
 			assertTrue(!overallTime.getText().equals(""));
@@ -137,7 +137,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		HighScoreFragment highScoreFragment = (HighScoreFragment) fragment;
 		assertNotNull(highScoreFragment);
 		assertTrue(highScoreFragment.isVisible());
-		
+
 		// test different fields
 		assertNotNull(highScoreFragment.getHighScoreListLoader());
 		assertNotNull(highScoreFragment.getHighscoreLayout());
@@ -146,20 +146,22 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 			waitForField(highScoreFragment.getPlayerList(), 1000);
 			assertNotNull(highScoreFragment.getPlayerList());
 			assertNotNull(highScoreFragment.getAdapter());
-			
+
 			// test first item in highscore list and its subviews
 			ListView listView = (ListView) activity
 					.findViewById(R.id.highscore_listView);
 			View firstListItem = listView.getChildAt(0);
 			assertNotNull(firstListItem);
-			
-			TextView rankView = (TextView) firstListItem.findViewById(R.id.player_rank);
-			TextView nameView = (TextView) firstListItem.findViewById(R.id.player_name);
+
+			TextView rankView = (TextView) firstListItem
+					.findViewById(R.id.player_rank);
+			TextView nameView = (TextView) firstListItem
+					.findViewById(R.id.player_name);
 			TextView territoriesView = (TextView) firstListItem
 					.findViewById(R.id.territories_owned);
 			TextView unitsView = (TextView) firstListItem
 					.findViewById(R.id.average_units);
-			
+
 			assertNotNull(rankView);
 			assertNotNull(nameView);
 			assertNotNull(territoriesView);

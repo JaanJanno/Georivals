@@ -42,13 +42,19 @@ public class MainActivity extends Activity {
 		actionBar.addTab(mapTab);
 
 		profileFragment = new ProfileFragment();
-		Tab profileTab = actionBar.newTab().setText("Profile")
-				.setTabListener(new TabListener(profileFragment, "ProfileFragment"));
+		Tab profileTab = actionBar
+				.newTab()
+				.setText("Profile")
+				.setTabListener(
+						new TabListener(profileFragment, "ProfileFragment"));
 		actionBar.addTab(profileTab);
 
 		highscoreFragment = new HighScoreFragment();
-		Tab highscoreTab = actionBar.newTab().setText("Highscores")
-				.setTabListener(new TabListener(highscoreFragment, "HighscoreFragment"));
+		Tab highscoreTab = actionBar
+				.newTab()
+				.setText("Highscores")
+				.setTabListener(
+						new TabListener(highscoreFragment, "HighscoreFragment"));
 		actionBar.addTab(highscoreTab);
 
 		actionBar.setSelectedNavigationItem(0);
