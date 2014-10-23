@@ -36,9 +36,24 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Autowired
 	UnitRepository unitRepo;
 
-	/**
-	 * Sander, work you magic.
-	 */
+	
+	public void getProvinces(double latitude, double longitude){
+		/*
+		 * 	round latitude and longitude to 0.001 precision
+		 *  Ownership[] list = getOwnershipsFromDatabase(latitude,longitude);
+		 *  for (Ownership a : list){
+		 *  	if (a == unowned){
+		 *  		calculate province strength
+		 *  	}
+		 *  	else{
+		 *  		find owner and strength
+		 *  	}
+		 *  }
+		 *  
+		 *  return SomeSortOfDataStructureContainingProvindes;
+		 */
+	}
+	
 	@Override
 	public void testStuff() {
 		LOG.info("This is province generation test");
@@ -48,6 +63,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 			LOG.info(provs.get(i).toString());
 		}
 
+	}
+
+	@Override
+	public List<ee.bmagrupp.aardejaht.server.rest.domain.Province> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
