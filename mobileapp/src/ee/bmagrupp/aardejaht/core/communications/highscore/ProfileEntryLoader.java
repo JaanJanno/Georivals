@@ -50,8 +50,9 @@ abstract public class ProfileEntryLoader implements Runnable {
 
 	@Override
 	public void run() {
-		Map<String, String> h = new HashMap<String, String>();
-		Connection c = new Connection(url, "GET", h);
+		Map<String, String> parameters = new HashMap<String, String>();
+		addRequestParameters(parameters);
+		Connection c = new Connection(url, "GET", parameters);
 		c.sendRequest();
 		try {
 			c.join();
