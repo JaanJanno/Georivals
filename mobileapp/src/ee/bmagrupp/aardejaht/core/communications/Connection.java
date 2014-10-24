@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.lang.Thread.State;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 import ee.bmagrupp.aardejaht.core.communications.exceptions.DoubleRequestException;
 import android.os.StrictMode;
 import android.util.Log;
@@ -30,10 +31,14 @@ public class Connection implements Runnable {
 	private Thread thread;
 	private String urlString;	// URL of the connection destination.
 	private String response;	// Response from the URL.
+	private Map<String, String> parameters;	// Parameters for the request.
+	private String requestMethod;
 
-	public Connection(String urlString) {
+	public Connection(String urlString, String requestMethod, Map<String, String> parameters) {
 		this.urlString = urlString;
 		this.thread = new Thread(this);
+		this.parameters = parameters;
+		this.requestMethod = requestMethod;
 	}
 	
 	/**
@@ -97,6 +102,11 @@ public class Connection implements Runnable {
 
 	private String httpRequest(String urlString) throws Exception {
 		HttpURLConnection connection = getConnection(urlString);
+		connection.setRequestMethod(requestMethod);
+		if (parameters != null)
+			for (String param: parameters.keySet()){
+				connection.addRequestProperty(param, parameters.get(param));
+			}
 		return readStream(connection.getInputStream());
 	}
 	

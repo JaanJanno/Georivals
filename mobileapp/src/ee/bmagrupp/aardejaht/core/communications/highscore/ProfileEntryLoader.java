@@ -1,5 +1,7 @@
 package ee.bmagrupp.aardejaht.core.communications.highscore;
 
+import java.util.HashMap;
+import java.util.Map;
 import com.google.gson.Gson;
 import ee.bmagrupp.aardejaht.core.communications.Connection;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
@@ -48,7 +50,8 @@ abstract public class ProfileEntryLoader implements Runnable {
 
 	@Override
 	public void run() {
-		Connection c = new Connection(url);
+		Map<String, String> h = new HashMap<String, String>();
+		Connection c = new Connection(url, "GET", h);
 		c.sendRequest();
 		try {
 			c.join();
@@ -58,6 +61,13 @@ abstract public class ProfileEntryLoader implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Override this method to add parameters for sending
+	 * to the server along with the request.
+	 */
+	
+	abstract public void addRequestParameters(Map<String, String> parameters);
 	
 	/**
 	 * Override this method to define the behavior

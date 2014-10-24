@@ -1,5 +1,6 @@
 package ee.bmagrupp.aardejaht.ui;
 
+import java.util.Map;
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.Constants;
 import ee.bmagrupp.aardejaht.core.communications.highscore.ProfileEntryLoader;
@@ -54,6 +55,12 @@ public class ProfileFragment extends Fragment {
 												"Failed to retrieve the profile info from the server.");
 						}
 					});
+				}
+
+				@Override
+				public void addRequestParameters(Map<String, String> parameters) {
+					// TODO Auto-generated method stub
+					
 				}
 			};
 		}

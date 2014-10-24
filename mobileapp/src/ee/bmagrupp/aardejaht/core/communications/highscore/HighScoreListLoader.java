@@ -54,7 +54,7 @@ abstract public class HighScoreListLoader implements Runnable {
 
 	@Override
 	public void run() {
-		Connection c = new Connection(url);
+		Connection c = new Connection(url, "GET", null);
 		c.sendRequest();
 		try {
 			c.join();
