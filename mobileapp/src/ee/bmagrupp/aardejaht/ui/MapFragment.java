@@ -13,8 +13,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -22,6 +25,7 @@ import com.google.android.gms.location.LocationServices;
 import ee.bmagrupp.aardejaht.R;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -138,15 +142,61 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 				map.setMyLocationEnabled(true);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 						59.437046, 24.753742), 16.0f));
-				map.setOnMyLocationButtonClickListener(buttonClickListener);
+				setMapListeners();
 			}
 		} else {
 			map = this.getMap();
 			map.setMyLocationEnabled(true);
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng,
 					lastZoom));
-			map.setOnMyLocationButtonClickListener(buttonClickListener);
+			setMapListeners();
 		}
+	}
+
+	private void setMapListeners() {
+		map.setOnMyLocationButtonClickListener(buttonClickListener);
+		map.setOnCameraChangeListener(new OnCameraChangeListener() {
+			@Override
+			public void onCameraChange(CameraPosition position) {
+				map.clear();
+				if (map.getCameraPosition().zoom > 14)
+					drawProvinces();
+
+			}
+		});
+	}
+
+	private void drawProvinces() {
+		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+		LatLng SW = bounds.southwest;
+		LatLng NE = bounds.northeast;
+		double SWlatitude = Math.floor(SW.latitude * 1000) / 1000;
+		double SWlongitude = Math.floor(SW.longitude * 1000) / 1000;
+		double NElatitude = Math.ceil(NE.latitude * 1000) / 1000;
+		double NElongitude = Math.ceil(NE.longitude * 1000) / 1000;
+
+		double length = 0.001;
+
+		double currentLatitude = SWlatitude + 0;
+		double currentLongitude = SWlongitude + 0;
+		while (currentLatitude < NElatitude) {
+			while (currentLongitude < NElongitude) {
+				map.addPolygon(new PolygonOptions()
+						.add(new LatLng(currentLatitude, currentLongitude),
+								new LatLng(currentLatitude, currentLongitude
+										+ length),
+								new LatLng(currentLatitude + length,
+										currentLongitude + length),
+								new LatLng(currentLatitude + length,
+										currentLongitude))
+						.strokeColor(Color.BLACK).strokeWidth(1));
+				currentLongitude += length;
+			}
+			currentLatitude = currentLatitude + length;
+			currentLongitude = SWlongitude + 0;
+
+		}
+
 	}
 
 	public GoogleApiClient getGoogleApiClient() {
