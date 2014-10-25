@@ -161,39 +161,44 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 				map.clear();
 				if (map.getCameraPosition().zoom > 14)
 					drawProvinces();
-
 			}
 		});
 	}
 
 	private void drawProvinces() {
+		double lengthLatitude = 0.001;
+		double lengthLongitude = 0.002;
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		LatLng SW = bounds.southwest;
 		LatLng NE = bounds.northeast;
 		double SWlatitude = Math.floor(SW.latitude * 1000) / 1000;
 		double SWlongitude = Math.floor(SW.longitude * 1000) / 1000;
+		String string = String.valueOf(SWlongitude);
+		if (Character.getNumericValue(string.charAt(string.length() - 1)) % 2 == 1)
+			SWlongitude -= lengthLongitude / 2;
 		double NElatitude = Math.ceil(NE.latitude * 1000) / 1000;
 		double NElongitude = Math.ceil(NE.longitude * 1000) / 1000;
+		string = String.valueOf(NElongitude);
+		if (Character.getNumericValue(string.charAt(string.length() - 1)) % 2 == 1)
+			NElongitude += lengthLongitude / 2;
 
-		double length = 0.001;
-
-		double currentLatitude = SWlatitude + 0;
-		double currentLongitude = SWlongitude + 0;
+		double currentLatitude = SWlatitude;
+		double currentLongitude = SWlongitude;
 		while (currentLatitude < NElatitude) {
 			while (currentLongitude < NElongitude) {
 				map.addPolygon(new PolygonOptions()
 						.add(new LatLng(currentLatitude, currentLongitude),
 								new LatLng(currentLatitude, currentLongitude
-										+ length),
-								new LatLng(currentLatitude + length,
-										currentLongitude + length),
-								new LatLng(currentLatitude + length,
+										+ lengthLongitude),
+								new LatLng(currentLatitude + lengthLatitude,
+										currentLongitude + lengthLongitude),
+								new LatLng(currentLatitude + lengthLatitude,
 										currentLongitude))
 						.strokeColor(Color.BLACK).strokeWidth(1));
-				currentLongitude += length;
+				currentLongitude += lengthLongitude;
 			}
-			currentLatitude = currentLatitude + length;
-			currentLongitude = SWlongitude + 0;
+			currentLatitude = currentLatitude + lengthLatitude;
+			currentLongitude = SWlongitude;
 
 		}
 
