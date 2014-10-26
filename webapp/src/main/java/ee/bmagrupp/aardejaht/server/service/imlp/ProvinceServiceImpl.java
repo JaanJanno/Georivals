@@ -1,5 +1,6 @@
 package ee.bmagrupp.aardejaht.server.service.imlp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -43,33 +44,53 @@ public class ProvinceServiceImpl implements ProvinceService {
 	
 	/**
 	 * @author Sander
+	 * @param playerId
+	 * @return returns the overall strength of a player
+	 */
+	
+	private int findPlayerStrength(int playerId){
+		Player curPlayer = playerRepo.findOne(playerId);
+		Set<Ownership> provinces = curPlayer.getOwnedProvinces();
+		int overall = 0;
+		for(Ownership b : provinces){
+			Set<Unit> units = b.getUnits();
+			for(Unit unit : units){
+				if(unit.getState() == UnitState.CLAIMED){
+					overall += unit.getSize();
+				}
+			}
+		}
+		return overall;
+	}
+	
+	
+	/**
+	 * @author Sander
 	 * @param latitude
 	 * @param longitude
 	 * @param playerId - The player who sent the request
+	 * @return returns an array with Province objects with info for the mobile app
 	 */
 	
-	public void getProvinces(double lat1,double lat2, double long1,double long2, int playerId){
+	public List<ee.bmagrupp.aardejaht.server.rest.domain.Province> getProvinces(double lat1,double lat2, double long1,double long2, int playerId){
+		ArrayList<ee.bmagrupp.aardejaht.server.rest.domain.Province> rtrn = new ArrayList<ee.bmagrupp.aardejaht.server.rest.domain.Province>();
 		lat1 = Math.round(lat1 * 1000) / 1000;
 		lat2 = Math.round(lat2 * 1000) / 1000;
 		long1 = Math.round(long1 * 1000) / 1000;
 		long2 = Math.round(long2 * 1000) / 1000;
+		int playerStrength = findPlayerStrength(playerId);
 		
 		List<Ownership> lst = ownerRepo.findBetween(long1, lat1, long2, lat2);
 		for(Ownership a : lst){
-			Player player = playerRepo.findOne(a.getId());
+			Player player = playerRepo.findOwner(a.getId());
 			if(player.getId() == 0){
-				Player curPlayer = playerRepo.findOne(playerId);
-				Set<Ownership> provinces = curPlayer.getOwnedProvinces();
-				int overall = 0;
-				for(Ownership b : provinces){
-					Set<Unit> units = b.getUnits();
-					for(Unit unit : units){
-						if(unit.getState() == UnitState.CLAIMED){
-							overall += unit.getSize();
-						}
-					}
-				}
-				// randomly calculate bot land strength, and add to returnable list
+				rtrn.add(new ee.bmagrupp.aardejaht.server.rest.domain.Province(
+						a.getId(),
+						a.getProvince().getLatitude(),
+						a.getProvince().getLongitude(),
+						playerStrength,
+						player.getId(),
+						a.getProvince().getName()));
 			}
 			else{
 				int overall = 0;
@@ -79,9 +100,16 @@ public class ProvinceServiceImpl implements ProvinceService {
 						overall += b.getSize();
 					}
 				}
-				// add this strength to the list along with the marking that it's an enemy
+				rtrn.add(new ee.bmagrupp.aardejaht.server.rest.domain.Province(
+						a.getId(),
+						a.getProvince().getLatitude(),
+						a.getProvince().getLongitude(),
+						overall,
+						player.getId(),
+						a.getProvince().getName()));
 			}
 		}
+		return rtrn;
 	}
 	
 	@Override
