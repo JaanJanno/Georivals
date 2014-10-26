@@ -42,4 +42,45 @@ public class PlayerRepositoryTest {
 		assertEquals("Player id", 1, player.getId());
 	}
 
+	@Test
+	public void ownerTest() {
+		Player player = playerRepo.findOwner(1);
+
+		assertEquals("Player owner", 1, player.getId());
+
+		// Test for no such ownership
+		Player player2 = playerRepo.findOwner(20);
+
+		assertEquals("Player owner", null, player2);
+	}
+
+	/**
+	 * Testing the authentication stuff.
+	 */
+	@Test
+	public void authTest() {
+		// Player 1 - Mr. TK
+		Player p = playerRepo.findBySid("HDpVys");
+
+		assertEquals("Player Sid or password", 1, p.getId());
+
+		// No such sid test
+		Player p1 = playerRepo.findBySid("HDpVys213");
+
+		assertEquals("There should be no user with this sid", null, p1);
+	}
+
+	@Test
+	public void emailTest() {
+		// Player 1 - Mr. TK
+		Player p = playerRepo.findByEmail("mr.tk@pacific.ee");
+
+		assertEquals("Player with this email", 1, p.getId());
+
+		// No such email test
+		Player p1 = playerRepo.findByEmail("mr.tk@pacific.ee123");
+
+		assertEquals("There should be no user with this email", null, p1);
+	}
+
 }
