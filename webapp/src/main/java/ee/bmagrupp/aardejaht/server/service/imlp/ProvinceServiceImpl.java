@@ -42,15 +42,18 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	@Autowired
 	UnitRepository unitRepo;
-
+	
+	private final double longitude = 0.002;
+	private final double latitude = 0.001;
+	
 	/**
 	 * @author Sander
-	 * @param playerId
+	 * @param cookie
 	 * @return returns the overall strength of a player
 	 */
 
-	private int findPlayerStrength(int playerId) {
-		Player curPlayer = playerRepo.findOne(playerId);
+	private int findPlayerStrength(String cookie) {
+		Player curPlayer = playerRepo.findBySid(cookie);
 		Set<Ownership> provinces = curPlayer.getOwnedProvinces();
 		int overall = 0;
 		for (Ownership b : provinces) {
@@ -63,55 +66,97 @@ public class ProvinceServiceImpl implements ProvinceService {
 		}
 		return overall;
 	}
+	
+	/**
+	 * @author Sander
+	 * @param lat2/long2 
+	 * @param lat1/long1 
+	 * @return The amount of columns/rows needed to be calculated
+	 */
+	
+	private int calculateRowsNr(double lat1, double lat2) {
+		lat1 = Math.floor(lat1 * 1000) / 1000;
+		lat2 = Math.ceil(lat2 * 1000) / 1000;
+		return (int)((lat2 - lat1) / latitude);
+	}
+
+	private int calculateColumnNr(double long1, double long2) {
+		long1 = Math.floor(long1 * 1000) / 1000;
+		long2 = Math.ceil(long2 * 1000) / 1000;
+		return (int)((long2 - long1) / longitude);
+	}
+	
 
 	/**
 	 * @author Sander
-	 * @param latitude
-	 * @param longitude
-	 * @param playerId
-	 *            - The player who sent the request
+	 * @param fov - camera object
+	 * @param playerId - The player who sent the request
 	 * @return returns an array with Province objects with info for the mobile
 	 *         app
 	 */
 
-	public List<Province> getProvinces(double lat1, double lat2, double long1,
-			double long2, int playerId) {
-		ArrayList<ee.bmagrupp.aardejaht.server.rest.domain.Province> rtrn = new ArrayList<ee.bmagrupp.aardejaht.server.rest.domain.Province>();
-		lat1 = Math.round(lat1 * 1000) / 1000;
-		lat2 = Math.round(lat2 * 1000) / 1000;
-		long1 = Math.round(long1 * 1000) / 1000;
-		long2 = Math.round(long2 * 1000) / 1000;
-		int playerStrength = findPlayerStrength(playerId);
-
-		List<Ownership> lst = ownerRepo.findBetween(long1, lat1, long2, lat2);
-		for (Ownership a : lst) {
-			Player player = playerRepo.findOwner(a.getId());
-			if (player.getId() == 0) {
-				rtrn.add(new ee.bmagrupp.aardejaht.server.rest.domain.Province(
-						a.getId(), a.getProvince().getLatitude(), a
-								.getProvince().getLongitude(), playerStrength,
-						player.getId(), a.getProvince().getName()));
-			} else {
-				int overall = 0;
-				Set<Unit> units = a.getUnits();
-				for (Unit b : units) {
-					if (b.getState() == UnitState.CLAIMED) {
-						overall += b.getSize();
-					}
-				}
-				rtrn.add(new ee.bmagrupp.aardejaht.server.rest.domain.Province(
-						a.getId(), a.getProvince().getLatitude(), a
-								.getProvince().getLongitude(), overall, player
-								.getId(), a.getProvince().getName()));
-			}
-		}
-		return rtrn;
-	}
 
 	@Override
 	public List<Province> getProvinces(CameraFOV fov, String cookie) {
-		// TODO Sander, put your magic code here
-		return null;
+		ArrayList<Province> rtrn = new ArrayList<Province>();
+		// maybe obsolete , Tõnis says no
+		double lat1 = Math.round(fov.getSWlatitude() * 1000) / 1000;
+		double lat2 = Math.round(fov.getNElatitude() * 1000) / 1000;
+		double long1 = Math.round(fov.getSWlongitude() * 1000) / 1000;
+		double long2 = Math.round(fov.getNElongitude() * 1000) / 1000;
+		//---
+		int columns = calculateColumnNr(fov.getSWlongitude(),fov.getNElongitude());
+		int rows = calculateRowsNr(fov.getSWlatitude(),fov.getNElatitude());
+		int playerStrength = findPlayerStrength(cookie);
+		double baseLat = Math.floor(lat1 * 1000) / 1000;
+		double baseLong = Math.floor(long1 * 1000) / 1000;
+
+		List<Ownership> lst = ownerRepo.findBetween(long1, lat1, long2, lat2);
+		for(int i = 0; i < rows; i++){
+			for(int j = 0;j < columns;j++){
+				boolean found = false;
+				for(Ownership a : lst){
+					double x = a.getProvince().getLongitude();
+					double y = a.getProvince().getLatitude();
+					// Flow control for determining whether the ownership is inside 
+					// The marked area or not
+					if(x > (baseLat + (i*latitude)) && x < (baseLat + ((i+1)*latitude)) 
+							&& y > (baseLong + (j*longitude)) && y < (baseLong + ((j+1)*longitude))){
+					// -----
+						ee.bmagrupp.aardejaht.server.core.domain.Province temp = a.getProvince();
+						Set<Unit> units = a.getUnits();
+						int overall = 0;
+						for(Unit unit:units){
+							if(unit.getState() == UnitState.CLAIMED){
+								overall += unit.getSize();
+							}
+						}
+						int playerId = playerRepo.findOwner(a.getId()).getId();
+						rtrn.add(new Province(temp.getId(),
+								temp.getLatitude(),
+								temp.getLongitude(),
+								overall,playerId,
+								temp.getName()));
+						found = true;
+						break;
+					}
+				}
+				if(found){
+					continue;
+				}
+				else{
+					/*
+					 *  @Tõnis
+					 * 	SIIA TÕNIS SA PEAD VÄLJA MÕTLEMA MINGI KONSTRUKTORI "Province" objektile,
+					 *  sest selle "else" sees peab tegema rtrn.add() ja lisama juurde provintsi,
+					 *  mida serveris ei olnud olemas, ehk ID puudub, omanik on "0" jne
+					 *  
+					 * 	playerStrength - Useri tugevus, kes praegu requesti teeb
+					 */
+				}
+			}
+		}
+		return rtrn;
 	}
 
 }
