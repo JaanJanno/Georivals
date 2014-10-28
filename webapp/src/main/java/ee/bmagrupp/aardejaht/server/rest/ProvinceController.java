@@ -7,10 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.Province;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 
@@ -24,18 +27,15 @@ public class ProvinceController {
 	@Autowired
 	ProvinceService provServ;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Province>> getAll() {
-		LOG.info("All provinces");
-		List<Province> provs = provServ.getAll();
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<List<Province>> getProvinces(
+			@RequestBody CameraFOV fov,
+			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
+		LOG.debug("All provinces");
+		LOG.debug(fov.toJson());
+		LOG.debug(cookie);
+		List<Province> provs = provServ.getProvinces(fov, cookie);
 		return new ResponseEntity<List<Province>>(provs, HttpStatus.ACCEPTED);
-	}
-
-	@RequestMapping(method = RequestMethod.GET, value = "/test")
-	public String getTest() {
-		LOG.info("Province test method for Sander");
-		provServ.testStuff();
-		return "check the log for the shit you've done";
 	}
 
 }
