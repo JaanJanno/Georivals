@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/login_layout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/intro_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="50dp"
     android:layout_marginRight="50dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context="ee.bmagrupp.aardejaht.ui.LoginActivity" >
 
     <TextView
         android:layout_width="match_parent"
@@ -13,40 +14,21 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/login"
+        android:text="@string/welcome"
         android:textSize="30sp" />
-
-    <EditText
-        android:id="@+id/login_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/username" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/login_key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/login_key" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:onClick="login"
-        android:text="@string/login" />
+        android:text="@string/login_with" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:onClick="sendKey"
-        android:text="@string/login_key_send" />
+        android:onClick="register"
+        android:text="@string/register" />
 
 </LinearLayout>

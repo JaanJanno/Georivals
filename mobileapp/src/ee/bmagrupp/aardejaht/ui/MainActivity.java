@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,12 +17,17 @@ public class MainActivity extends Activity {
 	MapFragment mapFragment;
 	ProfileFragment profileFragment;
 	HighScoreFragment highscoreFragment;
+	private Integer loginKey = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main_layout);
-		createFragments();
+		if (loginKey == 0)
+			setContentView(R.layout.intro_layout);
+		else {
+			setContentView(R.layout.main_layout);
+			createFragments();
+		}
 
 	}
 
@@ -77,5 +83,25 @@ public class MainActivity extends Activity {
 
 	public void sortByTerritories(View v) {
 		highscoreFragment.sortEntries("territoriesOwned");
+	}
+
+	public void login(View v) {
+		Intent loginIntent = new Intent(this, LoginActivity.class);
+		startActivityForResult(loginIntent, 1);
+	}
+
+	public void register(View v) {
+		Intent registerIntent = new Intent(this, RegisterActivity.class);
+		startActivityForResult(registerIntent, 2);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if (requestCode == 1) {
+
+	        if (resultCode == RESULT_OK) {
+
+	        }
+	    }
 	}
 }

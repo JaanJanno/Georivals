@@ -59,7 +59,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:text="@string/username" />
+            android:text="@string/username_colon" />
 
         <TextView
             android:id="@+id/textView2"
@@ -69,7 +69,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:text="@string/email" />
+            android:text="@string/email_colon" />
 
         <TextView
             android:id="@+id/textView3"
@@ -100,14 +100,13 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView3"
             android:layout_toRightOf="@+id/textView3" />
-
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/light_gray"
-        android:layout_marginTop="5dp" >
+        android:layout_marginTop="5dp"
+        android:background="@color/light_gray" >
 
         <View
             android:layout_width="match_parent"
@@ -179,7 +178,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView6"
             android:layout_toRightOf="@+id/textView6" />
-
     </RelativeLayout>
 
 </LinearLayout>

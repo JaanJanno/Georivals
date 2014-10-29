@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/login_layout"
+    android:id="@+id/register_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="50dp"
@@ -13,11 +13,11 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/login"
+        android:text="@string/register"
         android:textSize="30sp" />
 
     <EditText
-        android:id="@+id/login_username"
+        android:id="@+id/register_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -28,25 +28,19 @@
     </EditText>
 
     <EditText
-        android:id="@+id/login_key"
+        android:id="@+id/register_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/login_key" />
+        android:hint="@string/email_optional"
+        android:inputType="textEmailAddress" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:onClick="login"
-        android:text="@string/login" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:onClick="sendKey"
-        android:text="@string/login_key_send" />
+        android:onClick="register"
+        android:text="@string/register" />
 
 </LinearLayout>
