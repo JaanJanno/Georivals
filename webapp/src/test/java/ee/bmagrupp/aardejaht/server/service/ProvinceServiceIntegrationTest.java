@@ -41,8 +41,8 @@ public class ProvinceServiceIntegrationTest {
 
 	@Test
 	public void provinceTest() {
-		CameraFOV fov = new CameraFOV(58.3479039, 26.7598840, 58.3872609,
-				26.7091679);
+		CameraFOV fov = new CameraFOV(58.3479039, 26.7091679, 58.3872609,
+				26.7598840);
 		String cookie = "HDpVys"; // User Mr.TK
 		List<Province> provList = provServ.getProvinces(fov, cookie);
 
