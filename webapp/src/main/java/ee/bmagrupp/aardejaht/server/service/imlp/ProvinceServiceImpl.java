@@ -101,27 +101,23 @@ public class ProvinceServiceImpl implements ProvinceService {
 	public List<Province> getProvinces(CameraFOV fov, String cookie) {
 		ArrayList<Province> rtrn = new ArrayList<Province>();
 		// maybe obsolete , Tõnis says no
-		double lat1 = Math.round(fov.getSWlatitude() * 1000) / 1000;
-		double lat2 = Math.round(fov.getNElatitude() * 1000) / 1000;
-		double long1 = Math.round(fov.getSWlongitude() * 1000) / 1000;
-		double long2 = Math.round(fov.getNElongitude() * 1000) / 1000;
-
-		LOG.info("findBetween arguments in order");
-		LOG.info(Double.toString(long1));
-		LOG.info(Double.toString(lat1));
-		LOG.info(Double.toString(long2));
-		LOG.info(Double.toString(lat2));
-		// ---
-		int columns = calculateColumnNr(fov.getSWlongitude(),
-				fov.getNElongitude());
+		double lat1 = Math.round(fov.getSWlatitude() * 1000.0) / 1000.0;
+		double lat2 = Math.round(fov.getNElatitude() * 1000.0) / 1000.0;
+		double long1 = Math.round(fov.getSWlongitude() * 1000.0) / 1000.0;
+		double long2 = Math.round(fov.getNElongitude() * 1000.0) / 1000.0;
+		
+		int columns = calculateColumnNr(fov.getSWlongitude(),fov.getNElongitude());
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
 		int playerStrength = findPlayerStrength(cookie);
 
-		LOG.info("Player strength " + Integer.toString(playerStrength));
-		double baseLat = Math.floor(lat1 * 1000) / 1000;
-		double baseLong = Math.floor(long1 * 1000) / 1000;
-
-		List<Ownership> lst = ownerRepo.findBetween(long1, lat1, long2, lat2);
+		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
+		double baseLong = Math.floor(fov.getSWlongitude() * 1000.0) / 1000.0;
+		if((baseLong * 1000.0) % 2 != 0){
+			baseLong = ((baseLong * 1000) - 1) / 1000.0;
+		}
+		
+		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(long1, lat1, long2, lat2);
+		
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				boolean found = false;
@@ -131,10 +127,10 @@ public class ProvinceServiceImpl implements ProvinceService {
 					// Flow control for determining whether the ownership is
 					// inside
 					// The marked area or not
-					if (x > (baseLat + (i * PROVINCE_HEIGHT))
-							&& x < (baseLat + ((i + 1) * PROVINCE_HEIGHT))
-							&& y > (baseLong + (j * PROVINCE_WIDTH))
-							&& y < (baseLong + ((j + 1) * PROVINCE_WIDTH))) {
+					if (x > (baseLong + (j * PROVINCE_WIDTH))
+						&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
+						&& y > (baseLat+ (i * PROVINCE_HEIGHT))
+						&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
 						// -----
 						ee.bmagrupp.aardejaht.server.core.domain.Province temp = a
 								.getProvince();
