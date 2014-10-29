@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
-import ee.bmagrupp.aardejaht.server.rest.domain.Province;
+import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 
 @RestController
@@ -28,14 +28,14 @@ public class ProvinceController {
 	ProvinceService provServ;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<List<Province>> getProvinces(
+	public ResponseEntity<List<ProvinceDTO>> getProvinces(
 			@RequestBody CameraFOV fov,
 			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
 		LOG.debug("All provinces");
 		LOG.debug(fov.toJson());
 		LOG.debug(cookie);
-		List<Province> provs = provServ.getProvinces(fov, cookie);
-		return new ResponseEntity<List<Province>>(provs, HttpStatus.ACCEPTED);
+		List<ProvinceDTO> provs = provServ.getProvinces(fov, cookie);
+		return new ResponseEntity<List<ProvinceDTO>>(provs, HttpStatus.ACCEPTED);
 	}
 
 }

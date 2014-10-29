@@ -19,7 +19,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
-import ee.bmagrupp.aardejaht.server.rest.domain.Province;
+import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 
 /**
  * Integration tests for {@link ProvinceService}.
@@ -44,7 +44,7 @@ public class ProvinceServiceIntegrationTest {
 		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
 				);
 		String cookie = "HDpVys"; // User Mr.TK
-		List<Province> provList = provServ.getProvinces(fov, cookie);
+		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
 		// I don't actually know how many provinces are in that area
 		assertEquals("Provinces in area", 3, provList.size());

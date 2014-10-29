@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
+import ee.bmagrupp.aardejaht.server.core.domain.Province;
 import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.core.domain.UnitState;
 import ee.bmagrupp.aardejaht.server.core.repository.HomeOwnershipRepository;
@@ -19,7 +20,7 @@ import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
-import ee.bmagrupp.aardejaht.server.rest.domain.Province;
+import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static ee.bmagrupp.aardejaht.server.util.Constants.*;
 import ee.bmagrupp.aardejaht.server.util.NameGenerator;
@@ -98,26 +99,28 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 */
 
 	@Override
-	public List<Province> getProvinces(CameraFOV fov, String cookie) {
-		ArrayList<Province> rtrn = new ArrayList<Province>();
+	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
+		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
 		// maybe obsolete , Tõnis says no
 		double lat1 = Math.round(fov.getSWlatitude() * 1000.0) / 1000.0;
 		double lat2 = Math.round(fov.getNElatitude() * 1000.0) / 1000.0;
 		double long1 = Math.round(fov.getSWlongitude() * 1000.0) / 1000.0;
 		double long2 = Math.round(fov.getNElongitude() * 1000.0) / 1000.0;
-		
-		int columns = calculateColumnNr(fov.getSWlongitude(),fov.getNElongitude());
+
+		int columns = calculateColumnNr(fov.getSWlongitude(),
+				fov.getNElongitude());
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
 		int playerStrength = findPlayerStrength(cookie);
 
 		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
 		double baseLong = Math.floor(fov.getSWlongitude() * 1000.0) / 1000.0;
-		if((baseLong * 1000.0) % 2 != 0){
+		if ((baseLong * 1000.0) % 2 != 0) {
 			baseLong = ((baseLong * 1000) - 1) / 1000.0;
 		}
-		
-		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(long1, lat1, long2, lat2);
-		
+
+		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(long1,
+				lat1, long2, lat2);
+
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				boolean found = false;
@@ -128,12 +131,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 					// inside
 					// The marked area or not
 					if (x > (baseLong + (j * PROVINCE_WIDTH))
-						&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
-						&& y > (baseLat+ (i * PROVINCE_HEIGHT))
-						&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
+							&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
+							&& y > (baseLat + (i * PROVINCE_HEIGHT))
+							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
 						// -----
-						ee.bmagrupp.aardejaht.server.core.domain.Province temp = a
-								.getProvince();
+						Province temp = a.getProvince();
 						Set<Unit> units = a.getUnits();
 						int overall = 0;
 						for (Unit unit : units) {
@@ -142,9 +144,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 							}
 						}
 						int playerId = playerRepo.findOwner(a.getId()).getId();
-						rtrn.add(new Province(temp.getId(), temp.getLatitude(),
-								temp.getLongitude(), overall, playerId, temp
-										.getName()));
+						rtrn.add(new ProvinceDTO(temp.getId(), temp
+								.getLatitude(), temp.getLongitude(), overall,
+								playerId, temp.getName()));
 						found = true;
 						break;
 					}
@@ -158,7 +160,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		return rtrn;
 	}
 
-	private Province generateProvince(double latitude, double longitude,
+	private ProvinceDTO generateProvince(double latitude, double longitude,
 			int playerStrength) {
 		// Write something smarter here
 		int unitCount = 2;
@@ -170,8 +172,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 		int provinceID = 10001;
 
 		String name = NameGenerator.generate(6);
-		return new Province(provinceID, latitude, longitude, unitCount, BOT_ID,
-				name);
+		return new ProvinceDTO(provinceID, latitude, longitude, unitCount,
+				BOT_ID, name);
 	}
 
 }

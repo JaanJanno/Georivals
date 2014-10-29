@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
-import ee.bmagrupp.aardejaht.server.rest.domain.Province;
+import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -56,7 +56,7 @@ public class ProvinceControllerTest {
 	private MockMvc mockMvc;
 	private CameraFOV fov;
 	private Cookie cookie;
-	private List<Province> provList;
+	private List<ProvinceDTO> provList;
 
 	@InjectMocks
 	ProvinceController provCon;
@@ -76,8 +76,8 @@ public class ProvinceControllerTest {
 		fov = new CameraFOV(2, 3, 4, 5);
 		cookie = new Cookie("sid", "HDpVys");
 
-		provList = new ArrayList<Province>();
-		provList.add(new Province(1, 2, 3, 100, 12, "bla"));
+		provList = new ArrayList<ProvinceDTO>();
+		provList.add(new ProvinceDTO(1, 2, 3, 100, 12, "bla"));
 
 	}
 

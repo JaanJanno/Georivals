@@ -7,7 +7,7 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
  * @author TKasekamp
  *
  */
-public class Province {
+public class ProvinceDTO {
 	private final int id;
 	private final double latitude;
 	private final double longitude;
@@ -15,7 +15,7 @@ public class Province {
 	private final int playerId;
 	private final String name;
 
-	public Province(int id, double latitude, double longitude, int unitCount,
+	public ProvinceDTO(int id, double latitude, double longitude, int unitCount,
 			int playerId, String name) {
 		super();
 		this.id = id;
