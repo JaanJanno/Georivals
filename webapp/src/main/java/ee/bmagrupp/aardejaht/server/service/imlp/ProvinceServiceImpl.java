@@ -2,6 +2,7 @@ package ee.bmagrupp.aardejaht.server.service.imlp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -28,8 +29,10 @@ import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 @Service
 public class ProvinceServiceImpl implements ProvinceService {
 
+	private static final double BOT_STRENGTH_CONSTANT = 0.2;
 	private static Logger LOG = LoggerFactory
 			.getLogger(ProvinceServiceImpl.class);
+	private static Random rand = new Random();
 
 	@Autowired
 	ProvinceRepository provRepo;
@@ -87,6 +90,24 @@ public class ProvinceServiceImpl implements ProvinceService {
 		long2 = Math.ceil(long2 * 1000) / 1000;
 		return (int) ((long2 - long1) / PROVINCE_WIDTH);
 	}
+	
+	/**
+	 * @author Sander
+	 * @param a - Ownership object
+	 * @return all available units
+	 */
+	
+	private int getProvinceStrength(Ownership a){
+		Set<Unit> units = a.getUnits();
+		int overall = 0;
+		for (Unit unit : units) {
+			if (unit.getState() == UnitState.CLAIMED) {
+				overall += unit.getSize();
+			}
+		}
+		return overall;
+	}
+	
 
 	/**
 	 * @author Sander
@@ -101,14 +122,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Override
 	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
 		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
-		// maybe obsolete , Tõnis says no
-		double lat1 = Math.round(fov.getSWlatitude() * 1000.0) / 1000.0;
-		double lat2 = Math.round(fov.getNElatitude() * 1000.0) / 1000.0;
-		double long1 = Math.round(fov.getSWlongitude() * 1000.0) / 1000.0;
-		double long2 = Math.round(fov.getNElongitude() * 1000.0) / 1000.0;
 
-		int columns = calculateColumnNr(fov.getSWlongitude(),
-				fov.getNElongitude());
+		int columns = calculateColumnNr(fov.getSWlongitude(),fov.getNElongitude());
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
 		int playerStrength = findPlayerStrength(cookie);
 
@@ -117,44 +132,45 @@ public class ProvinceServiceImpl implements ProvinceService {
 		if ((baseLong * 1000.0) % 2 != 0) {
 			baseLong = ((baseLong * 1000) - 1) / 1000.0;
 		}
+		
+		LOG.info(Integer.toString(columns * rows));
 
-		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(long1,
-				lat1, long2, lat2);
+		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(fov.getSWlongitude(),
+				fov.getSWlatitude(), fov.getNElongitude(), fov.getNElatitude());
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				boolean found = false;
+				Ownership foundArea = null;
 				for (Ownership a : lst) {
 					double x = a.getProvince().getLongitude();
 					double y = a.getProvince().getLatitude();
 					// Flow control for determining whether the ownership is
-					// inside
-					// The marked area or not
-					if (x > (baseLong + (j * PROVINCE_WIDTH))
-							&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
-							&& y > (baseLat + (i * PROVINCE_HEIGHT))
-							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
+					// inside The marked area or not
+					if (x > (baseLong + (j * PROVINCE_WIDTH)) && x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
+							&& y > (baseLat + (i * PROVINCE_HEIGHT)) && y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
 						// -----
 						Province temp = a.getProvince();
-						Set<Unit> units = a.getUnits();
-						int overall = 0;
-						for (Unit unit : units) {
-							if (unit.getState() == UnitState.CLAIMED) {
-								overall += unit.getSize();
-							}
-						}
-						int playerId = playerRepo.findOwner(a.getId()).getId();
+						int provinceStrength = getProvinceStrength(a);
+						int playerId = playerRepo.findOwner(temp.getId()).getId();
+						// -----
 						rtrn.add(new ProvinceDTO(temp.getId(), temp
-								.getLatitude(), temp.getLongitude(), overall,
+								.getLatitude(), temp.getLongitude(), provinceStrength,
 								playerId, temp.getName()));
 						found = true;
+						foundArea = a;
 						break;
 					}
 				}
 				if (!found) {
-					// generateProvince(lat2, long2, playerStrength);
+					rtrn.add(generateProvince(
+							baseLat + (i * PROVINCE_HEIGHT) + (PROVINCE_HEIGHT / 2)
+							, baseLong + (j * PROVINCE_WIDTH) + (PROVINCE_WIDTH / 2)
+							, playerStrength));
 				}
-
+				else{
+					lst.remove(foundArea);
+				}
 			}
 		}
 		return rtrn;
@@ -162,18 +178,13 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	private ProvinceDTO generateProvince(double latitude, double longitude,
 			int playerStrength) {
-		// Write something smarter here
-		int unitCount = 2;
-		if (playerStrength > 10) {
-			unitCount = 11;
-		}
-
-		// has to be random, some big number will do
-		int provinceID = 10001;
-
+		int min = playerStrength - (int)(playerStrength * BOT_STRENGTH_CONSTANT);
+		int max = playerStrength + (int)(playerStrength * BOT_STRENGTH_CONSTANT);
+		int botStrength = rand.nextInt((max - min) + 1) + min;
+		int provinceID = rand.nextInt((10000000 - 100000) + 1) + 100000;
 		String name = NameGenerator.generate(6);
-		return new ProvinceDTO(provinceID, latitude, longitude, unitCount,
-				BOT_ID, name);
+		
+		return new ProvinceDTO(provinceID, latitude, longitude, botStrength, BOT_ID, name);
 	}
 
 }

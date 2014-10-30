@@ -47,7 +47,7 @@ public class ProvinceServiceIntegrationTest {
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
 		// I don't actually know how many provinces are in that area
-		assertEquals("Provinces in area", 3, provList.size());
+		assertEquals("Provinces in area", 1020, provList.size());
 	}
 
 }
