@@ -10,4 +10,7 @@ public class Constants {
 
 	// Other
 	public static final String DOWNLOAD_PAGE = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+	public static final int PROVINCE_NAME_LENGTH = 10;
+	public static final int PLAYER_SID_LENGTH = 16;
+	public static final int PLAYER_START_UNITS = 10;
 }

@@ -2,21 +2,28 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
 
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
-public class ServerResponse {
+public class RegistrationResponse {
 
 	private ServerResult result;
 	private String value;
+	private int id;
 
-	public ServerResponse() {
+	public RegistrationResponse() {
 		super();
 	}
 
-	public ServerResponse(ServerResult result, String value) {
+	public RegistrationResponse(ServerResult result, String value) {
 		this.result = result;
 		this.value = value;
 	}
 
-	public ServerResponse(ServerResult result) {
+	public RegistrationResponse(ServerResult result, String value, int id) {
+		this.result = result;
+		this.value = value;
+		this.id = id;
+	}
+
+	public RegistrationResponse(ServerResult result) {
 		this.result = result;
 	}
 
@@ -36,12 +43,18 @@ public class ServerResponse {
 		return value;
 	}
 
-	@Override
-	public String toString() {
-		return "ServerResponse [result=" + result + ", value=" + value + "]";
+	public int getId() {
+		return id;
 	}
 
-	public String toJson() {
-		return "{\"result\":" + result + ",\"value\":\"" + value + "\"}";
+	public void setId(int id) {
+		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+		return "RegistrationResponse [result=" + result + ", value=" + value
+				+ "]";
+	}
+
 }

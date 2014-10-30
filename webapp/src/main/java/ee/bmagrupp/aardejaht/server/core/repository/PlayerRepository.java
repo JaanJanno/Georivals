@@ -13,4 +13,6 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
 	
 	@Query("from Player p left join p.ownedProvinces op where op.id = ?1")
 	Player findOwner(int ownershipId);
+	
+	Player findByUserName(String userName);
 }

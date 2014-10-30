@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
-import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
+import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
 import ee.bmagrupp.aardejaht.server.service.AuthenticationService;
 
 @RestController
@@ -25,11 +25,11 @@ public class RegistrationController {
 	AuthenticationService authServ;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/phase1")
-	public ResponseEntity<ServerResponse> registrationPhase1(
+	public ResponseEntity<RegistrationResponse> registrationPhase1(
 			@RequestBody RegistrationDTO registration) {
 		LOG.info("Registration phase 1");
-		ServerResponse response = authServ.registrationPhase1(registration);
-		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
+		RegistrationResponse response = authServ.registrationPhase1(registration);
+		return new ResponseEntity<RegistrationResponse>(response, HttpStatus.OK);
 	}
 
 }

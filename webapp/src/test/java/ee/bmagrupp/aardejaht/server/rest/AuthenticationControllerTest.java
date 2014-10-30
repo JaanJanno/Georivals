@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
-import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
+import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
 import ee.bmagrupp.aardejaht.server.service.AuthenticationService;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
@@ -44,7 +44,7 @@ import ee.bmagrupp.aardejaht.server.util.ServerResult;
 public class AuthenticationControllerTest {
 
 	private MockMvc mockMvc;
-	private ServerResponse goodResponse;
+	private RegistrationResponse goodResponse;
 
 	@InjectMocks
 	RegistrationController regCon;
@@ -61,7 +61,7 @@ public class AuthenticationControllerTest {
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 
-		goodResponse = new ServerResponse(ServerResult.OK);
+		goodResponse = new RegistrationResponse(ServerResult.OK);
 
 	}
 
