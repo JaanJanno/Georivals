@@ -9,14 +9,11 @@ import ee.bmagrupp.aardejaht.core.communications.Connection;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 
 /**
- * @author	Jaan Janno
- */
-
-/**
  * Class for making a HTTP get request to the server and retrieving HighScore data
  * parsed from JSON to objects.
  * Use this by overriding the handleResponseList() method and calling 
  * retrieveHighScoreEntries() method.
+ *  @author	Jaan Janno
  */
 
 abstract public class HighScoreListLoader implements Runnable {
@@ -53,16 +50,22 @@ abstract public class HighScoreListLoader implements Runnable {
 	 */
 
 	@Override
-	public void run() {
-		Connection c = new Connection(url, "GET", null);
+	public void run() {	
+		Connection c = new Connection(url) {
+
+			@Override
+			public void handleResponseBody(String response) {
+				List<HighScoreEntry> list = getListFromJSON(response);
+				handleResponseList(list);
+			}
+
+			@Override
+			public void handleResponseCookies(List<String> cookies) {
+				// No cookies expected.
+			}
+
+		};
 		c.sendRequest();
-		try {
-			c.join();
-			List<HighScoreEntry> list = getListFromJSON(c.getResponse());
-			handleResponseList(list);
-		} catch (InterruptedException | NullPointerException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**

@@ -1,44 +1,46 @@
 package ee.bmagrupp.aardejaht.core.communications;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.Thread.State;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import ee.bmagrupp.aardejaht.core.communications.exceptions.DoubleRequestException;
-import android.os.StrictMode;
-import android.util.Log;
 
 /**
- * @author	Jaan Janno
- */
-
-/**
- * Class for making a HTTP get request. Request runs on separate thread. Capable
- * of retrieving a response in string format. One Connection object can only generate
- * one thread to avoid multiple threads waiting to write to the same string. Thus
- * use one Connection per request!
- * 
- * Each object holds an immutable URL with which to communicate. Request is
- * made after calling sendRequest() method. Response to the request can be
- * retrieved by getResponse() method after the request has been finished.
+ * Class for making a HTTP get request as default. Request runs on separate thread. 
+ * Capable of  retrieving a response and a list of cookies in string format. Each object holds 
+ * an immutable URL with which to communicate. Request is made after calling 
+ * sendRequest() method. Response to the request can be handled in the overridden 
+ * handleResponseBody() method. Retrieved cookies can be handled in the overridden
+ * handleResponseCookies() method.
+ * @author Jaan Janno
  */
  
-public class Connection implements Runnable {
+public abstract class Connection implements Runnable {
+	
+	private final String DEFAULT_CONTENT_TYPE = "application/json";
 
-	private Thread thread;
-	private String urlString;	// URL of the connection destination.
-	private String response;	// Response from the URL.
-	private Map<String, String> parameters;	// Parameters for the request.
-	private String requestMethod;
-
-	public Connection(String urlString, String requestMethod, Map<String, String> parameters) {
+	private String urlString;				// URL of the connection destination.
+	private String cookie = "";				// Cookie for the request.
+	
+	public Connection(String urlString) {
 		this.urlString = urlString;
-		this.thread = new Thread(this);
-		this.parameters = parameters;
-		this.requestMethod = requestMethod;
+	}
+	
+	/**
+	 * 
+	 * @param urlString URL of connection.
+	 * @param cookie Cookie sent to the server.
+	 */
+
+	public Connection(String urlString, String cookie) {
+		this.urlString = urlString;
+		this.cookie = cookie;
 	}
 	
 	/**
@@ -48,27 +50,7 @@ public class Connection implements Runnable {
 	 */
 	
 	public void sendRequest() {	
-		if (thread.getState() == State.NEW)
-			thread.start();
-		else
-			throw new DoubleRequestException("Request has already been run!");
-	}
-	
-	/**
-	 * Returns the response collected from calling the sendRequest() method.
-	 * Returns null if called before request is finished!
-	 */
-
-	public String getResponse() throws NullPointerException {
-		return response;
-	}
-	
-	/**
-	 * Waits for the response to arrive. Do not call from UI thread!
-	 */
-
-	public void join() throws InterruptedException {
-		thread.join();
+		new Thread(this).start();
 	}
 	
 	/**
@@ -77,39 +59,56 @@ public class Connection implements Runnable {
 
 	@Override
 	public void run() {
+		HttpURLConnection connection = null;
 		try {
-			setPolicy();
-			response = httpRequest(urlString);
-			Log.v("Connection", "Retrieved response from: " + urlString);
+			connection = getConnection(urlString);
+			httpRequest(connection);
 		} catch (Exception e) {
-			Log.v("Connection", "Failed to retrieve response from: " + urlString);
+			e.printStackTrace();
+		} finally {
+			if (connection != null)
+				connection.disconnect();
 		}
 	}
 
 	/*
-	 * Sets safer thread policy.
-	 */
-	
-	private void setPolicy() {
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-				.permitAll().build();
-		StrictMode.setThreadPolicy(policy);
-	}
-	
-	/*
 	 * Connects to given URL and returns its response string.
 	 */
 
-	private String httpRequest(String urlString) throws Exception {
-		HttpURLConnection connection = getConnection(urlString);
-		connection.setRequestMethod(requestMethod);
-		if (parameters != null)
-			for (String param: parameters.keySet()){
-				connection.addRequestProperty(param, parameters.get(param));
-			}
-		return readStream(connection.getInputStream());
+	protected void httpRequest(HttpURLConnection connection) throws Exception {
+		handleRequestProperties(connection, false, null);	
+		readStream (connection.getInputStream());	
+		List<String> cookies = collectResponseCookies(connection);
+		handleResponseCookies(cookies);
 	}
 	
+	/*
+	 * Collects cookies from header.
+	 */
+	
+	protected List<String> collectResponseCookies(HttpURLConnection connection) {
+		List<String> cookies = new ArrayList<String>();
+		for(Map.Entry<String, List<String>> headers : connection.getHeaderFields().entrySet()){
+			if (headers.getKey() != null && headers.getKey().equals("Set-Cookie")){
+				cookies = headers.getValue();
+				break;
+			}		
+		}
+		return cookies;
+	}
+	
+	/*
+	 * Sets properties for the request.
+	 */
+
+	protected void handleRequestProperties(HttpURLConnection connection, boolean output, String requestMethod) throws ProtocolException {
+		connection.setDoOutput(output);
+		connection.setRequestProperty("Content-Type", DEFAULT_CONTENT_TYPE);
+		connection.addRequestProperty("Cookie", cookie);
+		if (requestMethod != null)
+			connection.setRequestMethod(requestMethod);
+	}
+
 	/*
 	 * Handles connecting to given URL.
 	 */
@@ -123,7 +122,7 @@ public class Connection implements Runnable {
 	 * Reads input stream incoming from the server.
 	 */
 	
-	private String readStream(InputStream in) throws Exception {
+	protected void readStream(InputStream in) throws Exception {
 		String serverResponse = new String();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		for (String line = reader.readLine(); line != null;) {
@@ -131,6 +130,24 @@ public class Connection implements Runnable {
 			line = reader.readLine();
 		}
 		reader.close();
-		return serverResponse;
+		handleResponseBody(serverResponse);
 	}
+	
+	/**
+	 * Override this to write a request body for the server. Closing the
+	 * writer is not required as it is done automatically.
+	 * @param writer
+	 * @throws IOException
+	 */
+	
+	public abstract void handleResponseBody(String response);
+	
+	/**
+	 * Override to handle the list of cookies retrieved 
+	 * from the server in string format.
+	 * @param cookies
+	 */
+	
+	public abstract void handleResponseCookies(List<String> cookies);
+	
 }

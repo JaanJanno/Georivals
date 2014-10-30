@@ -1,20 +1,18 @@
 package ee.bmagrupp.aardejaht.core.communications.highscore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import ee.bmagrupp.aardejaht.core.communications.Connection;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
 
 /**
- * @author	Jaan Janno
- */
-
-/**
  * Class for making a HTTP get request to the server and retrieving ProfileEntry data
  * parsed from JSON to objects.
  * Use this by overriding the handleResponseList() method and calling 
  * retrieveProfileEntry() method.
+ * @author	Jaan Janno
  */
 
 abstract public class ProfileEntryLoader implements Runnable {
@@ -52,15 +50,20 @@ abstract public class ProfileEntryLoader implements Runnable {
 	public void run() {
 		Map<String, String> parameters = new HashMap<String, String>();
 		addRequestParameters(parameters);
-		Connection c = new Connection(url, "GET", parameters);
+		Connection c = new Connection(url) {
+
+			@Override
+			public void handleResponseBody(String response) {
+				ProfileEntry object = getObjectFromJSON(response);
+				handleResponseObject(object);			
+			}
+
+			@Override
+			public void handleResponseCookies(List<String> cookies) {
+				// No cookies expected.
+			}
+		};
 		c.sendRequest();
-		try {
-			c.join();
-			ProfileEntry object = getObjectFromJSON(c.getResponse());
-			handleResponseObject(object);
-		} catch (InterruptedException | NullPointerException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
