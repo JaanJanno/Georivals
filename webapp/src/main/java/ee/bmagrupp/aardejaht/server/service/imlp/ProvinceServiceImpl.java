@@ -29,7 +29,7 @@ import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 @Service
 public class ProvinceServiceImpl implements ProvinceService {
 
-	private static final double BOT_STRENGTH_CONSTANT = 0.2;
+	
 	private static Logger LOG = LoggerFactory
 			.getLogger(ProvinceServiceImpl.class);
 	private static Random rand = new Random();
