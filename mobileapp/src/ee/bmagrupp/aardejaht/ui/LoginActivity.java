@@ -3,7 +3,10 @@ package ee.bmagrupp.aardejaht.ui;
 import ee.bmagrupp.aardejaht.R;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,12 +43,11 @@ public class LoginActivity extends Activity {
 		EditText usernameEditText = (EditText) findViewById(R.id.login_username);
 		EditText keyEditText = (EditText) findViewById(R.id.login_key);
 		String username = usernameEditText.getText().toString();
-		String loginKeyString = keyEditText.getText().toString();
-		if (username.equals("") || loginKeyString.equals("")) {
+		String loginKey = keyEditText.getText().toString();
+		if (username.equals("") || loginKey.equals("")) {
 			MainActivity.showMessage(this, "All fields must be filled!");
 		} else {
 			try {
-				Integer loginKey = Integer.valueOf(loginKeyString);
 				loginRequest(username, loginKey);
 			} catch (NumberFormatException ex) {
 				MainActivity.showMessage(this,
@@ -101,7 +103,17 @@ public class LoginActivity extends Activity {
 
 	}
 
-	private void loginRequest(String username, Integer loginKey) {
-
+	private void loginRequest(String username, String loginKey) {
+		if (username.equals("test") && loginKey.equals("test")) {
+			SharedPreferences sharedPref = getSharedPreferences("prefs",
+					Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = sharedPref.edit();
+			editor.putString("username", username);
+			editor.putString("loginKey", loginKey);
+			editor.commit();
+			Intent result = new Intent();
+			setResult(RESULT_OK, result);
+			finish();
+		}
 	}
 }
