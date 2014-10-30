@@ -34,6 +34,13 @@ import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
 import ee.bmagrupp.aardejaht.server.service.AuthenticationService;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
+/**
+ * Tests for {@link RegistrationController} by mocking the hell out of
+ * {@link AuthenticationService}.
+ * 
+ * @author TKasekamp
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("test")
@@ -41,10 +48,16 @@ import ee.bmagrupp.aardejaht.server.util.ServerResult;
 		TransactionalTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class AuthenticationControllerTest {
+public class RegistrationControllerTest {
 
 	private MockMvc mockMvc;
 	private RegistrationResponse goodResponse;
+	private RegistrationResponse userNameInUse;
+
+	
+	private RegistrationDTO reg1;
+	private RegistrationDTO reg2;
+
 
 	@InjectMocks
 	RegistrationController regCon;
@@ -62,24 +75,82 @@ public class AuthenticationControllerTest {
 				.build();
 
 		goodResponse = new RegistrationResponse(ServerResult.OK);
+		userNameInUse = new RegistrationResponse(ServerResult.USERNAME_IN_USE);
+		reg1 = new RegistrationDTO();
+		reg1.setUserName("Smaug");
+		
+		reg2 = new RegistrationDTO();
+		reg2.setUserName("Smaug");
+		reg2.setHome_lat(123);
+		reg2.setHome_long(123);
 
 	}
 
 	@Test
-	public void succesfulPhase1() throws Exception {
-		RegistrationDTO reg = new RegistrationDTO();
-		reg.setUserName("new user");
+	public void phase1success() throws Exception {
+
 
 		when(authServ.registrationPhase1(any(RegistrationDTO.class)))
 				.thenReturn(goodResponse);
 
 		mockMvc.perform(
-				post("/registration/phase1").content(reg.toJson())
+				post("/registration/phase1").content(reg1.toJson())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)).andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.value", is((Object) null)))
-				.andExpect(jsonPath("$.result", is("OK")));
+				.andExpect(jsonPath("$.result", is("OK")))
+				.andExpect(jsonPath("$.id", is(0)));
+	}
+
+	@Test
+	public void phase1UserExists() throws Exception {	
+
+		when(authServ.registrationPhase1(any(RegistrationDTO.class)))
+				.thenReturn(userNameInUse);
+
+		mockMvc.perform(
+				post("/registration/phase1").content(reg1.toJson())
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.value", is((Object) null)))
+				.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
+				.andExpect(jsonPath("$.id", is(0)));
+	}
+	
+	@Test
+	public void phase2success() throws Exception {
+
+
+		RegistrationResponse res = new RegistrationResponse(ServerResult.OK, "abcd", 511);
+		when(authServ.registrationPhase2(any(RegistrationDTO.class)))
+				.thenReturn(res);
+
+		mockMvc.perform(
+				post("/registration/phase2").content(reg2.toJson())
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.value", is("abcd")))
+				.andExpect(jsonPath("$.result", is("OK")))
+				.andExpect(jsonPath("$.id", is(511)));
+	}
+	
+	@Test
+	public void phase2userExists() throws Exception {
+
+		when(authServ.registrationPhase2(any(RegistrationDTO.class)))
+				.thenReturn(userNameInUse);
+
+		mockMvc.perform(
+				post("/registration/phase2").content(reg2.toJson())
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)).andDo(print())
+						.andExpect(status().isBadRequest())
+						.andExpect(jsonPath("$.value", is((Object) null)))
+						.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
+						.andExpect(jsonPath("$.id", is(0)));
 	}
 
 }
