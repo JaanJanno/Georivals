@@ -53,7 +53,7 @@ public class ProvinceServiceIntegrationTest {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		assertEquals("Provinces in area", 1000, provList.size());
+		assertEquals("Provinces in area", 1066, provList.size());
 	}
 
 	@Test
