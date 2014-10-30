@@ -47,14 +47,14 @@ public class HighScoreIntegrationTest {
 	}
 
 	/**
-	 * Test for player Mr. TK. No units at home. 2 provinces. Total 13 units.
+	 * Test for player Mr. TK. No units at home. 2 provinces. Total 23 units.
 	 */
 	@Test
 	public void highScoreTestTK() {
 		HighScoreEntry highScore = highScoreServ.findById(1);
 
 		assertEquals("The id", 1, highScore.getId());
-		assertEquals("Average units. TotalUnits/Provinces", 6.5,
+		assertEquals("Average units. TotalUnits/Provinces", 11.5,
 				highScore.getAverageUnits(), 0.1);
 		assertEquals("Number of provinces", 2, highScore.getTerritoriesOwned());
 		assertEquals("The name", "Mr. TK", highScore.getUsername());
@@ -62,14 +62,14 @@ public class HighScoreIntegrationTest {
 	}
 
 	/**
-	 * Test for player JohnnyZQ. 1 province. 6 units. 5 units at home.
+	 * Test for player JohnnyZQ. 1 province. 6 units. 10 units at home.
 	 */
 	@Test
 	public void highScoreTestJohnny() {
 		HighScoreEntry highScore = highScoreServ.findById(5);
 
 		assertEquals("The id", 5, highScore.getId());
-		assertEquals("Average units. TotalUnits/Provinces", 6.0,
+		assertEquals("Average units. TotalUnits/Provinces", 11.0,
 				highScore.getAverageUnits(), 0.1);
 		assertEquals("Number of provinces", 1, highScore.getTerritoriesOwned());
 		assertEquals("The name", "JohnnyZQ", highScore.getUsername());

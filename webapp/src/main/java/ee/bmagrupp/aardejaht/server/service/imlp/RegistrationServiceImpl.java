@@ -5,27 +5,32 @@ import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
+import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
+import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
-import ee.bmagrupp.aardejaht.server.service.AuthenticationService;
+import ee.bmagrupp.aardejaht.server.service.RegistrationService;
 import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class RegistrationServiceImpl implements RegistrationService {
 
 	@Autowired
-	PlayerRepository playerRepo;
+	private PlayerRepository playerRepo;
 
 	@Autowired
-	HomeOwnershipRepository homeRepo;
+	private HomeOwnershipRepository homeRepo;
 
 	@Autowired
-	ProvinceRepository provRepo;
+	private ProvinceRepository provRepo;
+
+	@Autowired
+	private UnitRepository unitRepo;
 
 	@Override
 	public RegistrationResponse registrationPhase1(RegistrationDTO dto) {
@@ -44,31 +49,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		if (player != null) {
 			return new RegistrationResponse(ServerResult.USERNAME_IN_USE);
 		}
-		player = savePlayer(dto);
+		player = createPlayer(dto.getUserName(), dto.getEmail(),
+				dto.getHomeLat(), dto.getHomeLong());
 		return new RegistrationResponse(ServerResult.OK, player.getSid(),
 				player.getId());
 	}
 
-	/**
-	 * Inserts a new {@link Player} into the database. To do this, the home
-	 * province and home ownership must be persisted. The province repository is
-	 * checked if this province is already present.
-	 * 
-	 * @param dto
-	 *            {@link RegistrationDTO}
-	 * @return {@link Player} with ID and SID
-	 */
-	private Player savePlayer(RegistrationDTO dto) {
-		Province home = provRepo.findWithLatLong(dto.getHomeLat(),
-				dto.getHomeLong());
+	@Override
+	public Player createPlayer(String username, String email, double homeLat,
+			double homeLong) {
+		Province home = provRepo.findWithLatLong(homeLat, homeLong);
 		if (home == null) {
-			home = new Province(dto.getHomeLat(), dto.getHomeLong());
+			home = new Province(homeLat, homeLong);
 			provRepo.save(home);
 		}
 		String sid = NameGenerator.generate(Constants.PLAYER_SID_LENGTH);
 
-		Player player = new Player(dto.getUserName(), dto.getEmail(), sid, home);
-		// TODO set player starting units
+		Player player = new Player(username, email, sid, home);
+
+		// Adding start units
+		Unit startUnit = new Unit(Constants.PLAYER_START_UNITS);
+		unitRepo.save(startUnit);
+		player.getHome().addUnit(startUnit);
 
 		homeRepo.save(player.getHome());
 		playerRepo.save(player);

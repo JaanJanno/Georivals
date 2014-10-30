@@ -31,12 +31,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
-import ee.bmagrupp.aardejaht.server.service.AuthenticationService;
+import ee.bmagrupp.aardejaht.server.service.RegistrationService;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
 /**
  * Tests for {@link RegistrationController} by mocking the hell out of
- * {@link AuthenticationService}.
+ * {@link RegistrationService}.
  * 
  * @author TKasekamp
  *
@@ -61,7 +61,7 @@ public class RegistrationControllerTest {
 	RegistrationController regCon;
 
 	@Mock
-	AuthenticationService authServ;
+	RegistrationService authServ;
 
 	@Before
 	public void setup() {

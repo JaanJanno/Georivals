@@ -1,7 +1,12 @@
 package ee.bmagrupp.aardejaht.server.service;
 
+import ee.bmagrupp.aardejaht.server.core.domain.HomeOwnership;
+import ee.bmagrupp.aardejaht.server.core.domain.Player;
+import ee.bmagrupp.aardejaht.server.core.domain.Province;
+import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
+import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
 /**
@@ -10,7 +15,7 @@ import ee.bmagrupp.aardejaht.server.util.ServerResult;
  * @author TKasekamp
  *
  */
-public interface AuthenticationService {
+public interface RegistrationService {
 
 	/**
 	 * Checks if a player with this username is present in the database.<br>
@@ -41,4 +46,22 @@ public interface AuthenticationService {
 	 * @return {@link RegistrationResponse}
 	 */
 	public RegistrationResponse registrationPhase2(RegistrationDTO dto);
+
+	/**
+	 * 
+	 * Inserts a new {@link Player} into the database. To do this, the
+	 * {@link HomeOwnership} and home {@link Province} must be persisted. The
+	 * province repository is checked if the province with homeLat and homeLong
+	 * is already present. If not, a new {@link Province} is created. <br>
+	 * A number of starting {@link Unit}'s specified in {@link Constants} is
+	 * added to the home province.
+	 * 
+	 * @param username
+	 * @param email
+	 * @param homeLat
+	 * @param homeLong
+	 * @return {@link Player}
+	 */
+	public Player createPlayer(String username, String email, double homeLat,
+			double homeLong);
 }

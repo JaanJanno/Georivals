@@ -28,10 +28,19 @@ INSERT INTO unit VALUES (3, 6, 0, 0);
 INSERT INTO unit VALUES (4, 3, 0, 0);
 INSERT INTO unit VALUES (5, 1, 0, 0);
 INSERT INTO unit VALUES (6, 9, 0, 0);
-INSERT INTO unit VALUES (7, 14, 0, 0);
-INSERT INTO unit VALUES (8, 5, 0, 0);
+INSERT INTO unit VALUES (7, 10, 0, 0);
+INSERT INTO unit VALUES (8, 10, 0, 0);
+INSERT INTO unit VALUES (9, 10, 0, 0);
+INSERT INTO unit VALUES (10, 10, 0, 0);
+INSERT INTO unit VALUES (11, 10, 0, 0);
+INSERT INTO unit VALUES (12, 0, 0, 0);
 
-INSERT INTO home_ownership_units VALUES (5, 8);
+INSERT INTO home_ownership_units VALUES (1, 7);
+INSERT INTO home_ownership_units VALUES (2, 8);
+INSERT INTO home_ownership_units VALUES (3, 9);
+INSERT INTO home_ownership_units VALUES (4, 10);
+INSERT INTO home_ownership_units VALUES (5, 11);
+INSERT INTO home_ownership_units VALUES (6, 12);
 
 INSERT INTO ownership VALUES (1, '2014-10-18 13:49:28.243', '2014-10-18 13:49:28.243', 6);
 INSERT INTO ownership VALUES (2, '2014-10-18 13:49:28.243', '2014-10-18 13:49:28.243', 1);

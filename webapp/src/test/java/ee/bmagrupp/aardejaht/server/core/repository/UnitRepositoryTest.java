@@ -2,8 +2,6 @@ package ee.bmagrupp.aardejaht.server.core.repository;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +25,6 @@ public class UnitRepositoryTest {
 
 	@Autowired
 	UnitRepository unitRepo;
-
-	@Test
-	public void allUnits() {
-		List<Unit> units = (List<Unit>) unitRepo.findAll();
-
-		assertEquals("There should be 8 Units", 8, units.size());
-	}
 
 	@Test
 	public void singleUnit() {

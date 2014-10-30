@@ -18,6 +18,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
+import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
@@ -26,7 +27,7 @@ import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
 /**
- * Integration tests for {@link AuthenticationService}. This service is fully
+ * Integration tests for {@link RegistrationService}. This service is fully
  * covered by tests.
  * 
  * @author TKasekamp
@@ -42,7 +43,7 @@ import ee.bmagrupp.aardejaht.server.util.ServerResult;
 public class AuthenticationServiceTest {
 
 	@Autowired
-	AuthenticationService authServ;
+	RegistrationService regServ;
 
 	@Autowired
 	PlayerRepository playerRepo;
@@ -55,7 +56,7 @@ public class AuthenticationServiceTest {
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Smaug");
 
-		RegistrationResponse response = authServ.registrationPhase1(dto);
+		RegistrationResponse response = regServ.registrationPhase1(dto);
 		assertEquals("Response", ServerResult.OK, response.getResult());
 		assertEquals("Value", null, response.getValue());
 	}
@@ -65,7 +66,7 @@ public class AuthenticationServiceTest {
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Doge");
 
-		RegistrationResponse response = authServ.registrationPhase1(dto);
+		RegistrationResponse response = regServ.registrationPhase1(dto);
 		assertEquals("Response", ServerResult.USERNAME_IN_USE,
 				response.getResult());
 		assertEquals("Value", null, response.getValue());
@@ -83,22 +84,11 @@ public class AuthenticationServiceTest {
 		Player p = playerRepo.findByUserName("Smaug");
 		assertNull(p);
 
-		RegistrationResponse response = authServ.registrationPhase2(dto);
+		RegistrationResponse response = regServ.registrationPhase2(dto);
 
 		// Checking the database for this user
 		Player player = playerRepo.findByUserName("Smaug");
 		assertNotNull(player);
-		assertEquals("Player username", "Smaug", player.getUserName());
-		assertEquals("Player email", null, player.getEmail());
-		assertEquals("Player sid", Constants.PLAYER_SID_LENGTH, player.getSid()
-				.length());
-		assertEquals("Player owned stuff", 0, player.getOwnedProvinces().size());
-		assertEquals("Player home province units ", null, player.getHome()
-				.getUnits());
-		assertEquals("Player home province latitude", 58.123, player.getHome()
-				.getProvince().getLatitude(), 0.001);
-		assertEquals("Player home province longitude", 26.123, player.getHome()
-				.getProvince().getLongitude(), 0.001);
 
 		assertEquals("Value", player.getSid(), response.getValue());
 		assertEquals("Response", ServerResult.OK, response.getResult());
@@ -121,23 +111,13 @@ public class AuthenticationServiceTest {
 		Player p = playerRepo.findByUserName("Smaug");
 		assertNull(p);
 
-		RegistrationResponse response = authServ.registrationPhase2(dto);
+		RegistrationResponse response = regServ.registrationPhase2(dto);
 
 		// Checking the database for this user
 		Player player = playerRepo.findByUserName("Smaug");
 		assertNotNull(player);
-		assertEquals("Player username", "Smaug", player.getUserName());
-		assertEquals("Player email", null, player.getEmail());
-		assertEquals("Player sid", Constants.PLAYER_SID_LENGTH, player.getSid()
-				.length());
-		assertEquals("Player owned stuff", 0, player.getOwnedProvinces().size());
-		assertEquals("Player home province units ", null, player.getHome()
-				.getUnits());
-		assertEquals("Player home province latitude", 58.123, player.getHome()
-				.getProvince().getLatitude(), 0.001);
-		assertEquals("Player home province longitude", 26.123, player.getHome()
-				.getProvince().getLongitude(), 0.001);
 
+		// Response check
 		assertEquals("Value", player.getSid(), response.getValue());
 		assertEquals("Response", ServerResult.OK, response.getResult());
 		assertEquals("Player id", player.getId(), response.getId());
@@ -156,23 +136,11 @@ public class AuthenticationServiceTest {
 		Player p = playerRepo.findByUserName("Smaug");
 		assertNull(p);
 
-		RegistrationResponse response = authServ.registrationPhase2(dto);
+		RegistrationResponse response = regServ.registrationPhase2(dto);
 
 		// Checking the database for this user
 		Player player = playerRepo.findByUserName("Smaug");
 		assertNotNull(player);
-		assertEquals("Player username", "Smaug", player.getUserName());
-		assertEquals("Player email", "smaug@lonelymountain.com",
-				player.getEmail());
-		assertEquals("Player sid", Constants.PLAYER_SID_LENGTH, player.getSid()
-				.length());
-		assertEquals("Player owned stuff", 0, player.getOwnedProvinces().size());
-		assertEquals("Player home province units ", null, player.getHome()
-				.getUnits());
-		assertEquals("Player home province latitude", 58.123, player.getHome()
-				.getProvince().getLatitude(), 0.001);
-		assertEquals("Player home province longitude", 26.123, player.getHome()
-				.getProvince().getLongitude(), 0.001);
 
 		assertEquals("Value", player.getSid(), response.getValue());
 		assertEquals("Response", ServerResult.OK, response.getResult());
@@ -187,12 +155,45 @@ public class AuthenticationServiceTest {
 		dto.setHomeLat(58.123);
 		dto.setHomeLong(26.123);
 
-		RegistrationResponse response = authServ.registrationPhase2(dto);
+		RegistrationResponse response = regServ.registrationPhase2(dto);
 
 		assertEquals("Value", null, response.getValue());
 		assertEquals("Response", ServerResult.USERNAME_IN_USE,
 				response.getResult());
 		assertEquals("Player id", 0, response.getId());
+	}
+
+	@Test
+	public void createPlayerTest() {
+		// Check if user is not in database
+		Player p = playerRepo.findByUserName("Smaug");
+		assertNull(p);
+
+		Player player = regServ.createPlayer("Smaug",
+				"smaug@lonelymountain.com", 58.123, 26.123);
+
+		// Checking the database for this user
+		Player playerCheck = playerRepo.findByUserName("Smaug");
+		assertNotNull(playerCheck);
+
+		assertEquals("Player username", "Smaug", player.getUserName());
+		assertEquals("Player email", "smaug@lonelymountain.com",
+				player.getEmail());
+		assertEquals("Player sid", Constants.PLAYER_SID_LENGTH, player.getSid()
+				.length());
+		assertEquals("Player owned stuff", 0, player.getOwnedProvinces().size());
+
+		assertEquals("Player home province latitude", 58.123, player.getHome()
+				.getProvince().getLatitude(), 0.001);
+		assertEquals("Player home province longitude", 26.123, player.getHome()
+				.getProvince().getLongitude(), 0.001);
+
+		// Unit check
+		assertEquals("Player home province units ", 1, player.getHome()
+				.getUnits().size());
+		Unit unit = player.getHome().getUnits().iterator().next();
+		assertEquals("Unit size", Constants.PLAYER_START_UNITS, unit.getSize());
+
 	}
 
 }
