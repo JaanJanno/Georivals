@@ -20,6 +20,8 @@ public class MainActivity extends Activity {
 	public static Toast toast;
 	public static final int LOGIN_REQUEST = 1;
 	public static final int REGISTRATION_REQUEST = 2;
+	public static AlertDialog.Builder loginPrompt;
+	public int userId;
 	private MapFragment mapFragment;
 	private ProfileFragment profileFragment;
 	private HighScoreFragment highscoreFragment;
@@ -27,8 +29,9 @@ public class MainActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		checkKeyAndSetView();
-
+		setContentView(R.layout.main_layout);
+		userId = getUserId();
+		createFragments();
 	}
 
 	@Override
@@ -38,23 +41,10 @@ public class MainActivity extends Activity {
 		super.onStop();
 	}
 
-	private void checkKeyAndSetView() {
-		if (getLoginKey().equals(""))
-			setContentView(R.layout.intro_layout);
-		else {
-			setContentView(R.layout.main_layout);
-			if (mapFragment == null)
-				createFragments();
-			else
-				getFragmentManager().beginTransaction().detach(mapFragment)
-						.attach(mapFragment).commit();
-		}
-	}
-
-	private String getLoginKey() {
+	private int getUserId() {
 		SharedPreferences sharedPref = getSharedPreferences("prefs",
 				Context.MODE_PRIVATE);
-		return sharedPref.getString("loginKey", "");
+		return sharedPref.getInt("userId", 0);
 	}
 
 	private void createFragments() {
@@ -62,8 +52,11 @@ public class MainActivity extends Activity {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		mapFragment = new MapFragment();
-		Tab mapTab = actionBar.newTab().setText("Map")
-				.setTabListener(new TabListener(mapFragment, "MapFragment"));
+		Tab mapTab = actionBar
+				.newTab()
+				.setText("Map")
+				.setTabListener(
+						new TabListener(this, mapFragment, "MapFragment"));
 		actionBar.addTab(mapTab);
 
 		profileFragment = new ProfileFragment();
@@ -71,7 +64,8 @@ public class MainActivity extends Activity {
 				.newTab()
 				.setText("Profile")
 				.setTabListener(
-						new TabListener(profileFragment, "ProfileFragment"));
+						new TabListener(this, profileFragment,
+								"ProfileFragment"));
 		actionBar.addTab(profileTab);
 
 		highscoreFragment = new HighScoreFragment();
@@ -79,10 +73,35 @@ public class MainActivity extends Activity {
 				.newTab()
 				.setText("Highscores")
 				.setTabListener(
-						new TabListener(highscoreFragment, "HighscoreFragment"));
+						new TabListener(this, highscoreFragment,
+								"HighscoreFragment"));
 		actionBar.addTab(highscoreTab);
 
 		actionBar.setSelectedNavigationItem(0);
+
+	}
+
+	public void showLoginPrompt() {
+		if (loginPrompt == null) {
+			loginPrompt = new AlertDialog.Builder(this)
+					.setTitle("User required!")
+					.setMessage("You need to login or register. Continue?")
+					.setPositiveButton("Yes",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									createIntroActivity();
+								}
+							})
+					.setNegativeButton("No",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// do nothing
+								}
+							}).setIcon(android.R.drawable.ic_dialog_alert);
+		}
+		loginPrompt.show();
 	}
 
 	public static void showMessage(Context context, String message) {
@@ -113,10 +132,11 @@ public class MainActivity extends Activity {
 											"prefs", Context.MODE_PRIVATE);
 									SharedPreferences.Editor editor = sharedPref
 											.edit();
-									editor.putString("username", "");
-									editor.putString("loginKey", "");
+									editor.putString("userName", "");
+									editor.putInt("userId", 0);
 									editor.commit();
-									setContentView(R.layout.intro_layout);
+									userId = 0;
+									createIntroActivity();
 								}
 							})
 					.setNegativeButton("No",
@@ -141,22 +161,19 @@ public class MainActivity extends Activity {
 		highscoreFragment.sortEntries("territoriesOwned");
 	}
 
-	public void login(View v) {
-		Intent loginIntent = new Intent(this, LoginActivity.class);
-		startActivityForResult(loginIntent, LOGIN_REQUEST);
-	}
-
-	public void register(View v) {
-		Intent registerIntent = new Intent(this, RegisterActivity.class);
-		startActivityForResult(registerIntent, REGISTRATION_REQUEST);
+	private void createIntroActivity() {
+		Intent registerIntent = new Intent(this, IntroActivity.class);
+		startActivityForResult(registerIntent, 1);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == LOGIN_REQUEST) {
+		if (requestCode == 1) {
 			if (resultCode == RESULT_OK) {
-				checkKeyAndSetView();
+				userId = getUserId();
+
 			}
 		}
 	}
+
 }

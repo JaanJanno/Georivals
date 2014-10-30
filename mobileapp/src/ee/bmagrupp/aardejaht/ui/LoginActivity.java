@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -108,11 +107,10 @@ public class LoginActivity extends Activity {
 			SharedPreferences sharedPref = getSharedPreferences("prefs",
 					Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putString("username", username);
-			editor.putString("loginKey", loginKey);
+			editor.putString("userName", username);
+			editor.putInt("userId", 1);
 			editor.commit();
-			Intent result = new Intent();
-			setResult(RESULT_OK, result);
+			setResult(RESULT_OK, getIntent());
 			finish();
 		}
 	}

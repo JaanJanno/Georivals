@@ -41,6 +41,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private LatLng lastLatLng;
 	private float lastZoom;
 	private ButtonClickListener buttonClickListener;
+	private MapClickListener mapClickListener;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -136,25 +137,26 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 					.addOnConnectionFailedListener(this).build();
 			buttonClickListener = new ButtonClickListener(activity,
 					locationManager);
+			mapClickListener = new MapClickListener((MainActivity) activity);
 			map = this.getMap();
 
 			if (map != null) {
-				map.setMyLocationEnabled(true);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 						59.437046, 24.753742), 16.0f));
-				setMapListeners();
+				setMapSettings();
 			}
 		} else {
 			map = this.getMap();
-			map.setMyLocationEnabled(true);
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng,
 					lastZoom));
-			setMapListeners();
+			setMapSettings();
 		}
 	}
 
-	private void setMapListeners() {
+	private void setMapSettings() {
+		map.setMyLocationEnabled(true);
 		map.setOnMyLocationButtonClickListener(buttonClickListener);
+		map.setOnMapClickListener(mapClickListener);
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
