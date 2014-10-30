@@ -11,7 +11,7 @@
 	<div id="text">
 		<h2>Greetings from Aardejaht (name pending)!</h2>
 		<p>The following requests are available as of server version
-			0.2.2. This may be horribly out of date by the time you read this.</p>
+			0.3.0. This may be horribly out of date by the time you read this.</p>
 		<ul>
 			<li><b>/download</b> - link to mobile app .apk download</li>
 			<li><b>/profile</b> - all profiles of all players</li>
@@ -24,6 +24,10 @@
 				Strings such as <code>{
 					"nelongitude":5.0,"swlongitude":3.0,"swlatitude":2.0,"nelatitude":4.0
 					}</code> and a Cookie "sid"</li>
+			<li><b>/registration/phase1</b> - this is a POST method. Accepts
+				JSON Strings as RegistrationDTO and outputs RegistrationResponse</li>
+			<li><b>/registration/phase2</b> - this is a POST method. Accepts
+				JSON Strings as RegistrationDTO and outputs RegistrationResponse</li>
 		</ul>
 
 	</div>

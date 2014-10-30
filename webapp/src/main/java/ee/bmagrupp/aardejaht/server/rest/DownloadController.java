@@ -15,7 +15,7 @@ import ee.bmagrupp.aardejaht.server.util.Constants;
 public class DownloadController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public void error(HttpServletResponse response) {
+	public void download(HttpServletResponse response) {
 		try {
 			response.sendRedirect(Constants.DOWNLOAD_PAGE);
 		} catch (IOException e) {

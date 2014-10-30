@@ -56,10 +56,10 @@ public class ProvinceRepositoryTest {
 	public void findProvinceWithLatLongSuccess() {
 		Province prov = new Province(58.123, 26.123);
 		provRepo.save(prov);
-		Province prov2 = provRepo.findWithLatLong(26.123, 58.123);
+		Province prov2 = provRepo.findWithLatLong(58.123, 26.123);
 
-		assertEquals("Province latitude", 26.123, prov2.getLatitude(), 0.0001);
-		assertEquals("Province longitude", 58.123, prov2.getLongitude(), 0.0001);
+		assertEquals("Province latitude", 58.123, prov2.getLatitude(), 0.0001);
+		assertEquals("Province longitude", 26.123, prov2.getLongitude(), 0.0001);
 	}
 
 }

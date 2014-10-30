@@ -79,8 +79,7 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 
 		return new PlayerProfile(player.getId(), player.getUserName(),
-				player.getEmail(), totalUnits, ownedProvinces,
-				player.getRegisterDate());
+				player.getEmail(), totalUnits, ownedProvinces);
 	}
 
 	private int countUnits(Set<Unit> units) {

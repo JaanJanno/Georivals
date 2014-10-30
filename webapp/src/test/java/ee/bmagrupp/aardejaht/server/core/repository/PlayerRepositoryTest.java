@@ -21,6 +21,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
+import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 
 /**
@@ -78,10 +79,10 @@ public class PlayerRepositoryTest {
 	 */
 	@Test
 	public void authTest() {
-		// Player 1 - Mr. TK
-		Player p = playerRepo.findBySid("HDpVys");
+		// Player 2 - Doge
+		Player p = playerRepo.findBySid("3myBuV7DKARaW14p");
 
-		assertEquals("Player Sid or password", 1, p.getId());
+		assertEquals("Player Sid or password", 2, p.getId());
 
 		// No such sid test
 		Player p1 = playerRepo.findBySid("HDpVys213");
@@ -129,21 +130,23 @@ public class PlayerRepositoryTest {
 		Player player2 = playerRepo.findByUserName("Smaug");
 		assertEquals("Player username", "Smaug", player2.getUserName());
 		assertEquals("Player email", null, player2.getEmail());
-		assertEquals("Player sid", 16, player2.getSid().length());
+		assertEquals("Player sid", Constants.PLAYER_SID_LENGTH, player2
+				.getSid().length());
 		assertEquals("Player owned stuff", 0, player2.getOwnedProvinces()
 				.size());
 		assertEquals("Player home province units ", null, player2.getHome()
 				.getUnits());
-		assertEquals("Player home province latitude", 58.123, player2.getHome()
+		assertEquals("Player home province latitude", 26.123, player2.getHome()
 				.getProvince().getLatitude(), 0.001);
-		assertEquals("Player home province longitude", 26.123, player2
+		assertEquals("Player home province longitude", 58.123, player2
 				.getHome().getProvince().getLongitude(), 0.001);
 	}
 
 	@Test(expected = DataIntegrityViolationException.class)
 	public void saveUsernameExists() {
 		Province home = new Province(26.123, 58.123);
-		Player player = new Player("Doge", NameGenerator.generate(16), home);
+		Player player = new Player("Doge",
+				NameGenerator.generate(Constants.PLAYER_SID_LENGTH), home);
 
 		provinceRepo.save(home);
 		homeRepo.save(player.getHome());

@@ -1,7 +1,6 @@
 package ee.bmagrupp.aardejaht.server.core.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Player implements Serializable {
@@ -33,13 +30,6 @@ public class Player implements Serializable {
 	@Column(nullable = false)
 	private String sid;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastLogin;
-
-	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date registerDate;
-
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Ownership> ownedProvinces = new HashSet<>();
 
@@ -55,7 +45,6 @@ public class Player implements Serializable {
 		this.userName = userName;
 		this.email = email;
 		this.sid = sid;
-		this.registerDate = new Date();
 		this.createHome(province);
 	}
 
@@ -63,7 +52,6 @@ public class Player implements Serializable {
 		super();
 		this.userName = userName;
 		this.sid = sid;
-		this.registerDate = new Date();
 		this.createHome(province);
 	}
 
@@ -83,20 +71,8 @@ public class Player implements Serializable {
 		this.email = email;
 	}
 
-	public Date getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-
 	public int getId() {
 		return id;
-	}
-
-	public Date getRegisterDate() {
-		return registerDate;
 	}
 
 	public Set<Ownership> getOwnedProvinces() {
@@ -137,9 +113,8 @@ public class Player implements Serializable {
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", userName=" + userName + ", email="
-				+ email + ", sid=" + sid + ", lastLogin=" + lastLogin
-				+ ", registerDate=" + registerDate + ", provinces="
-				+ ownedProvinces + ", home=" + home + "]";
+				+ email + ", sid=" + sid + ", ownedProvinces=" + ownedProvinces
+				+ ", home=" + home + "]";
 	}
 
 }

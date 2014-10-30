@@ -76,8 +76,8 @@ public class AuthenticationServiceTest {
 		// Setup
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Smaug");
-		dto.setHome_lat(58.123);
-		dto.setHome_long(26.123);
+		dto.setHomeLat(58.123);
+		dto.setHomeLong(26.123);
 
 		// Check if user is not in database
 		Player p = playerRepo.findByUserName("Smaug");
@@ -110,8 +110,8 @@ public class AuthenticationServiceTest {
 		// Setup
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Smaug");
-		dto.setHome_lat(58.123);
-		dto.setHome_long(26.123);
+		dto.setHomeLat(58.123);
+		dto.setHomeLong(26.123);
 
 		// Create this province already
 		Province prov = new Province(26.123, 58.123);
@@ -148,8 +148,8 @@ public class AuthenticationServiceTest {
 		// Setup
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Smaug");
-		dto.setHome_lat(58.123);
-		dto.setHome_long(26.123);
+		dto.setHomeLat(58.123);
+		dto.setHomeLong(26.123);
 		dto.setEmail("smaug@lonelymountain.com");
 
 		// Check if user is not in database
@@ -184,8 +184,8 @@ public class AuthenticationServiceTest {
 		// Setup
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Doge"); // In use
-		dto.setHome_lat(58.123);
-		dto.setHome_long(26.123);
+		dto.setHomeLat(58.123);
+		dto.setHomeLong(26.123);
 
 		RegistrationResponse response = authServ.registrationPhase2(dto);
 

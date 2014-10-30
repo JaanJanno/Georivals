@@ -59,10 +59,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 * @return {@link Player} with ID and SID
 	 */
 	private Player savePlayer(RegistrationDTO dto) {
-		Province home = provRepo.findWithLatLong(dto.getHome_lat(),
-				dto.getHome_long());
+		Province home = provRepo.findWithLatLong(dto.getHomeLat(),
+				dto.getHomeLong());
 		if (home == null) {
-			home = new Province(dto.getHome_long(), dto.getHome_lat());
+			home = new Province(dto.getHomeLat(), dto.getHomeLong());
 			provRepo.save(home);
 		}
 		String sid = NameGenerator.generate(Constants.PLAYER_SID_LENGTH);

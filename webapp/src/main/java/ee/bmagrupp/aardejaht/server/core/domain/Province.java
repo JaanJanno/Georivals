@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.NameGenerator;
 
 @Entity
@@ -20,10 +21,10 @@ public class Province implements Serializable {
 	private int id;
 
 	@Column(nullable = false)
-	private double longitude;
+	private double latitude;
 
 	@Column(nullable = false)
-	private double latitude;
+	private double longitude;
 
 	private String name;
 
@@ -32,16 +33,18 @@ public class Province implements Serializable {
 
 	/**
 	 * Basic constructor for a Province. Name is set to a random alphanumeric
-	 * String.
+	 * String. The length of it is specified in {@link Constants}.
 	 * 
-	 * @param longitude
 	 * @param latitude
+	 *            For Tartu something like 58.37
+	 * @param longitude
+	 *            For Tartu something like 26.72
 	 */
-	public Province(double longitude, double latitude) {
+	public Province(double latitude, double longitude) {
 		super();
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.setName(NameGenerator.generate(6));
+		this.setName(NameGenerator.generate(Constants.PROVINCE_NAME_LENGTH));
 	}
 
 	public String getName() {
@@ -69,4 +72,5 @@ public class Province implements Serializable {
 		return "Province [id=" + id + ", latitude=" + latitude + ", longitude="
 				+ longitude + ", name=" + name + "]";
 	}
+
 }

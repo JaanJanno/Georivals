@@ -54,10 +54,8 @@ public class RegistrationControllerTest {
 	private RegistrationResponse goodResponse;
 	private RegistrationResponse userNameInUse;
 
-	
 	private RegistrationDTO reg1;
 	private RegistrationDTO reg2;
-
 
 	@InjectMocks
 	RegistrationController regCon;
@@ -78,17 +76,16 @@ public class RegistrationControllerTest {
 		userNameInUse = new RegistrationResponse(ServerResult.USERNAME_IN_USE);
 		reg1 = new RegistrationDTO();
 		reg1.setUserName("Smaug");
-		
+
 		reg2 = new RegistrationDTO();
 		reg2.setUserName("Smaug");
-		reg2.setHome_lat(123);
-		reg2.setHome_long(123);
+		reg2.setHomeLat(123);
+		reg2.setHomeLong(123);
 
 	}
 
 	@Test
 	public void phase1success() throws Exception {
-
 
 		when(authServ.registrationPhase1(any(RegistrationDTO.class)))
 				.thenReturn(goodResponse);
@@ -104,7 +101,7 @@ public class RegistrationControllerTest {
 	}
 
 	@Test
-	public void phase1UserExists() throws Exception {	
+	public void phase1UserExists() throws Exception {
 
 		when(authServ.registrationPhase1(any(RegistrationDTO.class)))
 				.thenReturn(userNameInUse);
@@ -118,12 +115,12 @@ public class RegistrationControllerTest {
 				.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
 				.andExpect(jsonPath("$.id", is(0)));
 	}
-	
+
 	@Test
 	public void phase2success() throws Exception {
 
-
-		RegistrationResponse res = new RegistrationResponse(ServerResult.OK, "abcd", 511);
+		RegistrationResponse res = new RegistrationResponse(ServerResult.OK,
+				"abcd", 511);
 		when(authServ.registrationPhase2(any(RegistrationDTO.class)))
 				.thenReturn(res);
 
@@ -136,7 +133,7 @@ public class RegistrationControllerTest {
 				.andExpect(jsonPath("$.result", is("OK")))
 				.andExpect(jsonPath("$.id", is(511)));
 	}
-	
+
 	@Test
 	public void phase2userExists() throws Exception {
 
@@ -147,10 +144,10 @@ public class RegistrationControllerTest {
 				post("/registration/phase2").content(reg2.toJson())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON)).andDo(print())
-						.andExpect(status().isBadRequest())
-						.andExpect(jsonPath("$.value", is((Object) null)))
-						.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
-						.andExpect(jsonPath("$.id", is(0)));
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.value", is((Object) null)))
+				.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
+				.andExpect(jsonPath("$.id", is(0)));
 	}
 
 }

@@ -9,8 +9,8 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
 public class RegistrationDTO {
 	private String userName;
 	private String email;
-	private double home_lat;
-	private double home_long;
+	private double homeLat;
+	private double homeLong;
 
 	public RegistrationDTO() {
 
@@ -32,31 +32,31 @@ public class RegistrationDTO {
 		this.email = email;
 	}
 
-	public double getHome_lat() {
-		return home_lat;
+	public double getHomeLat() {
+		return homeLat;
 	}
 
-	public void setHome_lat(double home_lat) {
-		this.home_lat = home_lat;
+	public void setHomeLat(double homeLat) {
+		this.homeLat = homeLat;
 	}
 
-	public double getHome_long() {
-		return home_long;
+	public double getHomeLong() {
+		return homeLong;
 	}
 
-	public void setHome_long(double home_long) {
-		this.home_long = home_long;
+	public void setHomeLong(double homelong) {
+		this.homeLong = homelong;
 	}
 
 	@Override
 	public String toString() {
 		return "RegistrationDTO [userName=" + userName + ", email=" + email
-				+ ", home_lat=" + home_lat + ", home_long=" + home_long + "]";
+				+ ", homeLat=" + homeLat + ", homeLong=" + homeLong + "]";
 	}
 
 	public String toJson() {
 		return "{\"userName\":\"" + userName + "\",\"email\":\"" + email
-				+ "\",\"home_lat\":" + home_lat + ",\"home_long\":" + home_long
+				+ "\",\"homeLat\":" + homeLat + ",\"homeLong\":" + homeLong
 				+ "}";
 	}
 

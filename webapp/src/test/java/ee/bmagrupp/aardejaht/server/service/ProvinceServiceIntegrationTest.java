@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,59 +41,59 @@ public class ProvinceServiceIntegrationTest {
 	@Autowired
 	ProvinceService provServ;
 
+	private CameraFOV fov;
+
+	@Before
+	public void setUp() {
+		fov = new CameraFOV(58.3479039, 26.7091679, 58.3872609, 26.7598840);
+	}
+
 	@Test
 	public void provinceNumberTest() {
-		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
-				);
-		String cookie = "HDpVys"; // User Mr.TK
+		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
 		assertEquals("Provinces in area", 1020, provList.size());
 	}
-	
+
 	@Test
-	public void dataBaseProvinceTest(){
-		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
-				);
-		String cookie = "HDpVys"; // User Mr.TK
+	public void dataBaseProvinceTest() {
+
+		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
-		
+
 		int counter = 0;
-		for(ProvinceDTO a : provList){
-			if(a.getPlayerId() != BOT_ID){
+		for (ProvinceDTO a : provList) {
+			if (a.getPlayerId() != BOT_ID) {
 				counter += 1;
 			}
 		}
 		assertEquals("Custom provinces in area", 3, counter);
 	}
-	
+
 	@Test
-	public void provinceOrderingTest(){
-		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
-				);
-		String cookie = "HDpVys"; // User Mr.TK
+	public void provinceOrderingTest() {
+		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
-		
+
 		double lastLat = 0;
 		double lastLong = 0;
-		
-		for(ProvinceDTO a : provList){
+
+		for (ProvinceDTO a : provList) {
 			double y = a.getLatitude();
 			double x = a.getLongitude();
-			if(x > lastLong){
+			if (x > lastLong) {
 				lastLong = x;
-			}
-			else{
-				if(y > lastLat){
+			} else {
+				if (y > lastLat) {
 					x = lastLong;
 					y = lastLat;
-				}
-				else{
+				} else {
 					assertTrue(false);
 				}
 			}
 		}
-		
+
 	}
 
 }
