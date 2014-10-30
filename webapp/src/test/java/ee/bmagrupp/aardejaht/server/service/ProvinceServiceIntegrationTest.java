@@ -20,6 +20,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
+import static ee.bmagrupp.aardejaht.server.util.Constants.*;
 
 /**
  * Integration tests for {@link ProvinceService}.
@@ -40,14 +41,58 @@ public class ProvinceServiceIntegrationTest {
 	ProvinceService provServ;
 
 	@Test
-	public void provinceTest() {
+	public void provinceNumberTest() {
 		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
 				);
 		String cookie = "HDpVys"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		// I don't actually know how many provinces are in that area
 		assertEquals("Provinces in area", 1020, provList.size());
+	}
+	
+	@Test
+	public void dataBaseProvinceTest(){
+		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
+				);
+		String cookie = "HDpVys"; // User Mr.TK
+		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+		
+		int counter = 0;
+		for(ProvinceDTO a : provList){
+			if(a.getPlayerId() != BOT_ID){
+				counter += 1;
+			}
+		}
+		assertEquals("Custom provinces in area", 3, counter);
+	}
+	
+	@Test
+	public void provinceOrderingTest(){
+		CameraFOV fov = new CameraFOV(26.7091679,58.3479039, 26.7598840, 58.3872609
+				);
+		String cookie = "HDpVys"; // User Mr.TK
+		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+		
+		double lastLat = 0;
+		double lastLong = 0;
+		
+		for(ProvinceDTO a : provList){
+			double y = a.getLatitude();
+			double x = a.getLongitude();
+			if(x > lastLong){
+				lastLong = x;
+			}
+			else{
+				if(y > lastLat){
+					x = lastLong;
+					y = lastLat;
+				}
+				else{
+					assertTrue(false);
+				}
+			}
+		}
+		
 	}
 
 }

@@ -132,8 +132,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 		if ((baseLong * 1000.0) % 2 != 0) {
 			baseLong = ((baseLong * 1000) - 1) / 1000.0;
 		}
-		
-		LOG.info(Integer.toString(columns * rows));
 
 		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(fov.getSWlongitude(),
 				fov.getSWlatitude(), fov.getNElongitude(), fov.getNElatitude());
