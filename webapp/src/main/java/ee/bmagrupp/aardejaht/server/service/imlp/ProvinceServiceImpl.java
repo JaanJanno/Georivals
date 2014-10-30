@@ -126,7 +126,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 				fov.getNElongitude());
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
 		int playerStrength = findPlayerStrength(cookie);
-
+		
 		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
 		double baseLong = Math.floor(fov.getSWlongitude() * 1000.0) / 1000.0;
 		if ((baseLong * 1000.0) % 2 != 0) {

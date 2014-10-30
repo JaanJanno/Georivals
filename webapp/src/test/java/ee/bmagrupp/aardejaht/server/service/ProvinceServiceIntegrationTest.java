@@ -53,7 +53,7 @@ public class ProvinceServiceIntegrationTest {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		assertEquals("Provinces in area", 1020, provList.size());
+		assertEquals("Provinces in area", 1000, provList.size());
 	}
 
 	@Test
@@ -85,12 +85,9 @@ public class ProvinceServiceIntegrationTest {
 			if (x > lastLong) {
 				lastLong = x;
 			} else {
-				if (y > lastLat) {
-					x = lastLong;
-					y = lastLat;
-				} else {
-					assertTrue(false);
-				}
+				assertTrue(y > lastLat);
+				x = lastLong;
+				y = lastLat;
 			}
 		}
 
