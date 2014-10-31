@@ -77,7 +77,7 @@ public class ProvinceControllerTest {
 		cookie = new Cookie("sid", "HDpVys");
 
 		provList = new ArrayList<ProvinceDTO>();
-		provList.add(new ProvinceDTO(1, 2, 3, 100, 12, "bla"));
+		provList.add(new ProvinceDTO(1, 2, 3, 100, 12, "bla", 3));
 
 	}
 

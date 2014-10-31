@@ -2,7 +2,7 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
 
 /**
  * Container object for sending province data. Missing stuff: is this province
- * under attack. And probably more stuff. 
+ * under attack. And probably more stuff.
  * 
  * @author TKasekamp
  *
@@ -14,9 +14,10 @@ public class ProvinceDTO {
 	private final int unitCount;
 	private final int playerId;
 	private final String name;
+	private final int newUnitCount;
 
-	public ProvinceDTO(int id, double latitude, double longitude, int unitCount,
-			int playerId, String name) {
+	public ProvinceDTO(int id, double latitude, double longitude,
+			int unitCount, int playerId, String name, int newUnitCount) {
 		super();
 		this.id = id;
 		this.latitude = latitude;
@@ -24,6 +25,7 @@ public class ProvinceDTO {
 		this.unitCount = unitCount;
 		this.playerId = playerId;
 		this.name = name;
+		this.newUnitCount = newUnitCount;
 	}
 
 	public int getId() {
@@ -48,6 +50,10 @@ public class ProvinceDTO {
 
 	public String getName() {
 		return name;
+	}
+
+	public int getNewUnitCount() {
+		return newUnitCount;
 	}
 
 }

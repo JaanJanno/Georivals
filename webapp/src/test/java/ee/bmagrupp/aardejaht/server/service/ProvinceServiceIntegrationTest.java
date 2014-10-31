@@ -42,10 +42,12 @@ public class ProvinceServiceIntegrationTest {
 	ProvinceService provServ;
 
 	private CameraFOV fov;
+	private int playerID;
 
 	@Before
 	public void setUp() {
 		fov = new CameraFOV(58.3479039, 26.7091679, 58.3872609, 26.7598840);
+		playerID = 1; // ID for Mr. TK
 	}
 
 	@Test
@@ -64,8 +66,18 @@ public class ProvinceServiceIntegrationTest {
 
 		int counter = 0;
 		for (ProvinceDTO a : provList) {
-			if (a.getPlayerId() != BOT_ID) {
+			if (a.getPlayerId() == playerID) {
 				counter += 1;
+			}
+			else if ((a.getPlayerId() != BOT_ID) && (a.getPlayerId() != playerID)) {
+				// This is the other players
+				counter += 1;
+				// TODO Sander, make this work
+//				assertEquals("Other players should have 0 new units", 0,
+//						a.getNewUnitCount());
+			}else {
+				assertEquals("BOT should have 0 new units", 0,
+						a.getNewUnitCount());
 			}
 		}
 		assertEquals("Custom provinces in area", 3, counter);

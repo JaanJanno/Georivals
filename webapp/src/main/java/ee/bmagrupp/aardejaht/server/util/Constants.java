@@ -17,6 +17,11 @@ public class Constants {
 	public static final int UNIT_GENERATION_MAX = 10;
 	public static final int UNIT_GENERATION_MIN = 0;
 
+	/**
+	 * 24h in milliseconds.
+	 */
+	public static final int UNIT_GENERATION_TIME = 86400000;
+
 	// Other
 	public static final String DOWNLOAD_PAGE = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 	public static final int PROVINCE_NAME_LENGTH = 10;

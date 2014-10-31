@@ -1,6 +1,7 @@
 package ee.bmagrupp.aardejaht.server.service.imlp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -24,6 +25,7 @@ import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static ee.bmagrupp.aardejaht.server.util.Constants.*;
+import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 
 @Service
@@ -124,11 +126,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 		int columns = calculateColumnNr(fov.getSWlongitude(),
 				fov.getNElongitude());
-		
+
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
-		LOG.info(Integer.toString(rows));
+		// LOG.info(Integer.toString(rows));
 		int playerStrength = findPlayerStrength(cookie);
-		
+
 		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
 		double baseLong = Math.floor(fov.getSWlongitude() * 1000.0) / 1000.0;
 		if ((baseLong * 1000.0) % 2 != 0) {
@@ -139,6 +141,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 				fov.getSWlatitude(), fov.getSWlongitude(), fov.getNElatitude(),
 				fov.getNElongitude());
 
+		// For generating new units
+		Date currentDate = new Date();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				boolean found = false;
@@ -157,10 +161,13 @@ public class ProvinceServiceImpl implements ProvinceService {
 						int provinceStrength = getProvinceStrength(a);
 						int playerId = playerRepo.findOwner(temp.getId())
 								.getId();
+						int newUnits = generateNewUnits(a.getLastVisit(),
+								currentDate, provinceStrength);
 						// -----
 						rtrn.add(new ProvinceDTO(temp.getId(), temp
 								.getLatitude(), temp.getLongitude(),
-								provinceStrength, playerId, temp.getName()));
+								provinceStrength, playerId, temp.getName(),
+								newUnits));
 						found = true;
 						foundArea = a;
 						break;
@@ -190,7 +197,43 @@ public class ProvinceServiceImpl implements ProvinceService {
 		String name = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH);
 
 		return new ProvinceDTO(provinceID, latitude, longitude, botStrength,
-				BOT_ID, name);
+				BOT_ID, name, 0);
 	}
 
+	/**
+	 * Returns the number of new Units to be added to this Province. New units
+	 * are added if: <br>
+	 * 1) The difference between currentDate and lastVisitDate is more than
+	 * {@link Constants#UNIT_GENERATION_TIME}<br>
+	 * 2) The provinceStrenght is less than {@link Constants#PROVINCE_UNIT_MAX}<br>
+	 * If both 1 and 2 are true then an int between
+	 * {@link Constants#UNIT_GENERATION_MIN} and
+	 * {@link Constants#UNIT_GENERATION_MAX} is returned. If this int +
+	 * provinceStrenght now exeeds {@link Constants#PROVINCE_UNIT_MAX}, the
+	 * return int will be decreased so that there are a total of
+	 * {@link Constants#PROVINCE_UNIT_MAX} Units in this province. <br>
+	 * Otherwise 0 will be returned.
+	 * 
+	 * @param lastVisitDate
+	 *            The last visit {@link Date} from {@link Ownership}
+	 * @param currentDate
+	 *            The current {@link Date}
+	 * @param provinceStrength
+	 *            The number of units in this province
+	 * @author TKasekamp
+	 * @return Integer
+	 */
+	private int generateNewUnits(Date lastVisitDate, Date currentDate,
+			int provinceStrength) {
+		long a = currentDate.getTime() - lastVisitDate.getTime();
+		if ((a > UNIT_GENERATION_TIME)
+				&& (provinceStrength < PROVINCE_UNIT_MAX)) {
+			int b = GeneratorUtil.generateWithSeed(lastVisitDate);
+			if (b + provinceStrength > PROVINCE_UNIT_MAX) {
+				b = PROVINCE_UNIT_MAX - provinceStrength;
+			}
+			return b;
+		}
+		return 0;
+	}
 }
