@@ -21,7 +21,7 @@ public class TabListener implements ActionBar.TabListener {
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		if (fragmentTag == "ProfileFragment" && activity.userId == 0)
-			activity.showLoginPrompt();
+			activity.showRegistrationDialog();
 		else
 			ft.replace(R.id.fragment_container, fragment, fragmentTag);
 	}

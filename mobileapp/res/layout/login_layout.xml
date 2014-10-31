@@ -3,50 +3,45 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="20dp"
     android:layout_marginLeft="50dp"
     android:layout_marginRight="50dp"
+    android:layout_marginTop="20dp"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="@string/login"
-        android:textSize="30sp" />
-
     <EditText
-        android:id="@+id/login_username"
+        android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/username" >
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" >
 
         <requestFocus />
     </EditText>
 
-    <EditText
-        android:id="@+id/login_key"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/login_key" />
-
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:onClick="login"
-        android:text="@string/login" />
-
-    <Button
+        android:id="@+id/button_retrieve_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:onClick="sendKey"
         android:text="@string/login_key_send" />
+
+    <EditText
+        android:id="@+id/login_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/login_key" />
+
+    <Button
+        android:id="@+id/button_login_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start" />
 
 </LinearLayout>

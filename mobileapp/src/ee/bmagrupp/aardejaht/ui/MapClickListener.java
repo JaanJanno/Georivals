@@ -13,7 +13,7 @@ public class MapClickListener implements OnMapClickListener {
 	@Override
 	public void onMapClick(LatLng point) {
 		if (activity.userId == 0)
-			activity.showLoginPrompt();
+			activity.showRegistrationDialog();
 	}
 
 }

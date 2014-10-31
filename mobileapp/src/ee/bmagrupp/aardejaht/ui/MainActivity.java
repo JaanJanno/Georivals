@@ -1,35 +1,43 @@
 package ee.bmagrupp.aardejaht.ui;
 
 import ee.bmagrupp.aardejaht.R;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public static Toast toast;
 	public static final int LOGIN_REQUEST = 1;
 	public static final int REGISTRATION_REQUEST = 2;
-	public static AlertDialog.Builder loginPrompt;
 	public int userId;
 	private MapFragment mapFragment;
 	private ProfileFragment profileFragment;
 	private HighScoreFragment highscoreFragment;
+	private Activity activity;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_layout);
+		activity = this;
 		userId = getUserId();
 		createFragments();
 	}
@@ -81,27 +89,108 @@ public class MainActivity extends Activity {
 
 	}
 
-	public void showLoginPrompt() {
-		if (loginPrompt == null) {
-			loginPrompt = new AlertDialog.Builder(this)
-					.setTitle("User required!")
-					.setMessage("You need to login or register. Continue?")
-					.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									createIntroActivity();
-								}
-							})
-					.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// do nothing
-								}
-							}).setIcon(android.R.drawable.ic_dialog_alert);
+	public void showRegistrationDialog() {
+		final Dialog registrationDialog = new Dialog(this);
+		registrationDialog.setContentView(R.layout.register_layout);
+		registrationDialog.setTitle("Registration");
+		Button registerButton = (Button) registrationDialog
+				.findViewById(R.id.button_register);
+		TextView loginTextView = (TextView) registrationDialog
+				.findViewById(R.id.existing_account);
+
+		registerButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText usernameEditText = (EditText) registrationDialog
+						.findViewById(R.id.register_username);
+				EditText emailEditText = (EditText) registrationDialog
+						.findViewById(R.id.register_email);
+				String username = usernameEditText.getText().toString();
+				String email = emailEditText.getText().toString();
+				if (username.equals("")) {
+					MainActivity.showMessage(activity,
+							"Username must be filled!");
+				} else {
+					registrationRequest(username, email);
+				}
+			}
+		});
+
+		loginTextView.setOnTouchListener(new OnTouchListener() {
+			@SuppressLint("ClickableViewAccessibility")
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				registrationDialog.dismiss();
+				showLoginDialog();
+				return false;
+			}
+		});
+
+		registrationDialog.show();
+	}
+
+	public void showLoginDialog() {
+		final Dialog loginDialog = new Dialog(this);
+		loginDialog.setContentView(R.layout.login_layout);
+		loginDialog.setTitle("Log in");
+		Button retrieveKeyButton = (Button) loginDialog
+				.findViewById(R.id.button_retrieve_key);
+		Button loginButton = (Button) loginDialog
+				.findViewById(R.id.button_login_start);
+		final EditText emailEditText = (EditText) loginDialog
+				.findViewById(R.id.login_email);
+		final EditText keyEditText = (EditText) loginDialog
+				.findViewById(R.id.login_key);
+
+		retrieveKeyButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String email = emailEditText.getText().toString();
+				if (isValidEmail(email)) {
+					sendKeyRequest(email);
+				} else {
+					MainActivity.showMessage(activity, "Invalid email!");
+				}
+			}
+		});
+		loginButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String loginKey = keyEditText.getText().toString();
+				if (loginKey.length() == 16 || loginKey.equals("test")) {
+					loginRequest(loginKey);
+					loginDialog.dismiss();
+				} else {
+					MainActivity.showMessage(activity, "Invalid login key!");
+				}
+			}
+		});
+		loginDialog.show();
+	}
+
+	private void registrationRequest(String username, String email) {
+
+	}
+
+	private void sendKeyRequest(String email) {
+
+	}
+
+	private void loginRequest(String loginKey) {
+		if (loginKey.equals("test")) {
+			SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = sharedPref.edit();
+			editor.putString("SID", loginKey);
+			editor.putInt("userId", 1);
+			editor.commit();
+			userId = 1;
 		}
-		loginPrompt.show();
+	}
+
+	public final static boolean isValidEmail(CharSequence email) {
+		if (email == null)
+			return false;
+		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
 	public static void showMessage(Context context, String message) {
@@ -128,15 +217,14 @@ public class MainActivity extends Activity {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int which) {
-									SharedPreferences sharedPref = getSharedPreferences(
-											"prefs", Context.MODE_PRIVATE);
+									SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 									SharedPreferences.Editor editor = sharedPref
 											.edit();
+									editor.putString("SID", "");
 									editor.putString("userName", "");
 									editor.putInt("userId", 0);
 									editor.commit();
 									userId = 0;
-									createIntroActivity();
 								}
 							})
 					.setNegativeButton("No",
@@ -159,21 +247,6 @@ public class MainActivity extends Activity {
 
 	public void sortByTerritories(View v) {
 		highscoreFragment.sortEntries("territoriesOwned");
-	}
-
-	private void createIntroActivity() {
-		Intent registerIntent = new Intent(this, IntroActivity.class);
-		startActivityForResult(registerIntent, 1);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1) {
-			if (resultCode == RESULT_OK) {
-				userId = getUserId();
-
-			}
-		}
 	}
 
 }
