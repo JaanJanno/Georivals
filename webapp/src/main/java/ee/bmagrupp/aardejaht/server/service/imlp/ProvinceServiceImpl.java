@@ -209,7 +209,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 * If both 1 and 2 are true then an int between
 	 * {@link Constants#UNIT_GENERATION_MIN} and
 	 * {@link Constants#UNIT_GENERATION_MAX} is returned. If this int +
-	 * provinceStrenght now exeeds {@link Constants#PROVINCE_UNIT_MAX}, the
+	 * provinceStrenght now exceeds {@link Constants#PROVINCE_UNIT_MAX}, the
 	 * return int will be decreased so that there are a total of
 	 * {@link Constants#PROVINCE_UNIT_MAX} Units in this province. <br>
 	 * Otherwise 0 will be returned.

@@ -1,14 +1,12 @@
 package ee.bmagrupp.aardejaht.server.service.imlp;
 
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
@@ -45,7 +43,7 @@ public class ProfileServiceImpl implements ProfileService {
 	UnitRepository unitRepo;
 
 	@Override
-	public PlayerProfile getPlayer(int id) {
+	public PlayerProfile getPlayerProfile(int id) {
 		LOG.info("trying to find user");
 		Player player = playerRepo.findOne(id);
 		LOG.info("user here");
@@ -63,7 +61,15 @@ public class ProfileServiceImpl implements ProfileService {
 		return profiles;
 	}
 
+	@Override
+	public PlayerProfile getPlayerProfile(String sid) {
+		Player player = playerRepo.findBySid(sid);
+		return createProfileEntry(player);
+	}
+
 	private PlayerProfile createProfileEntry(Player player) {
+		if (player == null)
+			return null;
 		int totalUnits = 0;
 		int ownedProvinces = 0;
 

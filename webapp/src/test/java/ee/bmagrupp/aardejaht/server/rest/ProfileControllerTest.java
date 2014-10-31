@@ -1,7 +1,12 @@
 package ee.bmagrupp.aardejaht.server.rest;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
@@ -12,12 +17,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
-
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,25 +27,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
-
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import ee.bmagrupp.aardejaht.server.Application;
-import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
-import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
-import ee.bmagrupp.aardejaht.server.service.ProvinceService;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import ee.bmagrupp.aardejaht.server.rest.domain.PlayerProfile;
+import ee.bmagrupp.aardejaht.server.service.ProfileService;
 
-/**
- * Sample controller test. Currently this is not worth much, but it took a LONG
- * time to get this far. Will be improved.
- * 
- * @author TKasekamp
- *
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("test")
@@ -51,45 +40,56 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 		TransactionalTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class ProvinceControllerTest {
+public class ProfileControllerTest {
 
 	private MockMvc mockMvc;
-	private CameraFOV fov;
-	private Cookie cookie;
-	private List<ProvinceDTO> provList;
+	private Cookie goodCookie;
+	private Cookie badCookie;
+	private PlayerProfile prof;
 
 	@InjectMocks
-	ProvinceController provCon;
+	ProfileController profCon;
 
 	@Mock
-	ProvinceService provServ;
+	ProfileService profServ;
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(provCon)
+				.standaloneSetup(profCon)
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 
-		fov = new CameraFOV(2, 3, 4, 5);
-		cookie = new Cookie("sid", "BPUYYOU62flwiWJe");
+		goodCookie = new Cookie("sid", "BPUYYOU62flwiWJe");
+		badCookie = new Cookie("sid", "BPUYYOU62flwiWJ213e");
 
-		provList = new ArrayList<ProvinceDTO>();
-		provList.add(new ProvinceDTO(1, 2, 3, 100, 12, "bla", 3));
-
+		prof = new PlayerProfile(1, "Mr. TK", "mr.tk@pacific.ee", 23, 2);
 	}
 
 	@Test
-	public void fovPost() throws Exception {
-		when(provServ.getProvinces(any(CameraFOV.class), anyString()))
-				.thenReturn(provList);
+	public void profileSidSuccess() throws Exception {
+		when(profServ.getPlayerProfile("BPUYYOU62flwiWJe")).thenReturn(prof);
+
 		mockMvc.perform(
-				post("/province").content(fov.toJson()).cookie(cookie)
-						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON)).andDo(print())
-				.andExpect(status().isAccepted());
+				get("/profile").cookie(goodCookie).accept(
+						MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.username", is("Mr. TK")))
+				.andExpect(jsonPath("$.email", is("mr.tk@pacific.ee")))
+				.andExpect(jsonPath("$.totalUnits", is(23)))
+				.andExpect(jsonPath("$.ownedProvinces", is(2)));
+	}
+
+	@Test
+	public void profileSidFail() throws Exception {
+		when(profServ.getPlayerProfile("BPUYYOU62flwiWJ213e")).thenReturn(null);
+
+		mockMvc.perform(
+				get("/profile").cookie(badCookie).accept(
+						MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isBadRequest());
 	}
 
 }

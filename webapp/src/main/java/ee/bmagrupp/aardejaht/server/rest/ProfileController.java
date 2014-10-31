@@ -1,12 +1,11 @@
 package ee.bmagrupp.aardejaht.server.rest;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,8 +27,8 @@ public class ProfileController {
 	public ResponseEntity<PlayerProfile> getById(@PathVariable int id) {
 
 		LOG.info("find player");
-		PlayerProfile user = profServ.getPlayer(id);
-		return new ResponseEntity<PlayerProfile>(user, HttpStatus.ACCEPTED);
+		PlayerProfile user = profServ.getPlayerProfile(id);
+		return new ResponseEntity<PlayerProfile>(user, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/special")
@@ -40,10 +39,13 @@ public class ProfileController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<PlayerProfile>> getAll() {
-		LOG.info("Get all player profiles");
-		List<PlayerProfile> players = profServ.findAll();
-		return new ResponseEntity<List<PlayerProfile>>(players,
-				HttpStatus.ACCEPTED);
+	public ResponseEntity<PlayerProfile> getProfileWithCookie(
+			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
+		LOG.debug("Get player with cookie " + cookie);
+		PlayerProfile player = profServ.getPlayerProfile(cookie);
+		if (player != null)
+			return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
+		else
+			return new ResponseEntity<PlayerProfile>(player, HttpStatus.BAD_REQUEST);
 	}
 }
