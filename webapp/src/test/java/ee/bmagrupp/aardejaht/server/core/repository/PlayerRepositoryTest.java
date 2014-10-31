@@ -22,7 +22,7 @@ import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
 import ee.bmagrupp.aardejaht.server.util.Constants;
-import ee.bmagrupp.aardejaht.server.util.NameGenerator;
+import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 
 /**
  * Tests for {@link PlayerRepository}
@@ -119,7 +119,7 @@ public class PlayerRepositoryTest {
 	@Test
 	public void saveTestSuccess() {
 		Province home = new Province(26.123, 58.123);
-		Player player = new Player("Smaug", NameGenerator.generate(16), home);
+		Player player = new Player("Smaug", GeneratorUtil.generateString(16), home);
 
 		assertNull(playerRepo.findByUserName("Smaug"));
 		provinceRepo.save(home);
@@ -146,7 +146,7 @@ public class PlayerRepositoryTest {
 	public void saveUsernameExists() {
 		Province home = new Province(26.123, 58.123);
 		Player player = new Player("Doge",
-				NameGenerator.generate(Constants.PLAYER_SID_LENGTH), home);
+				GeneratorUtil.generateString(Constants.PLAYER_SID_LENGTH), home);
 
 		provinceRepo.save(home);
 		homeRepo.save(player.getHome());

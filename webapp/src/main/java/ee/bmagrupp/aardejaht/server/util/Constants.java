@@ -8,7 +8,15 @@ public class Constants {
 	// Province generation
 	public static final double PROVINCE_WIDTH = 0.002;
 	public static final double PROVINCE_HEIGHT = 0.001;
-	
+
+	// Province
+	public static final int PROVINCE_UNIT_MAX = 100;
+	public static final int PROVINCE_UNIT_MIN = 1;
+
+	// Unit
+	public static final int UNIT_GENERATION_MAX = 10;
+	public static final int UNIT_GENERATION_MIN = 0;
+
 	// Other
 	public static final String DOWNLOAD_PAGE = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 	public static final int PROVINCE_NAME_LENGTH = 10;

@@ -22,7 +22,7 @@ import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.PlayerProfile;
 import ee.bmagrupp.aardejaht.server.service.ProfileService;
-import ee.bmagrupp.aardejaht.server.util.NameGenerator;
+import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -114,17 +114,17 @@ public class ProfileServiceImpl implements ProfileService {
 		provRepo.save(prov6);
 		LOG.info("provinces saved");
 		Player player1 = new Player("Mr. TK", "mr.tk@pacific.ee",
-				NameGenerator.generate(6), prov1);
+				GeneratorUtil.generateString(6), prov1);
 		Player player2 = new Player("Doge", "doge@pacific.ee",
-				NameGenerator.generate(6), prov1);
+				GeneratorUtil.generateString(6), prov1);
 		Player player3 = new Player("Biitnik", "biitnik@pacific.ee",
-				NameGenerator.generate(6), prov2);
+				GeneratorUtil.generateString(6), prov2);
 		Player player4 = new Player("Spinning S-man", "spinning@pacific.ee",
-				NameGenerator.generate(6), prov3);
+				GeneratorUtil.generateString(6), prov3);
 		Player player5 = new Player("JohnnyZQ", "johnnyzq@pacific.ee",
-				NameGenerator.generate(6), prov4);
+				GeneratorUtil.generateString(6), prov4);
 		Player player6 = new Player("King Jaan", "kingjaan@pacific.ee",
-				NameGenerator.generate(6), prov5);
+				GeneratorUtil.generateString(6), prov5);
 		LOG.info("players created");
 		homeRepo.save(player1.getHome());
 		homeRepo.save(player2.getHome());

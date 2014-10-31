@@ -24,7 +24,7 @@ import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static ee.bmagrupp.aardejaht.server.util.Constants.*;
-import ee.bmagrupp.aardejaht.server.util.NameGenerator;
+import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 
 @Service
 public class ProvinceServiceImpl implements ProvinceService {
@@ -187,7 +187,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
 		int botStrength = rand.nextInt((max - min) + 1) + min;
 		int provinceID = rand.nextInt((10000000 - 100000) + 1) + 100000;
-		String name = NameGenerator.generate(PROVINCE_NAME_LENGTH);
+		String name = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH);
 
 		return new ProvinceDTO(provinceID, latitude, longitude, botStrength,
 				BOT_ID, name);

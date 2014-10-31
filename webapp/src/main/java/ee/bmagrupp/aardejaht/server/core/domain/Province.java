@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import ee.bmagrupp.aardejaht.server.util.Constants;
-import ee.bmagrupp.aardejaht.server.util.NameGenerator;
+import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 
 @Entity
 public class Province implements Serializable {
@@ -44,7 +44,7 @@ public class Province implements Serializable {
 		super();
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.setName(NameGenerator.generate(Constants.PROVINCE_NAME_LENGTH));
+		this.setName(GeneratorUtil.generateString(Constants.PROVINCE_NAME_LENGTH));
 	}
 
 	public String getName() {

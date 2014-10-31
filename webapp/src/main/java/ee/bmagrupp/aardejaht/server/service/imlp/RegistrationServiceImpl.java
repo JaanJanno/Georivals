@@ -14,7 +14,7 @@ import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
 import ee.bmagrupp.aardejaht.server.service.RegistrationService;
 import ee.bmagrupp.aardejaht.server.util.Constants;
-import ee.bmagrupp.aardejaht.server.util.NameGenerator;
+import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
 @Service
@@ -63,7 +63,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			home = new Province(homeLat, homeLong);
 			provRepo.save(home);
 		}
-		String sid = NameGenerator.generate(Constants.PLAYER_SID_LENGTH);
+		String sid = GeneratorUtil.generateString(Constants.PLAYER_SID_LENGTH);
 
 		Player player = new Player(username, email, sid, home);
 
