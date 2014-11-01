@@ -56,7 +56,7 @@ public class HighScoreIntegrationTest {
 		assertEquals("The id", 1, highScore.getId());
 		assertEquals("Average units. TotalUnits/Provinces", 11.5,
 				highScore.getAverageUnits(), 0.1);
-		assertEquals("Number of provinces", 2, highScore.getTerritoriesOwned());
+		assertEquals("Number of provinces", 2, highScore.getProvincesOwned());
 		assertEquals("The name", "Mr. TK", highScore.getUsername());
 
 	}
@@ -71,7 +71,7 @@ public class HighScoreIntegrationTest {
 		assertEquals("The id", 5, highScore.getId());
 		assertEquals("Average units. TotalUnits/Provinces", 11.0,
 				highScore.getAverageUnits(), 0.1);
-		assertEquals("Number of provinces", 1, highScore.getTerritoriesOwned());
+		assertEquals("Number of provinces", 1, highScore.getProvincesOwned());
 		assertEquals("The name", "JohnnyZQ", highScore.getUsername());
 
 	}
@@ -86,7 +86,7 @@ public class HighScoreIntegrationTest {
 		assertEquals("The id", 6, highScore.getId());
 		assertEquals("Average units. TotalUnits/Provinces", 0.0,
 				highScore.getAverageUnits(), 0.1);
-		assertEquals("Number of provinces", 0, highScore.getTerritoriesOwned());
+		assertEquals("Number of provinces", 0, highScore.getProvincesOwned());
 		assertEquals("The name", "King Jaan", highScore.getUsername());
 
 	}

@@ -1,183 +1,110 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ee.bmagrupp.aardejaht.ui.ProfileFragment" >
+    tools:context="ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment" >
 
-    <RelativeLayout
+    <TextView
         android:id="@+id/profile_title_header"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/light_gray" >
+        style="@style/HeaderStyle"
+        android:text="@string/profile_title" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:text="@string/profile_title"
-            android:textSize="18sp" />
+    <View
+        android:id="@+id/profile_line1"
+        style="@style/HeaderLineStyle"
+        android:layout_below="@id/profile_title_header" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:background="@color/gray" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/profile_general_header"
+        style="@style/HeaderStyle"
+        android:layout_below="@id/profile_line1"
+        android:text="@string/general_information" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/light_gray" >
+    <View
+        android:id="@+id/profile_line2"
+        style="@style/HeaderLineStyle"
+        android:layout_below="@id/profile_general_header" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:text="@string/general_information"
-            android:textSize="18sp" />
+    <TextView
+        android:id="@+id/username_label"
+        style="@style/ProfileTextStyle"
+        android:layout_below="@id/profile_line2"
+        android:text="@string/username_colon" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:background="@color/gray" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/email_label"
+        style="@style/ProfileTextStyle"
+        android:layout_below="@+id/username_label"
+        android:text="@string/email_colon" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/username_label"
+        android:layout_toEndOf="@+id/username_label"
+        android:layout_toRightOf="@+id/username_label" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/username_colon" />
+    <TextView
+        android:id="@+id/profile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/email_label"
+        android:layout_toEndOf="@+id/email_label"
+        android:layout_toRightOf="@+id/email_label" />
 
-        <TextView
-            android:id="@+id/existing_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView1"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/email_colon" />
+    <TextView
+        android:id="@+id/profile_strategical_header"
+        style="@style/HeaderStyle"
+        android:layout_below="@id/email_label"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/strategical_information" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/existing_account"
-            android:layout_margin="5dp"
-            android:text="@string/overall_time" />
+    <View
+        android:id="@+id/profile_line3"
+        style="@style/HeaderLineStyle"
+        android:layout_below="@id/profile_strategical_header" />
 
-        <TextView
-            android:id="@+id/profile_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView1"
-            android:layout_toRightOf="@+id/textView1" />
+    <TextView
+        android:id="@+id/total_units_label"
+        style="@style/ProfileTextStyle"
+        android:layout_below="@id/profile_line3"
+        android:text="@string/total_units" />
 
-        <TextView
-            android:id="@+id/profile_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/existing_account"
-            android:layout_toRightOf="@+id/existing_account" />
+    <TextView
+        android:id="@+id/average_units_label"
+        style="@style/ProfileTextStyle"
+        android:layout_below="@+id/total_units_label"
+        android:text="@string/average_units" />
 
-        <TextView
-            android:id="@+id/profile_overall_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView3"
-            android:layout_toRightOf="@+id/textView3" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/provinces_owned_label"
+        style="@style/ProfileTextStyle"
+        android:layout_below="@+id/average_units_label"
+        android:text="@string/provinces_owned" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/light_gray" >
+    <TextView
+        android:id="@+id/profile_total_units"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/total_units_label"
+        android:layout_toEndOf="@+id/total_units_label"
+        android:layout_toRightOf="@+id/total_units_label" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:background="@color/gray" />
+    <TextView
+        android:id="@+id/profile_average_units"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/average_units_label"
+        android:layout_toEndOf="@+id/average_units_label"
+        android:layout_toRightOf="@+id/average_units_label" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:text="@string/strategical_information"
-            android:textSize="18sp" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/profile_provinces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/provinces_owned_label"
+        android:layout_toEndOf="@+id/provinces_owned_label"
+        android:layout_toRightOf="@+id/provinces_owned_label" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/total_units" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textView4"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/average_units" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView5"
-            android:layout_margin="5dp"
-            android:text="@string/provinces_owned" />
-
-        <TextView
-            android:id="@+id/profile_total_units"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView4"
-            android:layout_toRightOf="@+id/textView4" />
-
-        <TextView
-            android:id="@+id/profile_average_units"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView5"
-            android:layout_alignBottom="@+id/textView5"
-            android:layout_toRightOf="@+id/textView5" />
-
-        <TextView
-            android:id="@+id/profile_provinces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView6"
-            android:layout_toRightOf="@+id/textView6" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package ee.bmagrupp.aardejaht.ui;
+package ee.bmagrupp.aardejaht.ui.fragments;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,6 +7,8 @@ import java.util.List;
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.highscore.HighScoreListLoader;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
+import ee.bmagrupp.aardejaht.ui.MainActivity;
+import ee.bmagrupp.aardejaht.ui.adapters.HighScoreAdapter;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -80,22 +82,21 @@ public class HighScoreFragment extends Fragment {
 						final HighScoreEntry entry2) {
 					double averageUnits1 = entry1.getAverageUnits();
 					double averageUnits2 = entry2.getAverageUnits();
-					Integer territoriesOwned1 = Integer.valueOf(entry1
-							.getTerritoriesOwned());
-					Integer territoriesOwned2 = Integer.valueOf(entry2
-							.getTerritoriesOwned());
+					Integer provincesOwned1 = Integer.valueOf(entry1
+							.getProvincesOwned());
+					Integer provincesOwned2 = Integer.valueOf(entry2
+							.getProvincesOwned());
 					if (sortBy.equals("averageUnits")) {
 						if (averageUnits1 < averageUnits2)
 							return 1;
 						else if (averageUnits1 > averageUnits2)
 							return -1;
 						else
-							return territoriesOwned2
-									.compareTo(territoriesOwned1);
+							return provincesOwned2.compareTo(provincesOwned1);
 					} else {
-						if (territoriesOwned1 < territoriesOwned2)
+						if (provincesOwned1 < provincesOwned2)
 							return 1;
-						else if (territoriesOwned1 > territoriesOwned2)
+						else if (provincesOwned1 > provincesOwned2)
 							return -1;
 						else
 							return Double.compare(averageUnits2, averageUnits1);

@@ -1,4 +1,4 @@
-package ee.bmagrupp.aardejaht.ui;
+package ee.bmagrupp.aardejaht.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +23,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.aardejaht.ui.MainActivity;
+import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
+import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;

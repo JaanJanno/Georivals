@@ -1,6 +1,7 @@
-package ee.bmagrupp.aardejaht.ui;
+package ee.bmagrupp.aardejaht.ui.listeners;
 
 import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.aardejaht.ui.MainActivity;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;

@@ -1,9 +1,11 @@
-package ee.bmagrupp.aardejaht.ui;
+package ee.bmagrupp.aardejaht.ui.listeners;
 
 import android.app.Activity;
 import android.location.LocationManager;
 
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+
+import ee.bmagrupp.aardejaht.ui.MainActivity;
 
 public class ButtonClickListener implements OnMyLocationButtonClickListener {
 	private LocationManager locationManager;

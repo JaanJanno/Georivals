@@ -2,42 +2,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ee.bmagrupp.aardejaht.ui.HighScoreFragment" >
+    tools:context="ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment" >
 
-    <RelativeLayout
+    <TextView
         android:id="@+id/highscore_title_header"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/light_gray" >
+        style="@style/HeaderStyle"
+        android:text="@string/highscore_title" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:gravity="center"
-            android:text="@string/highscore_title"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:background="@color/gray" />
-    </RelativeLayout>
+    <View
+        android:id="@+id/highscore_line1"
+        style="@style/HeaderLineStyle"
+        android:layout_below="@id/highscore_title_header" />
 
     <RelativeLayout
         android:id="@+id/highscore_icon_header"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/highscore_title_header"
-        android:background="@color/light_gray" >
+        style="@style/HeaderStyle"
+        android:layout_below="@+id/highscore_line1" >
 
         <ImageView
             android:id="@+id/rank_icon"
-            android:layout_width="30sp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            style="@style/IconStyle"
+            android:layout_margin="@dimen/margin_small"
+            android:contentDescription="@string/rank"
             android:src="@drawable/ic_rank" />
 
         <TextView
@@ -45,46 +31,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/rank_icon"
             android:layout_toRightOf="@+id/rank_icon"
             android:text="@string/name_title"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_large" />
 
         <ImageButton
             android:id="@+id/unit_sort_button"
-            android:layout_width="30sp"
-            android:layout_height="match_parent"
+            style="@style/IconStyle"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:background="@color/light_gray"
+            android:contentDescription="@string/sort_units"
             android:onClick="sortByUnits"
             android:src="@drawable/ic_unit" />
 
         <ImageButton
-            android:id="@+id/territories_sort_button"
-            android:layout_width="30sp"
-            android:layout_height="match_parent"
+            android:id="@+id/provinces_sort_button"
+            style="@style/IconStyle"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/unit_sort_button"
-            android:background="@color/light_gray"
-            android:onClick="sortByTerritories"
-            android:src="@drawable/ic_territories" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="1dp"
-            android:background="@color/gray" />
+            android:layout_toStartOf="@+id/unit_sort_button"
+            android:contentDescription="@string/sort_provinces"
+            android:onClick="sortByProvinces"
+            android:src="@drawable/ic_provinces" />
     </RelativeLayout>
+
+    <View
+        android:id="@+id/highscore_line2"
+        style="@style/HeaderLineStyle"
+        android:layout_below="@id/highscore_icon_header" />
 
     <ListView
         android:id="@+id/highscore_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/highscore_icon_header" >
+        android:layout_below="@+id/highscore_line2" >
     </ListView>
 
 </RelativeLayout>
