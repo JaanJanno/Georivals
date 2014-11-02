@@ -18,15 +18,15 @@ public class HighScoreEntry implements Serializable {
 
 	private final double averageUnits;
 
-	private final int territoriesOwned;
+	private final int provincesOwned;
 
 	public HighScoreEntry(int id, String username, double averageUnits,
-			int territoriesOwned) {
+			int provincesOwned) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.averageUnits = averageUnits;
-		this.territoriesOwned = territoriesOwned;
+		this.provincesOwned = provincesOwned;
 	}
 
 	public int getId() {
@@ -41,8 +41,8 @@ public class HighScoreEntry implements Serializable {
 		return averageUnits;
 	}
 
-	public int getTerritoriesOwned() {
-		return territoriesOwned;
+	public int getProvincesOwned() {
+		return provincesOwned;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class HighScoreEntry implements Serializable {
 		s += "{id:" + id + ";";
 		s += "{username:" + username + ";";
 		s += "{averageUnits:" + averageUnits + ";";
-		s += "{territoriesOwned:" + territoriesOwned + ";";
+		s += "{provincesOwned:" + provincesOwned + ";";
 		return s + "}";
 	}
 }

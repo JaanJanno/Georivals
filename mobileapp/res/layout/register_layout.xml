@@ -3,51 +3,40 @@
     android:id="@+id/register_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="20dp"
-    android:layout_marginLeft="50dp"
-    android:layout_marginRight="50dp"
-    android:layout_marginTop="20dp"
+    android:layout_margin="@dimen/margin_medium"
     android:orientation="vertical" >
 
     <EditText
         android:id="@+id/register_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/DialogStyle"
         android:ems="10"
-        android:gravity="center"
         android:hint="@string/username" >
-
-        <requestFocus />
+        <requestFocus />
     </EditText>
 
     <EditText
         android:id="@+id/register_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/DialogStyle"
         android:ems="10"
-        android:gravity="center"
         android:hint="@string/email_optional"
         android:inputType="textEmailAddress" />
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/DialogStyle"
         android:text="@string/email_info" />
 
     <Button
         android:id="@+id/button_register"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:onClick="register"
         android:text="@string/start" />
 
     <TextView
         android:id="@+id/existing_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/DialogStyle"
+        android:layout_marginTop="@dimen/margin_medium"
         android:text="@string/login_existing"
         android:textStyle="bold" />
 

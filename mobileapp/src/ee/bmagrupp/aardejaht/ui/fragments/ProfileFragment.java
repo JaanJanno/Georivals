@@ -1,29 +1,31 @@
-package ee.bmagrupp.aardejaht.ui;
+package ee.bmagrupp.aardejaht.ui.fragments;
 
 import java.util.Map;
+
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.Constants;
 import ee.bmagrupp.aardejaht.core.communications.highscore.ProfileEntryLoader;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
+import ee.bmagrupp.aardejaht.ui.MainActivity;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment {
 	private Activity activity;
 	private ProfileEntryLoader profileEntryLoader;
-	private LinearLayout profileLayout;
+	private RelativeLayout profileLayout;
 	private ProfileEntry profile;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		profileLayout = (LinearLayout) inflater.inflate(
+		profileLayout = (RelativeLayout) inflater.inflate(
 				R.layout.profile_layout, container, false);
 		return profileLayout;
 	}
@@ -60,7 +62,7 @@ public class ProfileFragment extends Fragment {
 				@Override
 				public void addRequestParameters(Map<String, String> parameters) {
 					// TODO Auto-generated method stub
-					
+
 				}
 			};
 		}
@@ -77,8 +79,6 @@ public class ProfileFragment extends Fragment {
 				.findViewById(R.id.profile_username);
 		TextView emailTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_email);
-		TextView overallTimeTextview = (TextView) profileLayout
-				.findViewById(R.id.profile_overall_time);
 		TextView totalUnitsTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_total_units);
 		TextView averageUnitsTextview = (TextView) profileLayout
@@ -88,7 +88,6 @@ public class ProfileFragment extends Fragment {
 
 		usernameTextview.setText(username);
 		emailTextview.setText(email);
-		overallTimeTextview.setText("5 day(s), 1 hour(s)");
 		totalUnitsTextview.setText(Integer.toString(totalUnits));
 		averageUnitsTextview.setText(Integer.toString(totalUnits
 				/ ownedProvinces));
@@ -100,7 +99,7 @@ public class ProfileFragment extends Fragment {
 		return profileEntryLoader;
 	}
 
-	public LinearLayout getProfileLayout() {
+	public RelativeLayout getProfileLayout() {
 		return profileLayout;
 	}
 

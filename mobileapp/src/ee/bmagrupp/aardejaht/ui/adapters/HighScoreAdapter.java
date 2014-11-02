@@ -1,4 +1,4 @@
-package ee.bmagrupp.aardejaht.ui;
+package ee.bmagrupp.aardejaht.ui.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +35,8 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 
 		TextView rankView = (TextView) rowView.findViewById(R.id.player_rank);
 		TextView nameView = (TextView) rowView.findViewById(R.id.player_name);
-		TextView territoriesView = (TextView) rowView
-				.findViewById(R.id.territories_owned);
+		TextView provincesView = (TextView) rowView
+				.findViewById(R.id.provinces_owned);
 		TextView unitsView = (TextView) rowView
 				.findViewById(R.id.average_units);
 
@@ -44,8 +44,8 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 
 		rankView.setText((position+1) + ".");
 		nameView.setText(playerInfo.getUsername());
-		territoriesView
-				.setText(String.valueOf(playerInfo.getTerritoriesOwned()));
+		provincesView
+				.setText(String.valueOf(playerInfo.getProvincesOwned()));
 		unitsView.setText(String.valueOf(playerInfo.getAverageUnits()));
 
 		return rowView;

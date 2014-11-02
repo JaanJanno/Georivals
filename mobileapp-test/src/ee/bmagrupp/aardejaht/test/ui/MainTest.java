@@ -3,10 +3,10 @@ package ee.bmagrupp.aardejaht.test.ui;
 import com.google.android.gms.maps.GoogleMap;
 
 import ee.bmagrupp.aardejaht.R;
-import ee.bmagrupp.aardejaht.ui.HighScoreFragment;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
-import ee.bmagrupp.aardejaht.ui.MapFragment;
-import ee.bmagrupp.aardejaht.ui.ProfileFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -103,8 +103,6 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 					.findViewById(R.id.profile_username);
 			TextView email = (TextView) activity
 					.findViewById(R.id.profile_email);
-			TextView overallTime = (TextView) activity
-					.findViewById(R.id.profile_overall_time);
 			TextView totalUnits = (TextView) activity
 					.findViewById(R.id.profile_total_units);
 			TextView averageUnits = (TextView) activity
@@ -114,7 +112,6 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 			assertTrue(!username.getText().equals(""));
 			assertTrue(!email.getText().equals(""));
-			assertTrue(!overallTime.getText().equals(""));
 			assertTrue(!totalUnits.getText().equals(""));
 			assertTrue(!averageUnits.getText().equals(""));
 			assertTrue(!provinces.getText().equals(""));
@@ -157,21 +154,21 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 					.findViewById(R.id.player_rank);
 			TextView nameView = (TextView) firstListItem
 					.findViewById(R.id.player_name);
-			TextView territoriesView = (TextView) firstListItem
-					.findViewById(R.id.territories_owned);
+			TextView provincesView = (TextView) firstListItem
+					.findViewById(R.id.provinces_owned);
 			TextView unitsView = (TextView) firstListItem
 					.findViewById(R.id.average_units);
 
 			assertNotNull(rankView);
 			assertNotNull(nameView);
-			assertNotNull(territoriesView);
+			assertNotNull(provincesView);
 			assertNotNull(unitsView);
 
 			// test sort buttons
 			final ImageButton UnitSortButton = (ImageButton) activity
 					.findViewById(R.id.unit_sort_button);
 			final ImageButton TerritorySortButton = (ImageButton) activity
-					.findViewById(R.id.territories_sort_button);
+					.findViewById(R.id.provinces_sort_button);
 			activity.runOnUiThread(new Runnable() {
 				public void run() {
 					UnitSortButton.performClick();

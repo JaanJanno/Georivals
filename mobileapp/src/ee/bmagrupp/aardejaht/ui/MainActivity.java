@@ -1,6 +1,10 @@
 package ee.bmagrupp.aardejaht.ui;
 
 import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
+import ee.bmagrupp.aardejaht.ui.listeners.TabListener;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -50,8 +54,7 @@ public class MainActivity extends Activity {
 	}
 
 	private int getUserId() {
-		SharedPreferences sharedPref = getSharedPreferences("prefs",
-				Context.MODE_PRIVATE);
+		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 		return sharedPref.getInt("userId", 0);
 	}
 
@@ -129,7 +132,7 @@ public class MainActivity extends Activity {
 		registrationDialog.show();
 	}
 
-	public void showLoginDialog() {
+	private void showLoginDialog() {
 		final Dialog loginDialog = new Dialog(this);
 		loginDialog.setContentView(R.layout.login_layout);
 		loginDialog.setTitle("Log in");
@@ -187,7 +190,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	public final static boolean isValidEmail(CharSequence email) {
+	private boolean isValidEmail(CharSequence email) {
 		if (email == null)
 			return false;
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
@@ -245,8 +248,8 @@ public class MainActivity extends Activity {
 		highscoreFragment.sortEntries("averageUnits");
 	}
 
-	public void sortByTerritories(View v) {
-		highscoreFragment.sortEntries("territoriesOwned");
+	public void sortByProvinces(View v) {
+		highscoreFragment.sortEntries("provincesOwned");
 	}
 
 }

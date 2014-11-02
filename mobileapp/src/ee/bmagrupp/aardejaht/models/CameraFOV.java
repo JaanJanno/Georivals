@@ -2,6 +2,7 @@ package ee.bmagrupp.aardejaht.models;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 
+@SuppressWarnings("unused")
 public class CameraFOV {
 	private double SWlatitude;
 	private double SWlongitude;

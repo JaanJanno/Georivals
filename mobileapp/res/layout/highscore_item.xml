@@ -1,45 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@color/light_gray" >
+    style="@style/HeaderStyle" >
 
     <TextView
         android:id="@+id/player_rank"
-        android:layout_width="30sp"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
+        style="@style/HighscoreItemStyle"
+        android:layout_margin="@dimen/margin_small" />
 
     <TextView
         android:id="@+id/player_name"
+        style="@style/HighscoreItemStyle"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/player_rank"
         android:layout_toRightOf="@+id/player_rank"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="@dimen/text_large" />
 
     <TextView
-        android:id="@+id/territories_owned"
-        android:layout_width="30sp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="10dp"
+        android:id="@+id/provinces_owned"
+        style="@style/HighscoreItemStyle"
         android:layout_toLeftOf="@+id/average_units"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
+        android:layout_toStartOf="@+id/average_units" />
 
     <TextView
         android:id="@+id/average_units"
-        android:layout_width="30sp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="12sp" />
+        style="@style/HighscoreItemStyle"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

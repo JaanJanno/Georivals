@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="action_logout">Log Out</string>
-    <string name="action_settings">Settings</string>
     <string name="app_name">Aardejaht</string>
     <string name="average_units">Average number of units:</string>
     <string name="email">Email</string>
@@ -15,11 +13,15 @@
     <string name="login_key">Login key</string>
     <string name="login_key_send">Send me my login key</string>
     <string name="login_existing">I already have an account</string>
+    <string name="logout">Log Out</string>
     <string name="name_title">Name</string>
-    <string name="overall_time">Overall time played:</string>
     <string name="profile_title">Profile</string>
     <string name="provinces_owned">Number of provinces owned:</string>
+    <string name="rank">Rank</string>
     <string name="register">Register</string>
+    <string name="settings">Settings</string>
+    <string name="sort_provinces">Sort provinces</string>
+    <string name="sort_units">Sort units</string>
     <string name="start">START</string>
     <string name="strategical_information">Strategical information</string>
     <string name="total_units">Total number of units:</string>

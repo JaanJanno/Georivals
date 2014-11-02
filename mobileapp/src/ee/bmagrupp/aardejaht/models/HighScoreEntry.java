@@ -5,15 +5,15 @@ public class HighScoreEntry {
 	private int id;
 	private String username;
 	private double averageUnits;
-	private int territoriesOwned;
+	private int provincesOwned;
 
 	public HighScoreEntry(int id, String username, double averageUnits,
-			int territoriesOwned) {
+			int provincesOwned) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.averageUnits = averageUnits;
-		this.territoriesOwned = territoriesOwned;
+		this.provincesOwned = provincesOwned;
 	}
 	
 	public int getId() {
@@ -40,12 +40,12 @@ public class HighScoreEntry {
 		this.averageUnits = averageUnits;
 	}
 
-	public int getTerritoriesOwned() {
-		return territoriesOwned;
+	public int getProvincesOwned() {
+		return provincesOwned;
 	}
 
-	public void setTerritoriesOwned(int territoriesOwned) {
-		this.territoriesOwned = territoriesOwned;
+	public void setProvincesOwned(int provincesOwned) {
+		this.provincesOwned = provincesOwned;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class HighScoreEntry {
 		s += "id:" + id + ",";
 		s += "username:" + username + ",";
 		s += "averageUnits:" + averageUnits + ",";
-		s += "territoriesOwned:" + territoriesOwned;
+		s += "provincesOwned:" + provincesOwned;
 		return s + "}";
 	}
 }
