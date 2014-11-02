@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -34,8 +33,10 @@ import android.location.LocationManager;
 import android.util.Log;
 
 public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements ConnectionCallbacks, OnConnectionFailedListener,
-		LocationListener {
+		implements LocalFragment, ConnectionCallbacks,
+		OnConnectionFailedListener, LocationListener {
+	private String tabName = "Map";
+	private int tabIconId = R.drawable.places_icon;
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationRequest;
@@ -231,5 +232,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	public ButtonClickListener getButtonClickListener() {
 		return buttonClickListener;
+	}
+
+	@Override
+	public int getTabIconId() {
+		return tabIconId;
+	}
+
+	@Override
+	public String getTabName() {
+		return tabName;
 	}
 }

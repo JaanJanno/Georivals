@@ -34,7 +34,7 @@
             android:layout_toEndOf="@+id/rank_icon"
             android:layout_toRightOf="@+id/rank_icon"
             android:text="@string/name_title"
-            android:textColor="@color/black"
+            android:textColor="@color/dark_brown"
             android:textSize="@dimen/text_large" />
 
         <ImageButton
@@ -67,7 +67,9 @@
         android:id="@+id/highscore_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/highscore_line2" >
+        android:layout_below="@+id/highscore_line2"
+        android:divider="@color/dark_brown"
+        android:dividerHeight="1dp" >
     </ListView>
 
 </RelativeLayout>

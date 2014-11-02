@@ -2,6 +2,7 @@ package ee.bmagrupp.aardejaht.ui.listeners;
 
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
+import ee.bmagrupp.aardejaht.ui.fragments.LocalFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
@@ -9,10 +10,10 @@ import android.app.FragmentTransaction;
 
 public class TabListener implements ActionBar.TabListener {
 	private MainActivity activity;
-	private Fragment fragment;
+	private LocalFragment fragment;
 	private String fragmentTag;
 
-	public TabListener(MainActivity activity, Fragment fragment,
+	public TabListener(MainActivity activity, LocalFragment fragment,
 			String fragmentTag) {
 		this.activity = activity;
 		this.fragment = fragment;
@@ -24,7 +25,8 @@ public class TabListener implements ActionBar.TabListener {
 		if (fragmentTag == "ProfileFragment" && activity.userId == 0)
 			activity.showRegistrationDialog();
 		else
-			ft.replace(R.id.fragment_container, fragment, fragmentTag);
+			ft.replace(R.id.fragment_container, (Fragment) fragment,
+					fragmentTag);
 	}
 
 	@Override

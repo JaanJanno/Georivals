@@ -8,6 +8,7 @@
     <dimen name="margin_medium">10dp</dimen>
     <dimen name="margin_large">20dp</dimen>
     <!-- Text sizes -->
+    <dimen name="text_small">10sp</dimen>
     <dimen name="text_medium">12sp</dimen>
     <dimen name="text_large">18sp</dimen>
     <!-- Height sizes -->

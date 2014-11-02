@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomTheme.Theme" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarStyle">@style/CustomTheme.ActionBar</item>
+    </style>
+
+    <style name="CustomTheme.ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:backgroundStacked">@drawable/header</item>
+    </style>
+
+</resources>

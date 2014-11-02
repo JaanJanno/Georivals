@@ -11,7 +11,7 @@
         style="@style/DialogStyle"
         android:ems="10"
         android:hint="@string/username" >
-        <requestFocus />
+        <requestFocus />
     </EditText>
 
     <EditText
