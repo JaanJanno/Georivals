@@ -64,23 +64,11 @@ public class ProvinceServiceIntegrationTest {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		int counter = 0;
 		for (ProvinceDTO a : provList) {
-			if (a.getPlayerId() == playerID) {
-				counter += 1;
-			}
-			else if ((a.getPlayerId() != BOT_ID) && (a.getPlayerId() != playerID)) {
-				// This is the other players
-				counter += 1;
-				// TODO Sander, make this work
-//				assertEquals("Other players should have 0 new units", 0,
-//						a.getNewUnitCount());
-			}else {
-				assertEquals("BOT should have 0 new units", 0,
-						a.getNewUnitCount());
+			if (a.getPlayerId() != playerID) {
+				assertEquals("Other players/BOTS should have 0 new units", 0,a.getNewUnitCount());
 			}
 		}
-		assertEquals("Custom provinces in area", 3, counter);
 	}
 
 	@Test

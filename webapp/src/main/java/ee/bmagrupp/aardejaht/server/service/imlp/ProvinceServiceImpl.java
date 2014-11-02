@@ -128,7 +128,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 				fov.getNElongitude());
 
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
-		// LOG.info(Integer.toString(rows));
+		int curPlayerId = playerRepo.findBySid(cookie).getId();
 		int playerStrength = findPlayerStrength(cookie);
 
 		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
@@ -155,14 +155,15 @@ public class ProvinceServiceImpl implements ProvinceService {
 					if (x > (baseLong + (j * PROVINCE_WIDTH))
 							&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
 							&& y > (baseLat + (i * PROVINCE_HEIGHT))
-							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
+							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))){
 						// -----
 						Province temp = a.getProvince();
 						int provinceStrength = getProvinceStrength(a);
-						int playerId = playerRepo.findOwner(temp.getId())
-								.getId();
-						int newUnits = generateNewUnits(a.getLastVisit(),
-								currentDate, provinceStrength);
+						int playerId = playerRepo.findOwner(temp.getId()).getId();
+						int newUnits = 0;
+						if(curPlayerId == playerId){
+							newUnits = generateNewUnits(a.getLastVisit(),currentDate, provinceStrength);
+						}
 						// -----
 						rtrn.add(new ProvinceDTO(temp.getId(), temp
 								.getLatitude(), temp.getLongitude(),
