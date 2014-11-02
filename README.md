@@ -1,6 +1,8 @@
 Vallutajad
 =========
 
+Server: [![Build Status](https://travis-ci.org/JaanJanno/Aardejaht.svg)](https://travis-ci.org/JaanJanno/Aardejaht)
+
 ## Eesti keeles
 'Vallutajad' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng, kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks, et alad oleksid alluvad ja et sul jätkuks sõjamehi, tuleb neid pidevalt külastada.
 
