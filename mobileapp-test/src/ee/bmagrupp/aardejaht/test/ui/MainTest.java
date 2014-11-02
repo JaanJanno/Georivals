@@ -8,6 +8,7 @@ import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Instrumentation;
@@ -16,21 +17,24 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
+
 	private Instrumentation instrumentation;
 	private MainActivity activity;
-	private LinearLayout fragment_container;
+	private FrameLayout fragment_container;
 	private ActionBar actionBar;
 	private FragmentManager fragmentManager;
+	public static boolean loginTested;
 
-	@SuppressWarnings("deprecation")
 	public MainTest() {
-		super("ee.bmagrupp.aardejaht", MainActivity.class);
+		super(MainActivity.class);
 	}
 
 	@Override
@@ -38,16 +42,62 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		super.setUp();
 		instrumentation = getInstrumentation();
 		activity = this.getActivity();
-		fragment_container = (LinearLayout) activity
+		fragment_container = (FrameLayout) activity
 				.findViewById(ee.bmagrupp.aardejaht.R.id.fragment_container);
 		actionBar = this.activity.getActionBar();
 		fragmentManager = this.activity.getFragmentManager();
+		if (activity.userId == 0)
+			loginAndTest();
 	}
 
 	public void testPreconditions() {
 		assertNotNull(fragment_container);
 		assertNotNull(actionBar);
 		assertNotNull(fragmentManager);
+	}
+
+	public void testLogin() {
+		if (!loginTested) {
+			activity.userId = 0;
+			loginAndTest();
+		}
+	}
+
+	private void loginAndTest() {
+		activity.runOnUiThread(new Runnable() {
+			public void run() {
+				actionBar.setSelectedNavigationItem(1);
+			}
+		});
+		instrumentation.waitForIdleSync();
+		Dialog registrationDialog = activity.getRegistrationDialog();
+		assertNotNull(registrationDialog);
+		final TextView loginTextView = (TextView) registrationDialog
+				.findViewById(R.id.existing_account);
+		assertNotNull(loginTextView);
+		activity.runOnUiThread(new Runnable() {
+			public void run() {
+				loginTextView.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();
+		final Dialog loginDialog = activity.getLoginDialog();
+		assertNotNull(loginDialog);
+		activity.runOnUiThread(new Runnable() {
+			public void run() {
+				EditText loginEditText = (EditText) loginDialog
+						.findViewById(R.id.login_key);
+				assertNotNull(loginEditText);
+				loginEditText.setText("test");
+				Button loginButton = (Button) loginDialog
+						.findViewById(R.id.button_login_start);
+				assertNotNull(loginButton);
+				loginButton.performClick();
+			}
+		});
+		instrumentation.waitForIdleSync();
+		assertTrue(activity.userId != 0);
+		loginTested = true;
 	}
 
 	public void testMapFragment() {

@@ -5,7 +5,6 @@ import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
 import ee.bmagrupp.aardejaht.ui.listeners.TabListener;
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
@@ -18,10 +17,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,6 +33,8 @@ public class MainActivity extends Activity {
 	private ProfileFragment profileFragment;
 	private HighScoreFragment highscoreFragment;
 	private Activity activity;
+	private Dialog registrationDialog;
+	private Dialog loginDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,7 +92,7 @@ public class MainActivity extends Activity {
 	}
 
 	public void showRegistrationDialog() {
-		final Dialog registrationDialog = new Dialog(this);
+		registrationDialog = new Dialog(this);
 		registrationDialog.setContentView(R.layout.register_layout);
 		registrationDialog.setTitle("Registration");
 		Button registerButton = (Button) registrationDialog
@@ -118,14 +117,12 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-
-		loginTextView.setOnTouchListener(new OnTouchListener() {
-			@SuppressLint("ClickableViewAccessibility")
+		
+		loginTextView.setOnClickListener(new OnClickListener() {
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public void onClick(View v) {
 				registrationDialog.dismiss();
 				showLoginDialog();
-				return false;
 			}
 		});
 
@@ -133,7 +130,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void showLoginDialog() {
-		final Dialog loginDialog = new Dialog(this);
+		loginDialog = new Dialog(this);
 		loginDialog.setContentView(R.layout.login_layout);
 		loginDialog.setTitle("Log in");
 		Button retrieveKeyButton = (Button) loginDialog
@@ -250,6 +247,14 @@ public class MainActivity extends Activity {
 
 	public void sortByProvinces(View v) {
 		highscoreFragment.sortEntries("provincesOwned");
+	}
+	
+	public Dialog getRegistrationDialog() {
+		return registrationDialog;
+	}
+	
+	public Dialog getLoginDialog() {
+		return loginDialog;
 	}
 
 }

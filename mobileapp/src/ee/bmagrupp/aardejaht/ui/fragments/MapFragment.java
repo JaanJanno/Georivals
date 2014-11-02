@@ -163,9 +163,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				map.clear();
 				if (map.getCameraPosition().zoom > 14)
 					drawProvinces();
+				else
+					map.clear();
 			}
 		});
 	}
@@ -178,14 +179,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		LatLng NE = bounds.northeast;
 		double SWlatitude = Math.floor(SW.latitude * 1000) / 1000;
 		double SWlongitude = Math.floor(SW.longitude * 1000) / 1000;
-		String string = String.valueOf(SWlongitude);
-		if (Character.getNumericValue(string.charAt(string.length() - 1)) % 2 == 1)
-			SWlongitude -= lengthLongitude / 2;
 		double NElatitude = Math.ceil(NE.latitude * 1000) / 1000;
 		double NElongitude = Math.ceil(NE.longitude * 1000) / 1000;
-		string = String.valueOf(NElongitude);
-		if (Character.getNumericValue(string.charAt(string.length() - 1)) % 2 == 1)
-			NElongitude += lengthLongitude / 2;
+
+		if ((SWlongitude * 1000.0) % 2 != 0)
+			SWlongitude -= lengthLatitude;
+		if ((NElongitude * 1000.0) % 2 != 0)
+			NElongitude += lengthLatitude;
 
 		double currentLatitude = SWlatitude;
 		double currentLongitude = SWlongitude;
