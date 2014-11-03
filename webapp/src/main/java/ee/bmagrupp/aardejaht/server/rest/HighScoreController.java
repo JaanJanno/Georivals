@@ -25,13 +25,16 @@ public class HighScoreController {
 		List<HighScoreEntry> highScores = (List<HighScoreEntry>) highScoreServ
 				.findAll();
 		return new ResponseEntity<List<HighScoreEntry>>(highScores,
-				HttpStatus.ACCEPTED);
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<HighScoreEntry> getById(@PathVariable int id) {
 		HighScoreEntry highscore = highScoreServ.findById(id);
-		return new ResponseEntity<HighScoreEntry>(highscore,
-				HttpStatus.ACCEPTED);
+		if (highscore != null)
+			return new ResponseEntity<HighScoreEntry>(highscore, HttpStatus.OK);
+		else
+			return new ResponseEntity<HighScoreEntry>(highscore,
+					HttpStatus.BAD_REQUEST);
 	}
 }

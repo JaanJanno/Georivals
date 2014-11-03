@@ -56,4 +56,22 @@ public class ProfileServiceIntegrationTest {
 		assertNull(player);
 	}
 
+	@Test
+	public void findByIdSuccess() {
+		PlayerProfile player = profServ.getPlayerProfile(1);
+
+		assertEquals("Player name", "Mr. TK", player.getUsername());
+		assertEquals("Player id", 1, player.getId());
+		assertEquals("Player email", "mr.tk@pacific.ee", player.getEmail());
+		assertEquals("Player name", 2, player.getOwnedProvinces());
+		assertEquals("Player name", 23, player.getTotalUnits());
+	}
+
+	@Test
+	public void findByIdFail() {
+		PlayerProfile player = profServ.getPlayerProfile(-100);
+
+		assertNull(player);
+	}
+
 }

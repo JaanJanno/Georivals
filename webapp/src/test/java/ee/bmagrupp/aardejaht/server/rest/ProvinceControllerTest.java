@@ -35,7 +35,6 @@ import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 /**
  * Sample controller test. Currently this is not worth much, but it took a LONG
@@ -88,7 +87,7 @@ public class ProvinceControllerTest {
 		mockMvc.perform(
 				post("/province").content(fov.toJson()).cookie(cookie)
 						.contentType(MediaType.APPLICATION_JSON)
-						.accept(MediaType.APPLICATION_JSON)).andDo(print())
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isAccepted());
 	}
 

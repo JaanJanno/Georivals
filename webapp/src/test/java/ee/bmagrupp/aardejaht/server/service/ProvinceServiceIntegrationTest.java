@@ -21,7 +21,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
-import static ee.bmagrupp.aardejaht.server.util.Constants.*;
 
 /**
  * Integration tests for {@link ProvinceService}.

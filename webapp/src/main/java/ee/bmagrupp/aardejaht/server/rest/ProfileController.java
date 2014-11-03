@@ -26,9 +26,13 @@ public class ProfileController {
 	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
 	public ResponseEntity<PlayerProfile> getById(@PathVariable int id) {
 
-		LOG.info("find player");
-		PlayerProfile user = profServ.getPlayerProfile(id);
-		return new ResponseEntity<PlayerProfile>(user, HttpStatus.OK);
+		LOG.debug("find player " + id);
+		PlayerProfile player = profServ.getPlayerProfile(id);
+		if (player != null)
+			return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
+		else
+			return new ResponseEntity<PlayerProfile>(player,
+					HttpStatus.BAD_REQUEST);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/special")
@@ -46,6 +50,7 @@ public class ProfileController {
 		if (player != null)
 			return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
 		else
-			return new ResponseEntity<PlayerProfile>(player, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<PlayerProfile>(player,
+					HttpStatus.BAD_REQUEST);
 	}
 }

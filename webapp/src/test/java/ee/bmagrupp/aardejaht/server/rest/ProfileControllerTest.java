@@ -3,10 +3,7 @@ package ee.bmagrupp.aardejaht.server.rest;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
@@ -33,6 +30,12 @@ import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.PlayerProfile;
 import ee.bmagrupp.aardejaht.server.service.ProfileService;
 
+/**
+ * Tests for {@link ProfileController}. All cases have been covered.
+ * 
+ * @author TKasekamp
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("test")
@@ -88,8 +91,30 @@ public class ProfileControllerTest {
 
 		mockMvc.perform(
 				get("/profile").cookie(badCookie).accept(
-						MediaType.APPLICATION_JSON)).andDo(print())
-				.andExpect(status().isBadRequest());
+						MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string(""));
+	}
+
+	@Test
+	public void profilePathSuccess() throws Exception {
+		when(profServ.getPlayerProfile(1)).thenReturn(prof);
+
+		mockMvc.perform(get("/profile/id/1").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.id", is(1)))
+				.andExpect(jsonPath("$.username", is("Mr. TK")))
+				.andExpect(jsonPath("$.email", is("mr.tk@pacific.ee")))
+				.andExpect(jsonPath("$.totalUnits", is(23)))
+				.andExpect(jsonPath("$.ownedProvinces", is(2)));
+	}
+
+	@Test
+	public void profilePathFail() throws Exception {
+		when(profServ.getPlayerProfile(100)).thenReturn(null);
+
+		mockMvc.perform(get("/profile/id/1").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().string(""));
 	}
 
 }
