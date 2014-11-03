@@ -28,22 +28,16 @@ public class RegistrationController {
 	@RequestMapping(method = RequestMethod.POST, value = "/phase1")
 	public ResponseEntity<RegistrationResponse> registrationPhase1(
 			@RequestBody RegistrationDTO registration) {
-		LOG.debug("Registration phase 1");
+		LOG.info("Registration phase 1" + registration.toJson());
 		RegistrationResponse response = reghServ
 				.registrationPhase1(registration);
-		if (response.getResult() == ServerResult.OK) {
-			return new ResponseEntity<RegistrationResponse>(response,
-					HttpStatus.OK);
-		} else {
-			return new ResponseEntity<RegistrationResponse>(response,
-					HttpStatus.BAD_REQUEST);
-		}
+		return new ResponseEntity<RegistrationResponse>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/phase2")
 	public ResponseEntity<RegistrationResponse> registrationPhase2(
 			@RequestBody RegistrationDTO registration) {
-		LOG.debug("Registration phase 2");
+		LOG.info("Registration phase 2 " + registration.toJson());
 		RegistrationResponse response = reghServ
 				.registrationPhase2(registration);
 		if (response.getResult() == ServerResult.OK) {
@@ -51,7 +45,7 @@ public class RegistrationController {
 					HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<RegistrationResponse>(response,
-					HttpStatus.BAD_REQUEST);
+					HttpStatus.OK);
 		}
 
 	}

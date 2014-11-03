@@ -32,9 +32,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.HighScoreEntry;
-import ee.bmagrupp.aardejaht.server.rest.domain.PlayerProfile;
 import ee.bmagrupp.aardejaht.server.service.HighScoreService;
-import ee.bmagrupp.aardejaht.server.service.ProfileService;
 
 /**
  * Tests for {@link HighScoreController}. Everything is tested.
@@ -117,8 +115,7 @@ public class HighScoreControllerTest {
 		when(highScoreServ.findById(20)).thenReturn(null);
 
 		mockMvc.perform(get("/highscore/20").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().string(""));
+				.andExpect(status().isOk()).andExpect(content().string(""));
 	}
 
 }

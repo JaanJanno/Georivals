@@ -4,7 +4,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import javax.transaction.Transactional;
@@ -95,7 +94,7 @@ public class RegistrationControllerTest {
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.value", is((Object) null)))
-				.andExpect(jsonPath("$.result", is("OK")))
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())))
 				.andExpect(jsonPath("$.id", is(0)));
 	}
 
@@ -109,9 +108,11 @@ public class RegistrationControllerTest {
 				post("/registration/phase1").content(reg1.toJson())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.value", is((Object) null)))
-				.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
+				.andExpect(
+						jsonPath("$.result",
+								is(ServerResult.USERNAME_IN_USE.toString())))
 				.andExpect(jsonPath("$.id", is(0)));
 	}
 
@@ -129,7 +130,7 @@ public class RegistrationControllerTest {
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.value", is("abcd")))
-				.andExpect(jsonPath("$.result", is("OK")))
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())))
 				.andExpect(jsonPath("$.id", is(511)));
 	}
 
@@ -143,9 +144,11 @@ public class RegistrationControllerTest {
 				post("/registration/phase2").content(reg2.toJson())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.value", is((Object) null)))
-				.andExpect(jsonPath("$.result", is("USERNAME_IN_USE")))
+				.andExpect(
+						jsonPath("$.result",
+								is(ServerResult.USERNAME_IN_USE.toString())))
 				.andExpect(jsonPath("$.id", is(0)));
 	}
 

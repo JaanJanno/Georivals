@@ -28,11 +28,7 @@ public class ProfileController {
 
 		LOG.debug("find player " + id);
 		PlayerProfile player = profServ.getPlayerProfile(id);
-		if (player != null)
-			return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
-		else
-			return new ResponseEntity<PlayerProfile>(player,
-					HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/special")
@@ -47,10 +43,6 @@ public class ProfileController {
 			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
 		LOG.debug("Get player with cookie " + cookie);
 		PlayerProfile player = profServ.getPlayerProfile(cookie);
-		if (player != null)
-			return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
-		else
-			return new ResponseEntity<PlayerProfile>(player,
-					HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
 	}
 }
