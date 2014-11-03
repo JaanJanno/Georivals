@@ -18,7 +18,7 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	
 	final Class<T> typeParameterClass;
 
-	private String url; 		// URL of the connection destination.
+	protected String url; 		// URL of the connection destination.
 	protected String cookie = "";	// Cookie string;
 	
 	/**

@@ -80,7 +80,6 @@ abstract public class GenericListPostLoader<T> implements Runnable {
 
 			@Override
 			public void handleResponseBody(String response) {
-				System.out.println(response);
 				List<T> object = getObjectFromJSON(response);
 				handleResponseList(object);
 			}
