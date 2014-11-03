@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-public class HighScoreFragment extends Fragment {
+public class HighScoreFragment extends Fragment implements LocalFragment {
+	private String tabName = "Highscores";
+	private int tabIconId = R.drawable.leaders_icon;
 	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
 	private Activity activity;
@@ -122,6 +124,16 @@ public class HighScoreFragment extends Fragment {
 
 	public RelativeLayout getHighscoreLayout() {
 		return highscoreLayout;
+	}
+
+	@Override
+	public int getTabIconId() {
+		return tabIconId;
+	}
+
+	@Override
+	public String getTabName() {
+		return tabName;
 	}
 
 }

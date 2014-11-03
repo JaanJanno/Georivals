@@ -2,36 +2,44 @@ package ee.bmagrupp.aardejaht.ui;
 
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.LocalFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.MissionLogFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.MyPlacesFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
 import ee.bmagrupp.aardejaht.ui.listeners.TabListener;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("InflateParams")
 public class MainActivity extends Activity {
 	public static Toast toast;
 	public static final int LOGIN_REQUEST = 1;
 	public static final int REGISTRATION_REQUEST = 2;
 	public int userId;
 	private MapFragment mapFragment;
+	private MissionLogFragment missionLogFragment;
 	private ProfileFragment profileFragment;
 	private HighScoreFragment highscoreFragment;
+	private MyPlacesFragment myPlacesFragment;
 	private Activity activity;
 	private Dialog registrationDialog;
 	private Dialog loginDialog;
@@ -42,7 +50,10 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main_layout);
 		activity = this;
 		userId = getUserId();
-		createFragments();
+		createFragmentsAndTabs();
+		addActionBarRibbon();
+		getActionBar().setDisplayShowHomeEnabled(false);
+		getActionBar().setDisplayShowTitleEnabled(false);
 	}
 
 	@Override
@@ -57,38 +68,57 @@ public class MainActivity extends Activity {
 		return sharedPref.getInt("userId", 0);
 	}
 
-	private void createFragments() {
+	private void createFragmentsAndTabs() {
+		mapFragment = new MapFragment();
+		missionLogFragment = new MissionLogFragment();
+		profileFragment = new ProfileFragment();
+		highscoreFragment = new HighScoreFragment();
+		myPlacesFragment = new MyPlacesFragment();
+
+		LocalFragment[] fragmentArray = new LocalFragment[] { mapFragment,
+				missionLogFragment, profileFragment, highscoreFragment,
+				myPlacesFragment };
+
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		mapFragment = new MapFragment();
-		Tab mapTab = actionBar
-				.newTab()
-				.setText("Map")
-				.setTabListener(
-						new TabListener(this, mapFragment, "MapFragment"));
-		actionBar.addTab(mapTab);
+		Typeface font = Typeface.createFromAsset(getAssets(),
+				"fonts/Gabriola.ttf");
 
-		profileFragment = new ProfileFragment();
-		Tab profileTab = actionBar
-				.newTab()
-				.setText("Profile")
-				.setTabListener(
-						new TabListener(this, profileFragment,
-								"ProfileFragment"));
-		actionBar.addTab(profileTab);
+		for (LocalFragment fragment : fragmentArray) {
+			String tabName = fragment.getTabName();
+			int tabIconId = fragment.getTabIconId();
 
-		highscoreFragment = new HighScoreFragment();
-		Tab highscoreTab = actionBar
-				.newTab()
-				.setText("Highscores")
-				.setTabListener(
-						new TabListener(this, highscoreFragment,
-								"HighscoreFragment"));
-		actionBar.addTab(highscoreTab);
+			RelativeLayout tabLayout = (RelativeLayout) LayoutInflater.from(
+					this).inflate(R.layout.tab_item, null);
+
+			TextView tabText = (TextView) tabLayout
+					.findViewById(R.id.tab_item_text);
+
+			tabText.setTypeface(font);
+			tabText.setAllCaps(true);
+			tabText.setText(tabName);
+
+			ImageView tabIcon = (ImageView) tabLayout
+					.findViewById(R.id.tab_item_icon);
+			tabIcon.setImageResource(tabIconId);
+
+			Tab tab = actionBar.newTab().setCustomView(tabLayout)
+					.setTag(tabName)
+					.setTabListener(new TabListener(this, fragment));
+			actionBar.addTab(tab);
+		}
 
 		actionBar.setSelectedNavigationItem(0);
+	}
 
+	private void addActionBarRibbon() {
+		int actionBarContainerId = getResources().getIdentifier(
+				"action_bar_container", "id", "android");
+		FrameLayout actionBarContainer = (FrameLayout) findViewById(actionBarContainerId);
+		LayoutInflater inflater = getLayoutInflater();
+		View ribbonView = inflater.inflate(R.layout.ribbon_layout, null);
+		actionBarContainer.addView(ribbonView);
 	}
 
 	public void showRegistrationDialog() {
@@ -117,7 +147,7 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
-		
+
 		loginTextView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -184,6 +214,7 @@ public class MainActivity extends Activity {
 			editor.putInt("userId", 1);
 			editor.commit();
 			userId = 1;
+			getActionBar().setSelectedNavigationItem(0);
 		}
 	}
 
@@ -198,47 +229,15 @@ public class MainActivity extends Activity {
 		toast.show();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		} else if (id == R.id.action_logout) {
-			new AlertDialog.Builder(this)
-					.setTitle("Log Out")
-					.setMessage("Are you sure you want to log out?")
-					.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-									SharedPreferences.Editor editor = sharedPref
-											.edit();
-									editor.putString("SID", "");
-									editor.putString("userName", "");
-									editor.putInt("userId", 0);
-									editor.commit();
-									userId = 0;
-								}
-							})
-					.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// do nothing
-								}
-							}).setIcon(android.R.drawable.ic_dialog_alert)
-					.show();
-
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+	public void logout(View v) {
+		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("SID", "");
+		editor.putString("userName", "");
+		editor.putInt("userId", 0);
+		editor.commit();
+		userId = 0;
+		getActionBar().setSelectedNavigationItem(0);
 	}
 
 	public void sortByUnits(View v) {
@@ -248,11 +247,11 @@ public class MainActivity extends Activity {
 	public void sortByProvinces(View v) {
 		highscoreFragment.sortEntries("provincesOwned");
 	}
-	
+
 	public Dialog getRegistrationDialog() {
 		return registrationDialog;
 	}
-	
+
 	public Dialog getLoginDialog() {
 		return loginDialog;
 	}

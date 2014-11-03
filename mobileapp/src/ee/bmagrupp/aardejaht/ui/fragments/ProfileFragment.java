@@ -16,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements LocalFragment {
+	private String tabName = "Profile";
+	private int tabIconId = R.drawable.profile_icon;
 	private Activity activity;
 	private ProfileEntryLoader profileEntryLoader;
 	private RelativeLayout profileLayout;
@@ -105,5 +107,15 @@ public class ProfileFragment extends Fragment {
 
 	public ProfileEntry getProfile() {
 		return profile;
+	}
+
+	@Override
+	public int getTabIconId() {
+		return tabIconId;
+	}
+
+	@Override
+	public String getTabName() {
+		return tabName;
 	}
 }

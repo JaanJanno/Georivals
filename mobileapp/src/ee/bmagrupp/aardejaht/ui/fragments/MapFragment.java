@@ -5,7 +5,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -17,25 +18,25 @@ import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
 public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements ConnectionCallbacks, OnConnectionFailedListener,
-		LocationListener {
+		implements LocalFragment, ConnectionCallbacks,
+		OnConnectionFailedListener, LocationListener {
+	private String tabName = "Map";
+	private int tabIconId = R.drawable.places_icon;
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationRequest;
@@ -51,7 +52,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		setupMap();
+		addSkin((ViewGroup) v);
 		return v;
+	}
+
+	private void addSkin(ViewGroup v) {
+		ImageView skin = new ImageView(activity);
+		skin.setImageResource(R.color.brown_transparent);
+		skin.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
+		v.addView(skin);
 	}
 
 	@Override
@@ -163,8 +173,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				if (map.getCameraPosition().zoom > 14)
+				if (map.getCameraPosition().zoom > 14){
+					map.clear();
 					drawProvinces();
+				}
 				else
 					map.clear();
 			}
@@ -191,15 +203,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		double currentLongitude = SWlongitude;
 		while (currentLatitude < NElatitude) {
 			while (currentLongitude < NElongitude) {
-				map.addPolygon(new PolygonOptions()
+				map.addPolyline(new PolylineOptions()
 						.add(new LatLng(currentLatitude, currentLongitude),
 								new LatLng(currentLatitude, currentLongitude
 										+ lengthLongitude),
 								new LatLng(currentLatitude + lengthLatitude,
-										currentLongitude + lengthLongitude),
-								new LatLng(currentLatitude + lengthLatitude,
-										currentLongitude))
-						.strokeColor(Color.BLACK).strokeWidth(1));
+										currentLongitude + lengthLongitude)).width(2.9f));
 				currentLongitude += lengthLongitude;
 			}
 			currentLatitude = currentLatitude + lengthLatitude;
@@ -231,5 +240,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	public ButtonClickListener getButtonClickListener() {
 		return buttonClickListener;
+	}
+
+	@Override
+	public int getTabIconId() {
+		return tabIconId;
+	}
+
+	@Override
+	public String getTabName() {
+		return tabName;
 	}
 }

@@ -39,16 +39,14 @@
 
     <TextView
         android:id="@+id/profile_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProfileTextStyle"
         android:layout_alignBaseline="@+id/username_label"
         android:layout_toEndOf="@+id/username_label"
         android:layout_toRightOf="@+id/username_label" />
 
     <TextView
         android:id="@+id/profile_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProfileTextStyle"
         android:layout_alignBaseline="@+id/email_label"
         android:layout_toEndOf="@+id/email_label"
         android:layout_toRightOf="@+id/email_label" />
@@ -85,26 +83,35 @@
 
     <TextView
         android:id="@+id/profile_total_units"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProfileTextStyle"
         android:layout_alignBaseline="@+id/total_units_label"
         android:layout_toEndOf="@+id/total_units_label"
         android:layout_toRightOf="@+id/total_units_label" />
 
     <TextView
         android:id="@+id/profile_average_units"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProfileTextStyle"
         android:layout_alignBaseline="@+id/average_units_label"
         android:layout_toEndOf="@+id/average_units_label"
         android:layout_toRightOf="@+id/average_units_label" />
 
     <TextView
         android:id="@+id/profile_provinces"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ProfileTextStyle"
         android:layout_alignBaseline="@+id/provinces_owned_label"
         android:layout_toEndOf="@+id/provinces_owned_label"
         android:layout_toRightOf="@+id/provinces_owned_label" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/brown_transparent"
+        android:text="@string/logout"
+        android:textColor="@color/dark_brown"
+        android:textSize="@dimen/text_medium"
+        android:onClick="logout" />
 
 </RelativeLayout>
