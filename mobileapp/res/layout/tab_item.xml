@@ -20,6 +20,6 @@
         android:layout_toRightOf="@+id/tab_item_icon"
         android:gravity="center"
         android:textColor="@color/brown"
-        android:textSize="@dimen/text_small" />
+        android:textSize="@dimen/text_medium" />
 
 </RelativeLayout>

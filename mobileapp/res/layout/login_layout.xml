@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin_large"
-    android:orientation="vertical" >
+    android:layout_margin="@dimen/margin_large2" >
+
+    <TextView
+        android:id="@+id/login_key_label"
+        style="@style/LoginStyle"
+        android:text="@string/enter_key" />
 
     <EditText
-        android:id="@+id/login_email"
-        style="@style/DialogStyle"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" >
+        android:id="@+id/login_key_textbox"
+        style="@style/LoginTextboxStyle"
+        android:layout_below="@id/login_key_label" >
 
         <requestFocus />
     </EditText>
 
     <Button
-        android:id="@+id/button_retrieve_key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="sendKey"
-        android:text="@string/login_key_send" />
-
-    <EditText
-        android:id="@+id/login_key"
-        style="@style/DialogStyle"
-        android:layout_marginTop="@dimen/margin_large"
-        android:ems="10"
-        android:hint="@string/login_key" />
-
-    <Button
-        android:id="@+id/button_login_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:id="@+id/login_start"
+        style="@style/LoginButtonStyle"
+        android:layout_below="@id/login_key_textbox"
         android:text="@string/start" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/login_email_label"
+        style="@style/LoginStyle"
+        android:layout_below="@id/login_start"
+        android:layout_marginTop="@dimen/margin_large1"
+        android:text="@string/choose_email" />
+
+    <EditText
+        android:id="@+id/login_email_textbox"
+        style="@style/LoginTextboxStyle"
+        android:layout_below="@id/login_email_label"
+        android:inputType="textEmailAddress" >
+    </EditText>
+
+    <Button
+        android:id="@+id/login_send_key"
+        style="@style/LoginButtonStyle"
+        android:layout_below="@id/login_email_textbox"
+        android:text="@string/login_send_key" />
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import ee.bmagrupp.aardejaht.core.communications.Constants;
 import ee.bmagrupp.aardejaht.core.communications.highscore.ProfileEntryLoader;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
+import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ProfileFragment extends Fragment implements LocalFragment {
+public class ProfileFragment extends Fragment implements TabItem {
 	private String tabName = "Profile";
 	private int tabIconId = R.drawable.profile_icon;
 	private Activity activity;

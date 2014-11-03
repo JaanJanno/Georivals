@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/register_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin_large2" >
+
+    <TextView
+        android:id="@+id/registration_username_label"
+        style="@style/LoginStyle"
+        android:text="@string/choose_name" />
+
+    <EditText
+        android:id="@+id/registration_username_textbox"
+        style="@style/LoginTextboxStyle"
+        android:layout_below="@id/registration_username_label" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/registration_email_label"
+        style="@style/LoginStyle"
+        android:layout_below="@id/registration_username_textbox"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/choose_email" />
+
+    <EditText
+        android:id="@+id/registration_email_textbox"
+        style="@style/LoginTextboxStyle"
+        android:layout_below="@id/registration_email_label"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/registration_email_info"
+        style="@style/LoginStyle"
+        android:layout_below="@id/registration_email_textbox"
+        android:lineSpacingExtra="-3dp"
+        android:text="@string/email_info"
+        android:textSize="@dimen/text_medium" />
+
+    <Button
+        android:id="@+id/registration_start"
+        style="@style/LoginButtonStyle"
+        android:layout_below="@id/registration_email_info"
+        android:layout_marginTop="@dimen/margin_large1"
+        android:text="@string/start" />
+
+    <TextView
+        android:id="@+id/registration_existing_account"
+        style="@style/LoginStyle"
+        android:layout_below="@id/registration_start"
+        android:layout_marginTop="@dimen/margin_medium1"
+        android:text="@string/login_existing"
+        android:textColor="@color/dark_red" />
+
+</RelativeLayout>

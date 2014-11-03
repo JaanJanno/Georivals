@@ -9,6 +9,7 @@ import ee.bmagrupp.aardejaht.core.communications.highscore.HighScoreListLoader;
 import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.adapters.HighScoreAdapter;
+import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-public class HighScoreFragment extends Fragment implements LocalFragment {
+public class HighScoreFragment extends Fragment implements TabItem {
 	private String tabName = "Highscores";
 	private int tabIconId = R.drawable.leaders_icon;
 	private List<HighScoreEntry> playerList;

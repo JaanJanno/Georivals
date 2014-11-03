@@ -2,17 +2,18 @@ package ee.bmagrupp.aardejaht.ui;
 
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
-import ee.bmagrupp.aardejaht.ui.fragments.LocalFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.LoginFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MissionLogFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MyPlacesFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
+import ee.bmagrupp.aardejaht.ui.fragments.RegistrationFragment;
 import ee.bmagrupp.aardejaht.ui.listeners.TabListener;
+import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -20,9 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,16 +38,14 @@ public class MainActivity extends Activity {
 	private ProfileFragment profileFragment;
 	private HighScoreFragment highscoreFragment;
 	private MyPlacesFragment myPlacesFragment;
-	private Activity activity;
-	private Dialog registrationDialog;
-	private Dialog loginDialog;
+	private RegistrationFragment registrationFragment;
+	private LoginFragment loginFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_layout);
-		activity = this;
-		userId = getUserId();
+		userId = getUserIdFromPrefs();
 		createFragmentsAndTabs();
 		addActionBarRibbon();
 		getActionBar().setDisplayShowHomeEnabled(false);
@@ -63,7 +59,7 @@ public class MainActivity extends Activity {
 		super.onStop();
 	}
 
-	private int getUserId() {
+	private int getUserIdFromPrefs() {
 		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 		return sharedPref.getInt("userId", 0);
 	}
@@ -74,8 +70,10 @@ public class MainActivity extends Activity {
 		profileFragment = new ProfileFragment();
 		highscoreFragment = new HighScoreFragment();
 		myPlacesFragment = new MyPlacesFragment();
+		registrationFragment = new RegistrationFragment();
+		loginFragment = new LoginFragment();
 
-		LocalFragment[] fragmentArray = new LocalFragment[] { mapFragment,
+		TabItem[] fragmentArray = new TabItem[] { mapFragment,
 				missionLogFragment, profileFragment, highscoreFragment,
 				myPlacesFragment };
 
@@ -85,7 +83,7 @@ public class MainActivity extends Activity {
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				"fonts/Gabriola.ttf");
 
-		for (LocalFragment fragment : fragmentArray) {
+		for (TabItem fragment : fragmentArray) {
 			String tabName = fragment.getTabName();
 			int tabIconId = fragment.getTabIconId();
 
@@ -121,109 +119,6 @@ public class MainActivity extends Activity {
 		actionBarContainer.addView(ribbonView);
 	}
 
-	public void showRegistrationDialog() {
-		registrationDialog = new Dialog(this);
-		registrationDialog.setContentView(R.layout.register_layout);
-		registrationDialog.setTitle("Registration");
-		Button registerButton = (Button) registrationDialog
-				.findViewById(R.id.button_register);
-		TextView loginTextView = (TextView) registrationDialog
-				.findViewById(R.id.existing_account);
-
-		registerButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				EditText usernameEditText = (EditText) registrationDialog
-						.findViewById(R.id.register_username);
-				EditText emailEditText = (EditText) registrationDialog
-						.findViewById(R.id.register_email);
-				String username = usernameEditText.getText().toString();
-				String email = emailEditText.getText().toString();
-				if (username.equals("")) {
-					MainActivity.showMessage(activity,
-							"Username must be filled!");
-				} else {
-					registrationRequest(username, email);
-				}
-			}
-		});
-
-		loginTextView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				registrationDialog.dismiss();
-				showLoginDialog();
-			}
-		});
-
-		registrationDialog.show();
-	}
-
-	private void showLoginDialog() {
-		loginDialog = new Dialog(this);
-		loginDialog.setContentView(R.layout.login_layout);
-		loginDialog.setTitle("Log in");
-		Button retrieveKeyButton = (Button) loginDialog
-				.findViewById(R.id.button_retrieve_key);
-		Button loginButton = (Button) loginDialog
-				.findViewById(R.id.button_login_start);
-		final EditText emailEditText = (EditText) loginDialog
-				.findViewById(R.id.login_email);
-		final EditText keyEditText = (EditText) loginDialog
-				.findViewById(R.id.login_key);
-
-		retrieveKeyButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String email = emailEditText.getText().toString();
-				if (isValidEmail(email)) {
-					sendKeyRequest(email);
-				} else {
-					MainActivity.showMessage(activity, "Invalid email!");
-				}
-			}
-		});
-		loginButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String loginKey = keyEditText.getText().toString();
-				if (loginKey.length() == 16 || loginKey.equals("test")) {
-					loginRequest(loginKey);
-					loginDialog.dismiss();
-				} else {
-					MainActivity.showMessage(activity, "Invalid login key!");
-				}
-			}
-		});
-		loginDialog.show();
-	}
-
-	private void registrationRequest(String username, String email) {
-
-	}
-
-	private void sendKeyRequest(String email) {
-
-	}
-
-	private void loginRequest(String loginKey) {
-		if (loginKey.equals("test")) {
-			SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putString("SID", loginKey);
-			editor.putInt("userId", 1);
-			editor.commit();
-			userId = 1;
-			getActionBar().setSelectedNavigationItem(0);
-		}
-	}
-
-	private boolean isValidEmail(CharSequence email) {
-		if (email == null)
-			return false;
-		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-	}
-
 	public static void showMessage(Context context, String message) {
 		toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 		toast.show();
@@ -248,12 +143,12 @@ public class MainActivity extends Activity {
 		highscoreFragment.sortEntries("provincesOwned");
 	}
 
-	public Dialog getRegistrationDialog() {
-		return registrationDialog;
+	public RegistrationFragment getRegistrationFragment() {
+		return registrationFragment;
 	}
 
-	public Dialog getLoginDialog() {
-		return loginDialog;
+	public LoginFragment getLoginFragment() {
+		return loginFragment;
 	}
 
 }

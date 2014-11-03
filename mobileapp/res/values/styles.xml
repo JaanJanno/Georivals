@@ -1,16 +1,30 @@
 <resources>
 
-    <style name="DialogStyle">
+    <style name="LoginStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_large1</item>
+    </style>
+    
+    <style name="LoginButtonStyle" parent="LoginStyle">
+		<item name="android:background">@drawable/button</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:textSize">@dimen/text_large2</item>
+		<item name="android:layout_marginTop">@dimen/margin_medium2</item>
+    </style>
+    
+    <style name="LoginTextboxStyle" parent="LoginStyle">
+		<item name="android:background">@drawable/textbox</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:ems">10</item>
     </style>
 
     <style name="HeaderStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/height_header</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:textSize">@dimen/text_large1</item>
         <item name="android:textColor">@color/dark_brown</item>
     </style>
 
@@ -31,7 +45,7 @@
     <style name="IconStyle">
         <item name="android:layout_width">@dimen/width_list_item</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">@dimen/margin_medium</item>
+        <item name="android:layout_marginRight">@dimen/margin_medium1</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 
@@ -39,7 +53,7 @@
         <item name="android:layout_width">@dimen/width_list_item</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginRight">@dimen/margin_medium</item>
+        <item name="android:layout_marginRight">@dimen/margin_medium1</item>
         <item name="android:textColor">@color/dark_brown</item>
         <item name="android:textSize">@dimen/text_medium</item>
     </style>

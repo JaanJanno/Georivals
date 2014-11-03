@@ -35,7 +35,7 @@
             android:layout_toRightOf="@+id/rank_icon"
             android:text="@string/name_title"
             android:textColor="@color/dark_brown"
-            android:textSize="@dimen/text_large" />
+            android:textSize="@dimen/text_large1" />
 
         <ImageButton
             android:id="@+id/unit_sort_button"

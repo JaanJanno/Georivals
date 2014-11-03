@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -22,10 +23,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
+import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -33,7 +36,7 @@ import android.location.LocationManager;
 import android.util.Log;
 
 public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements LocalFragment, ConnectionCallbacks,
+		implements TabItem, ConnectionCallbacks,
 		OnConnectionFailedListener, LocationListener {
 	private String tabName = "Map";
 	private int tabIconId = R.drawable.places_icon;

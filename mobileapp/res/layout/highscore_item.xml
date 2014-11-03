@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_toEndOf="@+id/player_rank"
         android:layout_toRightOf="@+id/player_rank"
-        android:textSize="@dimen/text_large" />
+        android:textSize="@dimen/text_large1" />
 
     <TextView
         android:id="@+id/provinces_owned"

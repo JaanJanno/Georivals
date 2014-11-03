@@ -8,7 +8,6 @@ import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
 import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
 import android.app.ActionBar;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Instrumentation;
@@ -66,14 +65,12 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	private void loginAndTest() {
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
-				actionBar.setSelectedNavigationItem(1);
+				actionBar.setSelectedNavigationItem(2);
 			}
 		});
 		instrumentation.waitForIdleSync();
-		Dialog registrationDialog = activity.getRegistrationDialog();
-		assertNotNull(registrationDialog);
-		final TextView loginTextView = (TextView) registrationDialog
-				.findViewById(R.id.existing_account);
+		final TextView loginTextView = (TextView) activity
+				.findViewById(R.id.registration_existing_account);
 		assertNotNull(loginTextView);
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
@@ -81,16 +78,14 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 			}
 		});
 		instrumentation.waitForIdleSync();
-		final Dialog loginDialog = activity.getLoginDialog();
-		assertNotNull(loginDialog);
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
-				EditText loginEditText = (EditText) loginDialog
-						.findViewById(R.id.login_key);
+				EditText loginEditText = (EditText) activity
+						.findViewById(R.id.login_key_textbox);
 				assertNotNull(loginEditText);
 				loginEditText.setText("test");
-				Button loginButton = (Button) loginDialog
-						.findViewById(R.id.button_login_start);
+				Button loginButton = (Button) activity
+						.findViewById(R.id.login_start);
 				assertNotNull(loginButton);
 				loginButton.performClick();
 			}
@@ -111,7 +106,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		instrumentation.waitForIdleSync();
 
 		// test if map fragment is visible
-		Fragment fragment = fragmentManager.findFragmentByTag("MapFragment");
+		Fragment fragment = fragmentManager.findFragmentByTag("Map");
 		MapFragment mapFragment = (MapFragment) fragment;
 		assertNotNull(mapFragment);
 		assertTrue(mapFragment instanceof com.google.android.gms.maps.MapFragment);
@@ -129,15 +124,14 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		// open profile fragment
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
-				actionBar.setSelectedNavigationItem(1);
-				assertEquals(1, actionBar.getSelectedNavigationIndex());
+				actionBar.setSelectedNavigationItem(2);
+				assertEquals(2, actionBar.getSelectedNavigationIndex());
 			}
 		});
 		instrumentation.waitForIdleSync();
 
 		// test if profile fragment is visible
-		Fragment fragment = fragmentManager
-				.findFragmentByTag("ProfileFragment");
+		Fragment fragment = fragmentManager.findFragmentByTag("Profile");
 		ProfileFragment profileFragment = (ProfileFragment) fragment;
 		assertNotNull(profileFragment);
 		assertTrue(profileFragment.isVisible());
@@ -147,7 +141,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertNotNull(profileFragment.getProfileLayout());
 
 		if (isNetworkAvailable()) {
-			waitForField(profileFragment.getProfile(), 1000);
+			waitForField(profileFragment.getProfile(), 5000);
 
 			TextView username = (TextView) activity
 					.findViewById(R.id.profile_username);
@@ -172,15 +166,14 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		// open highscore fragment
 		activity.runOnUiThread(new Runnable() {
 			public void run() {
-				actionBar.setSelectedNavigationItem(2);
-				assertEquals(2, actionBar.getSelectedNavigationIndex());
+				actionBar.setSelectedNavigationItem(3);
+				assertEquals(3, actionBar.getSelectedNavigationIndex());
 			}
 		});
 		instrumentation.waitForIdleSync();
 
 		// test if highscore fragment is visible
-		Fragment fragment = fragmentManager
-				.findFragmentByTag("HighscoreFragment");
+		Fragment fragment = fragmentManager.findFragmentByTag("Highscores");
 		HighScoreFragment highScoreFragment = (HighScoreFragment) fragment;
 		assertNotNull(highScoreFragment);
 		assertTrue(highScoreFragment.isVisible());
@@ -190,7 +183,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertNotNull(highScoreFragment.getHighscoreLayout());
 
 		if (isNetworkAvailable()) {
-			waitForField(highScoreFragment.getPlayerList(), 1000);
+			waitForField(highScoreFragment.getPlayerList(), 5000);
 			assertNotNull(highScoreFragment.getPlayerList());
 			assertNotNull(highScoreFragment.getAdapter());
 
