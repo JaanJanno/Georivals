@@ -11,18 +11,16 @@ import android.app.FragmentTransaction;
 public class TabListener implements ActionBar.TabListener {
 	private MainActivity activity;
 	private LocalFragment fragment;
-	private String fragmentTag;
 
-	public TabListener(MainActivity activity, LocalFragment fragment,
-			String fragmentTag) {
+	public TabListener(MainActivity activity, LocalFragment fragment) {
 		this.activity = activity;
 		this.fragment = fragment;
-		this.fragmentTag = fragmentTag;
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		if (fragmentTag == "ProfileFragment" && activity.userId == 0)
+		String fragmentTag = (String) tab.getTag();
+		if (fragmentTag == "Profile" && activity.userId == 0)
 			activity.showRegistrationDialog();
 		else
 			ft.replace(R.id.fragment_container, (Fragment) fragment,

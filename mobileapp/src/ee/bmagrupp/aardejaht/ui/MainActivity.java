@@ -12,25 +12,24 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("InflateParams")
 public class MainActivity extends Activity {
 	public static Toast toast;
 	public static final int LOGIN_REQUEST = 1;
@@ -52,6 +51,7 @@ public class MainActivity extends Activity {
 		activity = this;
 		userId = getUserId();
 		createFragmentsAndTabs();
+		addActionBarRibbon();
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(false);
 	}
@@ -68,7 +68,6 @@ public class MainActivity extends Activity {
 		return sharedPref.getInt("userId", 0);
 	}
 
-	@SuppressLint("InflateParams")
 	private void createFragmentsAndTabs() {
 		mapFragment = new MapFragment();
 		missionLogFragment = new MissionLogFragment();
@@ -105,12 +104,21 @@ public class MainActivity extends Activity {
 			tabIcon.setImageResource(tabIconId);
 
 			Tab tab = actionBar.newTab().setCustomView(tabLayout)
-					.setTabListener(new TabListener(this, fragment, tabName));
+					.setTag(tabName)
+					.setTabListener(new TabListener(this, fragment));
 			actionBar.addTab(tab);
 		}
 
 		actionBar.setSelectedNavigationItem(0);
+	}
 
+	private void addActionBarRibbon() {
+		int actionBarContainerId = getResources().getIdentifier(
+				"action_bar_container", "id", "android");
+		FrameLayout actionBarContainer = (FrameLayout) findViewById(actionBarContainerId);
+		LayoutInflater inflater = getLayoutInflater();
+		View ribbonView = inflater.inflate(R.layout.ribbon_layout, null);
+		actionBarContainer.addView(ribbonView);
 	}
 
 	public void showRegistrationDialog() {
@@ -206,6 +214,7 @@ public class MainActivity extends Activity {
 			editor.putInt("userId", 1);
 			editor.commit();
 			userId = 1;
+			getActionBar().setSelectedNavigationItem(0);
 		}
 	}
 
@@ -220,41 +229,15 @@ public class MainActivity extends Activity {
 		toast.show();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		} else if (id == R.id.action_logout) {
-			new AlertDialog.Builder(this)
-					.setTitle("Log Out")
-					.setMessage("Are you sure you want to log out?")
-					.setPositiveButton("Yes",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-									SharedPreferences.Editor editor = sharedPref
-											.edit();
-									editor.putString("SID", "");
-									editor.putString("userName", "");
-									editor.putInt("userId", 0);
-									editor.commit();
-									userId = 0;
-								}
-							})
-					.setNegativeButton("No",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// do nothing
-								}
-							}).setIcon(android.R.drawable.ic_dialog_alert)
-					.show();
-
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+	public void logout(View v) {
+		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("SID", "");
+		editor.putString("userName", "");
+		editor.putInt("userId", 0);
+		editor.commit();
+		userId = 0;
+		getActionBar().setSelectedNavigationItem(0);
 	}
 
 	public void sortByUnits(View v) {

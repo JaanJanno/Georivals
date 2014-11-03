@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -52,7 +54,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		setupMap();
+		addSkin((ViewGroup) v);
 		return v;
+	}
+
+	private void addSkin(ViewGroup v) {
+		ImageView skin = new ImageView(activity);
+		skin.setImageResource(R.color.brown_transparent);
+		skin.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
+		v.addView(skin);
 	}
 
 	@Override
