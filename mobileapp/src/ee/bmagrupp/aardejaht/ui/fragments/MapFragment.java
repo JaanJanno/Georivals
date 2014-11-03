@@ -18,18 +18,16 @@ import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -175,8 +173,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				if (map.getCameraPosition().zoom > 14)
+				if (map.getCameraPosition().zoom > 14){
+					map.clear();
 					drawProvinces();
+				}
 				else
 					map.clear();
 			}
@@ -203,15 +203,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		double currentLongitude = SWlongitude;
 		while (currentLatitude < NElatitude) {
 			while (currentLongitude < NElongitude) {
-				map.addPolygon(new PolygonOptions()
+				map.addPolyline(new PolylineOptions()
 						.add(new LatLng(currentLatitude, currentLongitude),
 								new LatLng(currentLatitude, currentLongitude
 										+ lengthLongitude),
 								new LatLng(currentLatitude + lengthLatitude,
-										currentLongitude + lengthLongitude),
-								new LatLng(currentLatitude + lengthLatitude,
-										currentLongitude))
-						.strokeColor(Color.BLACK).strokeWidth(1));
+										currentLongitude + lengthLongitude)).width(2.9f));
 				currentLongitude += lengthLongitude;
 			}
 			currentLatitude = currentLatitude + lengthLatitude;
