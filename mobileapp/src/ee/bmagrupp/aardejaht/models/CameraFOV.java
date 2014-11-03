@@ -9,7 +9,7 @@ public class CameraFOV {
 	private double NElatitude;
 	private double NElongitude;
 	
-	CameraFOV (LatLngBounds latLngBounds){
+	public CameraFOV (LatLngBounds latLngBounds){
 		this.SWlatitude = latLngBounds.southwest.latitude;
 		this.SWlongitude = latLngBounds.southwest.longitude;
 		this.NElatitude = latLngBounds.northeast.latitude;
