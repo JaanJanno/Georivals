@@ -27,6 +27,7 @@ public abstract class Connection implements Runnable {
 
 	private String urlString;				// URL of the connection destination.
 	private String cookie = "";				// Cookie for the request.
+	private String parameters = null;
 	
 	public Connection(String urlString) {
 		this.urlString = urlString;
@@ -61,7 +62,7 @@ public abstract class Connection implements Runnable {
 	public void run() {
 		HttpURLConnection connection = null;
 		try {
-			connection = getConnection(urlString);
+			connection = getConnection(createUrl());
 			httpRequest(connection);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,6 +70,30 @@ public abstract class Connection implements Runnable {
 			if (connection != null)
 				connection.disconnect();
 		}
+	}
+	
+	/**
+	 * Add a parameter to the request.
+	 * @param key
+	 * @param value
+	 */
+	
+	public void addParameter(String key, String value){
+		if (parameters == null)
+			parameters  =       key + "=" + value;
+		else
+			parameters += "&" + key + "=" + value;
+	}
+	
+	/*
+	 * Generates a query.
+	 */
+
+	private String createUrl() {
+		if (parameters == null)
+			return urlString;
+		else
+			return urlString + "?" + parameters; 
 	}
 
 	/*
