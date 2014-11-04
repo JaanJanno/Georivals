@@ -31,10 +31,6 @@ public class HighScoreController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	public ResponseEntity<HighScoreEntry> getById(@PathVariable int id) {
 		HighScoreEntry highscore = highScoreServ.findById(id);
-		if (highscore != null)
-			return new ResponseEntity<HighScoreEntry>(highscore, HttpStatus.OK);
-		else
-			return new ResponseEntity<HighScoreEntry>(highscore,
-					HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<HighScoreEntry>(highscore, HttpStatus.OK);
 	}
 }

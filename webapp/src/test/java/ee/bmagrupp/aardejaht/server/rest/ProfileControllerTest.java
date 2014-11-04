@@ -91,8 +91,7 @@ public class ProfileControllerTest {
 
 		mockMvc.perform(
 				get("/profile").cookie(badCookie).accept(
-						MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest())
+						MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().string(""));
 	}
 
@@ -113,8 +112,7 @@ public class ProfileControllerTest {
 		when(profServ.getPlayerProfile(100)).thenReturn(null);
 
 		mockMvc.perform(get("/profile/id/1").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isBadRequest())
-				.andExpect(content().string(""));
+				.andExpect(status().isOk()).andExpect(content().string(""));
 	}
 
 }
