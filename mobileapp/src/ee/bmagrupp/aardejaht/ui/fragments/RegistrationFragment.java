@@ -1,8 +1,15 @@
 package ee.bmagrupp.aardejaht.ui.fragments;
 
 import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.aardejaht.core.communications.loaders.registration.RegistrationPhase1Poster;
+import ee.bmagrupp.aardejaht.core.communications.loaders.registration.RegistrationPhase2Poster;
+import ee.bmagrupp.aardejaht.models.RegistrationDTO;
+import ee.bmagrupp.aardejaht.models.RegistrationResponse;
+import ee.bmagrupp.aardejaht.models.ServerResult;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -88,8 +95,54 @@ public class RegistrationFragment extends Fragment implements OnClickListener {
 		existingAccountTextView.setOnClickListener(this);
 	}
 
-	private void registrationRequest(String username, String email) {
+	private void registrationRequest(final String username, final String email) {
+		RegistrationPhase1Poster p = new RegistrationPhase1Poster(
+				new RegistrationDTO(username, email)) {
 
+			@Override
+			public void handleResponseObject(RegistrationResponse responseObject) {
+				System.out.println(responseObject);
+
+				RegistrationPhase2Poster p2 = new RegistrationPhase2Poster(
+						new RegistrationDTO(username, email, 10, 10)) {
+
+					@Override
+					public void handleResponseObject(
+							RegistrationResponse responseObject) {
+						ServerResult result = responseObject.getResult();
+						String SID = responseObject.getValue();
+						int userId = responseObject.getId();
+						if (result == ServerResult.OK) {
+							SharedPreferences sharedPref = activity
+									.getPreferences(Context.MODE_PRIVATE);
+							SharedPreferences.Editor editor = sharedPref.edit();
+							editor.putString("SID", SID);
+							editor.putInt("userId", userId);
+							editor.commit();
+							activity.userId = userId;
+							activity.getActionBar()
+									.setSelectedNavigationItem(0);
+						} else if (result == ServerResult.USERNAME_IN_USE) {
+							MainActivity.showMessage(activity,
+									"Username is already in use!");
+						} else {
+							MainActivity
+									.showMessage(activity, "Unknown error!");
+						}
+
+					}
+				};
+				if (responseObject.getResult() == ServerResult.OK)
+					p2.retrieveObject();
+				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE) {
+					MainActivity.showMessage(activity,
+							"Username is already in use!");
+				} else {
+					MainActivity.showMessage(activity, "Unknown error!");
+				}
+			}
+		};
+		p.retrieveObject();
 	}
 
 }

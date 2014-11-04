@@ -8,7 +8,6 @@ import ee.bmagrupp.aardejaht.core.communications.highscore.ProfileEntryLoader;
 import ee.bmagrupp.aardejaht.models.ProfileEntry;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import android.widget.TextView;
 public class ProfileFragment extends Fragment implements TabItem {
 	private String tabName = "Profile";
 	private int tabIconId = R.drawable.profile_icon;
-	private Activity activity;
+	private MainActivity activity;
 	private ProfileEntryLoader profileEntryLoader;
 	private RelativeLayout profileLayout;
 	private ProfileEntry profile;
@@ -44,8 +43,9 @@ public class ProfileFragment extends Fragment implements TabItem {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (activity == null) {
-			activity = getActivity();
-			profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE, 1) {
+			activity = (MainActivity) getActivity();
+			profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE,
+					activity.userId) {
 				@Override
 				public void handleResponseObject(final ProfileEntry profileEntry) {
 					activity.runOnUiThread(new Runnable() {
@@ -92,8 +92,11 @@ public class ProfileFragment extends Fragment implements TabItem {
 		usernameTextview.setText(username);
 		emailTextview.setText(email);
 		totalUnitsTextview.setText(Integer.toString(totalUnits));
-		averageUnitsTextview.setText(Integer.toString(totalUnits
-				/ ownedProvinces));
+		if (ownedProvinces != 0)
+			averageUnitsTextview.setText(Integer.toString(totalUnits
+					/ ownedProvinces));
+		else
+			averageUnitsTextview.setText("0");
 		provincesTextview.setText(Integer.toString(ownedProvinces));
 
 	}
