@@ -23,7 +23,7 @@ public class Constants {
 	public static final int UNIT_GENERATION_TIME = 86400000;
 
 	// Other
-	public static final String DOWNLOAD_PAGE = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+	public static final String DOWNLOAD_PAGE = "http://math.ut.ee/~jaan911/mobileapp/Aardejaht.apk";
 	public static final int PROVINCE_NAME_LENGTH = 10;
 	public static final int PLAYER_SID_LENGTH = 16;
 	public static final int PLAYER_START_UNITS = 10;
