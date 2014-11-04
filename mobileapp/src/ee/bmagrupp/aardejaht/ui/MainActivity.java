@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
 	private MyPlacesFragment myPlacesFragment;
 	private RegistrationFragment registrationFragment;
 	private LoginFragment loginFragment;
+	private final Activity activity = this;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -119,9 +120,14 @@ public class MainActivity extends Activity {
 		actionBarContainer.addView(ribbonView);
 	}
 
-	public static void showMessage(Context context, String message) {
-		toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-		toast.show();
+	public void showMessage(final String message) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
+				toast.show();
+			}
+		});
 	}
 
 	public void logout(View v) {

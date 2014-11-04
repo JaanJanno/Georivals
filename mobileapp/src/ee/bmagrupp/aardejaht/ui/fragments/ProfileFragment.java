@@ -55,9 +55,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 								profile = profileEntry;
 								populateLayout();
 							} else
-								MainActivity
-										.showMessage(activity,
-												"Failed to retrieve the profile info from the server.");
+								activity.showMessage("Failed to retrieve the profile info from the server.");
 						}
 					});
 				}

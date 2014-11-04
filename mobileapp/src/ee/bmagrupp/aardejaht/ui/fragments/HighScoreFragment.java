@@ -10,7 +10,6 @@ import ee.bmagrupp.aardejaht.models.HighScoreEntry;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.adapters.HighScoreAdapter;
 import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	private int tabIconId = R.drawable.leaders_icon;
 	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
-	private Activity activity;
+	private MainActivity activity;
 	private HighScoreListLoader highScoreListLoader;
 	private RelativeLayout highscoreLayout;
 
@@ -48,7 +47,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 		super.onCreate(savedInstanceState);
 
 		if (activity == null) {
-			activity = getActivity();
+			activity = (MainActivity) getActivity();
 			highScoreListLoader = new HighScoreListLoader(
 					ee.bmagrupp.aardejaht.core.communications.Constants.HIGHSCORE) {
 
@@ -65,9 +64,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 										playerList);
 								listview.setAdapter(adapter);
 							} else {
-								MainActivity
-										.showMessage(activity,
-												"Failed to retrieve the highscore list from the server.");
+								activity.showMessage("Failed to retrieve the highscore list from the server.");
 							}
 						}
 					});

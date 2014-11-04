@@ -29,22 +29,21 @@ import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
 
 public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements TabItem, ConnectionCallbacks,
-		OnConnectionFailedListener, LocationListener {
+		implements TabItem, ConnectionCallbacks, OnConnectionFailedListener,
+		LocationListener {
 	private String tabName = "Map";
 	private int tabIconId = R.drawable.places_icon;
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationRequest;
 	private LocationManager locationManager;
-	private Activity activity;
+	private MainActivity activity;
 	private LatLng lastLatLng;
 	private float lastZoom;
 	private ButtonClickListener buttonClickListener;
@@ -145,7 +144,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	private void setupMap() {
 		if (map == null) {
-			activity = getActivity();
+			activity = (MainActivity) getActivity();
 			locationManager = (LocationManager) activity
 					.getSystemService(Context.LOCATION_SERVICE);
 			googleApiClient = new GoogleApiClient.Builder(activity)
@@ -176,11 +175,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				if (map.getCameraPosition().zoom > 14){
+				if (map.getCameraPosition().zoom > 14) {
 					map.clear();
 					drawProvinces();
-				}
-				else
+				} else
 					map.clear();
 			}
 		});
@@ -206,12 +204,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		double currentLongitude = SWlongitude;
 		while (currentLatitude < NElatitude) {
 			while (currentLongitude < NElongitude) {
-				map.addPolyline(new PolylineOptions()
-						.add(new LatLng(currentLatitude, currentLongitude),
-								new LatLng(currentLatitude, currentLongitude
-										+ lengthLongitude),
-								new LatLng(currentLatitude + lengthLatitude,
-										currentLongitude + lengthLongitude)).width(2.9f));
+				map.addPolyline(new PolylineOptions().add(
+						new LatLng(currentLatitude, currentLongitude),
+						new LatLng(currentLatitude, currentLongitude
+								+ lengthLongitude),
+						new LatLng(currentLatitude + lengthLatitude,
+								currentLongitude + lengthLongitude))
+						.width(2.9f));
 				currentLongitude += lengthLongitude;
 			}
 			currentLatitude = currentLatitude + lengthLatitude;

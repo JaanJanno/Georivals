@@ -48,7 +48,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
 			if (loginKey.length() == 16 || loginKey.equals("test")) {
 				loginRequest(loginKey);
 			} else {
-				MainActivity.showMessage(activity, "Invalid login key!");
+				activity.showMessage("Invalid login key!");
 			}
 		}
 
@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
 			if (isValidEmail(email)) {
 				sendKeyRequest(email);
 			} else {
-				MainActivity.showMessage(activity, "Invalid email!");
+				activity.showMessage("Invalid email!");
 			}
 		}
 

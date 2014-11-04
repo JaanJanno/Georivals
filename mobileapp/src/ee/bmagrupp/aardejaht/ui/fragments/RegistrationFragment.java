@@ -52,7 +52,7 @@ public class RegistrationFragment extends Fragment implements OnClickListener {
 			String username = usernameEditText.getText().toString();
 			String email = emailEditText.getText().toString();
 			if (username.equals("")) {
-				MainActivity.showMessage(activity, "Username must be filled!");
+				activity.showMessage("Username must be filled!");
 			} else {
 				registrationRequest(username, email);
 			}
@@ -120,14 +120,18 @@ public class RegistrationFragment extends Fragment implements OnClickListener {
 							editor.putInt("userId", userId);
 							editor.commit();
 							activity.userId = userId;
-							activity.getActionBar()
-									.setSelectedNavigationItem(0);
+							activity.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									activity.getActionBar()
+											.setSelectedNavigationItem(0);
+								}
+							});
+							activity.showMessage("User created!");
 						} else if (result == ServerResult.USERNAME_IN_USE) {
-							MainActivity.showMessage(activity,
-									"Username is already in use!");
+							activity.showMessage("Username is already in use!");
 						} else {
-							MainActivity
-									.showMessage(activity, "Unknown error!");
+							activity.showMessage("Unknown error!");
 						}
 
 					}
@@ -135,10 +139,9 @@ public class RegistrationFragment extends Fragment implements OnClickListener {
 				if (responseObject.getResult() == ServerResult.OK)
 					p2.retrieveObject();
 				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE) {
-					MainActivity.showMessage(activity,
-							"Username is already in use!");
+					activity.showMessage("Username is already in use!");
 				} else {
-					MainActivity.showMessage(activity, "Unknown error!");
+					activity.showMessage("Unknown error!");
 				}
 			}
 		};
