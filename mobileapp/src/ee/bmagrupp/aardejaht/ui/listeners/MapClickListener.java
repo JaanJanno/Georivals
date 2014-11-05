@@ -15,7 +15,10 @@ public class MapClickListener implements OnMapClickListener {
 
 	@Override
 	public void onMapClick(LatLng point) {
-		if (activity.userId == 0)
+		if (activity.choosingHomeProvince)
+			activity.getRegistrationFragment().showPhase2ConfirmationDialog(
+					point.latitude, point.longitude);
+		else if (activity.userId == 0)
 			activity.getFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_container,

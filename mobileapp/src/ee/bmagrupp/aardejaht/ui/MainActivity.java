@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,6 +34,7 @@ public class MainActivity extends Activity {
 	public static final int LOGIN_REQUEST = 1;
 	public static final int REGISTRATION_REQUEST = 2;
 	public int userId;
+	public boolean choosingHomeProvince;
 	private MapFragment mapFragment;
 	private MissionLogFragment missionLogFragment;
 	private ProfileFragment profileFragment;
@@ -51,6 +53,11 @@ public class MainActivity extends Activity {
 		addActionBarRibbon();
 		getActionBar().setDisplayShowHomeEnabled(false);
 		getActionBar().setDisplayShowTitleEnabled(false);
+
+		TextView chooseHomeLabel = (TextView) findViewById(R.id.choose_home_label);
+		chooseHomeLabel.setVisibility(View.INVISIBLE);
+		Button setHomeButton = (Button) findViewById(R.id.set_home_current);
+		setHomeButton.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -147,6 +154,10 @@ public class MainActivity extends Activity {
 
 	public void sortByProvinces(View v) {
 		highscoreFragment.sortEntries("provincesOwned");
+	}
+
+	public MapFragment getMapFragment() {
+		return mapFragment;
 	}
 
 	public RegistrationFragment getRegistrationFragment() {

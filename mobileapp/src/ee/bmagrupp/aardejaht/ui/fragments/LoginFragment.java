@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class LoginFragment extends Fragment implements OnClickListener {
+public class LoginFragment extends Fragment {
 	private RelativeLayout loginLayout;
 	private MainActivity activity;
 
@@ -27,6 +27,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
 				container, false);
 		activity = (MainActivity) getActivity();
 		changeFonts();
+		setButtonListeners();
 		return loginLayout;
 	}
 
@@ -35,35 +36,6 @@ public class LoginFragment extends Fragment implements OnClickListener {
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
 		super.onDestroyView();
-	}
-
-	@Override
-	public void onClick(View v) {
-		String buttonText = ((Button) v).getText().toString();
-		if (buttonText
-				.equals(activity.getResources().getString(R.string.start))) {
-			EditText keyEditText = (EditText) loginLayout
-					.findViewById(R.id.login_key_textbox);
-			String loginKey = keyEditText.getText().toString();
-			if (loginKey.length() == 16 || loginKey.equals("test")) {
-				loginRequest(loginKey);
-			} else {
-				activity.showMessage("Invalid login key!");
-			}
-		}
-
-		else if (buttonText.equals(activity.getResources().getString(
-				R.string.login_send_key))) {
-			EditText emailEditText = (EditText) loginLayout
-					.findViewById(R.id.login_email_textbox);
-			String email = emailEditText.getText().toString();
-			if (isValidEmail(email)) {
-				sendKeyRequest(email);
-			} else {
-				activity.showMessage("Invalid email!");
-			}
-		}
-
 	}
 
 	private void changeFonts() {
@@ -89,9 +61,41 @@ public class LoginFragment extends Fragment implements OnClickListener {
 		emailTextView.setTypeface(font);
 		emailEditText.setTypeface(font);
 		sendKeyButton.setTypeface(font);
+	}
 
-		startButton.setOnClickListener(this);
-		sendKeyButton.setOnClickListener(this);
+	private void setButtonListeners() {
+		Button startButton = (Button) loginLayout
+				.findViewById(R.id.login_start);
+		Button sendKeyButton = (Button) loginLayout
+				.findViewById(R.id.login_send_key);
+
+		startButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText keyEditText = (EditText) loginLayout
+						.findViewById(R.id.login_key_textbox);
+				String loginKey = keyEditText.getText().toString();
+				if (loginKey.length() == 16 || loginKey.equals("test")) {
+					loginRequest(loginKey);
+				} else {
+					activity.showMessage("Invalid login key!");
+				}
+			}
+		});
+
+		sendKeyButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				EditText emailEditText = (EditText) loginLayout
+						.findViewById(R.id.login_email_textbox);
+				String email = emailEditText.getText().toString();
+				if (isValidEmail(email)) {
+					sendKeyRequest(email);
+				} else {
+					activity.showMessage("Invalid email!");
+				}
+			}
+		});
 	}
 
 	private void loginRequest(String loginKey) {

@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -30,6 +33,7 @@ import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -48,6 +52,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private float lastZoom;
 	private ButtonClickListener buttonClickListener;
 	private MapClickListener mapClickListener;
+	private Location playerLocation;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +60,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		setupMap();
 		addSkin((ViewGroup) v);
+		if (activity.choosingHomeProvince) {
+			addSetHomeViews((ViewGroup) v);
+		}
 		return v;
 	}
 
@@ -64,6 +72,34 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		skin.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
 		v.addView(skin);
+	}
+
+	private void addSetHomeViews(ViewGroup v) {
+		Typeface font = Typeface.createFromAsset(activity.getAssets(),
+				"fonts/Gabriola.ttf");
+
+		TextView chooseHomeLabel = (TextView) activity
+				.findViewById(R.id.choose_home_label);
+		chooseHomeLabel.setVisibility(View.VISIBLE);
+		chooseHomeLabel.setTypeface(font);
+
+		Button setHomeButton = (Button) activity
+				.findViewById(R.id.set_home_current);
+		setHomeButton.setVisibility(View.VISIBLE);
+		setHomeButton.setTypeface(font);
+		setHomeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (playerLocation != null) {
+					activity.getRegistrationFragment()
+							.showPhase2ConfirmationDialog(
+									playerLocation.getLatitude(),
+									playerLocation.getLongitude());
+				} else {
+					activity.showMessage("Get your location first!");
+				}
+			}
+		});
 	}
 
 	@Override
@@ -118,6 +154,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	public void onLocationChanged(Location location) {
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
+		playerLocation = location;
 	}
 
 	// currently not in use, but this will be used later

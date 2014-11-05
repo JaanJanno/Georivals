@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog"
+    android:padding="@dimen/margin_large1" >
+
+    <TextView
+        android:id="@+id/dialog_question_label"
+        style="@style/LoginStyle" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_question_label"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dialog_yes"
+            style="@style/LoginButtonStyle"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium1"
+            android:layout_weight="0.5"
+            android:text="@string/yes" />
+
+        <Button
+            android:id="@+id/dialog_no"
+            style="@style/LoginButtonStyle"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium1"
+            android:layout_weight="0.5"
+            android:text="@string/no" />
+    </LinearLayout>
+
+</RelativeLayout>

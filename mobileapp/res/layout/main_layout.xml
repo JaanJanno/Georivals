@@ -12,12 +12,31 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:contentDescription="@null"
         android:scaleType="fitXY"
         android:src="@drawable/footer" />
+
+    <TextView
+        android:id="@+id/choose_home_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium1"
+        android:gravity="center"
+        android:text="@string/choose_home"
+        android:textSize="@dimen/text_large1" />
+
+    <Button
+        android:id="@+id/set_home_current"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/footer"
+        android:background="@drawable/button"
+        android:text="@string/set_home_current"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_large1" />
 
 </RelativeLayout>

@@ -20,9 +20,11 @@ public class TabListener implements ActionBar.TabListener {
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		String fragmentTag = (String) tab.getTag();
-		if (fragmentTag.equals("Profile") && activity.userId == 0)
-			ft.replace(R.id.fragment_container, activity.getRegistrationFragment(),
-					"Registration");
+		if (activity.choosingHomeProvince && !fragmentTag.equals("Map"))
+			activity.getActionBar().setSelectedNavigationItem(0);
+		else if (fragmentTag.equals("Profile") && activity.userId == 0)
+			ft.replace(R.id.fragment_container,
+					activity.getRegistrationFragment(), "Registration");
 		else
 			ft.replace(R.id.fragment_container, (Fragment) fragment,
 					fragmentTag);

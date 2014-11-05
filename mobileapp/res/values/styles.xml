@@ -6,18 +6,18 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_large1</item>
     </style>
-    
+
     <style name="LoginButtonStyle" parent="LoginStyle">
-		<item name="android:background">@drawable/button</item>
-		<item name="android:textColor">@color/white</item>
-		<item name="android:textSize">@dimen/text_large2</item>
-		<item name="android:layout_marginTop">@dimen/margin_medium2</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_large2</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium2</item>
     </style>
-    
+
     <style name="LoginTextboxStyle" parent="LoginStyle">
-		<item name="android:background">@drawable/textbox</item>
-		<item name="android:textColor">@color/white</item>
-		<item name="android:ems">10</item>
+        <item name="android:background">@drawable/textbox</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:ems">10</item>
     </style>
 
     <style name="HeaderStyle">

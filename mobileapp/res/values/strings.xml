@@ -5,6 +5,7 @@
     <string name="average_units">Average number of units:</string>
     <string name="choose_name">Choose you name:</string>
     <string name="choose_email">Enter your e-mail:</string>
+    <string name="choose_home">Please choose your home province by clicking on a province or the button below.</string>
     <string name="enter_key">Enter your login key:</string>
     <string name="email">E-mail</string>
     <string name="email_colon">E-mail:</string>
@@ -17,10 +18,12 @@
     <string name="login_existing">I already have an account</string>
     <string name="logout">Log Out</string>
     <string name="name_title">Name</string>
+    <string name="no">No</string>
     <string name="profile_title">Profile</string>
     <string name="provinces_owned">Number of provinces owned:</string>
     <string name="rank">Rank</string>
     <string name="register">Register</string>
+    <string name="set_home_current">Make my current location my home province</string>
     <string name="settings">Settings</string>
     <string name="sort_provinces">Sort provinces</string>
     <string name="sort_units">Sort units</string>
@@ -30,5 +33,6 @@
     <string name="username">Username</string>
     <string name="username_colon">Username:</string>
     <string name="welcome">Welcome</string>
+    <string name="yes">Yes</string>
 
 </resources>
