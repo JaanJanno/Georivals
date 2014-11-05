@@ -125,10 +125,10 @@ public class ProvinceServiceImpl implements ProvinceService {
 	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
 		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
 
-		int columns = calculateColumnNr(fov.getSWlongitude(),
-				fov.getNElongitude());
+		int columns = calculateColumnNr(fov.getSwlongitude(),
+				fov.getNelongitude());
 
-		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
+		int rows = calculateRowsNr(fov.getSwlatitude(), fov.getNelatitude());
 		Player tempPlayer = playerRepo.findBySid(cookie);
 		int playerStrength = PLAYER_DEFAULT_STRENGTH;
 		int curPlayerId = PLAYER_DEFAULT_ID;
@@ -137,15 +137,15 @@ public class ProvinceServiceImpl implements ProvinceService {
 			playerStrength = findPlayerStrength(cookie);
 		}
 
-		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
-		double baseLong = Math.floor(fov.getSWlongitude() * 1000.0) / 1000.0;
+		double baseLat = Math.floor(fov.getSwlatitude() * 1000.0) / 1000.0;
+		double baseLong = Math.floor(fov.getSwlongitude() * 1000.0) / 1000.0;
 		if ((baseLong * 1000.0) % 2 != 0) {
 			baseLong = ((baseLong * 1000) - 1) / 1000.0;
 		}
 
 		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(
-				fov.getSWlatitude(), fov.getSWlongitude(), fov.getNElatitude(),
-				fov.getNElongitude());
+				fov.getSwlatitude(), fov.getSwlongitude(), fov.getNelatitude(),
+				fov.getNelongitude());
 
 		// For generating new units
 		Date currentDate = new Date();

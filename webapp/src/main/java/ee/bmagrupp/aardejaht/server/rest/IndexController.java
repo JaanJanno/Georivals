@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 //@RestController
-public class IndexController implements ErrorController{
+public class IndexController {
 
     private static final String PATH = "/error";
 
@@ -20,8 +20,8 @@ public class IndexController implements ErrorController{
 		} catch (IOException e) {}
     }
 
-    @Override
-    public String getErrorPath() {
-        return PATH;
-    }
+//    @Override
+//    public String getErrorPath() {
+//        return PATH;
+//    }
 }

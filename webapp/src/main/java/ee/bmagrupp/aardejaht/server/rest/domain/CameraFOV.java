@@ -7,10 +7,10 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
  *
  */
 public class CameraFOV {
-	private double SWlatitude;
-	private double SWlongitude;
-	private double NElatitude;
-	private double NElongitude;
+	private double swlatitude;
+	private double swlongitude;
+	private double nelatitude;
+	private double nelongitude;
 
 	public CameraFOV() {
 	}
@@ -18,49 +18,49 @@ public class CameraFOV {
 	public CameraFOV(double swlatitude, double swlongitude, double nelatitude,
 			double nelongitude) {
 		super();
-		SWlatitude = swlatitude;
-		SWlongitude = swlongitude;
-		NElatitude = nelatitude;
-		NElongitude = nelongitude;
+		this.swlatitude = swlatitude;
+		this.swlongitude = swlongitude;
+		this.nelatitude = nelatitude;
+		this.nelongitude = nelongitude;
 	}
 
-	public double getSWlatitude() {
-		return SWlatitude;
+	public double getSwlatitude() {
+		return swlatitude;
 	}
 
-	public double getSWlongitude() {
-		return SWlongitude;
+	public void setSwlatitude(double swlatitude) {
+		this.swlatitude = swlatitude;
 	}
 
-	public double getNElatitude() {
-		return NElatitude;
+	public double getSwlongitude() {
+		return swlongitude;
 	}
 
-	public double getNElongitude() {
-		return NElongitude;
+	public void setSwlongitude(double swlongitude) {
+		this.swlongitude = swlongitude;
 	}
 
-	public void setSWlatitude(double sWlatitude) {
-		SWlatitude = sWlatitude;
+	public double getNelatitude() {
+		return nelatitude;
 	}
 
-	public void setSWlongitude(double sWlongitude) {
-		SWlongitude = sWlongitude;
+	public void setNelatitude(double nelatitude) {
+		this.nelatitude = nelatitude;
 	}
 
-	public void setNElatitude(double nElatitude) {
-		NElatitude = nElatitude;
+	public double getNelongitude() {
+		return nelongitude;
 	}
 
-	public void setNElongitude(double nElongitude) {
-		NElongitude = nElongitude;
+	public void setNelongitude(double nelongitude) {
+		this.nelongitude = nelongitude;
 	}
 
 	@Override
 	public String toString() {
-		return "CameraFOV [SWlatitude=" + SWlatitude + ", SWlongitude="
-				+ SWlongitude + ", NElatitude=" + NElatitude + ", NElongitude="
-				+ NElongitude + "]";
+		return "CameraFOV [swlatitude=" + swlatitude + ", swlongitude="
+				+ swlongitude + ", nelatitude=" + nelatitude + ", nelongitude="
+				+ nelongitude + "]";
 	}
 
 	/**
@@ -69,9 +69,9 @@ public class CameraFOV {
 	 * @return JSON string
 	 */
 	public String toJson() {
-		return "{ \"nelongitude\":" + NElongitude + ",\"swlongitude\":"
-				+ SWlongitude + ",\"swlatitude\":" + SWlatitude
-				+ ",\"nelatitude\":" + NElatitude + " }";
+		return "{ \"nelongitude\":" + nelongitude + ",\"swlongitude\":"
+				+ swlongitude + ",\"swlatitude\":" + swlatitude
+				+ ",\"nelatitude\":" + nelatitude + " }";
 	}
 
 }

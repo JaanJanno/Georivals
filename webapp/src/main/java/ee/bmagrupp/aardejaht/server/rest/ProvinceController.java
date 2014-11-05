@@ -31,10 +31,11 @@ public class ProvinceController {
 	public ResponseEntity<List<ProvinceDTO>> getProvinces(
 			@RequestBody CameraFOV fov,
 			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
-		LOG.debug("All provinces");
-		LOG.debug(fov.toJson());
-		LOG.debug(cookie);
+		LOG.info("All provinces");
+		LOG.info(fov.toJson());
+		LOG.info(cookie);
 		List<ProvinceDTO> provs = provServ.getProvinces(fov, cookie);
+		LOG.info("The number of provs to return " + provs.size());
 		return new ResponseEntity<List<ProvinceDTO>>(provs, HttpStatus.ACCEPTED);
 	}
 
