@@ -1,16 +1,17 @@
 package ee.bmagrupp.aardejaht.ui.fragments;
 
+import java.util.HashSet;
 import java.util.List;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -19,14 +20,15 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.loaders.province.ProvinceUILoader;
 import ee.bmagrupp.aardejaht.models.CameraFOV;
@@ -35,8 +37,9 @@ import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
@@ -57,6 +60,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private ButtonClickListener buttonClickListener;
 	private MapClickListener mapClickListener;
 	private Location playerLocation;
+	private HashSet<LatLng> drawedProvincesSet = new HashSet<LatLng>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -103,6 +107,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		lastZoom = map.getCameraPosition().zoom;
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
+		drawedProvincesSet.clear();
 		super.onDestroyView();
 	}
 
@@ -189,7 +194,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 			if (map != null) {
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-						59.437046, 24.753742), 16.0f));
+						59.437046, 24.753742), 17.0f));
 				setMapSettings();
 			}
 		} else {
@@ -207,9 +212,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				map.clear();
-				if (map.getCameraPosition().zoom > 14)
+				if (map.getCameraPosition().zoom > 15)
 					requestProvinces();
+				else if (drawedProvincesSet.size() > 0) {
+					map.clear();
+					drawedProvincesSet.clear();
+				}
 			}
 		});
 	}
@@ -234,26 +242,74 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		l.retrieveList();
 	}
 
+	@SuppressLint("InflateParams")
 	private void drawProvinces(List<ProvinceDTO> provinceList) {
+		Typeface font = Typeface.createFromAsset(activity.getAssets(),
+				"fonts/Gabriola.ttf");
 		for (ProvinceDTO province : provinceList) {
-			double centerLatitude = province.getLatitude();
-			double centerLongitude = province.getLongitude();
-			double lengthLatitude = 0.0005;
-			double lengthLongitude = 0.001;
-			double westernLatitude = centerLatitude - lengthLatitude;
-			double southernLongitude = centerLongitude - lengthLongitude;
-			double easternLatitude = centerLatitude + lengthLatitude;
-			double northernLongitude = centerLongitude + lengthLongitude;
-			map.addPolygon(new PolygonOptions()
-					.add(new LatLng(westernLatitude, southernLongitude),
-							new LatLng(easternLatitude, southernLongitude),
-							new LatLng(easternLatitude, northernLongitude),
-							new LatLng(westernLatitude, northernLongitude))
-					.strokeColor(Color.BLACK)
-					.strokeWidth(2.9f)
-					.fillColor(
-							activity.getResources().getColor(
-									R.color.brown_transparent)));
+			double centerLatitude = Math.round(province.getLatitude() * 10000);
+			centerLatitude /= 10000;
+			double centerLongitude = Math.round(province.getLongitude() * 1000);
+			centerLongitude /= 1000;
+			LatLng centerLatLng = new LatLng(centerLatitude, centerLongitude);
+			if (!drawedProvincesSet.contains(centerLatLng)) {
+				drawedProvincesSet.add(centerLatLng);
+				int ownerId = province.getPlayerId();
+				double lengthLatitude = 0.0005;
+				double lengthLongitude = 0.001;
+				double westernLatitude = centerLatitude - lengthLatitude;
+				double southernLongitude = centerLongitude - lengthLongitude;
+				double easternLatitude = centerLatitude + lengthLatitude;
+				double northernLongitude = centerLongitude + lengthLongitude;
+				LatLngBounds provinceBounds = new LatLngBounds(new LatLng(
+						westernLatitude, southernLongitude), new LatLng(
+						easternLatitude, northernLongitude));
+
+				map.addPolygon(new PolygonOptions().add(
+						new LatLng(westernLatitude, southernLongitude),
+						new LatLng(easternLatitude, southernLongitude),
+						new LatLng(easternLatitude, northernLongitude),
+						new LatLng(westernLatitude, northernLongitude))
+						.strokeWidth(2.9f));
+
+				int provinceColor;
+				RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater
+						.from(activity).inflate(R.layout.province1, null);
+				TextView provinceName = (TextView) provinceLayout
+						.findViewById(R.id.province_name);
+				if (ownerId == 0) {
+					provinceName.setVisibility(View.INVISIBLE);
+				} else {
+					provinceName.setText(province.getName());
+					provinceName.setTypeface(font);
+					if (ownerId == activity.userId)
+						provinceColor = activity.getResources().getColor(
+								R.color.green_transparent);
+					else
+						provinceColor = activity.getResources().getColor(
+								R.color.dark_brown_transparent);
+					provinceLayout.setBackgroundColor(provinceColor);
+				}
+				TextView unitCount = (TextView) provinceLayout
+						.findViewById(R.id.province_unit_count);
+				unitCount.setText(String.valueOf(province.getUnitCount()));
+				unitCount.setTypeface(font);
+				provinceLayout.setDrawingCacheEnabled(true);
+				provinceLayout
+						.measure(MeasureSpec.makeMeasureSpec(0,
+								MeasureSpec.UNSPECIFIED), MeasureSpec
+								.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+				provinceLayout.layout(0, 0, provinceLayout.getMeasuredWidth(),
+						provinceLayout.getMeasuredHeight());
+				provinceLayout.buildDrawingCache();
+				Bitmap provinceImage = provinceLayout.getDrawingCache();
+
+				GroundOverlayOptions provinceOverlay = new GroundOverlayOptions()
+						.image(BitmapDescriptorFactory
+								.fromBitmap(provinceImage)).positionFromBounds(
+								provinceBounds);
+				map.addGroundOverlay(provinceOverlay);
+			}
 		}
 	}
 

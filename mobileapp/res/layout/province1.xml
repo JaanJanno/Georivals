@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:background="@color/brown_transparent"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/province_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/castle_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small" />
+
+    <TextView
+        android:id="@+id/province_unit_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/province_name"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/units_count"
+        android:paddingLeft="35dp"
+        android:paddingRight="0dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small" />
+
+</RelativeLayout>

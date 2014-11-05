@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 		chooseHomeLabel.setVisibility(View.INVISIBLE);
 		Button setHomeButton = (Button) findViewById(R.id.set_home_current);
 		setHomeButton.setVisibility(View.INVISIBLE);
-		
+
 		updatePlayerInfo();
 	}
 
@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 			System.exit(0);
 		super.onStop();
 	}
-	
+
 	public void updatePlayerInfo() {
 		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 		userId = sharedPref.getInt("userId", 0);
