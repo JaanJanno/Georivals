@@ -48,6 +48,17 @@ public class ProvinceServiceIntegrationTest {
 		fov = new CameraFOV(58.3479039, 26.7091679, 58.3872609, 26.7598840);
 		playerID = 1; // ID for Mr. TK
 	}
+	
+	@Test
+	public void noSidTest() {
+	    String cookie = "cookie"; // Default sid value
+	    List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+	 
+	    assertEquals("Provinces in area", 1066, provList.size());
+	    for (ProvinceDTO a : provList) {
+	        assertEquals("Nobody should have any new units", 0,a.getNewUnitCount());
+	    }
+	} 
 
 	@Test
 	public void provinceNumberTest() {

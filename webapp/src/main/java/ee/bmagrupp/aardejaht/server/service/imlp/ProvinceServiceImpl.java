@@ -31,6 +31,7 @@ import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 @Service
 public class ProvinceServiceImpl implements ProvinceService {
 
+	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory
 			.getLogger(ProvinceServiceImpl.class);
 	private static Random rand = new Random();
@@ -128,8 +129,13 @@ public class ProvinceServiceImpl implements ProvinceService {
 				fov.getNElongitude());
 
 		int rows = calculateRowsNr(fov.getSWlatitude(), fov.getNElatitude());
-		int curPlayerId = playerRepo.findBySid(cookie).getId();
-		int playerStrength = findPlayerStrength(cookie);
+		Player tempPlayer = playerRepo.findBySid(cookie);
+		int playerStrength = PLAYER_DEFAULT_STRENGTH;
+		int curPlayerId = PLAYER_DEFAULT_ID;
+		if(tempPlayer != null){
+			curPlayerId = tempPlayer.getId();
+			playerStrength = findPlayerStrength(cookie);
+		}
 
 		double baseLat = Math.floor(fov.getSWlatitude() * 1000.0) / 1000.0;
 		double baseLong = Math.floor(fov.getSWlongitude() * 1000.0) / 1000.0;
@@ -194,6 +200,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 		int max = playerStrength
 				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
 		int botStrength = rand.nextInt((max - min) + 1) + min;
+		if (botStrength > 100){
+			botStrength = 100;
+		}
+		else if(botStrength < 1){
+			botStrength = 1;
+		}
 		int provinceID = rand.nextInt((10000000 - 100000) + 1) + 100000;
 		String name = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH);
 

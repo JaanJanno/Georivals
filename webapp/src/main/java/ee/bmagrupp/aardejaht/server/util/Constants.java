@@ -5,6 +5,10 @@ public class Constants {
 	public static final int BOT_ID = 0;
 	public static final double BOT_STRENGTH_CONSTANT = 0.2;
 
+	// Player
+	public static final int PLAYER_DEFAULT_STRENGTH = 100;
+	public static final int PLAYER_DEFAULT_ID = -1;
+	
 	// Province generation
 	public static final double PROVINCE_WIDTH = 0.002;
 	public static final double PROVINCE_HEIGHT = 0.001;
