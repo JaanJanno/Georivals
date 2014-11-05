@@ -260,7 +260,7 @@ public class RegistrationFragment extends Fragment {
 					editor.putString("SID", SID);
 					editor.putInt("userId", userId);
 					editor.commit();
-					activity.userId = userId;
+					activity.updatePlayerInfo();
 					activity.showMessage("User created!");
 				} else if (result == ServerResult.USERNAME_IN_USE) {
 					activity.showMessage("Username is already in use!");

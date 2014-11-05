@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
 			editor.putString("SID", loginKey);
 			editor.putInt("userId", 1);
 			editor.commit();
-			activity.userId = 1;
+			activity.updatePlayerInfo();
 			activity.getActionBar().setSelectedNavigationItem(0);
 		}
 	}

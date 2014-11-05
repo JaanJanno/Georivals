@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 	public static final int LOGIN_REQUEST = 1;
 	public static final int REGISTRATION_REQUEST = 2;
 	public int userId;
+	public String SID = "";
 	public boolean choosingHomeProvince;
 	private MapFragment mapFragment;
 	private MissionLogFragment missionLogFragment;
@@ -48,7 +49,6 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_layout);
-		userId = getUserIdFromPrefs();
 		createFragmentsAndTabs();
 		addActionBarRibbon();
 		getActionBar().setDisplayShowHomeEnabled(false);
@@ -58,6 +58,8 @@ public class MainActivity extends Activity {
 		chooseHomeLabel.setVisibility(View.INVISIBLE);
 		Button setHomeButton = (Button) findViewById(R.id.set_home_current);
 		setHomeButton.setVisibility(View.INVISIBLE);
+		
+		updatePlayerInfo();
 	}
 
 	@Override
@@ -66,10 +68,11 @@ public class MainActivity extends Activity {
 			System.exit(0);
 		super.onStop();
 	}
-
-	private int getUserIdFromPrefs() {
+	
+	public void updatePlayerInfo() {
 		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		return sharedPref.getInt("userId", 0);
+		userId = sharedPref.getInt("userId", 0);
+		SID = sharedPref.getString("SID", "");
 	}
 
 	private void createFragmentsAndTabs() {
@@ -144,7 +147,7 @@ public class MainActivity extends Activity {
 		editor.putString("userName", "");
 		editor.putInt("userId", 0);
 		editor.commit();
-		userId = 0;
+		updatePlayerInfo();
 		getActionBar().setSelectedNavigationItem(0);
 	}
 

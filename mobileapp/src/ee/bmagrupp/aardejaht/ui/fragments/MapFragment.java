@@ -1,14 +1,14 @@
 package ee.bmagrupp.aardejaht.ui.fragments;
 
+import java.util.List;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -22,17 +22,21 @@ import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.aardejaht.core.communications.loaders.province.ProvinceUILoader;
+import ee.bmagrupp.aardejaht.models.CameraFOV;
+import ee.bmagrupp.aardejaht.models.ProvinceDTO;
 import ee.bmagrupp.aardejaht.ui.MainActivity;
 import ee.bmagrupp.aardejaht.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.aardejaht.ui.listeners.MapClickListener;
 import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
@@ -59,19 +63,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		setupMap();
-		addSkin((ViewGroup) v);
 		if (activity.choosingHomeProvince) {
 			addSetHomeViews((ViewGroup) v);
 		}
 		return v;
-	}
-
-	private void addSkin(ViewGroup v) {
-		ImageView skin = new ImageView(activity);
-		skin.setImageResource(R.color.brown_transparent);
-		skin.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
-		v.addView(skin);
 	}
 
 	private void addSetHomeViews(ViewGroup v) {
@@ -212,49 +207,54 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				if (map.getCameraPosition().zoom > 14) {
-					map.clear();
-					drawProvinces();
-				} else
-					map.clear();
+				map.clear();
+				if (map.getCameraPosition().zoom > 14)
+					requestProvinces();
 			}
 		});
 	}
 
-	private void drawProvinces() {
-		double lengthLatitude = 0.001;
-		double lengthLongitude = 0.002;
+	private void requestProvinces() {
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-		LatLng SW = bounds.southwest;
-		LatLng NE = bounds.northeast;
-		double SWlatitude = Math.floor(SW.latitude * 1000) / 1000;
-		double SWlongitude = Math.floor(SW.longitude * 1000) / 1000;
-		double NElatitude = Math.ceil(NE.latitude * 1000) / 1000;
-		double NElongitude = Math.ceil(NE.longitude * 1000) / 1000;
+		ProvinceUILoader l = new ProvinceUILoader(activity.SID, new CameraFOV(
+				bounds), activity) {
 
-		if ((SWlongitude * 1000.0) % 2 != 0)
-			SWlongitude -= lengthLatitude;
-		if ((NElongitude * 1000.0) % 2 != 0)
-			NElongitude += lengthLatitude;
-
-		double currentLatitude = SWlatitude;
-		double currentLongitude = SWlongitude;
-		while (currentLatitude < NElatitude) {
-			while (currentLongitude < NElongitude) {
-				map.addPolyline(new PolylineOptions().add(
-						new LatLng(currentLatitude, currentLongitude),
-						new LatLng(currentLatitude, currentLongitude
-								+ lengthLongitude),
-						new LatLng(currentLatitude + lengthLatitude,
-								currentLongitude + lengthLongitude))
-						.width(2.9f));
-				currentLongitude += lengthLongitude;
+			@Override
+			public void handleResponseListInUI(List<ProvinceDTO> responseList) {
+				drawProvinces(responseList);
 			}
-			currentLatitude = currentLatitude + lengthLatitude;
-			currentLongitude = SWlongitude;
 
+			@Override
+			public void handleResponseListInBackground(
+					List<ProvinceDTO> responseList) {
+
+			}
+
+		};
+		l.retrieveList();
+	}
+
+	private void drawProvinces(List<ProvinceDTO> provinceList) {
+		for (ProvinceDTO province : provinceList) {
+			double centerLatitude = province.getLatitude();
+			double centerLongitude = province.getLongitude();
+			double lengthLatitude = 0.0005;
+			double lengthLongitude = 0.001;
+			double westernLatitude = centerLatitude - lengthLatitude;
+			double southernLongitude = centerLongitude - lengthLongitude;
+			double easternLatitude = centerLatitude + lengthLatitude;
+			double northernLongitude = centerLongitude + lengthLongitude;
+			map.addPolygon(new PolygonOptions()
+					.add(new LatLng(westernLatitude, southernLongitude),
+							new LatLng(easternLatitude, southernLongitude),
+							new LatLng(easternLatitude, northernLongitude),
+							new LatLng(westernLatitude, northernLongitude))
+					.strokeColor(Color.BLACK)
+					.strokeWidth(2.9f)
+					.fillColor(
+							activity.getResources().getColor(
+									R.color.brown_transparent)));
 		}
-
 	}
 
 	public GoogleApiClient getGoogleApiClient() {
