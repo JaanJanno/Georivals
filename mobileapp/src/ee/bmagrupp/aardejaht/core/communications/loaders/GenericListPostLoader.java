@@ -3,10 +3,8 @@ package ee.bmagrupp.aardejaht.core.communications.loaders;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import ee.bmagrupp.aardejaht.core.communications.PostConnection;
 
 /**
@@ -21,7 +19,8 @@ import ee.bmagrupp.aardejaht.core.communications.PostConnection;
 
 abstract public class GenericListPostLoader<T> implements Runnable {
 	
-	final Class<T> typeParameterClass;
+	final Class<T>  typeParameterClass;
+	final Type typeToken;
 
 	private String url; 		// URL of the connection destination.
 	protected String cookie = "";	// Cookie string;
@@ -32,9 +31,10 @@ abstract public class GenericListPostLoader<T> implements Runnable {
 	 * @param url
 	 */
 
-	public GenericListPostLoader(Class<T> typeParameterClass, String url) {
+	public GenericListPostLoader(Class<T> typeParameterClass, Type typeToken, String url) {
 		this.url = url;
 		this.typeParameterClass = typeParameterClass;
+		this.typeToken = typeToken;
 	}
 	
 	/**
@@ -43,10 +43,11 @@ abstract public class GenericListPostLoader<T> implements Runnable {
 	 * @param url
 	 */
 	
-	public GenericListPostLoader(Class<T> typeParameterClass, String url, String cookie) {
+	public GenericListPostLoader(Class<T> typeParameterClass, Type typeToken, String url, String cookie) {
 		this.url = url;
 		this.cookie = cookie;
 		this.typeParameterClass = typeParameterClass;
+		this.typeToken = typeToken;
 	}
 	
 	/**
@@ -65,9 +66,7 @@ abstract public class GenericListPostLoader<T> implements Runnable {
 	 */
 
 	protected List<T> getObjectFromJSON(String json) {
-		Type listType = new TypeToken<ArrayList<T>>() {
-		}.getType();
-		return new Gson().fromJson(json, listType);
+		return new Gson().fromJson(json, typeToken);
 	}
 	
 	/**
