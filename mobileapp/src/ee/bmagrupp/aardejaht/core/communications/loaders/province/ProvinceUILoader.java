@@ -28,8 +28,8 @@ public abstract class ProvinceUILoader extends ProvinceLoader {
 		handleResponseListInBackground(responseList);
 	}
 	
-	abstract void handleResponseListInUI(List<ProvinceDTO> responseList);
+	abstract public void handleResponseListInUI(List<ProvinceDTO> responseList);
 	
-	abstract void handleResponseListInBackground(List<ProvinceDTO> responseList);
+	abstract public void handleResponseListInBackground(List<ProvinceDTO> responseList);
 
 }
