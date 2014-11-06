@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Unit;
+import ee.bmagrupp.aardejaht.server.core.domain.UnitState;
 import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.aardejaht.server.service.HighScoreService;
@@ -53,7 +54,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 				provinces += 1;
 				if (own.getUnits() != null) {
 					for (Unit unit : own.getUnits()) {
-						units += unit.getSize();
+						if(unit.getState() == UnitState.CLAIMED){
+							units += unit.getSize();
+						}
 					}
 				}
 			}
@@ -62,7 +65,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 
 		if (player.getHome().getUnits() != null) {
 			for (Unit unit : player.getHome().getUnits()) {
-				units += unit.getSize();
+				if(unit.getState() == UnitState.CLAIMED){
+					units += unit.getSize();
+				}
 			}
 
 		}

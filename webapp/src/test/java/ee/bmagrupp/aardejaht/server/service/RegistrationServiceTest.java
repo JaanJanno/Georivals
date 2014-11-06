@@ -170,7 +170,7 @@ public class RegistrationServiceTest {
 		assertNull(p);
 
 		Player player = regServ.createPlayer("Smaug",
-				"smaug@lonelymountain.com", 58.123, 26.123);
+				"smaug@lonelymountain.com", 58.12332634, 26.12309275);
 
 		// Checking the database for this user
 		Player playerCheck = playerRepo.findByUserName("Smaug");
@@ -183,10 +183,10 @@ public class RegistrationServiceTest {
 				.length());
 		assertEquals("Player owned stuff", 0, player.getOwnedProvinces().size());
 
-		assertEquals("Player home province latitude", 58.123, player.getHome()
-				.getProvince().getLatitude(), 0.001);
+		assertEquals("Player home province latitude", 58.1235, player.getHome()
+				.getProvince().getLatitude(), 0.0001);
 		assertEquals("Player home province longitude", 26.123, player.getHome()
-				.getProvince().getLongitude(), 0.001);
+				.getProvince().getLongitude(), 0.0005);
 
 		// Unit check
 		assertEquals("Player home province units ", 1, player.getHome()
@@ -211,7 +211,7 @@ public class RegistrationServiceTest {
 		long1 = player.getHome().getProvince().getLongitude();
 		
 		assertEquals("Latitude", 35.3605, lat, 0.0001);
-		assertEquals("Longitude", 138.727, long1, 0.001);
+		assertEquals("Longitude", 138.727, long1, 0.0005);
 	}
 
 }

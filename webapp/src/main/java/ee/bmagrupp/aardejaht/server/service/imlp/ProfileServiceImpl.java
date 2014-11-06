@@ -13,6 +13,7 @@ import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
 import ee.bmagrupp.aardejaht.server.core.domain.Unit;
+import ee.bmagrupp.aardejaht.server.core.domain.UnitState;
 import ee.bmagrupp.aardejaht.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
@@ -92,7 +93,9 @@ public class ProfileServiceImpl implements ProfileService {
 		int unitCount = 0;
 		if (units != null) {
 			for (Unit unit : units) {
-				unitCount += unit.getSize();
+				if(unit.getState() == UnitState.CLAIMED){
+					unitCount += unit.getSize();
+				}
 			}
 		}
 		return unitCount;
