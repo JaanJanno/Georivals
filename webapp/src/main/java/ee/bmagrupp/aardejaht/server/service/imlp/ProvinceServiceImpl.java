@@ -188,7 +188,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 				} else {
 					lst.remove(foundArea);
 				}
-				LOG.info(Double.toString(rtrn.get(rtrn.size()-1).getLatitude()) + " : " + Double.toString(rtrn.get(rtrn.size()-1).getLongitude()));
 			}
 		}
 		return rtrn;
