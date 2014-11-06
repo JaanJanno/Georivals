@@ -81,6 +81,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	private double normalizeLong(double homeLong) {
 		double rtrn = Math.floor(homeLong * 1000.0) / 1000.0;
+		if ((rtrn * 1000.0) % 2 != 0) {
+			rtrn = ((rtrn * 1000) - 1) / 1000.0;
+		}
 		rtrn += (Constants.PROVINCE_WIDTH / 2);
 		return rtrn;
 	}
