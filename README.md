@@ -39,7 +39,7 @@ Herokus töötab andmebaas `DATABASE_URL` kaudu, nii et soovi kõrval võib Hero
 Selline string on näiteks `postgres://root:root@localhost:3306/test`.
 
 #### Testide jooksutamine
-Kui projekt on seadistatud ja andmebaas töötab, siis saab jooksutada teste, minnes eclips-is java/tests kausta peale vajutades paremat klõpsu ja valides rippmenüüst Run As > JUnit test. Pärast seda jooksutatakse kõik testid mis on olemas. Kõik testid jooksutatakse ka nagunii iga `commiti` järel, ja testide õnnestumine on näidatud selle README faili alguses oleva rohelise/punase tulukese poolt, tänu pideva integratsiooni tööriistale Travis
+Kui projekt on seadistatud ja andmebaas töötab, siis saab jooksutada teste, minnes eclips-is java/tests kausta peale vajutades paremat klõpsu ja valides rippmenüüst `Run As > JUnit` test. Pärast seda jooksutatakse kõik testid mis on olemas. Kõik testid jooksutatakse ka nagunii iga `commiti` järel, ja testide õnnestumine on näidatud selle README faili alguses oleva rohelise/punase tulukese poolt, tänu pideva integratsiooni tööriistale Travis
 
 ### Androidi seadistus
 #### Vajalikud asjad
