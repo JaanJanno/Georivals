@@ -69,6 +69,27 @@ Lisaks läheb vaja Android SDK Managerist:
 8. Vali omale sobiv seade (oma telefon või emulaator) ja vajuta OK.
 9. Kui oled kõiki samme õigesti järginud, peaks programm nüüd käivituma.
 
+#### Testide jooksutamine
+Testide jooksutamiseks on vaja kasutada Genymotioni emulaatorit või füüsilist seadet. Android Development Tools'iga kaasasolevat emulaatorit ei saa selleks kasutada, sest selle emulaatori Google Play Service'is on bug, mis seda takistab.
+
+Siinkohal on soovitatud kasutada füüsilist seadet, sest Genymotioni emulaatori installimine ja seadistamine võib võtta kusagil ~30 minutit vähemalt. Samuti kasutab Genymotion emulaatorina VirtualBoxi virtuaalmasinat, seega kui Te kompileerite koodi ise juba VirtualBoxi virtuaalmasinas, ei saa Te Genymotioni emulaatorit kasutada.
+
+##### Füüsilise seadmega testide jooksutamine
+1. Ühenda telefon arvutiga.
+2. Lülita USB debugging telefonis sisse, kui see pole juba sisse lülitatud. (http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909)
+3. Ava mobileapp-test alamprojektis asuva MainTest faili ja vajuta Run > Run as.. > Android JUnit Test
+
+##### Genymotioni emulaatori installiminem, seadistamine ja selles testide jooksutamine
+1. Tõmmake ja installige sobiv Genymotioni versioon siit lehelt: https://cloud.genymotion.com/page/launchpad/download/ <br>
+Kui Teil pole VirtualBox juba installitud, on soovitatud valida see versioon, mis on koos VirtualBoxiga.
+2. Tõmmake ja installige sobiva kompilaatori plugin eelnevalt antud lehelt.
+3. Käivitage Genymotioni programm ja looge uus seade. Seadme API versioon peab olema vähemalt 14.
+4. Jälgige vastava StackOverflow teema vastuse juhiseid, et installida loodud emulaatorisse Google Play Services: http://stackoverflow.com/questions/17831990/how-do-you-install-google-frameworks-play-accounts-etc-on-a-genymotion-virt <br>
+Kui vastavad juhised jäävad kusagil arusaamatuks, võite lugeda ka järgneva lehekülje juhiseid: http://www.techrepublic.com/article/pro-tip-install-google-play-services-on-android-emulator-genymotion/ <br>
+NB! Juhise seitsmendast sammust alates on normaalne, et Google Play Services emulaatoris kokku jookseb, kui Te pole veel jõudnud sellele uuenduse teha Google Play-s.
+5. Kui emulaator ja Google Play Services on installitud ja seadistatud, siis käivita see emulaator. (Eclipse'is saab seadmete nimekirja avada Ctrl+6 vajutades.)
+6. Testide jooksutamiseks ava mobileapp-test alamprojektis asuva MainTest faili ja vajuta Run > Run as.. > Android JUnit Test
+
 ## In English
 'Vallutajad' is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be the ruler of the provinces and have enough soldiers, you need to visit the regions regularly.
 
