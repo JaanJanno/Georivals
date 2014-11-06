@@ -22,7 +22,7 @@ Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus ole
 2. Mine käsurealt webapp kausta
 3.  Mälus oleva andmebaasi kasutamiseks peab minema faili src/main/resources/application.properties ja muutma rida `spring.profiles.active=default`. `default` asemele kirjuta `test`. Kohaliku andmebaasi kasutamiseks kirjuta `mysql`või `postgres`. 
 4. webapp kaustas käsk `mvn spring-boot:run`
-5. Nüüd peaks server olema ligipääsetav aadressil `localhost:8080`. Andmete nägemiseks võid proovida `localhost:8080/user`
+5. Nüüd peaks server olema ligipääsetav aadressil `localhost:8080`. Andmete nägemiseks võid proovida `localhost:8080/highscore`
 6. Käsk `mvn eclipse:eclipse` genereerib Eclipse jaoks vajalikud failid
 7. Nüüd saab teha `import existing projects`.
 
@@ -37,6 +37,9 @@ Päris andmebaasi  näidisandmeid hetkel ei impordita.
 Herokus töötab andmebaas `DATABASE_URL` kaudu, nii et soovi kõrval võib Heroku stiilis Postgres ühendamise stringi süsteemi keskonnamuutujatesse panna. Sellisel juhul ei pea `application.properties` failis midagi muutma. 
 
 Selline string on näiteks `postgres://root:root@localhost:3306/test`.
+
+#### Testide jooksutamine
+Kui projekt on seadistatud ja andmebaas töötab, siis saab jooksutada teste, minnes eclips-is java/tests kausta peale vajutades paremat klõpsu ja valides rippmenüüst Run As > JUnit test. Pärast seda jooksutatakse kõik testid mis on olemas. Kõik testid jooksutatakse ka nagunii iga `commiti` järel, ja testide õnnestumine on näidatud selle README faili alguses oleva rohelise/punase tulukese poolt, tänu pideva integratsiooni tööriistale Travis
 
 ### Androidi seadistus
 #### Vajalikud asjad
