@@ -45,7 +45,8 @@ public class ProvinceServiceIntegrationTest {
 
 	@Before
 	public void setUp() {
-		fov = new CameraFOV(58.3479039, 26.7091679, 58.3872609, 26.7598840);
+		// -40.4195, 144.961
+		fov = new CameraFOV(-40.423,144.960,-40.419,144.966);
 		playerID = 1; // ID for Mr. TK
 	}
 	
@@ -54,7 +55,7 @@ public class ProvinceServiceIntegrationTest {
 	    String cookie = "cookie"; // Default sid value
 	    List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 	 
-	    assertEquals("Provinces in area", 1066, provList.size());
+	    assertEquals("Provinces in area", 12, provList.size());
 	    for (ProvinceDTO a : provList) {
 	        assertEquals("Nobody should have any new units", 0,a.getNewUnitCount());
 	    }
@@ -65,7 +66,7 @@ public class ProvinceServiceIntegrationTest {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		assertEquals("Provinces in area", 1066, provList.size());
+		assertEquals("Provinces in area", 12, provList.size());
 	}
 
 	@Test
@@ -86,8 +87,8 @@ public class ProvinceServiceIntegrationTest {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		double lastLat = 0;
-		double lastLong = 0;
+		double lastLat = provList.get(0).getLatitude() - 1;
+		double lastLong = provList.get(0).getLongitude() - 1;
 
 		for (ProvinceDTO a : provList) {
 			double y = a.getLatitude();
