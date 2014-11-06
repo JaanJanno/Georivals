@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,16 +63,13 @@ public class RegistrationFragment extends Fragment {
 		TextView existingAccountTextView = (TextView) registrationLayout
 				.findViewById(R.id.registration_existing_account);
 
-		Typeface font = Typeface.createFromAsset(activity.getAssets(),
-				"fonts/Gabriola.ttf");
-
-		usernameTextView.setTypeface(font);
-		usernameEditText.setTypeface(font);
-		emailTextView.setTypeface(font);
-		emailEditText.setTypeface(font);
-		emailInfoTextview.setTypeface(font);
-		startButton.setTypeface(font);
-		existingAccountTextView.setTypeface(font);
+		usernameTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+		usernameEditText.setTypeface(MainActivity.GABRIOLA_FONT);
+		emailTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+		emailEditText.setTypeface(MainActivity.GABRIOLA_FONT);
+		emailInfoTextview.setTypeface(MainActivity.GABRIOLA_FONT);
+		startButton.setTypeface(MainActivity.GABRIOLA_FONT);
+		existingAccountTextView.setTypeface(MainActivity.GABRIOLA_FONT);
 	}
 
 	private void setButtonListeners() {
@@ -145,14 +141,11 @@ public class RegistrationFragment extends Fragment {
 				Button noButton = (Button) confirmationDialog
 						.findViewById(R.id.dialog_no);
 
-				Typeface font = Typeface.createFromAsset(activity.getAssets(),
-						"fonts/Gabriola.ttf");
-
 				questionTextView.setText("Are you sure you want to choose '"
 						+ username + "' as your name?");
-				questionTextView.setTypeface(font);
-				yesButton.setTypeface(font);
-				noButton.setTypeface(font);
+				questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+				yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
+				noButton.setTypeface(MainActivity.GABRIOLA_FONT);
 
 				yesButton.setOnClickListener(new OnClickListener() {
 					@Override
@@ -203,14 +196,11 @@ public class RegistrationFragment extends Fragment {
 				Button noButton = (Button) confirmationDialog
 						.findViewById(R.id.dialog_no);
 
-				Typeface font = Typeface.createFromAsset(activity.getAssets(),
-						"fonts/Gabriola.ttf");
-
 				questionTextView
 						.setText("Do you want to make this your home province?");
-				questionTextView.setTypeface(font);
-				yesButton.setTypeface(font);
-				noButton.setTypeface(font);
+				questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+				yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
+				noButton.setTypeface(MainActivity.GABRIOLA_FONT);
 
 				yesButton.setOnClickListener(new OnClickListener() {
 					@Override

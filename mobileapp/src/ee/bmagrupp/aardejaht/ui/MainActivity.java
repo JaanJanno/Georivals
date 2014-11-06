@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
 	public static Toast toast;
 	public static final int LOGIN_REQUEST = 1;
 	public static final int REGISTRATION_REQUEST = 2;
+	public static Typeface GABRIOLA_FONT;
 	public int userId;
 	public String SID = "";
 	public boolean choosingHomeProvince;
@@ -49,6 +50,8 @@ public class MainActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_layout);
+		GABRIOLA_FONT = Typeface.createFromAsset(getAssets(),
+				"fonts/Gabriola.ttf");
 		createFragmentsAndTabs();
 		addActionBarRibbon();
 		getActionBar().setDisplayShowHomeEnabled(false);
@@ -91,9 +94,6 @@ public class MainActivity extends Activity {
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		Typeface font = Typeface.createFromAsset(getAssets(),
-				"fonts/Gabriola.ttf");
-
 		for (TabItem fragment : fragmentArray) {
 			String tabName = fragment.getTabName();
 			int tabIconId = fragment.getTabIconId();
@@ -104,7 +104,7 @@ public class MainActivity extends Activity {
 			TextView tabText = (TextView) tabLayout
 					.findViewById(R.id.tab_item_text);
 
-			tabText.setTypeface(font);
+			tabText.setTypeface(GABRIOLA_FONT);
 			tabText.setAllCaps(true);
 			tabText.setText(tabName);
 

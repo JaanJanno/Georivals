@@ -1,7 +1,8 @@
 package ee.bmagrupp.aardejaht.ui.fragments;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -22,13 +24,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.aardejaht.core.communications.loaders.province.ProvinceUILoader;
 import ee.bmagrupp.aardejaht.models.CameraFOV;
@@ -40,7 +43,8 @@ import ee.bmagrupp.aardejaht.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
@@ -48,6 +52,8 @@ import android.util.Log;
 public class MapFragment extends com.google.android.gms.maps.MapFragment
 		implements TabItem, ConnectionCallbacks, OnConnectionFailedListener,
 		LocationListener {
+	private final double PROVINCE_LATITUDE_RADIUS = 0.0005;
+	private final double PROVINCE_LONGITUDE_RADIUS = 0.001;
 	private String tabName = "Map";
 	private int tabIconId = R.drawable.places_icon;
 	private GoogleMap map;
@@ -60,7 +66,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private ButtonClickListener buttonClickListener;
 	private MapClickListener mapClickListener;
 	private Location playerLocation;
-	private HashSet<LatLng> drawedProvincesSet = new HashSet<LatLng>();
+	private HashMap<LatLng, GroundOverlay> drawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,18 +80,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	}
 
 	private void addSetHomeViews(ViewGroup v) {
-		Typeface font = Typeface.createFromAsset(activity.getAssets(),
-				"fonts/Gabriola.ttf");
-
 		TextView chooseHomeLabel = (TextView) activity
 				.findViewById(R.id.choose_home_label);
 		chooseHomeLabel.setVisibility(View.VISIBLE);
-		chooseHomeLabel.setTypeface(font);
+		chooseHomeLabel.setTypeface(MainActivity.GABRIOLA_FONT);
 
 		Button setHomeButton = (Button) activity
 				.findViewById(R.id.set_home_current);
 		setHomeButton.setVisibility(View.VISIBLE);
-		setHomeButton.setTypeface(font);
+		setHomeButton.setTypeface(MainActivity.GABRIOLA_FONT);
 		setHomeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -107,7 +110,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		lastZoom = map.getCameraPosition().zoom;
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
-		drawedProvincesSet.clear();
+		drawnProvincesMap.clear();
 		super.onDestroyView();
 	}
 
@@ -214,9 +217,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			public void onCameraChange(CameraPosition position) {
 				if (map.getCameraPosition().zoom > 15)
 					requestProvinces();
-				else if (drawedProvincesSet.size() > 0) {
+				else if (drawnProvincesMap.size() > 0) {
 					map.clear();
-					drawedProvincesSet.clear();
+					drawnProvincesMap.clear();
 				}
 			}
 		});
@@ -244,73 +247,103 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	@SuppressLint("InflateParams")
 	private void drawProvinces(List<ProvinceDTO> provinceList) {
-		Typeface font = Typeface.createFromAsset(activity.getAssets(),
-				"fonts/Gabriola.ttf");
+		HashMap<LatLng, GroundOverlay> newDrawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
 		for (ProvinceDTO province : provinceList) {
-			double centerLatitude = Math.round(province.getLatitude() * 10000);
-			centerLatitude /= 10000;
-			double centerLongitude = Math.round(province.getLongitude() * 1000);
-			centerLongitude /= 1000;
+			double centerLatitude = roundDouble(province.getLatitude(), 10000);
+			double centerLongitude = roundDouble(province.getLongitude(), 1000);
 			LatLng centerLatLng = new LatLng(centerLatitude, centerLongitude);
-			if (!drawedProvincesSet.contains(centerLatLng)) {
-				drawedProvincesSet.add(centerLatLng);
-				int ownerId = province.getPlayerId();
-				double lengthLatitude = 0.0005;
-				double lengthLongitude = 0.001;
-				double westernLatitude = centerLatitude - lengthLatitude;
-				double southernLongitude = centerLongitude - lengthLongitude;
-				double easternLatitude = centerLatitude + lengthLatitude;
-				double northernLongitude = centerLongitude + lengthLongitude;
-				LatLngBounds provinceBounds = new LatLngBounds(new LatLng(
-						westernLatitude, southernLongitude), new LatLng(
-						easternLatitude, northernLongitude));
 
-				map.addPolygon(new PolygonOptions().add(
-						new LatLng(westernLatitude, southernLongitude),
-						new LatLng(easternLatitude, southernLongitude),
-						new LatLng(easternLatitude, northernLongitude),
-						new LatLng(westernLatitude, northernLongitude))
-						.strokeWidth(2.9f));
-
-				int provinceColor;
+			if (!drawnProvincesMap.containsKey(centerLatLng)) {
 				RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater
 						.from(activity).inflate(R.layout.province1, null);
-				TextView provinceName = (TextView) provinceLayout
-						.findViewById(R.id.province_name);
-				if (ownerId == 0) {
-					provinceName.setVisibility(View.INVISIBLE);
-				} else {
-					provinceName.setText(province.getName());
-					provinceName.setTypeface(font);
-					if (ownerId == activity.userId)
-						provinceColor = activity.getResources().getColor(
-								R.color.green_transparent);
-					else
-						provinceColor = activity.getResources().getColor(
-								R.color.dark_brown_transparent);
-					provinceLayout.setBackgroundColor(provinceColor);
-				}
-				TextView unitCount = (TextView) provinceLayout
-						.findViewById(R.id.province_unit_count);
-				unitCount.setText(String.valueOf(province.getUnitCount()));
-				unitCount.setTypeface(font);
-				provinceLayout.setDrawingCacheEnabled(true);
-				provinceLayout
-						.measure(MeasureSpec.makeMeasureSpec(0,
-								MeasureSpec.UNSPECIFIED), MeasureSpec
-								.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-				provinceLayout.layout(0, 0, provinceLayout.getMeasuredWidth(),
-						provinceLayout.getMeasuredHeight());
-				provinceLayout.buildDrawingCache();
-				Bitmap provinceImage = provinceLayout.getDrawingCache();
 
-				GroundOverlayOptions provinceOverlay = new GroundOverlayOptions()
-						.image(BitmapDescriptorFactory
-								.fromBitmap(provinceImage)).positionFromBounds(
-								provinceBounds);
-				map.addGroundOverlay(provinceOverlay);
+				setProvinceBackgroundAndTitle(provinceLayout, province);
+				setProvinceUnitCount(provinceLayout, province.getUnitCount());
+				Bitmap provinceBitmap = createBitmap(provinceLayout);
+
+				LatLngBounds provinceBounds = new LatLngBounds(new LatLng(
+						centerLatitude - PROVINCE_LATITUDE_RADIUS,
+						centerLongitude - PROVINCE_LONGITUDE_RADIUS),
+						new LatLng(centerLatitude + PROVINCE_LATITUDE_RADIUS,
+								centerLongitude + PROVINCE_LONGITUDE_RADIUS));
+
+				GroundOverlay provinceOverlay = createGroundOverlay(
+						provinceBitmap, provinceBounds);
+
+				newDrawnProvincesMap.put(centerLatLng, provinceOverlay);
+			} else {
+				newDrawnProvincesMap.put(centerLatLng,
+						drawnProvincesMap.get(centerLatLng));
 			}
 		}
+
+		removeOldProvinces(newDrawnProvincesMap);
+	}
+
+	private double roundDouble(double roundable, int precision) {
+		double rounded = Math.round(roundable * precision);
+		return rounded / precision;
+	}
+
+	@SuppressWarnings("deprecation")
+	private void setProvinceBackgroundAndTitle(RelativeLayout provinceLayout,
+			ProvinceDTO province) {
+		int ownerId = province.getPlayerId();
+		TextView provinceName = (TextView) provinceLayout
+				.findViewById(R.id.province_name);
+		int provinceColor;
+		if (ownerId == 0) {
+			provinceName.setVisibility(View.INVISIBLE);
+			provinceColor = activity.getResources().getColor(
+					R.color.brown_transparent);
+		} else {
+			provinceName.setText(province.getName());
+			provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
+			if (ownerId == activity.userId)
+				provinceColor = activity.getResources().getColor(
+						R.color.green_transparent);
+			else
+				provinceColor = activity.getResources().getColor(
+						R.color.dark_brown_transparent);
+		}
+
+		GradientDrawable provinceBackground = new GradientDrawable();
+		provinceBackground.setColor(provinceColor);
+		provinceBackground.setStroke(1, Color.BLACK);
+		provinceLayout.setBackgroundDrawable(provinceBackground);
+	}
+
+	private void setProvinceUnitCount(RelativeLayout provinceLayout,
+			int unitCount) {
+		TextView unitCountTextView = (TextView) provinceLayout
+				.findViewById(R.id.province_unit_count);
+		unitCountTextView.setText(String.valueOf(unitCount));
+		unitCountTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+	}
+
+	private Bitmap createBitmap(View view) {
+		view.setDrawingCacheEnabled(true);
+		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+		view.buildDrawingCache();
+		return view.getDrawingCache();
+	}
+
+	private GroundOverlay createGroundOverlay(Bitmap bitmap, LatLngBounds bounds) {
+		GroundOverlayOptions overlayOptions = new GroundOverlayOptions().image(
+				BitmapDescriptorFactory.fromBitmap(bitmap)).positionFromBounds(
+				bounds);
+		return map.addGroundOverlay(overlayOptions);
+	}
+
+	private void removeOldProvinces(
+			HashMap<LatLng, GroundOverlay> newDrawnProvincesMap) {
+		for (LatLng provinceLatLng : drawnProvincesMap.keySet()) {
+			if (!newDrawnProvincesMap.containsKey(provinceLatLng))
+				drawnProvincesMap.get(provinceLatLng).remove();
+		}
+		drawnProvincesMap = newDrawnProvincesMap;
 	}
 
 	public GoogleApiClient getGoogleApiClient() {

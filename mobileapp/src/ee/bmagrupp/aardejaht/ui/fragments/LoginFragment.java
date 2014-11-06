@@ -5,7 +5,6 @@ import ee.bmagrupp.aardejaht.ui.MainActivity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,15 +51,12 @@ public class LoginFragment extends Fragment {
 		Button sendKeyButton = (Button) loginLayout
 				.findViewById(R.id.login_send_key);
 
-		Typeface font = Typeface.createFromAsset(activity.getAssets(),
-				"fonts/Gabriola.ttf");
-
-		keyTextView.setTypeface(font);
-		keyEditText.setTypeface(font);
-		startButton.setTypeface(font);
-		emailTextView.setTypeface(font);
-		emailEditText.setTypeface(font);
-		sendKeyButton.setTypeface(font);
+		keyTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+		keyEditText.setTypeface(MainActivity.GABRIOLA_FONT);
+		startButton.setTypeface(MainActivity.GABRIOLA_FONT);
+		emailTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+		emailEditText.setTypeface(MainActivity.GABRIOLA_FONT);
+		sendKeyButton.setTypeface(MainActivity.GABRIOLA_FONT);
 	}
 
 	private void setButtonListeners() {
