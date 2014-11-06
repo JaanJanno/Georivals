@@ -58,6 +58,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Override
 	public Player createPlayer(String username, String email, double homeLat,
 			double homeLong) {
+		homeLat = normalizeLat(homeLat);
+		homeLong = normalizeLong(homeLong);
 		Province home = provRepo.findWithLatLong(homeLat, homeLong);
 		if (home == null) {
 			home = new Province(homeLat, homeLong);
@@ -75,6 +77,21 @@ public class RegistrationServiceImpl implements RegistrationService {
 		homeRepo.save(player.getHome());
 		playerRepo.save(player);
 		return player;
+	}
+
+	private double normalizeLong(double homeLong) {
+		double rtrn = Math.floor(homeLong * 1000.0) / 1000.0;
+		if ((rtrn * 1000.0) % 2 != 0) {
+			rtrn = ((rtrn * 1000) - 1) / 1000.0;
+		}
+		rtrn += (Constants.PROVINCE_WIDTH / 2);
+		return rtrn;
+	}
+
+	private double normalizeLat(double homeLat) {
+		double rtrn = Math.floor(homeLat * 1000.0) / 1000.0;
+		rtrn += (Constants.PROVINCE_HEIGHT / 2);
+		return rtrn;
 	}
 
 }

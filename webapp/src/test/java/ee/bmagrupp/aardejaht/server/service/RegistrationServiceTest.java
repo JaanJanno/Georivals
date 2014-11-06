@@ -40,7 +40,7 @@ import ee.bmagrupp.aardejaht.server.util.ServerResult;
 		TransactionalTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class AuthenticationServiceTest {
+public class RegistrationServiceTest {
 
 	@Autowired
 	RegistrationService regServ;
@@ -170,7 +170,7 @@ public class AuthenticationServiceTest {
 		assertNull(p);
 
 		Player player = regServ.createPlayer("Smaug",
-				"smaug@lonelymountain.com", 58.123, 26.123);
+				"smaug@lonelymountain.com", 58.12332634, 26.12309275);
 
 		// Checking the database for this user
 		Player playerCheck = playerRepo.findByUserName("Smaug");
@@ -183,10 +183,10 @@ public class AuthenticationServiceTest {
 				.length());
 		assertEquals("Player owned stuff", 0, player.getOwnedProvinces().size());
 
-		assertEquals("Player home province latitude", 58.123, player.getHome()
-				.getProvince().getLatitude(), 0.001);
+		assertEquals("Player home province latitude", 58.1235, player.getHome()
+				.getProvince().getLatitude(), 0.0001);
 		assertEquals("Player home province longitude", 26.123, player.getHome()
-				.getProvince().getLongitude(), 0.001);
+				.getProvince().getLongitude(), 0.0005);
 
 		// Unit check
 		assertEquals("Player home province units ", 1, player.getHome()
@@ -194,6 +194,24 @@ public class AuthenticationServiceTest {
 		Unit unit = player.getHome().getUnits().iterator().next();
 		assertEquals("Unit size", Constants.PLAYER_START_UNITS, unit.getSize());
 
+	}
+	
+	/**
+	 * @author Sander Tiganik
+	 */
+	@Test
+	public void createPlayerTest2(){
+		String username = "LollipopGuildMaster";
+		String email = "Willy@Wonka.gm";
+		double lat = 35.3605653;
+		double long1 = 138.7277694;
+		
+		Player player = regServ.createPlayer(username, email, lat, long1);
+		lat = player.getHome().getProvince().getLatitude();
+		long1 = player.getHome().getProvince().getLongitude();
+		
+		assertEquals("Latitude", 35.3605, lat, 0.0001);
+		assertEquals("Longitude", 138.727, long1, 0.0005);
 	}
 
 }
