@@ -14,7 +14,7 @@ import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
  * @author TKasekamp
  *
  */
-public class NameGeneratorTest {
+public class GeneratorUtilTest {
 
 	@Test
 	public void testGenerate() {
@@ -39,6 +39,14 @@ public class NameGeneratorTest {
 
 		assertEquals("The returned ints should be the same", a1, a2);
 		assertEquals("The returned ints should be the same", a1, a3);
+
+	}
+
+	@Test
+	public void botStengthTest() {
+		int a1 = GeneratorUtil.botUnits(36.3605, 138.727, 13);
+		int a2 = GeneratorUtil.botUnits(36.3605, 138.727, 13);
+		assertEquals("The returned ints should be the same", a1, a2);
 
 	}
 

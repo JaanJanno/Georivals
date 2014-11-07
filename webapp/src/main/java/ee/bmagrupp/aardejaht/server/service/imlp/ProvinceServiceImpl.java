@@ -23,6 +23,7 @@ import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static ee.bmagrupp.aardejaht.server.util.Constants.*;
 import ee.bmagrupp.aardejaht.server.util.Constants;
@@ -132,7 +133,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		Player tempPlayer = playerRepo.findBySid(cookie);
 		int playerStrength = PLAYER_DEFAULT_STRENGTH;
 		int curPlayerId = PLAYER_DEFAULT_ID;
-		if(tempPlayer != null){
+		if (tempPlayer != null) {
 			curPlayerId = tempPlayer.getId();
 			playerStrength = findPlayerStrength(cookie);
 		}
@@ -161,14 +162,16 @@ public class ProvinceServiceImpl implements ProvinceService {
 					if (x > (baseLong + (j * PROVINCE_WIDTH))
 							&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
 							&& y > (baseLat + (i * PROVINCE_HEIGHT))
-							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))){
+							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
 						// -----
 						Province temp = a.getProvince();
 						int provinceStrength = getProvinceStrength(a);
-						int playerId = playerRepo.findOwner(temp.getId()).getId();
+						int playerId = playerRepo.findOwner(temp.getId())
+								.getId();
 						int newUnits = 0;
-						if(curPlayerId == playerId){
-							newUnits = generateNewUnits(a.getLastVisit(),currentDate, provinceStrength);
+						if (curPlayerId == playerId) {
+							newUnits = generateNewUnits(a.getLastVisit(),
+									currentDate, provinceStrength);
 						}
 						// -----
 						rtrn.add(new ProvinceDTO(temp.getId(), temp
@@ -200,10 +203,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 		int max = playerStrength
 				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
 		int botStrength = rand.nextInt((max - min) + 1) + min;
-		if (botStrength > 100){
+		if (botStrength > 100) {
 			botStrength = 100;
-		}
-		else if(botStrength < 1){
+		} else if (botStrength < 1) {
 			botStrength = 1;
 		}
 		int provinceID = rand.nextInt((10000000 - 100000) + 1) + 100000;
@@ -248,5 +250,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 			return b;
 		}
 		return 0;
+	}
+
+	@Override
+	public ProvinceViewDTO getProvince(String latitude, String longitude,
+			String cookie) {
+		return null;
 	}
 }
