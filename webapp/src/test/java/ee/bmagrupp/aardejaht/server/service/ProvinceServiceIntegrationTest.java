@@ -55,7 +55,7 @@ public class ProvinceServiceIntegrationTest {
 	    String cookie = "cookie"; // Default sid value
 	    List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 	 
-	    assertEquals("Provinces in area", 12, provList.size());
+	    assertEquals("Provinces in area", 20, provList.size());
 	    for (ProvinceDTO a : provList) {
 	        assertEquals("Nobody should have any new units", 0,a.getNewUnitCount());
 	    }
@@ -66,7 +66,7 @@ public class ProvinceServiceIntegrationTest {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
 
-		assertEquals("Provinces in area", 12, provList.size());
+		assertEquals("Provinces in area", 20, provList.size());
 	}
 
 	@Test
