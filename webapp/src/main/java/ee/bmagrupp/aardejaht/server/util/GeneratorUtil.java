@@ -35,6 +35,23 @@ public class GeneratorUtil {
 		}
 		return gen;
 	}
+	
+	/**
+	 * @param n - length of String to be returned
+	 * @param lat1 - latitude in normalized form (3 significants)
+	 * @param long1 - longitude in normalized form (3 significants)
+	 * @return n-length string
+	 */
+	
+	public static String genereateString(int n, double lat1, double long1){
+		String gen = "";
+		long seed = (long) (((lat1 * 1000.0) + ((long1) / 1000.0)) * 1000000);
+		Random r = new Random(seed);
+		for (int i = 0; i < n; i++) {
+			gen += chars[r.nextInt(chars.length)];
+		}
+		return gen;
+	}
 
 	/**
 	 * Generates an int between {@link Constants#UNIT_GENERATION_MIN} and
@@ -83,12 +100,12 @@ public class GeneratorUtil {
 	 */
 	public static int botUnits(double latitude, double longitude,
 			int playerStrength) {
-		// TODO improve this heap of ... code
 		int min = playerStrength
 				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
 		int max = playerStrength
 				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		Random rand = new Random((long) ((latitude + longitude) * 1000));
+		long seed = (long) (((latitude * 1000.0) + ((longitude) / 1000.0)) * 1000000);
+		Random rand = new Random(seed);
 		int botStrength = rand.nextInt((max - min) + 1) + min;
 		if (botStrength > Constants.PROVINCE_UNIT_MAX) {
 			botStrength = Constants.PROVINCE_UNIT_MAX;
