@@ -8,6 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import ee.bmagrupp.aardejaht.server.core.domain.Ownership;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
 
+/**
+ * @author TKasekamp
+ */
 public interface OwnershipRepository extends CrudRepository<Ownership, Integer> {
 
 	/**
@@ -30,4 +33,13 @@ public interface OwnershipRepository extends CrudRepository<Ownership, Integer> 
 	@Query("from Ownership as o where (o.province.latitude between ?1 and ?3) and (o.province.longitude between ?2 and ?4)")
 	List<Ownership> findBetween(double lat1, double long1, double lat2,
 			double long2);
+
+	/**
+	 * Returns the {@link Ownership} of the {@link Province} with this id.
+	 * 
+	 * @param provinceId
+	 * @return {@link Ownership}
+	 */
+	@Query("from Ownership as o where o.province.id = ?1")
+	Ownership findByProvinceId(int provinceId);
 }

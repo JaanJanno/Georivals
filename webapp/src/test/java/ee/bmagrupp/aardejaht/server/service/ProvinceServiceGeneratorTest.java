@@ -23,9 +23,11 @@ import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 
 /**
- * Integration tests for {@link ProvinceService}.
+ * Integration tests for {@link ProvinceService}. Only focused on generating
+ * provinces for the MapView.
  * 
  * @author TKasekamp
+ * @author Sander
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,7 +37,7 @@ import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 		TransactionalTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class ProvinceServiceIntegrationTest {
+public class ProvinceServiceGeneratorTest {
 
 	@Autowired
 	ProvinceService provServ;
@@ -46,20 +48,21 @@ public class ProvinceServiceIntegrationTest {
 	@Before
 	public void setUp() {
 		// -40.4195, 144.961
-		fov = new CameraFOV(-40.423,144.960,-40.419,144.966);
+		fov = new CameraFOV(-40.423, 144.960, -40.419, 144.966);
 		playerID = 1; // ID for Mr. TK
 	}
-	
+
 	@Test
 	public void noSidTest() {
-	    String cookie = "cookie"; // Default sid value
-	    List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
-	 
-	    assertEquals("Provinces in area", 20, provList.size());
-	    for (ProvinceDTO a : provList) {
-	        assertEquals("Nobody should have any new units", 0,a.getNewUnitCount());
-	    }
-	} 
+		String cookie = "cookie"; // Default sid value
+		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+
+		assertEquals("Provinces in area", 20, provList.size());
+		for (ProvinceDTO a : provList) {
+			assertEquals("Nobody should have any new units", 0,
+					a.getNewUnitCount());
+		}
+	}
 
 	@Test
 	public void provinceNumberTest() {
@@ -77,7 +80,8 @@ public class ProvinceServiceIntegrationTest {
 
 		for (ProvinceDTO a : provList) {
 			if (a.getPlayerId() != playerID) {
-				assertEquals("Other players/BOTS should have 0 new units", 0,a.getNewUnitCount());
+				assertEquals("Other players/BOTS should have 0 new units", 0,
+						a.getNewUnitCount());
 			}
 		}
 	}

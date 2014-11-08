@@ -46,11 +46,11 @@ public class GeneratorUtilTest {
 		double lat1 = 145.687;
 		double long1 = 01.029;
 		
-		String a1 = GeneratorUtil.genereateString(8, lat1, long1);
-		String a2 = GeneratorUtil.genereateString(8, lat1, long1);
+		String a1 = GeneratorUtil.generateString(8, lat1, long1);
+		String a2 = GeneratorUtil.generateString(8, lat1, long1);
 		
 		assertEquals("The length of the String should be n", 8, a1.length());
-		assertEquals("The String should be equal", a1, a2);
+		assertEquals("The Strings should be equal", a1, a2);
 	}
 
 	@Test

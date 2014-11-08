@@ -115,8 +115,9 @@ public class ProvinceControllerTest {
 				.andExpect(jsonPath("$.provinceName", is("haha")))
 				.andExpect(jsonPath("$.ownerName", is("Oleg Tartust")))
 				.andExpect(jsonPath("$.underAttack", is(false)))
-				.andExpect(jsonPath("$.unitCount", is(10)))
-				.andExpect(jsonPath("$.newUnitCount", is(3)))
+				.andExpect(jsonPath("$.unitSize", is(10)))
+				.andExpect(jsonPath("$.newUnitSize", is(3)))
 				.andExpect(jsonPath("$.attackable", is(true)));
 	}
+
 }

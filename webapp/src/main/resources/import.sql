@@ -8,6 +8,7 @@ INSERT INTO province VALUES (4, -40.4205, 144.963, 'pB6RB8S0iL');
 INSERT INTO province VALUES (5, -40.4215, 144.963, 'bFTDPzokok');
 INSERT INTO province VALUES (6, -40.4225, 144.963, 'Kvukx9SCOB');
 
+INSERT INTO home_ownership VALUES (0, '2014-10-18 13:49:28.103', '2014-10-18 13:49:28.103', 1);
 INSERT INTO home_ownership VALUES (1, '2014-10-18 13:49:28.103', '2014-10-18 13:49:28.103', 1);
 INSERT INTO home_ownership VALUES (2, '2014-10-18 13:49:28.103', '2014-10-18 13:49:28.103', 1);
 INSERT INTO home_ownership VALUES (3, '2014-10-18 13:49:28.103', '2014-10-18 13:49:28.103', 2);
@@ -15,6 +16,7 @@ INSERT INTO home_ownership VALUES (4, '2014-10-18 13:49:28.103', '2014-10-18 13:
 INSERT INTO home_ownership VALUES (5, '2014-10-18 13:49:28.103', '2014-10-18 13:49:28.103', 4);
 INSERT INTO home_ownership VALUES (6, '2014-10-18 13:49:28.103', '2014-10-18 13:49:28.103', 5);
 
+INSERT INTO player VALUES (0, 'bot@pacific.ee', '', 'BOT', 0);
 INSERT INTO player VALUES (1, 'mr.tk@pacific.ee', 'BPUYYOU62flwiWJe', 'Mr. TK', 1);
 INSERT INTO player VALUES (2, 'doge@pacific.ee', '3myBuV7DKARaW14p', 'Doge', 2);
 INSERT INTO player VALUES (3, 'biitnik@pacific.ee', 'D6Nua1BPg30CJ84q', 'Biitnik', 3);

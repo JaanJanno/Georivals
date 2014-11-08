@@ -44,11 +44,13 @@ public class OwnershipRepositoryTest {
 
 	@Test
 	public void findBetweenTest() {
-		List<Ownership> owners = (List<Ownership>) ownerRepo.findBetween(-40.423,144.960,-40.419,144.966);
-		
+		List<Ownership> owners = (List<Ownership>) ownerRepo.findBetween(
+				-40.423, 144.960, -40.419, 144.966);
+
 		assertEquals("Number of provinces in this area", 6, owners.size());
-		
-		List<Ownership> owners2 = (List<Ownership>) ownerRepo.findBetween(-40.423,144.960,-40.419,144.966);
+
+		List<Ownership> owners2 = (List<Ownership>) ownerRepo.findBetween(
+				-40.423, 144.960, -40.419, 144.966);
 
 		assertEquals("Number of provinces in this area", 6, owners2.size());
 
@@ -56,6 +58,12 @@ public class OwnershipRepositoryTest {
 				59.37, 27.71, 59.40, 27.75);
 
 		assertEquals("Number of provinces in this area", 0, owners3.size());
+	}
+
+	@Test
+	public void findByProvinceIdTest() {
+		Ownership ow = ownerRepo.findByProvinceId(1);
+		assertEquals("Ownership id", 2, ow.getId());
 	}
 
 }

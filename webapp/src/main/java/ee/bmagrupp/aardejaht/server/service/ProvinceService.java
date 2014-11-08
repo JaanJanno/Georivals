@@ -8,7 +8,7 @@ import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceViewDTO;
 
 /**
- * Service that generates provinces.
+ * Service that generates provinces and does other stuff related to provinces.
  * 
  * @author TKasekamp
  *
@@ -33,9 +33,11 @@ public interface ProvinceService {
 	 * @param longitude
 	 * @param cookie
 	 *            SID of this user
+	 * @throws NumberFormatException
+	 *             When coordinates cannot be parsed
 	 * @return {@link ProvinceViewDTO}
 	 */
 	public ProvinceViewDTO getProvince(String latitude, String longitude,
-			String cookie);
+			String cookie) throws NumberFormatException;
 
 }

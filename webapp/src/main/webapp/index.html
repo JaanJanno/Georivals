@@ -11,9 +11,10 @@
 	<div id="text">
 		<h2>Greetings from Aardejaht (name pending)!</h2>
 		<p>The following requests are available as of server version
-			0.3.4. This may be horribly out of date by the time you read this.</p>
+			0.4.0. This may be horribly out of date by the time you read this.</p>
 		<ul>
-			<li><b><a href="/download">/download</a></b> - link to mobile app .apk download</li>
+			<li><b><a href="/download">/download</a></b> - link to mobile
+				app .apk download</li>
 			<li><b>/profile</b> - GET. Request must be made with a valid
 				cookie sid. Returns the profile of the player with this sid.</li>
 			<li><b>/profile/id/{id}</b> - the profile of the player with
@@ -25,6 +26,8 @@
 				Strings such as <code>{
 					"nelongitude":5.0,"swlongitude":3.0,"swlatitude":2.0,"nelatitude":4.0
 					}</code> and a Cookie "sid"</li>
+			<li><b>/province?latitude=double&longitude=double</b> - this is
+				a GET method. Returns the ProvinceViewDTO for this location.</li>
 			<li><b>/registration/phase1</b> - this is a POST method. Accepts
 				JSON Strings as RegistrationDTO and outputs RegistrationResponse</li>
 			<li><b>/registration/phase2</b> - this is a POST method. Accepts

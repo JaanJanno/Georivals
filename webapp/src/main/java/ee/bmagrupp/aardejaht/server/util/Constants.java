@@ -3,6 +3,7 @@ package ee.bmagrupp.aardejaht.server.util;
 public class Constants {
 	// BOT
 	public static final int BOT_ID = 0;
+	public static final String BOT_NAME = "BOT";
 	public static final double BOT_STRENGTH_CONSTANT = 0.2;
 
 	// Player

@@ -17,12 +17,14 @@ import ee.bmagrupp.aardejaht.server.core.domain.Province;
 import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.core.domain.UnitState;
 import ee.bmagrupp.aardejaht.server.core.repository.HomeOwnershipRepository;
+import ee.bmagrupp.aardejaht.server.core.repository.MovementRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceType;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static ee.bmagrupp.aardejaht.server.util.Constants.*;
@@ -35,7 +37,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory
 			.getLogger(ProvinceServiceImpl.class);
-	private static Random rand = new Random();
+	private Random rand = new Random();
 
 	@Autowired
 	ProvinceRepository provRepo;
@@ -52,64 +54,32 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Autowired
 	UnitRepository unitRepo;
 
-	/**
-	 * @author Sander
-	 * @param cookie
-	 * @return returns the overall strength of a player
-	 */
+	@Autowired
+	private MovementRepository movementRepo;
 
-	private int findPlayerStrength(String cookie) {
-		Player curPlayer = playerRepo.findBySid(cookie);
-		Set<Ownership> provinces = curPlayer.getOwnedProvinces();
-		int overall = 0;
-		for (Ownership b : provinces) {
-			Set<Unit> units = b.getUnits();
-			for (Unit unit : units) {
-				if (unit.getState() == UnitState.CLAIMED) {
-					overall += unit.getSize();
-				}
-			}
+	/**
+	 * This is a delegating method. The real action is in
+	 * {@link #getProvince(double, double, Player, int)}.
+	 * 
+	 * @author TKasekamp
+	 */
+	@Override
+	public ProvinceViewDTO getProvince(String latitude, String longitude,
+			String cookie) {
+		double lat;
+		double lon;
+		try {
+			lat = Double.parseDouble(latitude);
+			lon = Double.parseDouble(longitude);
+		} catch (NumberFormatException e) {
+			throw e;
 		}
-		return overall;
-	}
 
-	/**
-	 * @author Sander
-	 * @param lat2
-	 *            /long2
-	 * @param lat1
-	 *            /long1
-	 * @return The amount of columns/rows needed to be calculated
-	 */
+		Player player = playerRepo.findBySid(cookie);
 
-	private int calculateRowsNr(double lat1, double lat2) {
-		lat1 = Math.floor(lat1 * 1000) / 1000;
-		lat2 = Math.ceil(lat2 * 1000) / 1000;
-		return (int) Math.ceil(((lat2 - lat1) / PROVINCE_HEIGHT));
-	}
+		int playerStrength = findPlayerStrength(player);
+		return getProvince(lat, lon, player, playerStrength);
 
-	private int calculateColumnNr(double long1, double long2) {
-		long1 = Math.floor(long1 * 1000) / 1000;
-		long2 = Math.ceil(long2 * 1000) / 1000;
-		return (int) Math.ceil(((long2 - long1) / PROVINCE_WIDTH));
-	}
-
-	/**
-	 * @author Sander
-	 * @param a
-	 *            - Ownership object
-	 * @return all available units
-	 */
-
-	private int getProvinceStrength(Ownership a) {
-		Set<Unit> units = a.getUnits();
-		int overall = 0;
-		for (Unit unit : units) {
-			if (unit.getState() == UnitState.CLAIMED) {
-				overall += unit.getSize();
-			}
-		}
-		return overall;
 	}
 
 	/**
@@ -135,7 +105,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		int curPlayerId = PLAYER_DEFAULT_ID;
 		if (tempPlayer != null) {
 			curPlayerId = tempPlayer.getId();
-			playerStrength = findPlayerStrength(cookie);
+			playerStrength = findPlayerStrength(tempPlayer);
 		}
 
 		double baseLat = Math.floor(fov.getSwlatitude() * 1000.0) / 1000.0;
@@ -252,9 +222,231 @@ public class ProvinceServiceImpl implements ProvinceService {
 		return 0;
 	}
 
-	@Override
-	public ProvinceViewDTO getProvince(String latitude, String longitude,
-			String cookie) {
-		return null;
+	/**
+	 * @author Sander
+	 * @param cookie
+	 * @return returns the overall strength of a player
+	 */
+
+	private int findPlayerStrength(String cookie) {
+		Player player = playerRepo.findBySid(cookie);
+		return findPlayerStrength(player);
 	}
+
+	/**
+	 * Returns the total number of units for this player. If player is null,
+	 * returns {@link Constants#PLAYER_DEFAULT_STRENGTH}
+	 * 
+	 * @author Sander
+	 * @author TKasekamp
+	 * @param Player
+	 *            {@link Player}
+	 * @return returns the overall strength of a player
+	 */
+
+	private int findPlayerStrength(Player player) {
+		if (player == null) {
+			return PLAYER_DEFAULT_STRENGTH;
+		}
+		Set<Ownership> provinces = player.getOwnedProvinces();
+		int overall = 0;
+		for (Ownership b : provinces) {
+			overall += countUnits(b.getUnits());
+		}
+		overall += countUnits(player.getHome().getUnits());
+		return overall;
+	}
+
+	/**
+	 * @author Sander
+	 * @param lat2
+	 *            /long2
+	 * @param lat1
+	 *            /long1
+	 * @return The amount of columns/rows needed to be calculated
+	 */
+
+	private int calculateRowsNr(double lat1, double lat2) {
+		lat1 = Math.floor(lat1 * 1000) / 1000;
+		lat2 = Math.ceil(lat2 * 1000) / 1000;
+		return (int) Math.ceil(((lat2 - lat1) / PROVINCE_HEIGHT));
+	}
+
+	private int calculateColumnNr(double long1, double long2) {
+		long1 = Math.floor(long1 * 1000) / 1000;
+		long2 = Math.ceil(long2 * 1000) / 1000;
+		return (int) Math.ceil(((long2 - long1) / PROVINCE_WIDTH));
+	}
+
+	/**
+	 * @author Sander
+	 * @param a
+	 *            - Ownership object
+	 * @return all available units
+	 */
+
+	private int getProvinceStrength(Ownership a) {
+		return countUnits(a.getUnits());
+	}
+
+	/**
+	 * Returns the sum of the unit sizes.
+	 * 
+	 * @author TKasekamp
+	 * @param units
+	 * @return
+	 */
+	private int countUnits(Set<Unit> units) {
+		int overall = 0;
+		for (Unit unit : units) {
+			if (unit.getState() == UnitState.CLAIMED) {
+				overall += unit.getSize();
+			}
+		}
+		return overall;
+	}
+
+	/**
+	 * Checks if the player defined by player1Strength can attack the provinces
+	 * owned by player2Strength. Returns true if player1 is not over 2 times
+	 * bigger then player2.
+	 * 
+	 * @param player1Strength
+	 *            Current player
+	 * @param player2Strength
+	 *            Player to check against
+	 * @author TKasekamp
+	 * @return {@code boolean}
+	 */
+	private boolean canAttack(int player1Strength, int player2Strength) {
+		if (player2Strength * 2 >= player1Strength) {
+			return true;
+		}
+		return false;
+	}
+
+	// ProvinceViewDTO creation
+
+	/**
+	 * Returns a {@link ProvinceViewDTO} defined by the coordinates.
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param player
+	 *            {@link Player} making the request
+	 * @param playerStrength
+	 *            {@link Player}'s total number of units
+	 * @author TKasekamp
+	 * @return {@link ProvinceViewDTO}
+	 */
+	private ProvinceViewDTO getProvince(double latitude, double longitude,
+			Player player, int playerStrength) {
+		Province prov = provRepo.findWithLatLong(latitude, longitude);
+
+		if (prov == null) {
+			// Not in database -> bot owned
+			return createBOTProvince(latitude, longitude, playerStrength);
+		} else if ((player != null)
+				&& (prov.getId() == player.getHome().getProvince().getId())) {
+			// In database and home province of player -> home province
+			return createHomeProvince(prov, player);
+
+		} else {
+			// In database -> owned by any player or a home province of other
+			// player
+			return createExistingProvince(prov, player, playerStrength);
+
+		}
+	}
+
+	/**
+	 * Creates a {@link ProvinceViewDTO} for a BOT owned province at this
+	 * location. New units not needed. Not under attack. Attackable not needed
+	 * 
+	 * @param lat
+	 *            latitude
+	 * @param lon
+	 *            longitude
+	 * @param playerStrength
+	 *            {@link Player}'s total number of units
+	 * @author TKasekamp
+	 * @return {@link ProvinceViewDTO} with default values for a BOT owned
+	 *         province.
+	 */
+	private ProvinceViewDTO createBOTProvince(double lat, double lon,
+			int playerStrength) {
+		String provName = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH,
+				lat, lon);
+		int unitCount = GeneratorUtil.botUnits(lat, lon, playerStrength);
+		return new ProvinceViewDTO(lat, lon, provName, unitCount);
+	}
+
+	/**
+	 * Creates a {@link ProvinceViewDTO} for the players home province. Cannot
+	 * be under attack. New unit check necessary. Owner name is known.
+	 * 
+	 * @param prov
+	 *            {@link Province}
+	 * @param player
+	 *            {@link Player} making the request
+	 * @author TKasekamp
+	 * @return {@link ProvinceViewDTO} with default values for a home province.
+	 */
+	private ProvinceViewDTO createHomeProvince(Province prov, Player player) {
+		int unitSize = countUnits(player.getHome().getUnits());
+		int newUnits = generateNewUnits(player.getHome().getLastVisit(),
+				new Date(), unitSize);
+		return new ProvinceViewDTO(prov.getLatitude(), prov.getLongitude(),
+				player.getUserName(), prov.getName(), unitSize, newUnits);
+	}
+
+	/**
+	 * Creates a {@link ProvinceViewDTO} for a province that exists in the
+	 * database. If it only exists as a home province a BOT province will be
+	 * created. <br>
+	 * Else it's owned by any player. UnderAttack check required. New units
+	 * needed if province owned by the player. isAttackable check required if
+	 * province owned by another player.
+	 * 
+	 * @param prov
+	 *            {@link Province}
+	 * @param player
+	 *            {@link Player} making the request
+	 * @param playerStrength
+	 *            {@link Player}'s total number of units
+	 * @author TKasekamp
+	 * @return {@link ProvinceViewDTO}
+	 */
+	private ProvinceViewDTO createExistingProvince(Province prov,
+			Player player, int playerStrength) {
+		Ownership ow = ownerRepo.findByProvinceId(prov.getId());
+		if (ow == null) {
+			// Province is only a home province
+			return createBOTProvince(prov.getLatitude(), prov.getLongitude(),
+					playerStrength);
+		}
+
+		Player player2 = playerRepo.findOwnerOfProvince(prov.getId());
+		int unitSize = countUnits(ow.getUnits());
+		ProvinceType type;
+		boolean isAttackable = false;
+		int newUnits = 0;
+		if ((player != null) && (player.getId() == player2.getId())) {
+			// Province owned by the player
+			type = ProvinceType.PLAYER;
+			newUnits = generateNewUnits(ow.getLastVisit(), new Date(), unitSize);
+
+		} else {
+			// Province owned by somebody else
+			type = ProvinceType.OTHER_PLAYER;
+			int player2Strength = findPlayerStrength(player2);
+			isAttackable = canAttack(playerStrength, player2Strength);
+		}
+
+		boolean underAttack = movementRepo.checkIfDestination(prov.getId());
+		return new ProvinceViewDTO(prov.getLatitude(), prov.getLongitude(),
+				type, prov.getName(), player2.getUserName(), isAttackable,
+				underAttack, unitSize, newUnits);
+	}
+
 }

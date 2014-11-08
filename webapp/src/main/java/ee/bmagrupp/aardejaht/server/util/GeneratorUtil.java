@@ -35,15 +35,18 @@ public class GeneratorUtil {
 		}
 		return gen;
 	}
-	
+
 	/**
-	 * @param n - length of String to be returned
-	 * @param lat1 - latitude in normalized form (3 significants)
-	 * @param long1 - longitude in normalized form (3 significants)
+	 * @param n
+	 *            - length of String to be returned
+	 * @param lat1
+	 *            - latitude in normalized form (3 significants)
+	 * @param long1
+	 *            - longitude in normalized form (3 significants)
 	 * @return n-length string
 	 */
-	
-	public static String genereateString(int n, double lat1, double long1){
+
+	public static String generateString(int n, double lat1, double long1) {
 		String gen = "";
 		long seed = (long) (((lat1 * 1000.0) + ((long1) / 1000.0)) * 1000000);
 		Random r = new Random(seed);
@@ -51,6 +54,18 @@ public class GeneratorUtil {
 			gen += chars[r.nextInt(chars.length)];
 		}
 		return gen;
+	}
+
+	/**
+	 * @param lat1
+	 *            - latitude in normalized form (3 significants)
+	 * @param long1
+	 *            - longitude in normalized form (3 significants)
+	 * @return {@link Constants#PROVINCE_NAME_LENGTH}-length string
+	 */
+
+	public static String generateString(double lat1, double long1) {
+		return generateString(Constants.PROVINCE_NAME_LENGTH, lat1, long1);
 	}
 
 	/**

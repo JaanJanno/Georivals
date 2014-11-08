@@ -2,8 +2,6 @@ package ee.bmagrupp.aardejaht.server.core.repository;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -47,13 +45,6 @@ public class PlayerRepositoryTest {
 
 	@Autowired
 	HomeOwnershipRepository homeRepo;
-
-	@Test
-	public void allPlayers() {
-		List<Player> players = (List<Player>) playerRepo.findAll();
-
-		assertEquals("There should be 6 Players", 6, players.size());
-	}
 
 	@Test
 	public void singlePlayer() {
@@ -119,7 +110,8 @@ public class PlayerRepositoryTest {
 	@Test
 	public void saveTestSuccess() {
 		Province home = new Province(26.123, 58.123);
-		Player player = new Player("Smaug", GeneratorUtil.generateString(16), home);
+		Player player = new Player("Smaug", GeneratorUtil.generateString(16),
+				home);
 
 		assertNull(playerRepo.findByUserName("Smaug"));
 		provinceRepo.save(home);
@@ -151,6 +143,13 @@ public class PlayerRepositoryTest {
 		provinceRepo.save(home);
 		homeRepo.save(player.getHome());
 		playerRepo.save(player);
+	}
+
+	@Test
+	public void findPlayerFromProvince() {
+		Player player = playerRepo.findOwnerOfProvince(1);
+		assertEquals("Player id", 1, player.getId());
+		assertEquals("Player name", "Mr. TK", player.getUserName());
 	}
 
 }
