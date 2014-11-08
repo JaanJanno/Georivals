@@ -28,12 +28,12 @@ public class GeneratorUtil {
 	 */
 
 	public static String generateString(int n) {
-		String gen = "";
+		StringBuilder sb = new StringBuilder(n);
 		Random x = new Random();
 		for (int i = 0; i < n; i++) {
-			gen += chars[x.nextInt(chars.length)];
+			sb.append(chars[x.nextInt(chars.length)]);
 		}
-		return gen;
+		return sb.toString();
 	}
 
 	/**
@@ -47,13 +47,13 @@ public class GeneratorUtil {
 	 */
 
 	public static String generateString(int n, double lat1, double long1) {
-		String gen = "";
+		StringBuilder sb = new StringBuilder(n);
 		long seed = (long) (((lat1 * 1000.0) + ((long1) / 1000.0)) * 1000000);
 		Random r = new Random(seed);
 		for (int i = 0; i < n; i++) {
-			gen += chars[r.nextInt(chars.length)];
+			sb.append(chars[r.nextInt(chars.length)]);
 		}
-		return gen;
+		return sb.toString();
 	}
 
 	/**

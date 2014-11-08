@@ -35,7 +35,7 @@ import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 public class ProvinceServiceImpl implements ProvinceService {
 
 	@SuppressWarnings("unused")
-	private static Logger LOG = LoggerFactory
+	private static final Logger LOG = LoggerFactory
 			.getLogger(ProvinceServiceImpl.class);
 	private Random rand = new Random();
 
@@ -66,14 +66,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Override
 	public ProvinceViewDTO getProvince(String latitude, String longitude,
 			String cookie) {
-		double lat;
-		double lon;
-		try {
-			lat = Double.parseDouble(latitude);
-			lon = Double.parseDouble(longitude);
-		} catch (NumberFormatException e) {
-			throw e;
-		}
+		double lat = Double.parseDouble(latitude);
+		double lon = Double.parseDouble(longitude);
 
 		Player player = playerRepo.findBySid(cookie);
 
