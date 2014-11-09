@@ -11,7 +11,7 @@
 	<div id="text">
 		<h2>Greetings from Aardejaht (name pending)!</h2>
 		<p>The following requests are available as of server version
-			0.4.0. This may be horribly out of date by the time you read this.</p>
+			0.4.1. This may be horribly out of date by the time you read this.</p>
 		<ul>
 			<li><b><a href="/download">/download</a></b> - link to mobile
 				app .apk download</li>
@@ -22,6 +22,8 @@
 			<li><b>/highscore</b> - all highscores of all players</li>
 			<li><b>/highscore/{id}</b> - the highscore of the player with
 				this id</li>
+			<li><b>/movement/myunits</b> - GET all the units of the player.
+				Works only with valid sid.</li>
 			<li><b>/province</b> - this is a POST method. Accepts JSON
 				Strings such as <code>{
 					"nelongitude":5.0,"swlongitude":3.0,"swlatitude":2.0,"nelatitude":4.0

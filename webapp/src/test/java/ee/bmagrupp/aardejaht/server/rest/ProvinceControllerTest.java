@@ -103,9 +103,7 @@ public class ProvinceControllerTest {
 		mockMvc.perform(
 				get("/province").param("latitude", Double.toString(latitude))
 						.param("longitude", Double.toString(longitude))
-						.cookie(cookie)
-
-						.accept(MediaType.APPLICATION_JSON))
+						.cookie(cookie).accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.latitude", is(latitude)))
