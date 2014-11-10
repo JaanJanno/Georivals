@@ -8,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.aardejaht.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.aardejaht.server.service.MovementService;
 
@@ -32,6 +36,22 @@ public class MovementController {
 		LOG.info(cookie);
 		List<MovementSelectionViewDTO> units = moveServ.getMyUnits(cookie);
 		return new ResponseEntity<List<MovementSelectionViewDTO>>(units,
+				HttpStatus.OK);
+
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/to")
+	public ResponseEntity<BeginMovementResponse> moveTo(
+			@RequestParam(value = "latitude") String latitude,
+			@RequestParam(value = "longitude") String longitude,
+			@RequestBody List<BeginMovementDTO> beginMoveList,
+			@CookieValue(value = "sid") String cookie) {
+		LOG.info("Moving units");
+		LOG.info(cookie);
+		LOG.info(beginMoveList.toString());
+		BeginMovementResponse response = moveServ.moveUnitsTo(latitude,
+				longitude, beginMoveList, cookie);
+		return new ResponseEntity<BeginMovementResponse>(response,
 				HttpStatus.OK);
 
 	}

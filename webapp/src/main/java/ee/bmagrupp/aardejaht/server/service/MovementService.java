@@ -2,6 +2,9 @@ package ee.bmagrupp.aardejaht.server.service;
 
 import java.util.List;
 
+import ee.bmagrupp.aardejaht.server.core.domain.Province;
+import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.aardejaht.server.rest.domain.MovementSelectionViewDTO;
 
 /**
@@ -22,4 +25,19 @@ public interface MovementService {
 	 * @return List of {@link MovementSelectionViewDTO}
 	 */
 	List<MovementSelectionViewDTO> getMyUnits(String cookie);
+
+	/**
+	 * Begins a Movement with the selected units.
+	 * 
+	 * @param lat
+	 *            Destination {@link Province} latitude
+	 * @param lon
+	 *            Destination {@link Province} longitude
+	 * @param beginMoveList
+	 * @param cookie
+	 *            Cookie value
+	 * @return {@link BeginMovementResponse}
+	 */
+	BeginMovementResponse moveUnitsTo(String lat, String lon,
+			List<BeginMovementDTO> beginMoveList, String cookie);
 }
