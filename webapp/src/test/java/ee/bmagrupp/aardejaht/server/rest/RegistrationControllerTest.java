@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
-import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.service.RegistrationService;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
@@ -49,8 +49,8 @@ import ee.bmagrupp.aardejaht.server.util.ServerResult;
 public class RegistrationControllerTest {
 
 	private MockMvc mockMvc;
-	private RegistrationResponse goodResponse;
-	private RegistrationResponse userNameInUse;
+	private ServerResponse goodResponse;
+	private ServerResponse userNameInUse;
 
 	private RegistrationDTO reg1;
 	private RegistrationDTO reg2;
@@ -70,8 +70,8 @@ public class RegistrationControllerTest {
 				.setMessageConverters(new MappingJackson2HttpMessageConverter())
 				.build();
 
-		goodResponse = new RegistrationResponse(ServerResult.OK);
-		userNameInUse = new RegistrationResponse(ServerResult.USERNAME_IN_USE);
+		goodResponse = new ServerResponse(ServerResult.OK);
+		userNameInUse = new ServerResponse(ServerResult.USERNAME_IN_USE);
 		reg1 = new RegistrationDTO();
 		reg1.setUserName("Smaug");
 
@@ -119,7 +119,7 @@ public class RegistrationControllerTest {
 	@Test
 	public void phase2success() throws Exception {
 
-		RegistrationResponse res = new RegistrationResponse(ServerResult.OK,
+		ServerResponse res = new ServerResponse(ServerResult.OK,
 				"abcd", 511);
 		when(authServ.registrationPhase2(any(RegistrationDTO.class)))
 				.thenReturn(res);

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceViewDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 
 @RestController
@@ -64,6 +65,36 @@ public class ProvinceController {
 		LOG.info("My provinces for user with cookie " + cookie);
 		List<ProvinceViewDTO> provs = provServ.getMyProvinces(cookie);
 		return new ResponseEntity<List<ProvinceViewDTO>>(provs, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/changehome")
+	public ResponseEntity<ServerResponse> changeHomeProvince(
+			@RequestParam(value = "latitude") String latitude,
+			@RequestParam(value = "longitude") String longitude,
+			@CookieValue(value = "sid") String cookie) {
+
+		LOG.info("Change home province to lat: " + latitude + ", long:"
+				+ longitude + " for player " + cookie);
+		ServerResponse response = provServ.changeHomeProvince(latitude,
+				longitude, cookie);
+		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/rename")
+	public ResponseEntity<ServerResponse> renameProvince(
+			@RequestParam(value = "latitude") String latitude,
+			@RequestParam(value = "longitude") String longitude,
+			@RequestParam(value = "newname") String newName,
+			@CookieValue(value = "sid") String cookie) {
+
+		LOG.info("Change province name to " + newName
+				+ " for province with lat: " + latitude + ", long:" + longitude
+				+ " for player " + cookie);
+		ServerResponse response = provServ.renameProvince(latitude, longitude,
+				newName, cookie);
+		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
 
 	}
 

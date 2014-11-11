@@ -2,28 +2,28 @@ package ee.bmagrupp.aardejaht.server.rest.domain;
 
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
-public class RegistrationResponse {
+public class ServerResponse {
 
 	private ServerResult result;
 	private String value;
 	private int id;
 
-	public RegistrationResponse() {
+	public ServerResponse() {
 		super();
 	}
 
-	public RegistrationResponse(ServerResult result, String value) {
+	public ServerResponse(ServerResult result, String value) {
 		this.result = result;
 		this.value = value;
 	}
 
-	public RegistrationResponse(ServerResult result, String value, int id) {
+	public ServerResponse(ServerResult result, String value, int id) {
 		this.result = result;
 		this.value = value;
 		this.id = id;
 	}
 
-	public RegistrationResponse(ServerResult result) {
+	public ServerResponse(ServerResult result) {
 		this.result = result;
 	}
 

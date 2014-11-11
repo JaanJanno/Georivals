@@ -54,8 +54,6 @@
 			<version>9.3-1101-jdbc41</version>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path-assert</artifactId>

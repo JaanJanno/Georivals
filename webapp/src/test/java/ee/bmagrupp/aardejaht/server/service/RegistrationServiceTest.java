@@ -22,7 +22,7 @@ import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
-import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
@@ -56,7 +56,7 @@ public class RegistrationServiceTest {
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Smaug");
 
-		RegistrationResponse response = regServ.registrationPhase1(dto);
+		ServerResponse response = regServ.registrationPhase1(dto);
 		assertEquals("Response", ServerResult.OK, response.getResult());
 		assertEquals("Value", null, response.getValue());
 	}
@@ -66,7 +66,7 @@ public class RegistrationServiceTest {
 		RegistrationDTO dto = new RegistrationDTO();
 		dto.setUserName("Doge");
 
-		RegistrationResponse response = regServ.registrationPhase1(dto);
+		ServerResponse response = regServ.registrationPhase1(dto);
 		assertEquals("Response", ServerResult.USERNAME_IN_USE,
 				response.getResult());
 		assertEquals("Value", null, response.getValue());
@@ -84,7 +84,7 @@ public class RegistrationServiceTest {
 		Player p = playerRepo.findByUserName("Smaug");
 		assertNull(p);
 
-		RegistrationResponse response = regServ.registrationPhase2(dto);
+		ServerResponse response = regServ.registrationPhase2(dto);
 
 		// Checking the database for this user
 		Player player = playerRepo.findByUserName("Smaug");
@@ -111,7 +111,7 @@ public class RegistrationServiceTest {
 		Player p = playerRepo.findByUserName("Smaug");
 		assertNull(p);
 
-		RegistrationResponse response = regServ.registrationPhase2(dto);
+		ServerResponse response = regServ.registrationPhase2(dto);
 
 		// Checking the database for this user
 		Player player = playerRepo.findByUserName("Smaug");
@@ -136,7 +136,7 @@ public class RegistrationServiceTest {
 		Player p = playerRepo.findByUserName("Smaug");
 		assertNull(p);
 
-		RegistrationResponse response = regServ.registrationPhase2(dto);
+		ServerResponse response = regServ.registrationPhase2(dto);
 
 		// Checking the database for this user
 		Player player = playerRepo.findByUserName("Smaug");
@@ -155,7 +155,7 @@ public class RegistrationServiceTest {
 		dto.setHomeLat(58.123);
 		dto.setHomeLong(26.123);
 
-		RegistrationResponse response = regServ.registrationPhase2(dto);
+		ServerResponse response = regServ.registrationPhase2(dto);
 
 		assertEquals("Value", null, response.getValue());
 		assertEquals("Response", ServerResult.USERNAME_IN_USE,

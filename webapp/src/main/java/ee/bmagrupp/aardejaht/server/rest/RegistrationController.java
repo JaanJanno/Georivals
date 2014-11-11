@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
-import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.service.RegistrationService;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
 
@@ -26,25 +26,25 @@ public class RegistrationController {
 	RegistrationService reghServ;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/phase1")
-	public ResponseEntity<RegistrationResponse> registrationPhase1(
+	public ResponseEntity<ServerResponse> registrationPhase1(
 			@RequestBody RegistrationDTO registration) {
 		LOG.info("Registration phase 1" + registration.toJson());
-		RegistrationResponse response = reghServ
+		ServerResponse response = reghServ
 				.registrationPhase1(registration);
-		return new ResponseEntity<RegistrationResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/phase2")
-	public ResponseEntity<RegistrationResponse> registrationPhase2(
+	public ResponseEntity<ServerResponse> registrationPhase2(
 			@RequestBody RegistrationDTO registration) {
 		LOG.info("Registration phase 2 " + registration.toJson());
-		RegistrationResponse response = reghServ
+		ServerResponse response = reghServ
 				.registrationPhase2(registration);
 		if (response.getResult() == ServerResult.OK) {
-			return new ResponseEntity<RegistrationResponse>(response,
+			return new ResponseEntity<ServerResponse>(response,
 					HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<RegistrationResponse>(response,
+			return new ResponseEntity<ServerResponse>(response,
 					HttpStatus.OK);
 		}
 

@@ -11,7 +11,7 @@ import ee.bmagrupp.aardejaht.server.core.repository.PlayerRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.aardejaht.server.core.repository.UnitRepository;
 import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationDTO;
-import ee.bmagrupp.aardejaht.server.rest.domain.RegistrationResponse;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.service.RegistrationService;
 import ee.bmagrupp.aardejaht.server.util.Constants;
 import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
@@ -33,25 +33,25 @@ public class RegistrationServiceImpl implements RegistrationService {
 	private UnitRepository unitRepo;
 
 	@Override
-	public RegistrationResponse registrationPhase1(RegistrationDTO dto) {
+	public ServerResponse registrationPhase1(RegistrationDTO dto) {
 		Player player = playerRepo.findByUserName(dto.getUserName());
 		if (player == null) {
-			return new RegistrationResponse(ServerResult.OK);
+			return new ServerResponse(ServerResult.OK);
 		} else {
-			return new RegistrationResponse(ServerResult.USERNAME_IN_USE);
+			return new ServerResponse(ServerResult.USERNAME_IN_USE);
 		}
 
 	}
 
 	@Override
-	public RegistrationResponse registrationPhase2(RegistrationDTO dto) {
+	public ServerResponse registrationPhase2(RegistrationDTO dto) {
 		Player player = playerRepo.findByUserName(dto.getUserName());
 		if (player != null) {
-			return new RegistrationResponse(ServerResult.USERNAME_IN_USE);
+			return new ServerResponse(ServerResult.USERNAME_IN_USE);
 		}
 		player = createPlayer(dto.getUserName(), dto.getEmail(),
 				dto.getHomeLat(), dto.getHomeLong());
-		return new RegistrationResponse(ServerResult.OK, player.getSid(),
+		return new ServerResponse(ServerResult.OK, player.getSid(),
 				player.getId());
 	}
 

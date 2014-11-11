@@ -26,6 +26,7 @@ import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceType;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceViewDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
 import static ee.bmagrupp.aardejaht.server.util.Constants.*;
 import ee.bmagrupp.aardejaht.server.util.Constants;
@@ -78,6 +79,20 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	@Override
 	public List<ProvinceViewDTO> getMyProvinces(String cookie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServerResponse changeHomeProvince(String latitude, String longitude,
+			String cookie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServerResponse renameProvince(String latitude, String longitude,
+			String newName, String cookie) {
 		// TODO Auto-generated method stub
 		return null;
 	}

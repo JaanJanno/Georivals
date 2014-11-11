@@ -29,7 +29,9 @@ import ee.bmagrupp.aardejaht.server.rest.domain.CameraFOV;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceType;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceViewDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.ServerResponse;
 import ee.bmagrupp.aardejaht.server.service.ProvinceService;
+import ee.bmagrupp.aardejaht.server.util.ServerResult;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -55,6 +57,9 @@ public class ProvinceControllerTest {
 	private CameraFOV fov;
 	private Cookie cookie;
 	private List<ProvinceDTO> provList;
+	private double latitude;
+	private double longitude;
+	private ServerResponse response;
 
 	@InjectMocks
 	ProvinceController provCon;
@@ -77,6 +82,10 @@ public class ProvinceControllerTest {
 		provList = new ArrayList<ProvinceDTO>();
 		provList.add(new ProvinceDTO(1, 2, 3, 100, 12, "bla", 3));
 
+		latitude = -40.4195;
+		longitude = 144.961;
+		response = new ServerResponse(ServerResult.OK);
+
 	}
 
 	@Test
@@ -92,8 +101,7 @@ public class ProvinceControllerTest {
 
 	@Test
 	public void getProvinceTest() throws Exception {
-		double latitude = -40.4195;
-		double longitude = 144.961;
+
 		ProvinceViewDTO prov = new ProvinceViewDTO(latitude, longitude,
 				ProvinceType.PLAYER, "haha", "Oleg Tartust", true, false, 10, 3);
 		when(
@@ -120,8 +128,7 @@ public class ProvinceControllerTest {
 
 	@Test
 	public void getMyProvincesTest() throws Exception {
-		double latitude = -40.4195;
-		double longitude = 144.961;
+
 		List<ProvinceViewDTO> provs = new ArrayList<ProvinceViewDTO>();
 		provs.add(new ProvinceViewDTO(latitude, longitude, ProvinceType.PLAYER,
 				"haha", "Mr. TK", false, false, 10, 3));
@@ -142,6 +149,43 @@ public class ProvinceControllerTest {
 				.andExpect(jsonPath("$.[0].unitSize", is(10)))
 				.andExpect(jsonPath("$.[0].newUnitSize", is(3)))
 				.andExpect(jsonPath("$.[0].attackable", is(false)));
+	}
+
+	@Test
+	public void changeHomeProvinceTest() throws Exception {
+
+		when(
+				provServ.changeHomeProvince(Double.toString(latitude),
+						Double.toString(longitude), "BPUYYOU62flwiWJe"))
+				.thenReturn(response);
+		mockMvc.perform(
+				post("/province/changehome")
+						.param("latitude", Double.toString(latitude))
+						.param("longitude", Double.toString(longitude))
+						.cookie(cookie).accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())));
+
+	}
+
+	@Test
+	public void renameProvinceTest() throws Exception {
+
+		when(
+				provServ.renameProvince(Double.toString(latitude),
+						Double.toString(longitude), "Mordor",
+						"BPUYYOU62flwiWJe")).thenReturn(response);
+		mockMvc.perform(
+				post("/province/rename")
+						.param("latitude", Double.toString(latitude))
+						.param("longitude", Double.toString(longitude))
+						.param("newname", "Mordor").cookie(cookie)
+						.accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())));
+
 	}
 
 }
