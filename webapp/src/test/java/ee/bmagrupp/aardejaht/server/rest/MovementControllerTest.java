@@ -19,7 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+
 import static org.mockito.Matchers.*;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -38,6 +40,7 @@ import ee.bmagrupp.aardejaht.server.Application;
 import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.aardejaht.server.rest.domain.MovementSelectionViewDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.ProvinceType;
 import ee.bmagrupp.aardejaht.server.service.MovementService;
 import ee.bmagrupp.aardejaht.server.util.ServerResult;
@@ -60,6 +63,7 @@ public class MovementControllerTest {
 	private MockMvc mockMvc;
 
 	private Cookie cookie;
+	private Date curDate;
 	private List<MovementSelectionViewDTO> movList;
 	private List<BeginMovementDTO> beginMoveList;
 
@@ -79,6 +83,7 @@ public class MovementControllerTest {
 				.build();
 
 		cookie = new Cookie("sid", "BPUYYOU62flwiWJe");
+		curDate = new Date();
 
 		movList = new ArrayList<MovementSelectionViewDTO>();
 		movList.add(new MovementSelectionViewDTO("Nurk", 18, 34));
@@ -116,7 +121,6 @@ public class MovementControllerTest {
 		String lat = "23.4565";
 		String lon = "83.453";
 
-		Date curDate = new Date();
 		String json = "[" + beginMoveList.get(0).toJson() + ","
 				+ beginMoveList.get(0).toJson() + "]";
 
@@ -132,10 +136,32 @@ public class MovementControllerTest {
 						.param("longitude", lon).content(json).cookie(cookie)
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
-				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())))
 				.andExpect(jsonPath("$.arrivalTime", is(curDate.getTime())));
+
+	}
+
+	@Test
+	public void movementViewTest() throws Exception {
+		List<MovementViewDTO> movements = new ArrayList<>();
+		movements.add(new MovementViewDTO(34, "The lonely mountain", 12, false,
+				curDate));
+
+		when(moveServ.getMyMovements(eq(cookie.getValue()))).thenReturn(
+				movements);
+
+		mockMvc.perform(
+				get("/movement").cookie(cookie).accept(
+						MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.[0].movementId", is(34)))
+				.andExpect(
+						jsonPath("$.[0].destinationName",
+								is("The lonely mountain")))
+				.andExpect(jsonPath("$.[0].unitSize", is(12)))
+				.andExpect(jsonPath("$.[0].attack", is(false)))
+				.andExpect(jsonPath("$.[0].endDate", is(curDate.getTime())));
 
 	}
 

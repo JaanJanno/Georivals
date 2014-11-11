@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.aardejaht.server.rest.domain.MovementSelectionViewDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.aardejaht.server.service.MovementService;
 
 @RestController
@@ -28,6 +29,17 @@ public class MovementController {
 
 	@Autowired
 	MovementService moveServ;
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<MovementViewDTO>> getMyMovements(
+			@CookieValue(value = "sid") String cookie) {
+		LOG.info("Creating list of player movements for " + cookie);
+		LOG.info(cookie);
+		List<MovementViewDTO> movements = moveServ.getMyMovements(cookie);
+		return new ResponseEntity<List<MovementViewDTO>>(movements,
+				HttpStatus.OK);
+
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/myunits")
 	public ResponseEntity<List<MovementSelectionViewDTO>> getMyUnits(

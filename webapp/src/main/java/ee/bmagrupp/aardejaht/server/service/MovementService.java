@@ -2,10 +2,14 @@ package ee.bmagrupp.aardejaht.server.service;
 
 import java.util.List;
 
+import ee.bmagrupp.aardejaht.server.core.domain.Movement;
+import ee.bmagrupp.aardejaht.server.core.domain.Player;
 import ee.bmagrupp.aardejaht.server.core.domain.Province;
+import ee.bmagrupp.aardejaht.server.core.domain.Unit;
 import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.aardejaht.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.aardejaht.server.rest.domain.MovementSelectionViewDTO;
+import ee.bmagrupp.aardejaht.server.rest.domain.MovementViewDTO;
 
 /**
  * Everything to do with moving units around.
@@ -40,4 +44,13 @@ public interface MovementService {
 	 */
 	BeginMovementResponse moveUnitsTo(String lat, String lon,
 			List<BeginMovementDTO> beginMoveList, String cookie);
+
+	/**
+	 * All current {@link Unit} {@link Movement}'s for this {@link Player}.
+	 * 
+	 * @param cookie
+	 *            Cookie value
+	 * @return List of {@link MovementViewDTO}
+	 */
+	List<MovementViewDTO> getMyMovements(String cookie);
 }
