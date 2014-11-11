@@ -76,6 +76,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	}
 
+	@Override
+	public List<ProvinceViewDTO> getMyProvinces(String cookie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * @author Sander
 	 * @param fov

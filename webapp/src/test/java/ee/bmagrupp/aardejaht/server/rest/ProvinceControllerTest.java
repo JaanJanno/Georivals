@@ -118,4 +118,30 @@ public class ProvinceControllerTest {
 				.andExpect(jsonPath("$.attackable", is(true)));
 	}
 
+	@Test
+	public void getMyProvincesTest() throws Exception {
+		double latitude = -40.4195;
+		double longitude = 144.961;
+		List<ProvinceViewDTO> provs = new ArrayList<ProvinceViewDTO>();
+		provs.add(new ProvinceViewDTO(latitude, longitude, ProvinceType.PLAYER,
+				"haha", "Mr. TK", false, false, 10, 3));
+		when(provServ.getMyProvinces("BPUYYOU62flwiWJe")).thenReturn(provs);
+		mockMvc.perform(
+				get("/province/myprovinces").cookie(cookie).accept(
+						MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.[0].latitude", is(latitude)))
+				.andExpect(jsonPath("$.[0].longitude", is(longitude)))
+				.andExpect(
+						jsonPath("$.[0].type",
+								is(ProvinceType.PLAYER.toString())))
+				.andExpect(jsonPath("$.[0].provinceName", is("haha")))
+				.andExpect(jsonPath("$.[0].ownerName", is("Mr. TK")))
+				.andExpect(jsonPath("$.[0].underAttack", is(false)))
+				.andExpect(jsonPath("$.[0].unitSize", is(10)))
+				.andExpect(jsonPath("$.[0].newUnitSize", is(3)))
+				.andExpect(jsonPath("$.[0].attackable", is(false)));
+	}
+
 }

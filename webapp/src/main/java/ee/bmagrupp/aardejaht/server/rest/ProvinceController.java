@@ -57,6 +57,16 @@ public class ProvinceController {
 
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/myprovinces")
+	public ResponseEntity<List<ProvinceViewDTO>> getMyProvinces(
+			@CookieValue(value = "sid") String cookie) {
+
+		LOG.info("My provinces for user with cookie " + cookie);
+		List<ProvinceViewDTO> provs = provServ.getMyProvinces(cookie);
+		return new ResponseEntity<List<ProvinceViewDTO>>(provs, HttpStatus.OK);
+
+	}
+
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Bad parameters")
 	@ExceptionHandler(NumberFormatException.class)
 	public void handleNumberFormatException() {

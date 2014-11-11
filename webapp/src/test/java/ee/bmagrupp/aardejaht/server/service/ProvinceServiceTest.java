@@ -43,7 +43,7 @@ import ee.bmagrupp.aardejaht.server.util.GeneratorUtil;
 		TransactionalTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class ProvinceServiceTest2 {
+public class ProvinceServiceTest {
 
 	private String sid; // Mr.TK
 	private String cookie; // Default cookie value
