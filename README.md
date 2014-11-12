@@ -1,7 +1,7 @@
 Georivals
 =========
 
-Server: [![Build Status](https://travis-ci.org/JaanJanno/Aardejaht.svg)](https://travis-ci.org/JaanJanno/Aardejaht)
+Server: [![Build Status](https://travis-ci.org/JaanJanno/Georivals.svg)](https://travis-ci.org/JaanJanno/Georivals)
 
 Latest mobile app apk: http://pacific-plains-8541.herokuapp.com/download
 
