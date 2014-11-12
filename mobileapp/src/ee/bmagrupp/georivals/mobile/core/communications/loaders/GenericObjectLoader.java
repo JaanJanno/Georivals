@@ -1,6 +1,9 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.gson.Gson;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Connection;
@@ -21,6 +24,7 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 
 	protected String url; 		// URL of the connection destination.
 	protected String cookie = "";	// Cookie string;
+	private Map<String, String> parameters = new HashMap<>();
 	
 	/**
 	 * 
@@ -83,9 +87,32 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 				// No cookies expected.
 			}
 		};
+		handleParameters(c);
 		c.sendRequest();
 	}
 	
+	/**
+	 * Add parameter that will be sent on to
+	 * the Connection object.
+	 * @param key
+	 * @param value
+	 */
+	
+	protected void addParamter(String key, String value) {
+		parameters.put(key, value);
+	}
+	
+	/*
+	 * Adds all parameters to the Connection object
+	 * that's about to be created.
+	 */
+	
+	private void handleParameters(Connection c) {
+		for (String key: parameters.keySet()){
+			c.addParameter(key, parameters.get(key));
+		}
+	}
+
 	/**
 	 * Override this method to define the behavior
 	 * after an object has been retrieved.

@@ -2,8 +2,8 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.registration;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectPostLoader;
-import ee.bmagrupp.georivals.mobile.models.RegistrationDTO;
-import ee.bmagrupp.georivals.mobile.models.RegistrationResponse;
+import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
+import ee.bmagrupp.georivals.mobile.models.registration.RegistrationResponse;
 
 /**
  * Class for handling the second phase of registration.

@@ -6,7 +6,7 @@ import java.util.List;
 
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.georivals.mobile.core.communications.highscore.HighScoreListLoader;
-import ee.bmagrupp.georivals.mobile.models.HighScoreEntry;
+import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.HighScoreAdapter;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;

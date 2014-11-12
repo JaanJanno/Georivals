@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ee.bmagrupp.georivals.mobile.core.communications.Connection;
-import ee.bmagrupp.georivals.mobile.models.HighScoreEntry;
+import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 
 /**
  * Class for making a HTTP get request to the server and retrieving HighScore data

@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.mobile.models;
+package ee.bmagrupp.georivals.mobile.models.map.provinceloader;
 
 /**
  * Container object for sending province data. Missing stuff: is this province

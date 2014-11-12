@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.mobile.models;
+package ee.bmagrupp.georivals.mobile.models.profile;
 
 import java.util.Date;
 

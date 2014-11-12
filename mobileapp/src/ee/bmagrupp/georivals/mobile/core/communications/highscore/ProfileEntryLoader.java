@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import ee.bmagrupp.georivals.mobile.core.communications.Connection;
-import ee.bmagrupp.georivals.mobile.models.ProfileEntry;
+import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 
 /**
  * Class for making a HTTP get request to the server and retrieving ProfileEntry data

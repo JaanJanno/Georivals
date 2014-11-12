@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.mobile.models;
+package ee.bmagrupp.georivals.mobile.models.map;
 
 import com.google.android.gms.maps.model.LatLngBounds;
 

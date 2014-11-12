@@ -1,4 +1,5 @@
-package ee.bmagrupp.georivals.mobile.models;
+package ee.bmagrupp.georivals.mobile.models.registration;
+
 
 public class RegistrationResponse {
 

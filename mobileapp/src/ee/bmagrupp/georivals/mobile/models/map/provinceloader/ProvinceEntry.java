@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.mobile.models;
+package ee.bmagrupp.georivals.mobile.models.map.provinceloader;
 
 public class ProvinceEntry {
 	private int id;

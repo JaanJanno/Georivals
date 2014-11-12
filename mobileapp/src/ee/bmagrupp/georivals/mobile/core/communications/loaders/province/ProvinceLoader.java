@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericListPostLoader;
-import ee.bmagrupp.georivals.mobile.models.CameraFOV;
-import ee.bmagrupp.georivals.mobile.models.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
+import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
 
 /**
  * Class for loading provinces from server given an CameraFOV object to

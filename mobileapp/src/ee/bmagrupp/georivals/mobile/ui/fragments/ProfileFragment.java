@@ -5,7 +5,7 @@ import java.util.Map;
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.highscore.ProfileEntryLoader;
-import ee.bmagrupp.georivals.mobile.models.ProfileEntry;
+import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
