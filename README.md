@@ -1,4 +1,4 @@
-Vallutajad
+Georivals
 =========
 
 Server: [![Build Status](https://travis-ci.org/JaanJanno/Aardejaht.svg)](https://travis-ci.org/JaanJanno/Aardejaht)
@@ -8,7 +8,7 @@ Latest mobile app apk: http://pacific-plains-8541.herokuapp.com/download
 Server accessible from: http://pacific-plains-8541.herokuapp.com/
 
 ## Eesti keeles
-'Vallutajad' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng, kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks, et alad oleksid alluvad ja et sul jätkuks sõjamehi, tuleb neid pidevalt külastada.
+'Georivals' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng, kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks, et alad oleksid alluvad ja et sul jätkuks sõjamehi, tuleb neid pidevalt külastada.
 
 ### Serveri käivitamise juhised
 Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus olevat andmebaasi. 
@@ -60,7 +60,7 @@ Lisaks läheb vaja Android SDK Managerist:
 
 #### Projekti seadistamine
 1. Lae alla Aardejahi giti repositoorium.
-2. Impordi mobileapp alamkausta projektina toimetades Eclipse'i keskkonnas järgnevalt: Git Repositories > Add an existing local Git Repository to this view > Directory: ...\Aardejaht > Finish > Parem klõps mobileapp kaustal > Import projects... > Import existing project > Next > Finish.
+2. Impordi mobileapp alamkausta projektina toimetades Eclipse'i keskkonnas järgnevalt: Git Repositories > Add an existing local Git Repository to this view > Directory: ...\Georivals > Finish > Parem klõps mobileapp kaustal > Import projects... > Import existing project > Next > Finish.
 3. Impordi Google Play services library projektina. (http://developer.android.com/google/play-services/setup.html, http://developer.android.com/tools/projects/projects-eclipse.html#SettingUpLibraryProject)
 4. Lisa Google Play services Aardejahi projekti Android library'ks. (http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
 5. Kui soovid oma telefoni kasutada:
