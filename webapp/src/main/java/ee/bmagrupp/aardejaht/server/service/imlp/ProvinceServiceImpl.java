@@ -284,13 +284,19 @@ public class ProvinceServiceImpl implements ProvinceService {
 	private int calculateRowsNr(double lat1, double lat2) {
 		lat1 = Math.floor(lat1 * 1000) / 1000;
 		lat2 = Math.ceil(lat2 * 1000) / 1000;
-		return (int) Math.ceil(((lat2 - lat1) / PROVINCE_HEIGHT));
+		return (int) Math.round(((lat2 - lat1) / PROVINCE_HEIGHT));
 	}
 
 	private int calculateColumnNr(double long1, double long2) {
 		long1 = Math.floor(long1 * 1000) / 1000;
+		if ((long1 * 1000.0) % 2 != 0) {
+			long1 = ((long1 * 1000) - 1) / 1000.0;
+		}
 		long2 = Math.ceil(long2 * 1000) / 1000;
-		return (int) Math.ceil(((long2 - long1) / PROVINCE_WIDTH));
+		if ((long2 * 1000.0) % 2 != 0) {
+			long2 = ((long2 * 1000) + 1) / 1000.0;
+		}
+		return (int) Math.round(((long2 - long1) / PROVINCE_WIDTH));
 	}
 
 	/**
