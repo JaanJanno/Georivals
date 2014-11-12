@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Aardejaht</string>
+    <string name="app_name">Georivals</string>
     <string name="average_units">Average number of units:</string>
     <string name="choose_name">Choose you name:</string>
     <string name="choose_email">Enter your e-mail:</string>
