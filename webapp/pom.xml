@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ee.bmagrupp</groupId>
-	<artifactId>aardejaht</artifactId>
+	<artifactId>georivals-server</artifactId>
 	<version>0.4.2</version>
 
-	<name>aardejaht-server</name>
-	<description>Aardejaht-server</description>
+	<name>georivals-server</name>
+	<description>Georivals-server</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -64,7 +64,7 @@
 	</dependencies>
 
 	<properties>
-		<start-class>ee.bmagrupp.aardejaht.server.Application</start-class>
+		<start-class>ee.bmagrupp.georivals.server.Application</start-class>
 	</properties>
 
 	<build>
