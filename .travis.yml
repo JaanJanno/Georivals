@@ -1,0 +1,4 @@
+language: java
+jdk:
+  - oraclejdk7
+script: sh -c 'cd webapp && mvn -B test'
