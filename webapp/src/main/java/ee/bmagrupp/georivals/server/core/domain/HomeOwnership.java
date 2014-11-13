@@ -99,4 +99,8 @@ public class HomeOwnership implements Serializable {
 				+ ", units=" + units + "]";
 	}
 
+	public void setProvince(Province newHome) {
+		this.province = newHome;
+	}
+
 }

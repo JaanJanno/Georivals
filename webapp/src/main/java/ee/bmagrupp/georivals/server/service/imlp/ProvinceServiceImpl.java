@@ -32,6 +32,7 @@ import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.GeneratorUtil;
+import ee.bmagrupp.georivals.server.util.ServerResult;
 
 @Service
 public class ProvinceServiceImpl implements ProvinceService {
@@ -98,14 +99,41 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Override
 	public ServerResponse changeHomeProvince(String latitude, String longitude,
 			String cookie) {
-		return null;
+		Player player = playerRepo.findBySid(cookie);
+		HomeOwnership home = player.getHome();
+		double lat = Double.parseDouble(latitude);
+		double long1 = Double.parseDouble(longitude);
+		Province newHome = new Province(lat, long1);
+		home.setProvince(newHome);
+		homeRepo.save(home);
+		ServerResponse resp = new ServerResponse(ServerResult.OK);
+		return resp;
 	}
 
+	
 	@Override
 	public ServerResponse renameProvince(String latitude, String longitude,
 			String newName, String cookie) {
-		// TODO Auto-generated method stub
-		return null;
+		double lat = Double.parseDouble(latitude);
+		double long1 = Double.parseDouble(longitude);
+		Province prov = provRepo.findWithLatLong(lat, long1);
+		Player player = playerRepo.findBySid(cookie);
+		Set<Ownership> lst = player.getOwnedProvinces();
+		for(Ownership a : lst){
+			if(a.getProvince().equals(prov)){
+				prov.setName(newName);
+				provRepo.save(prov);
+				ServerResponse resp = new ServerResponse(ServerResult.OK);
+				return resp;
+			}
+		}
+		HomeOwnership home = player.getHome();
+		if(home.getProvince().getLatitude() == prov.getLatitude() && home.getProvince().getLongitude() == prov.getLongitude()){
+			home.getProvince().setName(newName);
+			homeRepo.save(home);
+		}
+		ServerResponse resp = new ServerResponse(ServerResult.OTHER,"Not your province");
+		return resp;
 	}
 
 	/**
