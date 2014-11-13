@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.ui;
 
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
@@ -30,21 +30,21 @@ import android.widget.Toast;
 
 @SuppressLint("InflateParams")
 public class MainActivity extends Activity {
-	public static Toast toast;
-	public static final int LOGIN_REQUEST = 1;
-	public static final int REGISTRATION_REQUEST = 2;
+	public static final MapFragment MAP_FRAGMENT = new MapFragment();
+	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment();
+	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
+	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
+	public static final MyPlacesFragment MY_PLACES_FRAGMENT = new MyPlacesFragment();
+	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
+	public static final LoginFragment LOGIN_FRAGMENT = new LoginFragment();
 	public static Typeface GABRIOLA_FONT;
-	public int userId;
-	public String SID = "";
-	public boolean choosingHomeProvince;
-	private MapFragment mapFragment;
-	private MissionLogFragment missionLogFragment;
-	private ProfileFragment profileFragment;
-	private HighScoreFragment highscoreFragment;
-	private MyPlacesFragment myPlacesFragment;
-	private RegistrationFragment registrationFragment;
-	private LoginFragment loginFragment;
 	private final Activity activity = this;
+	private ActionBar actionBar;
+
+	public static Toast toast;
+	public static int userId;
+	public static String sid = "";
+	public static boolean choosingHomeProvince;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,16 +52,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main_layout);
 		GABRIOLA_FONT = Typeface.createFromAsset(getAssets(),
 				"fonts/Gabriola.ttf");
-		createFragmentsAndTabs();
-		addActionBarRibbon();
-		getActionBar().setDisplayShowHomeEnabled(false);
-		getActionBar().setDisplayShowTitleEnabled(false);
+		actionBar = getActionBar();
 
-		TextView chooseHomeLabel = (TextView) findViewById(R.id.choose_home_label);
-		chooseHomeLabel.setVisibility(View.INVISIBLE);
-		Button setHomeButton = (Button) findViewById(R.id.set_home_current);
-		setHomeButton.setVisibility(View.INVISIBLE);
-
+		createTabs();
+		addTabRibbon();
+		hideViews();
 		updatePlayerInfo();
 	}
 
@@ -72,31 +67,16 @@ public class MainActivity extends Activity {
 		super.onStop();
 	}
 
-	public void updatePlayerInfo() {
-		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		userId = sharedPref.getInt("userId", 0);
-		SID = sharedPref.getString("SID", "");
-	}
+	private void createTabs() {
+		TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
+				MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
+				MY_PLACES_FRAGMENT };
 
-	private void createFragmentsAndTabs() {
-		mapFragment = new MapFragment();
-		missionLogFragment = new MissionLogFragment();
-		profileFragment = new ProfileFragment();
-		highscoreFragment = new HighScoreFragment();
-		myPlacesFragment = new MyPlacesFragment();
-		registrationFragment = new RegistrationFragment();
-		loginFragment = new LoginFragment();
-
-		TabItem[] fragmentArray = new TabItem[] { mapFragment,
-				missionLogFragment, profileFragment, highscoreFragment,
-				myPlacesFragment };
-
-		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		for (TabItem fragment : fragmentArray) {
-			String tabName = fragment.getTabName();
-			int tabIconId = fragment.getTabIconId();
+		for (TabItem tabItem : tabItemArray) {
+			String tabName = tabItem.getTabName();
+			int tabIconId = tabItem.getTabIconId();
 
 			RelativeLayout tabLayout = (RelativeLayout) LayoutInflater.from(
 					this).inflate(R.layout.tab_item, null);
@@ -114,20 +94,36 @@ public class MainActivity extends Activity {
 
 			Tab tab = actionBar.newTab().setCustomView(tabLayout)
 					.setTag(tabName)
-					.setTabListener(new TabListener(this, fragment));
+					.setTabListener(new TabListener(this, tabItem));
 			actionBar.addTab(tab);
 		}
 
 		actionBar.setSelectedNavigationItem(0);
 	}
 
-	private void addActionBarRibbon() {
+	private void addTabRibbon() {
 		int actionBarContainerId = getResources().getIdentifier(
 				"action_bar_container", "id", "android");
 		FrameLayout actionBarContainer = (FrameLayout) findViewById(actionBarContainerId);
 		LayoutInflater inflater = getLayoutInflater();
 		View ribbonView = inflater.inflate(R.layout.ribbon_layout, null);
 		actionBarContainer.addView(ribbonView);
+	}
+
+	private void hideViews() {
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+
+		TextView chooseHomeLabel = (TextView) findViewById(R.id.choose_home_label);
+		chooseHomeLabel.setVisibility(View.INVISIBLE);
+		Button setHomeButton = (Button) findViewById(R.id.set_home_current);
+		setHomeButton.setVisibility(View.INVISIBLE);
+	}
+
+	public void updatePlayerInfo() {
+		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+		userId = sharedPref.getInt("userId", 0);
+		sid = sharedPref.getString("sid", "");
 	}
 
 	public void showMessage(final String message) {
@@ -143,32 +139,20 @@ public class MainActivity extends Activity {
 	public void logout(View v) {
 		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString("SID", "");
+		editor.putString("sid", "");
 		editor.putString("userName", "");
 		editor.putInt("userId", 0);
 		editor.commit();
 		updatePlayerInfo();
-		getActionBar().setSelectedNavigationItem(0);
+		actionBar.setSelectedNavigationItem(0);
 	}
 
 	public void sortByUnits(View v) {
-		highscoreFragment.sortEntries("averageUnits");
+		HIGH_SCORE_FRAGMENT.sortEntries("averageUnits");
 	}
 
 	public void sortByProvinces(View v) {
-		highscoreFragment.sortEntries("provincesOwned");
-	}
-
-	public MapFragment getMapFragment() {
-		return mapFragment;
-	}
-
-	public RegistrationFragment getRegistrationFragment() {
-		return registrationFragment;
-	}
-
-	public LoginFragment getLoginFragment() {
-		return loginFragment;
+		HIGH_SCORE_FRAGMENT.sortEntries("provincesOwned");
 	}
 
 }

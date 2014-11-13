@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.ui.listeners;
 
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.ActionBar;
@@ -10,24 +10,23 @@ import android.app.FragmentTransaction;
 
 public class TabListener implements ActionBar.TabListener {
 	private MainActivity activity;
-	private TabItem fragment;
+	private TabItem tabItem;
 
 	public TabListener(MainActivity activity, TabItem fragment) {
 		this.activity = activity;
-		this.fragment = fragment;
+		this.tabItem = fragment;
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		String fragmentTag = (String) tab.getTag();
-		if (activity.choosingHomeProvince && !fragmentTag.equals("Map"))
+		if (MainActivity.choosingHomeProvince && !fragmentTag.equals("Map"))
 			activity.getActionBar().setSelectedNavigationItem(0);
-		else if (fragmentTag.equals("Profile") && activity.userId == 0)
+		else if (fragmentTag.equals("Profile") && MainActivity.userId == 0)
 			ft.replace(R.id.fragment_container,
-					activity.getRegistrationFragment(), "Registration");
+					MainActivity.REGISTRATION_FRAGMENT, "Registration");
 		else
-			ft.replace(R.id.fragment_container, (Fragment) fragment,
-					fragmentTag);
+			ft.replace(R.id.fragment_container, (Fragment) tabItem, fragmentTag);
 	}
 
 	@Override

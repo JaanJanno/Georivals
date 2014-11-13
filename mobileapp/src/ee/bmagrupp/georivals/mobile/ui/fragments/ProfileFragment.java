@@ -2,7 +2,7 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 
 import java.util.Map;
 
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.highscore.ProfileEntryLoader;
 import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
@@ -17,8 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment implements TabItem {
-	private String tabName = "Profile";
-	private int tabIconId = R.drawable.profile_icon;
+	private final String tabName = "Profile";
+	private final int tabIconId = R.drawable.profile_icon;
+
 	private MainActivity activity;
 	private ProfileEntryLoader profileEntryLoader;
 	private RelativeLayout profileLayout;
@@ -45,7 +46,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 		if (activity == null) {
 			activity = (MainActivity) getActivity();
 			profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE,
-					activity.userId) {
+					MainActivity.userId) {
 				@Override
 				public void handleResponseObject(final ProfileEntry profileEntry) {
 					activity.runOnUiThread(new Runnable() {

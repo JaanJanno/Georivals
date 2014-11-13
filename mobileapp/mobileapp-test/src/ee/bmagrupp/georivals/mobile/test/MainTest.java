@@ -1,12 +1,12 @@
-package ee.bmagrupp.aardejaht.test.ui;
+package ee.bmagrupp.georivals.mobile.test;
 
 import com.google.android.gms.maps.GoogleMap;
 
-import ee.bmagrupp.aardejaht.R;
-import ee.bmagrupp.aardejaht.ui.MainActivity;
-import ee.bmagrupp.aardejaht.ui.fragments.HighScoreFragment;
-import ee.bmagrupp.aardejaht.ui.fragments.MapFragment;
-import ee.bmagrupp.aardejaht.ui.fragments.ProfileFragment;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
+import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -40,12 +40,12 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	protected void setUp() throws Exception {
 		super.setUp();
 		instrumentation = getInstrumentation();
-		activity = this.getActivity();
+		activity = getActivity();
 		fragment_container = (FrameLayout) activity
-				.findViewById(ee.bmagrupp.aardejaht.R.id.fragment_container);
-		actionBar = this.activity.getActionBar();
-		fragmentManager = this.activity.getFragmentManager();
-		if (activity.userId == 0)
+				.findViewById(R.id.fragment_container);
+		actionBar = activity.getActionBar();
+		fragmentManager = activity.getFragmentManager();
+		if (MainActivity.userId == 0)
 			loginAndTest();
 	}
 
@@ -57,7 +57,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	public void testLogin() {
 		if (!loginTested) {
-			activity.userId = 0;
+			MainActivity.userId = 0;
 			loginAndTest();
 		}
 	}
@@ -91,7 +91,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 			}
 		});
 		instrumentation.waitForIdleSync();
-		assertTrue(activity.userId != 0);
+		assertTrue(MainActivity.userId != 0);
 		loginTested = true;
 	}
 

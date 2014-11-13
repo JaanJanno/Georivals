@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.registration.RegistrationPhase1Poster;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.registration.RegistrationPhase2Poster;
 import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
@@ -103,7 +103,7 @@ public class RegistrationFragment extends Fragment {
 				activity.getFragmentManager()
 						.beginTransaction()
 						.replace(R.id.fragment_container,
-								activity.getLoginFragment(), "Login").commit();
+								MainActivity.LOGIN_FRAGMENT, "Login").commit();
 			}
 		});
 	}
@@ -150,13 +150,13 @@ public class RegistrationFragment extends Fragment {
 				yesButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						activity.choosingHomeProvince = true;
+						MainActivity.choosingHomeProvince = true;
 						if (activity.getActionBar().getSelectedTab().getTag()
 								.equals("Map")) {
 							activity.getFragmentManager()
 									.beginTransaction()
 									.replace(R.id.fragment_container,
-											activity.getMapFragment(), "Map")
+											MainActivity.MAP_FRAGMENT, "Map")
 									.commit();
 						} else {
 							activity.getActionBar()
@@ -211,7 +211,7 @@ public class RegistrationFragment extends Fragment {
 						Button setHomeButton = (Button) activity
 								.findViewById(R.id.set_home_current);
 						setHomeButton.setVisibility(View.INVISIBLE);
-						activity.choosingHomeProvince = false;
+						MainActivity.choosingHomeProvince = false;
 
 						// rounds to the current province's center coordinates
 						double homeProvinceLat = Math.round(homeLat * 2000) / 2000;
@@ -247,7 +247,7 @@ public class RegistrationFragment extends Fragment {
 					SharedPreferences sharedPref = activity
 							.getPreferences(Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = sharedPref.edit();
-					editor.putString("SID", SID);
+					editor.putString("sid", SID);
 					editor.putInt("userId", userId);
 					editor.commit();
 					activity.updatePlayerInfo();
