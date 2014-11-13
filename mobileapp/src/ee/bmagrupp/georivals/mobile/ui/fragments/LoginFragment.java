@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Fragment;
 import android.content.Context;
@@ -99,7 +99,7 @@ public class LoginFragment extends Fragment {
 			SharedPreferences sharedPref = activity
 					.getPreferences(Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putString("SID", loginKey);
+			editor.putString("sid", loginKey);
 			editor.putInt("userId", 1);
 			editor.commit();
 			activity.updatePlayerInfo();

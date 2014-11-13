@@ -2,7 +2,7 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 import android.annotation.SuppressLint;
 import android.content.Context;

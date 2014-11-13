@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
@@ -50,10 +50,11 @@ import android.util.Log;
 public class MapFragment extends com.google.android.gms.maps.MapFragment
 		implements TabItem, ConnectionCallbacks, OnConnectionFailedListener,
 		LocationListener {
-	private final double PROVINCE_LATITUDE_RADIUS = 0.0005;
-	private final double PROVINCE_LONGITUDE_RADIUS = 0.001;
-	private String tabName = "Map";
-	private int tabIconId = R.drawable.places_icon;
+	private final double provinceLatitudeRadius = 0.0005;
+	private final double provinceLongitudeRadius = 0.001;
+	private final String tabName = "Map";
+	private final int tabIconId = R.drawable.places_icon;
+
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
 	private LocationRequest locationRequest;
@@ -71,7 +72,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
 		setupMap();
-		if (activity.choosingHomeProvince) {
+		if (MainActivity.choosingHomeProvince) {
 			addSetHomeViews((ViewGroup) v);
 		}
 		return v;
@@ -91,7 +92,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			@Override
 			public void onClick(View v) {
 				if (playerLocation != null) {
-					activity.getRegistrationFragment()
+					MainActivity.REGISTRATION_FRAGMENT
 							.showPhase2ConfirmationDialog(
 									playerLocation.getLatitude(),
 									playerLocation.getLongitude());
@@ -225,8 +226,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	private void requestProvinces() {
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-		ProvinceUILoader l = new ProvinceUILoader(activity.SID, new CameraFOV(
-				bounds), activity) {
+		ProvinceUILoader l = new ProvinceUILoader(MainActivity.sid,
+				new CameraFOV(bounds), activity) {
 
 			@Override
 			public void handleResponseListInUI(List<ProvinceDTO> responseList) {
@@ -260,10 +261,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 				Bitmap provinceBitmap = createBitmap(provinceLayout);
 
 				LatLngBounds provinceBounds = new LatLngBounds(new LatLng(
-						centerLatitude - PROVINCE_LATITUDE_RADIUS,
-						centerLongitude - PROVINCE_LONGITUDE_RADIUS),
-						new LatLng(centerLatitude + PROVINCE_LATITUDE_RADIUS,
-								centerLongitude + PROVINCE_LONGITUDE_RADIUS));
+						centerLatitude - provinceLatitudeRadius,
+						centerLongitude - provinceLongitudeRadius), new LatLng(
+						centerLatitude + provinceLatitudeRadius,
+						centerLongitude + provinceLongitudeRadius));
 
 				GroundOverlay provinceOverlay = createGroundOverlay(
 						provinceBitmap, provinceBounds);
@@ -297,7 +298,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		} else {
 			provinceName.setText(province.getName());
 			provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
-			if (ownerId == activity.userId)
+			if (ownerId == MainActivity.userId)
 				provinceColor = activity.getResources().getColor(
 						R.color.green_transparent);
 			else

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import ee.bmagrupp.aardejaht.R;
+import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.highscore.HighScoreListLoader;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
@@ -19,8 +19,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class HighScoreFragment extends Fragment implements TabItem {
-	private String tabName = "Highscores";
-	private int tabIconId = R.drawable.leaders_icon;
+	private final String tabName = "Highscores";
+	private final int tabIconId = R.drawable.leaders_icon;
+
 	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
 	private MainActivity activity;

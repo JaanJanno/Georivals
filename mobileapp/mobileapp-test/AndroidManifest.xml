@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ee.bmagrupp.aardejaht.test"
+    package="ee.bmagrupp.georivals.mobile.test"
     android:versionCode="1"
     android:versionName="1.0" >
-    
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk android:minSdkVersion="14" />
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="ee.bmagrupp.aardejaht" />
+        android:targetPackage="ee.bmagrupp.georivals.mobile" />
 
     <application
         android:icon="@drawable/ic_launcher"
