@@ -11,8 +11,8 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +26,7 @@ import android.widget.TextView;
 public class RegistrationFragment extends Fragment {
 	private RelativeLayout registrationLayout;
 	private MainActivity activity;
+	private Resources resources;
 	private String username;
 	private String email;
 
@@ -36,6 +37,7 @@ public class RegistrationFragment extends Fragment {
 				R.layout.registration_layout, container, false);
 		MainActivity.changeFonts(registrationLayout);
 		activity = (MainActivity) getActivity();
+		resources = activity.getResources();
 		setButtonListeners();
 		return registrationLayout;
 	}
@@ -63,7 +65,8 @@ public class RegistrationFragment extends Fragment {
 				String usernameString = usernameEditText.getText().toString();
 				String emailString = emailEditText.getText().toString();
 				if (usernameString.equals("")) {
-					activity.showMessage("Username must be filled!");
+					activity.showMessage(resources
+							.getString(R.string.error_username_null));
 				} else {
 					username = usernameString;
 					email = emailString;
@@ -92,9 +95,11 @@ public class RegistrationFragment extends Fragment {
 				if (responseObject.getResult() == ServerResult.OK)
 					showPhase1ConfirmationDialog();
 				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
-					activity.showMessage("Username is already in use!");
+					activity.showMessage(resources
+							.getString(R.string.error_username_taken));
 				else
-					activity.showMessage("Unknown error!");
+					activity.showMessage(resources
+							.getString(R.string.error_unknown));
 			}
 		};
 		p.retrieveObject();
@@ -116,8 +121,10 @@ public class RegistrationFragment extends Fragment {
 				Button noButton = (Button) confirmationDialog
 						.findViewById(R.id.dialog_no);
 
-				questionTextView.setText("Are you sure you want to choose '"
-						+ username + "' as your name?");
+				questionTextView.setText(resources
+						.getString(R.string.confirmation_username1)
+						+ username
+						+ resources.getString(R.string.confirmation_username2));
 				questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
 				yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
 				noButton.setTypeface(MainActivity.GABRIOLA_FONT);
@@ -155,7 +162,6 @@ public class RegistrationFragment extends Fragment {
 
 	public void showPhase2ConfirmationDialog(final double homeLat,
 			final double homeLong) {
-		Log.d("DEBUG", "true");
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -171,8 +177,8 @@ public class RegistrationFragment extends Fragment {
 				Button noButton = (Button) confirmationDialog
 						.findViewById(R.id.dialog_no);
 
-				questionTextView
-						.setText("Do you want to make this your home province?");
+				questionTextView.setText(resources
+						.getString(R.string.confirmation_province));
 				questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
 				yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
 				noButton.setTypeface(MainActivity.GABRIOLA_FONT);
@@ -226,11 +232,14 @@ public class RegistrationFragment extends Fragment {
 					editor.putInt("userId", userId);
 					editor.commit();
 					activity.updatePlayerInfo();
-					activity.showMessage("User created!");
+					activity.showMessage(resources
+							.getString(R.string.user_created));
 				} else if (result == ServerResult.USERNAME_IN_USE) {
-					activity.showMessage("Username is already in use!");
+					activity.showMessage(resources
+							.getString(R.string.error_username_taken));
 				} else {
-					activity.showMessage("Unknown error!");
+					activity.showMessage(resources
+							.getString(R.string.error_unknown));
 				}
 
 			}

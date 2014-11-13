@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,15 +33,16 @@ import android.widget.Toast;
 
 @SuppressLint("InflateParams")
 public class MainActivity extends Activity {
-	public static final MapFragment MAP_FRAGMENT = new MapFragment();
-	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment();
-	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
-	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
-	public static final MyPlacesFragment MY_PLACES_FRAGMENT = new MyPlacesFragment();
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
 	public static final LoginFragment LOGIN_FRAGMENT = new LoginFragment();
+	public static MapFragment MAP_FRAGMENT;
+	public static MissionLogFragment MISSION_LOG_FRAGMENT;
+	public static ProfileFragment PROFILE_FRAGMENT;
+	public static HighScoreFragment HIGH_SCORE_FRAGMENT;
+	public static MyPlacesFragment MY_PLACES_FRAGMENT;
 	public static Typeface GABRIOLA_FONT;
 	private final Activity activity = this;
+	private Resources resources;
 	private ActionBar actionBar;
 
 	public static Toast toast;
@@ -54,6 +56,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main_layout);
 		GABRIOLA_FONT = Typeface.createFromAsset(getAssets(),
 				"fonts/Gabriola.ttf");
+		resources = activity.getResources();
 		actionBar = getActionBar();
 
 		createTabs();
@@ -70,6 +73,18 @@ public class MainActivity extends Activity {
 	}
 
 	private void createTabs() {
+		MAP_FRAGMENT = new MapFragment(resources.getString(R.string.map),
+				R.drawable.places_icon);
+		MISSION_LOG_FRAGMENT = new MissionLogFragment(
+				resources.getString(R.string.mission_log), R.drawable.log_icon);
+		PROFILE_FRAGMENT = new ProfileFragment(
+				resources.getString(R.string.profile), R.drawable.profile_icon);
+		HIGH_SCORE_FRAGMENT = new HighScoreFragment(
+				resources.getString(R.string.highscores),
+				R.drawable.leaders_icon);
+		MY_PLACES_FRAGMENT = new MyPlacesFragment(
+				resources.getString(R.string.my_places), R.drawable.places_icon);
+
 		TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
 				MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
 				MY_PLACES_FRAGMENT };

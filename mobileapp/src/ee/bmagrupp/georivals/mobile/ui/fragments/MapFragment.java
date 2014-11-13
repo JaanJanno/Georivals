@@ -2,6 +2,7 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 
 import java.util.HashMap;
 import java.util.List;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
@@ -52,8 +55,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		LocationListener {
 	private final double provinceLatitudeRadius = 0.0005;
 	private final double provinceLongitudeRadius = 0.001;
-	private final String tabName = "Map";
-	private final int tabIconId = R.drawable.places_icon;
+	private final String tabName;
+	private final int tabIconId;
 
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
@@ -66,6 +69,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private MapClickListener mapClickListener;
 	private Location playerLocation;
 	private HashMap<LatLng, GroundOverlay> drawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
+
+	public MapFragment(String tabName, int tabIconId) {
+		this.tabName = tabName;
+		this.tabIconId = tabIconId;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

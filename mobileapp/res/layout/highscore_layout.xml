@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/highscore_title_header"
         style="@style/HeaderStyle"
-        android:text="@string/highscore_title" />
+        android:text="@string/highscores" />
 
     <View
         android:id="@+id/highscore_line1"

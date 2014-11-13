@@ -11,6 +11,7 @@ import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.HighScoreAdapter;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,20 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class HighScoreFragment extends Fragment implements TabItem {
-	private final String tabName = "Highscores";
-	private final int tabIconId = R.drawable.leaders_icon;
+	private final String tabName;
+	private final int tabIconId;
 
 	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
 	private MainActivity activity;
+	private Resources resources;
 	private HighScoreListLoader highScoreListLoader;
 	private RelativeLayout highscoreLayout;
+
+	public HighScoreFragment(String tabName, int tabIconId) {
+		this.tabName = tabName;
+		this.tabIconId = tabIconId;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +57,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 
 		if (activity == null) {
 			activity = (MainActivity) getActivity();
+			resources = activity.getResources();
 			highScoreListLoader = new HighScoreListLoader(
 					ee.bmagrupp.georivals.mobile.core.communications.Constants.HIGHSCORE) {
 
@@ -66,7 +74,8 @@ public class HighScoreFragment extends Fragment implements TabItem {
 										playerList);
 								listview.setAdapter(adapter);
 							} else {
-								activity.showMessage("Failed to retrieve the highscore list from the server.");
+								activity.showMessage(resources
+										.getString(R.string.error_retrieval_fail));
 							}
 						}
 					});

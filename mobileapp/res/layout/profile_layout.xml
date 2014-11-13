@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/profile_title_header"
         style="@style/HeaderStyle"
-        android:text="@string/profile_title" />
+        android:text="@string/profile" />
 
     <View
         android:id="@+id/profile_line1"

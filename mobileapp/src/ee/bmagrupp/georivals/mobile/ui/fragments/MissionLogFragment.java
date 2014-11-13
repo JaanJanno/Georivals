@@ -1,12 +1,16 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
 
 public class MissionLogFragment extends Fragment implements TabItem {
-	private final String tabName = "Mission log";
-	private final int tabIconId = R.drawable.log_icon;
+	private final String tabName;
+	private final int tabIconId;
+
+	public MissionLogFragment(String tabName, int tabIconId) {
+		this.tabName = tabName;
+		this.tabIconId = tabIconId;
+	}
 
 	@Override
 	public int getTabIconId() {

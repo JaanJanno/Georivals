@@ -9,6 +9,7 @@ import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment implements TabItem {
-	private final String tabName = "Profile";
-	private final int tabIconId = R.drawable.profile_icon;
+	private final String tabName;
+	private final int tabIconId;
 
 	private MainActivity activity;
+	private Resources resources;
 	private ProfileEntryLoader profileEntryLoader;
 	private RelativeLayout profileLayout;
 	private ProfileEntry profile;
+
+	public ProfileFragment(String tabName, int tabIconId) {
+		this.tabName = tabName;
+		this.tabIconId = tabIconId;
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +53,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 		super.onCreate(savedInstanceState);
 		if (activity == null) {
 			activity = (MainActivity) getActivity();
+			resources = activity.getResources();
 			profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE,
 					MainActivity.userId) {
 				@Override
@@ -57,7 +65,8 @@ public class ProfileFragment extends Fragment implements TabItem {
 								profile = profileEntry;
 								populateLayout();
 							} else
-								activity.showMessage("Failed to retrieve the profile info from the server.");
+								activity.showMessage(resources
+										.getString(R.string.error_retrieval_fail));
 						}
 					});
 				}

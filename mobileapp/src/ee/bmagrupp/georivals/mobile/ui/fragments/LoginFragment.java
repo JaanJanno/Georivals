@@ -5,6 +5,7 @@ import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 public class LoginFragment extends Fragment {
 	private RelativeLayout loginLayout;
 	private MainActivity activity;
+	private Resources resources;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,6 +26,7 @@ public class LoginFragment extends Fragment {
 		loginLayout = (RelativeLayout) inflater.inflate(R.layout.login_layout,
 				container, false);
 		activity = (MainActivity) getActivity();
+		resources = activity.getResources();
 		MainActivity.changeFonts(loginLayout);
 		setButtonListeners();
 		return loginLayout;
@@ -51,7 +54,8 @@ public class LoginFragment extends Fragment {
 				if (loginKey.length() == 16 || loginKey.equals("test")) {
 					loginRequest(loginKey);
 				} else {
-					activity.showMessage("Invalid login key!");
+					activity.showMessage(resources
+							.getString(R.string.error_invalid_key));
 				}
 			}
 		});
@@ -65,7 +69,8 @@ public class LoginFragment extends Fragment {
 				if (isValidEmail(email)) {
 					sendKeyRequest(email);
 				} else {
-					activity.showMessage("Invalid email!");
+					activity.showMessage(resources
+							.getString(R.string.error_invalid_email));
 				}
 			}
 		});
