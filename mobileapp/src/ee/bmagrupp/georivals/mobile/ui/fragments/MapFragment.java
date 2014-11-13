@@ -43,6 +43,7 @@ import ee.bmagrupp.georivals.mobile.ui.listeners.MapClickListener;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -63,6 +64,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private LocationRequest locationRequest;
 	private LocationManager locationManager;
 	private MainActivity activity;
+	private Resources resources;
 	private LatLng lastLatLng;
 	private float lastZoom;
 	private ButtonClickListener buttonClickListener;
@@ -105,7 +107,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 									playerLocation.getLatitude(),
 									playerLocation.getLongitude());
 				} else {
-					activity.showMessage("Get your location first!");
+					activity.showMessage(resources
+							.getString(R.string.error_get_location));
 				}
 			}
 		});
@@ -192,6 +195,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private void setupMap() {
 		if (map == null) {
 			activity = (MainActivity) getActivity();
+			resources = activity.getResources();
 			locationManager = (LocationManager) activity
 					.getSystemService(Context.LOCATION_SERVICE);
 			googleApiClient = new GoogleApiClient.Builder(activity)
