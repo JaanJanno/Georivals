@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
-import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,11 +27,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -55,10 +50,6 @@ import ee.bmagrupp.georivals.server.util.ServerResult;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("test")
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-		TransactionalTestExecutionListener.class })
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-@Transactional
 public class MovementControllerTest {
 
 	private MockMvc mockMvc;
