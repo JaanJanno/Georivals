@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class LoginFragment extends Fragment {
 	private RelativeLayout loginLayout;
@@ -25,7 +24,7 @@ public class LoginFragment extends Fragment {
 		loginLayout = (RelativeLayout) inflater.inflate(R.layout.login_layout,
 				container, false);
 		activity = (MainActivity) getActivity();
-		changeFonts();
+		MainActivity.changeFonts(loginLayout);
 		setButtonListeners();
 		return loginLayout;
 	}
@@ -35,28 +34,6 @@ public class LoginFragment extends Fragment {
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
 		super.onDestroyView();
-	}
-
-	private void changeFonts() {
-		TextView keyTextView = (TextView) loginLayout
-				.findViewById(R.id.login_key_label);
-		EditText keyEditText = (EditText) loginLayout
-				.findViewById(R.id.login_key_textbox);
-		Button startButton = (Button) loginLayout
-				.findViewById(R.id.login_start);
-		TextView emailTextView = (TextView) loginLayout
-				.findViewById(R.id.login_email_label);
-		EditText emailEditText = (EditText) loginLayout
-				.findViewById(R.id.login_email_textbox);
-		Button sendKeyButton = (Button) loginLayout
-				.findViewById(R.id.login_send_key);
-
-		keyTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		keyEditText.setTypeface(MainActivity.GABRIOLA_FONT);
-		startButton.setTypeface(MainActivity.GABRIOLA_FONT);
-		emailTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		emailEditText.setTypeface(MainActivity.GABRIOLA_FONT);
-		sendKeyButton.setTypeface(MainActivity.GABRIOLA_FONT);
 	}
 
 	private void setButtonListeners() {

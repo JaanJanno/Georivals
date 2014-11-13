@@ -21,7 +21,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -134,6 +136,20 @@ public class MainActivity extends Activity {
 				toast.show();
 			}
 		});
+	}
+
+	public static void changeFonts(ViewGroup layout) {
+		for (int i = 0; i < layout.getChildCount(); i++) {
+			View view = layout.getChildAt(i);
+			if (view instanceof TextView)
+				((TextView) view).setTypeface(MainActivity.GABRIOLA_FONT);
+			else if (view instanceof EditText)
+				((EditText) view).setTypeface(MainActivity.GABRIOLA_FONT);
+			else if (view instanceof Button)
+				((Button) view).setTypeface(MainActivity.GABRIOLA_FONT);
+			else if (view instanceof ViewGroup)
+				changeFonts((ViewGroup) view);
+		}
 	}
 
 	public void logout(View v) {

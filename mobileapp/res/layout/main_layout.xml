@@ -4,14 +4,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_map" >
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/footer"
-        android:layout_alignParentTop="true" >
-    </FrameLayout>
-
     <ImageView
         android:id="@+id/footer"
         android:layout_width="match_parent"
@@ -20,6 +12,14 @@
         android:contentDescription="@null"
         android:scaleType="fitXY"
         android:src="@drawable/footer" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer"
+        android:layout_alignParentTop="true" >
+    </FrameLayout>
 
     <TextView
         android:id="@+id/choose_home_label"

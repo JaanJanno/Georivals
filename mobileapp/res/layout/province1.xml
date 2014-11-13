@@ -15,7 +15,7 @@
         android:layout_marginTop="10px"
         android:background="@drawable/castle_name"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_small" />
+        android:textSize="18px" />
 
     <TextView
         android:id="@+id/province_unit_count"

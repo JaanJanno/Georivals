@@ -34,8 +34,8 @@ public class RegistrationFragment extends Fragment {
 			Bundle savedInstanceState) {
 		registrationLayout = (RelativeLayout) inflater.inflate(
 				R.layout.registration_layout, container, false);
+		MainActivity.changeFonts(registrationLayout);
 		activity = (MainActivity) getActivity();
-		changeFonts();
 		setButtonListeners();
 		return registrationLayout;
 	}
@@ -45,31 +45,6 @@ public class RegistrationFragment extends Fragment {
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
 		super.onDestroyView();
-	}
-
-	private void changeFonts() {
-		TextView usernameTextView = (TextView) registrationLayout
-				.findViewById(R.id.registration_username_label);
-		EditText usernameEditText = (EditText) registrationLayout
-				.findViewById(R.id.registration_username_textbox);
-		TextView emailTextView = (TextView) registrationLayout
-				.findViewById(R.id.registration_email_label);
-		EditText emailEditText = (EditText) registrationLayout
-				.findViewById(R.id.registration_email_textbox);
-		TextView emailInfoTextview = (TextView) registrationLayout
-				.findViewById(R.id.registration_email_info);
-		Button startButton = (Button) registrationLayout
-				.findViewById(R.id.registration_start);
-		TextView existingAccountTextView = (TextView) registrationLayout
-				.findViewById(R.id.registration_existing_account);
-
-		usernameTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		usernameEditText.setTypeface(MainActivity.GABRIOLA_FONT);
-		emailTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		emailEditText.setTypeface(MainActivity.GABRIOLA_FONT);
-		emailInfoTextview.setTypeface(MainActivity.GABRIOLA_FONT);
-		startButton.setTypeface(MainActivity.GABRIOLA_FONT);
-		existingAccountTextView.setTypeface(MainActivity.GABRIOLA_FONT);
 	}
 
 	private void setButtonListeners() {

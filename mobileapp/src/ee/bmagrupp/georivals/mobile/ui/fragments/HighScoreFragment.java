@@ -33,6 +33,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 			Bundle savedInstanceState) {
 		highscoreLayout = (RelativeLayout) inflater.inflate(
 				R.layout.highscore_layout, container, false);
+		MainActivity.changeFonts(highscoreLayout);
 		return highscoreLayout;
 	}
 

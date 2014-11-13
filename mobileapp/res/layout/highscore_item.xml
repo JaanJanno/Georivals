@@ -5,15 +5,15 @@
     <TextView
         android:id="@+id/player_rank"
         style="@style/HighscoreItemStyle"
-        android:layout_margin="@dimen/margin_small" />
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small" />
 
     <TextView
         android:id="@+id/player_name"
         style="@style/HighscoreItemStyle"
         android:layout_width="wrap_content"
         android:layout_toEndOf="@+id/player_rank"
-        android:layout_toRightOf="@+id/player_rank"
-        android:textSize="@dimen/text_large1" />
+        android:layout_toRightOf="@+id/player_rank" />
 
     <TextView
         android:id="@+id/provinces_owned"

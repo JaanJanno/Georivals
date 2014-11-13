@@ -30,6 +30,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 			Bundle savedInstanceState) {
 		profileLayout = (RelativeLayout) inflater.inflate(
 				R.layout.profile_layout, container, false);
+		MainActivity.changeFonts(profileLayout);
 		return profileLayout;
 	}
 

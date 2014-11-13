@@ -2,14 +2,17 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
@@ -30,8 +33,11 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View rowView = null;
-		rowView = inflater.inflate(R.layout.highscore_item, parent, false);
+		RelativeLayout rowView = null;
+		rowView = (RelativeLayout) inflater.inflate(R.layout.highscore_item,
+				parent, false);
+
+		MainActivity.changeFonts(rowView);
 
 		TextView rankView = (TextView) rowView.findViewById(R.id.player_rank);
 		TextView nameView = (TextView) rowView.findViewById(R.id.player_name);
@@ -42,10 +48,9 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 
 		HighScoreEntry playerInfo = playersArrayList.get(position);
 
-		rankView.setText((position+1) + ".");
+		rankView.setText((position + 1) + ".");
 		nameView.setText(playerInfo.getUsername());
-		provincesView
-				.setText(String.valueOf(playerInfo.getProvincesOwned()));
+		provincesView.setText(String.valueOf(playerInfo.getProvincesOwned()));
 		unitsView.setText(String.valueOf(playerInfo.getAverageUnits()));
 
 		return rowView;
