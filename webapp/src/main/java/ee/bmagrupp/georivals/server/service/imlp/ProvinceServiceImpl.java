@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static ee.bmagrupp.georivals.server.util.Constants.*;
+import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
@@ -79,14 +80,24 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	@Override
 	public List<ProvinceViewDTO> getMyProvinces(String cookie) {
-		// TODO Auto-generated method stub
-		return null;
+		Player player = playerRepo.findBySid(cookie);
+		Set<Ownership> provinces = player.getOwnedProvinces();
+		ArrayList<ProvinceViewDTO> list = new ArrayList<ProvinceViewDTO>();
+		HomeOwnership home = player.getHome();
+		Province homeProvince = home.getProvince();
+		list.add(new ProvinceViewDTO(homeProvince.getLatitude(), homeProvince.getLongitude(),
+				homeProvince.getName(), ProvinceType.HOME,
+				player.getUserName(), countUnits(home.getUnits())));
+		for (Ownership a : provinces){
+			Province temp = a.getProvince();
+			list.add(new ProvinceViewDTO(temp.getLatitude(),temp.getLongitude(),temp.getName(),ProvinceType.PLAYER,player.getUserName(),countUnits(a.getUnits())));
+		}
+		return list;
 	}
 
 	@Override
 	public ServerResponse changeHomeProvince(String latitude, String longitude,
 			String cookie) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

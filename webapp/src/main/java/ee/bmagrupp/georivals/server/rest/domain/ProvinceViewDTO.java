@@ -37,6 +37,30 @@ public class ProvinceViewDTO {
 		this.unitSize = unitSize;
 		this.newUnitSize = newUnitSize;
 	}
+	
+	/**
+	 * Constructor used when player calls getMyprovinces
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param provinceName
+	 * @param type
+	 * @param ownerName
+	 * @param unitSize
+	 */
+	
+	public ProvinceViewDTO(double latitude, double longitude,
+			String provinceName,ProvinceType type,String ownerName, int unitSize) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.type = type;
+		this.provinceName = provinceName;
+		this.ownerName = ownerName;
+		this.isAttackable = true;
+		this.underAttack = false;
+		this.unitSize = unitSize;
+		this.newUnitSize = 0;
+	}
 
 	/**
 	 * Constructor used when the province is owned by the BOT.
