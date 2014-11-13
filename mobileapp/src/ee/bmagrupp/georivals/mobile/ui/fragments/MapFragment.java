@@ -2,7 +2,6 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 
 import java.util.HashMap;
 import java.util.List;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,7 +13,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
@@ -32,11 +30,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 import ee.bmagrupp.aardejaht.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
-import ee.bmagrupp.georivals.mobile.models.CameraFOV;
-import ee.bmagrupp.georivals.mobile.models.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
+import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.georivals.mobile.ui.listeners.MapClickListener;
