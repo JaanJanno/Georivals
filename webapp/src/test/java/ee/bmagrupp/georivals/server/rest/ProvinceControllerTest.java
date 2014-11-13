@@ -48,7 +48,7 @@ public class ProvinceControllerTest {
 	private MockMvc mockMvc;
 	private CameraFOV fov;
 	private Cookie cookie;
-	private List<ProvinceDTO> provList;
+	private List<ProvinceViewDTO> provList;
 	private double latitude;
 	private double longitude;
 	private ServerResponse response;
@@ -71,8 +71,8 @@ public class ProvinceControllerTest {
 		fov = new CameraFOV(2, 3, 4, 5);
 		cookie = new Cookie("sid", "BPUYYOU62flwiWJe");
 
-		provList = new ArrayList<ProvinceDTO>();
-		provList.add(new ProvinceDTO(1, 2, 3, 100, 12, "bla", 3));
+		provList = new ArrayList<ProvinceViewDTO>();
+		provList.add(new ProvinceViewDTO(2, 3, ProvinceType.PLAYER, "bla", "owner", true, false, 100, 3));
 
 		latitude = -40.4195;
 		longitude = 144.961;

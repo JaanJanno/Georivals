@@ -25,7 +25,6 @@ import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
-import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
@@ -147,8 +146,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 */
 
 	@Override
-	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
-		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
+	public List<ProvinceViewDTO> getProvinces(CameraFOV fov, String cookie) {
+		ArrayList<ProvinceViewDTO> rtrn = new ArrayList<ProvinceViewDTO>();
 
 		int columns = calculateColumnNr(fov.getSwlongitude(),
 				fov.getNelongitude());
@@ -190,18 +189,22 @@ public class ProvinceServiceImpl implements ProvinceService {
 						// -----
 						Province temp = a.getProvince();
 						int provinceStrength = getProvinceStrength(a);
-						int playerId = playerRepo.findOwner(temp.getId())
-								.getId();
+						Player player = playerRepo.findOwner(temp.getId());
+						int playerId = player.getId();
 						int newUnits = 0;
 						if (curPlayerId == playerId) {
 							newUnits = generateNewUnits(a.getLastVisit(),
 									currentDate, provinceStrength);
 						}
 						// -----
-						rtrn.add(new ProvinceDTO(temp.getId(), temp
-								.getLatitude(), temp.getLongitude(),
-								provinceStrength, playerId, temp.getName(),
-								newUnits));
+						if(curPlayerId == playerId){
+							rtrn.add(new ProvinceViewDTO(temp.getLatitude(), temp.getLongitude(),
+								ProvinceType.PLAYER, temp.getName(), player.getUserName(), true, false, countUnits(a.getUnits()), newUnits));
+						}
+						else{
+							rtrn.add(new ProvinceViewDTO(temp.getLatitude(), temp.getLongitude(),
+									ProvinceType.OTHER_PLAYER, temp.getName(), player.getUserName(), true, false, countUnits(a.getUnits()), newUnits));
+						}
 						found = true;
 						foundArea = a;
 						break;
@@ -220,7 +223,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		return rtrn;
 	}
 
-	private ProvinceDTO generateProvince(double latitude, double longitude,
+	private ProvinceViewDTO generateProvince(double latitude, double longitude,
 			int playerStrength) {
 		int min = playerStrength
 				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
@@ -232,11 +235,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 		} else if (botStrength < 1) {
 			botStrength = 1;
 		}
-		int provinceID = rand.nextInt((10000000 - 100000) + 1) + 100000;
 		String name = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH);
 
-		return new ProvinceDTO(provinceID, latitude, longitude, botStrength,
-				BOT_ID, name, 0);
+		return new ProvinceViewDTO(latitude, longitude, name, botStrength);
 	}
 
 	/**

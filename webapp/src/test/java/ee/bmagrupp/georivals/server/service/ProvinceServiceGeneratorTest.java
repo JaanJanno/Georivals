@@ -19,8 +19,11 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import ee.bmagrupp.georivals.server.Application;
+import ee.bmagrupp.georivals.server.core.domain.Player;
+import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
+import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 
 /**
@@ -42,6 +45,9 @@ public class ProvinceServiceGeneratorTest {
 
 	@Autowired
 	ProvinceService provServ;
+	
+	@Autowired
+	PlayerRepository playerRepo;
 
 	private CameraFOV fov;
 	private CameraFOV fov2;
@@ -57,19 +63,19 @@ public class ProvinceServiceGeneratorTest {
 	@Test
 	public void noSidTest() {
 		String cookie = "cookie"; // Default sid value
-		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+		List<ProvinceViewDTO> provList = provServ.getProvinces(fov, cookie);
 
 		assertEquals("Provinces in area", 12, provList.size());
-		for (ProvinceDTO a : provList) {
+		for (ProvinceViewDTO a : provList) {
 			assertEquals("Nobody should have any new units", 0,
-					a.getNewUnitCount());
+					a.getNewUnitSize());
 		}
 	}
 
 	@Test
 	public void provinceNumberTest() {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
-		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+		List<ProvinceViewDTO> provList = provServ.getProvinces(fov, cookie);
 
 		assertEquals("Provinces in area", 12, provList.size());
 	}
@@ -78,7 +84,7 @@ public class ProvinceServiceGeneratorTest {
 	public void provinceNumberTest2() {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
 		
-		List<ProvinceDTO> provList = provServ.getProvinces(fov2, cookie);
+		List<ProvinceViewDTO> provList = provServ.getProvinces(fov2, cookie);
 
 		assertEquals("Provinces in area", 30, provList.size());
 	}
@@ -87,12 +93,13 @@ public class ProvinceServiceGeneratorTest {
 	public void dataBaseProvinceTest() {
 
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
-		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+		List<ProvinceViewDTO> provList = provServ.getProvinces(fov, cookie);
 
-		for (ProvinceDTO a : provList) {
-			if (a.getPlayerId() != playerID) {
+		for (ProvinceViewDTO a : provList) {
+			Player player = playerRepo.findByUserName(a.getOwnerName());
+			if (player.getId() != playerID) {
 				assertEquals("Other players/BOTS should have 0 new units", 0,
-						a.getNewUnitCount());
+						a.getNewUnitSize());
 			}
 		}
 	}
@@ -100,12 +107,12 @@ public class ProvinceServiceGeneratorTest {
 	@Test
 	public void provinceOrderingTest() {
 		String cookie = "BPUYYOU62flwiWJe"; // User Mr.TK
-		List<ProvinceDTO> provList = provServ.getProvinces(fov, cookie);
+		List<ProvinceViewDTO> provList = provServ.getProvinces(fov, cookie);
 
 		double lastLat = provList.get(0).getLatitude() - 1;
 		double lastLong = provList.get(0).getLongitude() - 1;
 
-		for (ProvinceDTO a : provList) {
+		for (ProvinceViewDTO a : provList) {
 			double y = a.getLatitude();
 			double x = a.getLongitude();
 			if (x > lastLong) {

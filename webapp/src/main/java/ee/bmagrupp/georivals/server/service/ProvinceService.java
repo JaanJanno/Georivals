@@ -26,7 +26,7 @@ public interface ProvinceService {
 	 *            SID of this user
 	 * @return List of {@link ProvinceDTO}
 	 */
-	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie);
+	public List<ProvinceViewDTO> getProvinces(CameraFOV fov, String cookie);
 
 	/**
 	 * Returns the {@link Province} defined by the latitude and longitude.
