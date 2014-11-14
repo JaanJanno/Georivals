@@ -45,8 +45,8 @@ public class ProfileServiceIntegrationTest {
 		assertEquals("Player name", "Mr. TK", player.getUsername());
 		assertEquals("Player id", 1, player.getId());
 		assertEquals("Player email", "mr.tk@pacific.ee", player.getEmail());
-		assertEquals("Player name", 2, player.getOwnedProvinces());
-		assertEquals("Player name", 23, player.getTotalUnits());
+		assertEquals("Player name", 1, player.getOwnedProvinces());
+		assertEquals("Player units", 19, player.getTotalUnits());
 	}
 
 	@Test
@@ -64,8 +64,8 @@ public class ProfileServiceIntegrationTest {
 		assertEquals("Player name", "Mr. TK", player.getUsername());
 		assertEquals("Player id", 1, player.getId());
 		assertEquals("Player email", "mr.tk@pacific.ee", player.getEmail());
-		assertEquals("Player name", 2, player.getOwnedProvinces());
-		assertEquals("Player name", 23, player.getTotalUnits());
+		assertEquals("Player name", 1, player.getOwnedProvinces());
+		assertEquals("Player units", 19, player.getTotalUnits());
 	}
 
 	@Test

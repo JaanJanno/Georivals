@@ -10,9 +10,5 @@ public enum UnitState {
 	/**
 	 * Owned by a Player.
 	 */
-	CLAIMED,
-	/**
-	 * In a Player's province, but not yet claimed by the Player.
-	 */
-	UNCLAIMED
+	CLAIMED
 }

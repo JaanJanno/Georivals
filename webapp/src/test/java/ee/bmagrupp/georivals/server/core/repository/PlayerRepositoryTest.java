@@ -150,7 +150,7 @@ public class PlayerRepositoryTest {
 
 	@Test
 	public void findPlayerFromProvince() {
-		Player player = playerRepo.findOwnerOfProvince(1);
+		Player player = playerRepo.findOwnerOfProvince(6);
 		assertEquals("Player id", 1, player.getId());
 		assertEquals("Player name", "Mr. TK", player.getUserName());
 	}

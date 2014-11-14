@@ -44,20 +44,19 @@ public class MovementServiceTest {
 		List<MovementSelectionViewDTO> dtos = movServ
 				.getMyUnits("BPUYYOU62flwiWJe"); // Mr.TK
 
-		assertEquals("The number of units this player has", 3, dtos.size());
-		/*
-		 * Can't test other items like the home province because the returned
-		 * object are not always in the same order
-		 */
+		assertEquals("The number of units this player has", 2, dtos.size());
+
 		assertEquals("Unit type", ProvinceType.PLAYER, dtos.get(0).getType());
-		assertEquals("Unit type", ProvinceType.PLAYER, dtos.get(1).getType());
+		assertEquals("Unit size", 9, dtos.get(0).getUnitSize());
+		assertEquals("Unit id", 6, dtos.get(0).getUnitId());
+		assertEquals("Unit province name","Kvukx9SCOB", dtos.get(0).getProvinceName());
 
 		// Home province
-		assertEquals("Unit size", 10, dtos.get(2).getUnitSize());
-		assertEquals("Unit province name", "lzpD6mFm44", dtos.get(2)
+		assertEquals("Unit size", 10, dtos.get(1).getUnitSize());
+		assertEquals("Unit province name", "lzpD6mFm44", dtos.get(1)
 				.getProvinceName());
-		assertEquals("Unit unit id", 7, dtos.get(2).getUnitId());
-		assertEquals("Unit type", ProvinceType.HOME, dtos.get(2).getType());
+		assertEquals("Unit unit id", 7, dtos.get(1).getUnitId());
+		assertEquals("Unit type", ProvinceType.HOME, dtos.get(1).getType());
 	}
 
 }

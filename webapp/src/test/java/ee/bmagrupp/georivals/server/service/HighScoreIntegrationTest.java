@@ -56,9 +56,9 @@ public class HighScoreIntegrationTest {
 		HighScoreEntry highScore = highScoreServ.findById(1);
 
 		assertEquals("The id", 1, highScore.getId());
-		assertEquals("Average units. TotalUnits/Provinces", 11.5,
+		assertEquals("Average units. TotalUnits/Provinces", 19.0,
 				highScore.getAverageUnits(), 0.1);
-		assertEquals("Number of provinces", 2, highScore.getProvincesOwned());
+		assertEquals("Number of provinces", 1, highScore.getProvincesOwned());
 		assertEquals("The name", "Mr. TK", highScore.getUsername());
 
 	}

@@ -130,15 +130,15 @@ public class ProvinceServiceTest {
 
 	@Test
 	public void otherPlayerProvince() {
-		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat2),
-				Double.toString(long2), "UJ86IpW5xK8ZZH7t"); // JohnnyZQ
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(-40.4225),
+				Double.toString(144.963), "UJ86IpW5xK8ZZH7t"); // JohnnyZQ
 
-		assertEquals("Province latitude", lat2, prov1.getLatitude(), 0.0001);
-		assertEquals("Province longitude", long2, prov1.getLongitude(), 0.001);
+		assertEquals("Province latitude", -40.4225, prov1.getLatitude(), 0.0001);
+		assertEquals("Province longitude", 144.963, prov1.getLongitude(), 0.001);
 		assertEquals("Province type", ProvinceType.OTHER_PLAYER,
 				prov1.getType());
-		assertEquals("Province name", "lzpD6mFm44", prov1.getProvinceName());
-		assertEquals("Province unit size", 4, prov1.getUnitSize());
+		assertEquals("Province name", "Kvukx9SCOB", prov1.getProvinceName());
+		assertEquals("Province unit size", 9, prov1.getUnitSize());
 		assertEquals("Province new units", 0, prov1.getNewUnitSize());
 		assertEquals("Province owner name", "Mr. TK", prov1.getOwnerName());
 		assertEquals("Attackable", true, prov1.isAttackable());

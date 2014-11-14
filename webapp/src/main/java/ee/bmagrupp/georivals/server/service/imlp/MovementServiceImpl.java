@@ -29,14 +29,14 @@ public class MovementServiceImpl implements MovementService {
 		List<MovementSelectionViewDTO> movements = new ArrayList<>();
 		for (Ownership o : player.getOwnedProvinces()) {
 			for (Unit unit : o.getUnits()) {
-				movements.add(new MovementSelectionViewDTO(o.getProvince()
-						.getName(), unit.getId(), unit.getSize()));
+				movements.add(new MovementSelectionViewDTO(o.getProvinceName(),
+						unit.getId(), unit.getSize()));
 			}
 		}
 
 		for (Unit unit : player.getHome().getUnits()) {
 			movements.add(new MovementSelectionViewDTO(player.getHome()
-					.getProvince().getName(), unit.getId(), unit.getSize(),
+					.getProvinceName(), unit.getId(), unit.getSize(),
 					ProvinceType.HOME));
 		}
 		return movements;

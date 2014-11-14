@@ -16,6 +16,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ee.bmagrupp.georivals.server.util.Constants;
+import ee.bmagrupp.georivals.server.util.GeneratorUtil;
+
 @Entity
 public class HomeOwnership implements Serializable {
 
@@ -39,6 +42,8 @@ public class HomeOwnership implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY)
 	private Set<Unit> units = new HashSet<>();
 
+	private String provinceName;
+
 	protected HomeOwnership() {
 		super();
 	}
@@ -55,6 +60,7 @@ public class HomeOwnership implements Serializable {
 		} else {
 			this.units.add(unit);
 		}
+		this.setProvinceName(GeneratorUtil.generateString(Constants.PROVINCE_NAME_LENGTH, province.getLatitude(), province.getLongitude()));
 	}
 
 	public Date getLastVisit() {
@@ -85,6 +91,14 @@ public class HomeOwnership implements Serializable {
 		return startDate;
 	}
 
+	public String getProvinceName() {
+		return provinceName;
+	}
+
+	public void setProvinceName(String provinceName) {
+		this.provinceName = provinceName;
+	}
+
 	public boolean addUnit(Unit unit) {
 		if (this.units == null) {
 			this.units = new HashSet<>();
@@ -96,7 +110,7 @@ public class HomeOwnership implements Serializable {
 	public String toString() {
 		return "HomeOwnership [id=" + id + ", province=" + province
 				+ ", lastVisit=" + lastVisit + ", startDate=" + startDate
-				+ ", units=" + units + "]";
+				+ ", units=" + units + ", provinceName=" + provinceName + "]";
 	}
 
 	public void setProvince(Province newHome) {

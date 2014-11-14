@@ -29,9 +29,9 @@ public class UnitRepositoryTest {
 
 	@Test
 	public void singleUnit() {
-		Unit unit = unitRepo.findOne(1);
+		Unit unit = unitRepo.findOne(2);
 
-		assertEquals("Unit id", 1, unit.getId());
+		assertEquals("Unit id", 2, unit.getId());
 	}
 
 }

@@ -8,9 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
-
 @Entity
 public class Province implements Serializable {
 
@@ -26,14 +23,11 @@ public class Province implements Serializable {
 	@Column(nullable = false)
 	private double longitude;
 
-	private String name;
-
 	protected Province() {
 	}
 
 	/**
-	 * Basic constructor for a Province. Name is set to a random alphanumeric
-	 * String. The length of it is specified in {@link Constants}.
+	 * Basic constructor for a Province.
 	 * 
 	 * @param latitude
 	 *            For Tartu something like 58.37
@@ -44,15 +38,6 @@ public class Province implements Serializable {
 		super();
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.setName(GeneratorUtil.generateString(Constants.PROVINCE_NAME_LENGTH));
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getId() {
@@ -70,7 +55,7 @@ public class Province implements Serializable {
 	@Override
 	public String toString() {
 		return "Province [id=" + id + ", latitude=" + latitude + ", longitude="
-				+ longitude + ", name=" + name + "]";
+				+ longitude + "]";
 	}
 
 }
