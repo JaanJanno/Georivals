@@ -24,7 +24,6 @@ import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
-import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.GeneratorUtil;
@@ -83,9 +82,9 @@ public class ProvinceServiceTest {
 	@Test
 	public void botOwnedProvinceWithSID() {
 
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(lat1),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat1),
 				Double.toString(long1), sid);
-		ProvinceViewDTO prov2 = provServ.getProvince(Double.toString(lat1),
+		ProvinceDTO prov2 = provServ.getProvince(Double.toString(lat1),
 				Double.toString(long1), sid);
 
 		assertEquals("Province latitude", lat1, prov1.getLatitude(), 0.0001);
@@ -100,9 +99,9 @@ public class ProvinceServiceTest {
 	@Test
 	public void botOwnedProvinceWithoutSID() {
 
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(lat1),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat1),
 				Double.toString(long1), cookie);
-		ProvinceViewDTO prov2 = provServ.getProvince(Double.toString(lat1),
+		ProvinceDTO prov2 = provServ.getProvince(Double.toString(lat1),
 				Double.toString(long1), cookie);
 
 		assertEquals("Province latitude", lat1, prov1.getLatitude(), 0.0001);
@@ -117,7 +116,7 @@ public class ProvinceServiceTest {
 	@Test
 	public void homeProvince() {
 
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(lat2),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat2),
 				Double.toString(long2), sid);
 
 		assertEquals("Province latitude", lat2, prov1.getLatitude(), 0.0001);
@@ -131,7 +130,7 @@ public class ProvinceServiceTest {
 
 	@Test
 	public void otherPlayerProvince() {
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(lat2),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat2),
 				Double.toString(long2), "UJ86IpW5xK8ZZH7t"); // JohnnyZQ
 
 		assertEquals("Province latitude", lat2, prov1.getLatitude(), 0.0001);
@@ -148,7 +147,7 @@ public class ProvinceServiceTest {
 
 	@Test
 	public void ownedProvince() {
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(-40.4225),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(-40.4225),
 				Double.toString(144.963), sid);
 
 		assertEquals("Province latitude", -40.4225, prov1.getLatitude(), 0.0001);
@@ -164,7 +163,7 @@ public class ProvinceServiceTest {
 
 	@Test
 	public void ownedProvinceWithoutSid() {
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(-40.4225),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(-40.4225),
 				Double.toString(144.963), cookie);
 
 		assertEquals("Province latitude", -40.4225, prov1.getLatitude(), 0.0001);
@@ -192,7 +191,7 @@ public class ProvinceServiceTest {
 		homeRepo.save(player.getHome());
 		playerRepo.save(player);
 
-		ProvinceViewDTO prov1 = provServ.getProvince(Double.toString(lat3),
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat3),
 				Double.toString(long3), sid);
 
 		assertEquals("Province latitude", lat3, prov1.getLatitude(), 0.0001);

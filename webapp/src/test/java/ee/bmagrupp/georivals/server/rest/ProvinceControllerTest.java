@@ -24,7 +24,6 @@ import ee.bmagrupp.georivals.server.rest.ProvinceController;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
-import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.ServerResult;
@@ -48,7 +47,7 @@ public class ProvinceControllerTest {
 	private MockMvc mockMvc;
 	private CameraFOV fov;
 	private Cookie cookie;
-	private List<ProvinceViewDTO> provList;
+	private List<ProvinceDTO> provList;
 	private double latitude;
 	private double longitude;
 	private ServerResponse response;
@@ -71,8 +70,9 @@ public class ProvinceControllerTest {
 		fov = new CameraFOV(2, 3, 4, 5);
 		cookie = new Cookie("sid", "BPUYYOU62flwiWJe");
 
-		provList = new ArrayList<ProvinceViewDTO>();
-		provList.add(new ProvinceViewDTO(2, 3, ProvinceType.PLAYER, "bla", "owner", true, false, 100, 3));
+		provList = new ArrayList<ProvinceDTO>();
+		provList.add(new ProvinceDTO(2, 3, ProvinceType.PLAYER, "bla", "owner",
+				true, false, 100, 3));
 
 		latitude = -40.4195;
 		longitude = 144.961;
@@ -94,7 +94,7 @@ public class ProvinceControllerTest {
 	@Test
 	public void getProvinceTest() throws Exception {
 
-		ProvinceViewDTO prov = new ProvinceViewDTO(latitude, longitude,
+		ProvinceDTO prov = new ProvinceDTO(latitude, longitude,
 				ProvinceType.PLAYER, "haha", "Oleg Tartust", true, false, 10, 3);
 		when(
 				provServ.getProvince(Double.toString(latitude),
@@ -121,8 +121,8 @@ public class ProvinceControllerTest {
 	@Test
 	public void getMyProvincesTest() throws Exception {
 
-		List<ProvinceViewDTO> provs = new ArrayList<ProvinceViewDTO>();
-		provs.add(new ProvinceViewDTO(latitude, longitude, ProvinceType.PLAYER,
+		List<ProvinceDTO> provs = new ArrayList<ProvinceDTO>();
+		provs.add(new ProvinceDTO(latitude, longitude, ProvinceType.PLAYER,
 				"haha", "Mr. TK", false, false, 10, 3));
 		when(provServ.getMyProvinces("BPUYYOU62flwiWJe")).thenReturn(provs);
 		mockMvc.perform(

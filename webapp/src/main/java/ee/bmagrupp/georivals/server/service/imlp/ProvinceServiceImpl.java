@@ -26,7 +26,7 @@ import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
-import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
+import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.Constants;
@@ -66,7 +66,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 * @author TKasekamp
 	 */
 	@Override
-	public ProvinceViewDTO getProvince(String latitude, String longitude,
+	public ProvinceDTO getProvince(String latitude, String longitude,
 			String cookie) {
 		double lat = Double.parseDouble(latitude);
 		double lon = Double.parseDouble(longitude);
@@ -79,18 +79,22 @@ public class ProvinceServiceImpl implements ProvinceService {
 	}
 
 	@Override
-	public List<ProvinceViewDTO> getMyProvinces(String cookie) {
+	public List<ProvinceDTO> getMyProvinces(String cookie) {
 		Player player = playerRepo.findBySid(cookie);
 		Set<Ownership> provinces = player.getOwnedProvinces();
-		ArrayList<ProvinceViewDTO> list = new ArrayList<ProvinceViewDTO>();
+		ArrayList<ProvinceDTO> list = new ArrayList<ProvinceDTO>();
 		HomeOwnership home = player.getHome();
 		Province homeProvince = home.getProvince();
-		list.add(new ProvinceViewDTO(homeProvince.getLatitude(), homeProvince.getLongitude(),
-				homeProvince.getName(), ProvinceType.HOME,
-				player.getUserName(), countUnits(home.getUnits())));
-		for (Ownership a : provinces){
+		list.add(createHomeProvince(homeProvince, player));
+		for (Ownership a : provinces) {
 			Province temp = a.getProvince();
-			list.add(new ProvinceViewDTO(temp.getLatitude(),temp.getLongitude(),temp.getName(),ProvinceType.PLAYER,player.getUserName(),countUnits(a.getUnits())));
+			boolean underAttack = movementRepo.checkIfDestination(temp.getId());
+			int unitSize = countUnits(a.getUnits());
+			int newUnits = generateNewUnits(a.getLastVisit(), new Date(),
+					unitSize);
+			list.add(new ProvinceDTO(temp.getLatitude(), temp.getLongitude(),
+					ProvinceType.PLAYER, temp.getName(), player.getUserName(),
+					false, underAttack, unitSize, newUnits));
 		}
 		return list;
 	}
@@ -109,7 +113,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 		return resp;
 	}
 
-	
 	@Override
 	public ServerResponse renameProvince(String latitude, String longitude,
 			String newName, String cookie) {
@@ -118,8 +121,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 		Province prov = provRepo.findWithLatLong(lat, long1);
 		Player player = playerRepo.findBySid(cookie);
 		Set<Ownership> lst = player.getOwnedProvinces();
-		for(Ownership a : lst){
-			if(a.getProvince().equals(prov)){
+		for (Ownership a : lst) {
+			if (a.getProvince().equals(prov)) {
 				prov.setName(newName);
 				provRepo.save(prov);
 				ServerResponse resp = new ServerResponse(ServerResult.OK);
@@ -127,11 +130,13 @@ public class ProvinceServiceImpl implements ProvinceService {
 			}
 		}
 		HomeOwnership home = player.getHome();
-		if(home.getProvince().getLatitude() == prov.getLatitude() && home.getProvince().getLongitude() == prov.getLongitude()){
+		if (home.getProvince().getLatitude() == prov.getLatitude()
+				&& home.getProvince().getLongitude() == prov.getLongitude()) {
 			home.getProvince().setName(newName);
 			homeRepo.save(home);
 		}
-		ServerResponse resp = new ServerResponse(ServerResult.OTHER,"Not your province");
+		ServerResponse resp = new ServerResponse(ServerResult.OTHER,
+				"Not your province");
 		return resp;
 	}
 
@@ -146,8 +151,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 */
 
 	@Override
-	public List<ProvinceViewDTO> getProvinces(CameraFOV fov, String cookie) {
-		ArrayList<ProvinceViewDTO> rtrn = new ArrayList<ProvinceViewDTO>();
+	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
+		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
 
 		int columns = calculateColumnNr(fov.getSwlongitude(),
 				fov.getNelongitude());
@@ -197,13 +202,16 @@ public class ProvinceServiceImpl implements ProvinceService {
 									currentDate, provinceStrength);
 						}
 						// -----
-						if(curPlayerId == playerId){
-							rtrn.add(new ProvinceViewDTO(temp.getLatitude(), temp.getLongitude(),
-								ProvinceType.PLAYER, temp.getName(), player.getUserName(), true, false, countUnits(a.getUnits()), newUnits));
-						}
-						else{
-							rtrn.add(new ProvinceViewDTO(temp.getLatitude(), temp.getLongitude(),
-									ProvinceType.OTHER_PLAYER, temp.getName(), player.getUserName(), true, false, countUnits(a.getUnits()), newUnits));
+						if (curPlayerId == playerId) {
+							rtrn.add(new ProvinceDTO(temp.getLatitude(), temp
+									.getLongitude(), ProvinceType.PLAYER, temp
+									.getName(), player.getUserName(), true,
+									false, countUnits(a.getUnits()), newUnits));
+						} else {
+							rtrn.add(new ProvinceDTO(temp.getLatitude(), temp
+									.getLongitude(), ProvinceType.OTHER_PLAYER,
+									temp.getName(), player.getUserName(), true,
+									false, countUnits(a.getUnits()), newUnits));
 						}
 						found = true;
 						foundArea = a;
@@ -223,7 +231,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		return rtrn;
 	}
 
-	private ProvinceViewDTO generateProvince(double latitude, double longitude,
+	private ProvinceDTO generateProvince(double latitude, double longitude,
 			int playerStrength) {
 		int min = playerStrength
 				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
@@ -237,7 +245,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		}
 		String name = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH);
 
-		return new ProvinceViewDTO(latitude, longitude, name, botStrength);
+		return new ProvinceDTO(latitude, longitude, name, botStrength);
 	}
 
 	/**
@@ -275,17 +283,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 			return b;
 		}
 		return 0;
-	}
-
-	/**
-	 * @author Sander
-	 * @param cookie
-	 * @return returns the overall strength of a player
-	 */
-
-	private int findPlayerStrength(String cookie) {
-		Player player = playerRepo.findBySid(cookie);
-		return findPlayerStrength(player);
 	}
 
 	/**
@@ -389,7 +386,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 	// ProvinceViewDTO creation
 
 	/**
-	 * Returns a {@link ProvinceViewDTO} defined by the coordinates.
+	 * Returns a {@link ProvinceDTO} defined by the coordinates.
 	 * 
 	 * @param latitude
 	 * @param longitude
@@ -398,9 +395,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 * @param playerStrength
 	 *            {@link Player}'s total number of units
 	 * @author TKasekamp
-	 * @return {@link ProvinceViewDTO}
+	 * @return {@link ProvinceDTO}
 	 */
-	private ProvinceViewDTO getProvince(double latitude, double longitude,
+	private ProvinceDTO getProvince(double latitude, double longitude,
 			Player player, int playerStrength) {
 		Province prov = provRepo.findWithLatLong(latitude, longitude);
 
@@ -421,8 +418,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 	}
 
 	/**
-	 * Creates a {@link ProvinceViewDTO} for a BOT owned province at this
-	 * location. New units not needed. Not under attack. Attackable not needed
+	 * Creates a {@link ProvinceDTO} for a BOT owned province at this location.
+	 * New units not needed. Not under attack. Attackable not needed
 	 * 
 	 * @param lat
 	 *            latitude
@@ -431,40 +428,38 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 * @param playerStrength
 	 *            {@link Player}'s total number of units
 	 * @author TKasekamp
-	 * @return {@link ProvinceViewDTO} with default values for a BOT owned
-	 *         province.
+	 * @return {@link ProvinceDTO} with default values for a BOT owned province.
 	 */
-	private ProvinceViewDTO createBOTProvince(double lat, double lon,
+	private ProvinceDTO createBOTProvince(double lat, double lon,
 			int playerStrength) {
 		String provName = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH,
 				lat, lon);
 		int unitCount = GeneratorUtil.botUnits(lat, lon, playerStrength);
-		return new ProvinceViewDTO(lat, lon, provName, unitCount);
+		return new ProvinceDTO(lat, lon, provName, unitCount);
 	}
 
 	/**
-	 * Creates a {@link ProvinceViewDTO} for the players home province. Cannot
-	 * be under attack. New unit check necessary. Owner name is known.
+	 * Creates a {@link ProvinceDTO} for the players home province. Cannot be
+	 * under attack. New unit check necessary. Owner name is known.
 	 * 
 	 * @param prov
 	 *            {@link Province}
 	 * @param player
 	 *            {@link Player} making the request
 	 * @author TKasekamp
-	 * @return {@link ProvinceViewDTO} with default values for a home province.
+	 * @return {@link ProvinceDTO} with default values for a home province.
 	 */
-	private ProvinceViewDTO createHomeProvince(Province prov, Player player) {
+	private ProvinceDTO createHomeProvince(Province prov, Player player) {
 		int unitSize = countUnits(player.getHome().getUnits());
 		int newUnits = generateNewUnits(player.getHome().getLastVisit(),
 				new Date(), unitSize);
-		return new ProvinceViewDTO(prov.getLatitude(), prov.getLongitude(),
+		return new ProvinceDTO(prov.getLatitude(), prov.getLongitude(),
 				player.getUserName(), prov.getName(), unitSize, newUnits);
 	}
 
 	/**
-	 * Creates a {@link ProvinceViewDTO} for a province that exists in the
-	 * database. If it only exists as a home province a BOT province will be
-	 * created. <br>
+	 * Creates a {@link ProvinceDTO} for a province that exists in the database.
+	 * If it only exists as a home province a BOT province will be created. <br>
 	 * Else it's owned by any player. UnderAttack check required. New units
 	 * needed if province owned by the player. isAttackable check required if
 	 * province owned by another player.
@@ -476,10 +471,10 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 * @param playerStrength
 	 *            {@link Player}'s total number of units
 	 * @author TKasekamp
-	 * @return {@link ProvinceViewDTO}
+	 * @return {@link ProvinceDTO}
 	 */
-	private ProvinceViewDTO createExistingProvince(Province prov,
-			Player player, int playerStrength) {
+	private ProvinceDTO createExistingProvince(Province prov, Player player,
+			int playerStrength) {
 		Ownership ow = ownerRepo.findByProvinceId(prov.getId());
 		if (ow == null) {
 			// Province is only a home province
@@ -505,8 +500,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 		}
 
 		boolean underAttack = movementRepo.checkIfDestination(prov.getId());
-		return new ProvinceViewDTO(prov.getLatitude(), prov.getLongitude(),
-				type, prov.getName(), player2.getUserName(), isAttackable,
+		return new ProvinceDTO(prov.getLatitude(), prov.getLongitude(), type,
+				prov.getName(), player2.getUserName(), isAttackable,
 				underAttack, unitSize, newUnits);
 	}
 

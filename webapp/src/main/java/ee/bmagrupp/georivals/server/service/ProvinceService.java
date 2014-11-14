@@ -6,7 +6,6 @@ import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
-import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 
 /**
@@ -26,7 +25,7 @@ public interface ProvinceService {
 	 *            SID of this user
 	 * @return List of {@link ProvinceDTO}
 	 */
-	public List<ProvinceViewDTO> getProvinces(CameraFOV fov, String cookie);
+	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie);
 
 	/**
 	 * Returns the {@link Province} defined by the latitude and longitude.
@@ -37,9 +36,9 @@ public interface ProvinceService {
 	 *            SID of this user
 	 * @throws NumberFormatException
 	 *             When coordinates cannot be parsed
-	 * @return {@link ProvinceViewDTO}
+	 * @return {@link ProvinceDTO}
 	 */
-	public ProvinceViewDTO getProvince(String latitude, String longitude,
+	public ProvinceDTO getProvince(String latitude, String longitude,
 			String cookie) throws NumberFormatException;
 
 	/**
@@ -47,9 +46,9 @@ public interface ProvinceService {
 	 * 
 	 * @param cookie
 	 *            SID of this user
-	 * @return List of {@link ProvinceViewDTO}
+	 * @return List of {@link ProvinceDTO}
 	 */
-	public List<ProvinceViewDTO> getMyProvinces(String cookie);
+	public List<ProvinceDTO> getMyProvinces(String cookie);
 
 	/**
 	 * Change the {@link Player}'s home province to this location.

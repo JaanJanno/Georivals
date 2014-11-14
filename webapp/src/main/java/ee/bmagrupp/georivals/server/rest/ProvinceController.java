@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
-import ee.bmagrupp.georivals.server.rest.domain.ProvinceViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 
@@ -33,38 +32,38 @@ public class ProvinceController {
 	ProvinceService provServ;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<List<ProvinceViewDTO>> getProvinces(
+	public ResponseEntity<List<ProvinceDTO>> getProvinces(
 			@RequestBody CameraFOV fov,
 			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
 		LOG.info("All provinces");
 		LOG.info(fov.toJson());
 		LOG.info(cookie);
-		List<ProvinceViewDTO> provs = provServ.getProvinces(fov, cookie);
+		List<ProvinceDTO> provs = provServ.getProvinces(fov, cookie);
 		LOG.info("The number of provs to return " + provs.size());
-		return new ResponseEntity<List<ProvinceViewDTO>>(provs, HttpStatus.ACCEPTED);
+		return new ResponseEntity<List<ProvinceDTO>>(provs, HttpStatus.ACCEPTED);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<ProvinceViewDTO> getProvince(
+	public ResponseEntity<ProvinceDTO> getProvince(
 			@RequestParam(value = "latitude") String latitude,
 			@RequestParam(value = "longitude") String longitude,
 			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
 
 		LOG.info("One province lat: " + latitude + ", long:" + longitude);
 		LOG.info(cookie);
-		ProvinceViewDTO prov = provServ
+		ProvinceDTO prov = provServ
 				.getProvince(latitude, longitude, cookie);
-		return new ResponseEntity<ProvinceViewDTO>(prov, HttpStatus.OK);
+		return new ResponseEntity<ProvinceDTO>(prov, HttpStatus.OK);
 
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/myprovinces")
-	public ResponseEntity<List<ProvinceViewDTO>> getMyProvinces(
+	public ResponseEntity<List<ProvinceDTO>> getMyProvinces(
 			@CookieValue(value = "sid") String cookie) {
 
 		LOG.info("My provinces for user with cookie " + cookie);
-		List<ProvinceViewDTO> provs = provServ.getMyProvinces(cookie);
-		return new ResponseEntity<List<ProvinceViewDTO>>(provs, HttpStatus.OK);
+		List<ProvinceDTO> provs = provServ.getMyProvinces(cookie);
+		return new ResponseEntity<List<ProvinceDTO>>(provs, HttpStatus.OK);
 
 	}
 
