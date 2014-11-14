@@ -180,7 +180,7 @@ public class ProvinceServiceTest {
 
 	@Test
 	public void otherPlayerHome() {
-		double lat3 = 26.123;
+		double lat3 = 26.1235;
 		double long3 = 58.123;
 		Province home = new Province(lat3, long3);
 		Player player = new Player("Smaug", GeneratorUtil.generateString(16),

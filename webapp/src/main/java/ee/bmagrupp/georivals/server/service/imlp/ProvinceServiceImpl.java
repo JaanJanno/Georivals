@@ -29,6 +29,7 @@ import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
+import ee.bmagrupp.georivals.server.util.CalculationUtil;
 import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.GeneratorUtil;
 import ee.bmagrupp.georivals.server.util.ServerResult;
@@ -71,6 +72,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 		double lat = Double.parseDouble(latitude);
 		double lon = Double.parseDouble(longitude);
 
+		lat = CalculationUtil.normalizeLatitute(lat);
+		lon = CalculationUtil.normalizeLongitude(lon);
 		Player player = playerRepo.findBySid(cookie);
 
 		int playerStrength = findPlayerStrength(player);
@@ -107,6 +110,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 		HomeOwnership home = player.getHome();
 		double lat = Double.parseDouble(latitude);
 		double long1 = Double.parseDouble(longitude);
+		lat = CalculationUtil.normalizeLatitute(lat);
+		long1 = CalculationUtil.normalizeLongitude(long1);
 		Province newHome = new Province(lat, long1);
 		home.setProvince(newHome);
 		homeRepo.save(home);
@@ -119,6 +124,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 			String newName, String cookie) {
 		double lat = Double.parseDouble(latitude);
 		double long1 = Double.parseDouble(longitude);
+		lat = CalculationUtil.normalizeLatitute(lat);
+		long1 = CalculationUtil.normalizeLongitude(long1);
 		Province prov = provRepo.findWithLatLong(lat, long1);
 		Player player = playerRepo.findBySid(cookie);
 		Set<Ownership> lst = player.getOwnedProvinces();
@@ -195,7 +202,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 						// -----
 						Province temp = a.getProvince();
 						int provinceStrength = getProvinceStrength(a);
-						Player player = playerRepo.findOwnerOfProvince(temp.getId());
+						Player player = playerRepo.findOwnerOfProvince(temp
+								.getId());
 						int playerId = player.getId();
 						int newUnits = 0;
 						if (curPlayerId == playerId) {
