@@ -2,7 +2,6 @@ package ee.bmagrupp.georivals.server.service.imlp;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
-import ee.bmagrupp.georivals.server.core.domain.UnitState;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
@@ -71,34 +69,11 @@ public class ProfileServiceImpl implements ProfileService {
 	private PlayerProfile createProfileEntry(Player player) {
 		if (player == null)
 			return null;
-		int totalUnits = 0;
-		int ownedProvinces = 0;
-
-		for (Ownership o : player.getOwnedProvinces()) {
-
-			ownedProvinces += 1;
-			totalUnits += countUnits(o.getUnits());
-
-		}
-
-		if (player.getHome() != null) {
-			totalUnits += countUnits(player.getHome().getUnits());
-		}
+		int totalUnits = player.findPlayerUnitCount();
+		int ownedProvinces = player.getOwnedProvinces().size();
 
 		return new PlayerProfile(player.getId(), player.getUserName(),
 				player.getEmail(), totalUnits, ownedProvinces);
-	}
-
-	private int countUnits(Set<Unit> units) {
-		int unitCount = 0;
-		if (units != null) {
-			for (Unit unit : units) {
-				if(unit.getState() == UnitState.CLAIMED){
-					unitCount += unit.getSize();
-				}
-			}
-		}
-		return unitCount;
 	}
 
 	/**

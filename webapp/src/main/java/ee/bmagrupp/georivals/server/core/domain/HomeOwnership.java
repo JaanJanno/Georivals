@@ -60,7 +60,9 @@ public class HomeOwnership implements Serializable {
 		} else {
 			this.units.add(unit);
 		}
-		this.setProvinceName(GeneratorUtil.generateString(Constants.PROVINCE_NAME_LENGTH, province.getLatitude(), province.getLongitude()));
+		this.setProvinceName(GeneratorUtil.generateString(
+				Constants.PROVINCE_NAME_LENGTH, province.getLatitude(),
+				province.getLongitude()));
 	}
 
 	public Date getLastVisit() {
@@ -104,6 +106,22 @@ public class HomeOwnership implements Serializable {
 			this.units = new HashSet<>();
 		}
 		return units.add(unit);
+	}
+
+	/**
+	 * Returns the sum of the unit sizes.
+	 * 
+	 * @author TKasekamp
+	 * @return int
+	 */
+	public int countUnits() {
+		int overall = 0;
+		for (Unit unit : units) {
+			if (unit.getState() == UnitState.CLAIMED) {
+				overall += unit.getSize();
+			}
+		}
+		return overall;
 	}
 
 	@Override

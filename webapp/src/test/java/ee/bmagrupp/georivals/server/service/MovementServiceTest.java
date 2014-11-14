@@ -2,10 +2,14 @@ package ee.bmagrupp.georivals.server.service;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +22,14 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import ee.bmagrupp.georivals.server.Application;
+import ee.bmagrupp.georivals.server.core.domain.Movement;
+import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
+import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
+import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
+import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
+import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * Tests for {@link MovementService}
@@ -39,6 +49,21 @@ public class MovementServiceTest {
 	@Autowired
 	MovementService movServ;
 
+	@Autowired
+	MovementRepository movRepo;
+
+	@Autowired
+	UnitRepository unitRepo;
+	
+	double latitude;
+	double longitude;
+	
+	@Before
+	public void setUp() {
+		latitude = 24.4525;
+		longitude = 54.321;
+	}
+
 	@Test
 	public void getMyUnitsTest() {
 		List<MovementSelectionViewDTO> dtos = movServ
@@ -49,7 +74,8 @@ public class MovementServiceTest {
 		assertEquals("Unit type", ProvinceType.PLAYER, dtos.get(0).getType());
 		assertEquals("Unit size", 9, dtos.get(0).getUnitSize());
 		assertEquals("Unit id", 6, dtos.get(0).getUnitId());
-		assertEquals("Unit province name","Kvukx9SCOB", dtos.get(0).getProvinceName());
+		assertEquals("Unit province name", "Kvukx9SCOB", dtos.get(0)
+				.getProvinceName());
 
 		// Home province
 		assertEquals("Unit size", 10, dtos.get(1).getUnitSize());
@@ -57,6 +83,122 @@ public class MovementServiceTest {
 				.getProvinceName());
 		assertEquals("Unit unit id", 7, dtos.get(1).getUnitId());
 		assertEquals("Unit type", ProvinceType.HOME, dtos.get(1).getType());
+	}
+
+	@Test
+	public void beginMovementTest() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(6, 6));
+
+		// Precheck
+		assertEquals("Unit size", 9, unitRepo.findOne(6).getSize());
+
+		BeginMovementResponse response = movServ.moveUnitsTo(
+				Double.toString(latitude), Double.toString(longitude), list,
+				"BPUYYOU62flwiWJe");
+
+		assertEquals("Result is ok", ServerResult.OK, response.getResult());
+
+		// Checking for decreased unit size
+		assertEquals("Unit size", 3, unitRepo.findOne(6).getSize());
+
+		List<Movement> movList = (List<Movement>) movRepo.findAll();
+		// The movement made has to be the last one
+		Movement mov = movList.get(movList.size() - 1);
+		assertEquals("Origin id", 6, mov.getOrigin().getId());
+		assertEquals("Destination lat", latitude, mov.getDestination()
+				.getLatitude(), 0.0001);
+		assertEquals("Destination longitude", longitude, mov.getDestination()
+				.getLongitude(), 0.0001);
+		assertEquals("Player id", 1, mov.getPlayer().getId());
+		assertEquals("New Unit size", 6, mov.getUnit().getSize());
+		// Dates won't be tested because they kinda change all the time
+
+	}
+
+	@Test
+	public void beginHomeMovementTest() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(7, 6));
+		double lat = -40.4195;
+		double lon = 144.963;
+
+		// Precheck
+		assertEquals("Unit size", 10, unitRepo.findOne(7).getSize());
+
+		BeginMovementResponse response = movServ.moveUnitsTo(
+				Double.toString(lat), Double.toString(lon), list,
+				"BPUYYOU62flwiWJe");
+
+		assertEquals("Result is ok", ServerResult.OK, response.getResult());
+
+		// Checking for decreased unit size
+		assertEquals("Unit size", 4, unitRepo.findOne(7).getSize());
+
+		List<Movement> movList = (List<Movement>) movRepo.findAll();
+		// The movement made has to be the last one
+		Movement mov = movList.get(movList.size() - 1);
+		assertEquals("Origin id", 1, mov.getOrigin().getId());
+		assertEquals("Destination id", 2, mov.getDestination().getId(), 0.0001);
+		assertEquals("Destination lat", lat, mov.getDestination()
+				.getLatitude(), 0.0001);
+		assertEquals("Destination longitude", lon, mov.getDestination()
+				.getLongitude(), 0.0001);
+		assertEquals("Player id", 1, mov.getPlayer().getId());
+		assertEquals("New Unit size", 6, mov.getUnit().getSize());
+		// Dates won't be tested because they kinda change all the time
+
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void beginMovementTestTooManyUnits() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(6, 10));
+
+		movServ.moveUnitsTo(Double.toString(latitude),
+				Double.toString(longitude), list, "BPUYYOU62flwiWJe");
+
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void beginMovementWrongUser() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(6, 6));
+
+		// Precheck
+		assertEquals("Unit size", 9, unitRepo.findOne(6).getSize());
+
+		movServ.moveUnitsTo(Double.toString(latitude),
+				Double.toString(longitude), list, "3myBuV7DKARaW14p");
+
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void beginHomeMovementWrongUser() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(7, 6));
+
+		// Precheck
+		assertEquals("Unit size", 10, unitRepo.findOne(7).getSize());
+
+		movServ.moveUnitsTo(Double.toString(latitude),
+				Double.toString(longitude), list, "3myBuV7DKARaW14p");
+
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void beginMovementNoUser() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(6, 6));
+
+		// Precheck
+		assertEquals("Unit size", 9, unitRepo.findOne(6).getSize());
+
+		movServ.moveUnitsTo(Double.toString(latitude),
+				Double.toString(longitude), list, "cookie");
+
+		assertEquals("Unit size", 9, unitRepo.findOne(6).getSize());
+
 	}
 
 }

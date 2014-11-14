@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Province;
+import ee.bmagrupp.georivals.server.core.domain.Unit;
 
 /**
  * @author TKasekamp
@@ -42,4 +44,15 @@ public interface OwnershipRepository extends CrudRepository<Ownership, Integer> 
 	 */
 	@Query("from Ownership as o where o.province.id = ?1")
 	Ownership findByProvinceId(int provinceId);
+
+	/**
+	 * Finds the {@link Ownership} where the {@link Unit} with this id is. ONLY
+	 * LOOKS AT {@link Ownership}. To search in {@link HomeOwnership}, look at
+	 * {@link HomeOwnershipRepository#findHomeUnitLocation(int)}
+	 * 
+	 * @param unitId
+	 * @return {@link Ownership}. null if not found
+	 */
+	@Query("from Ownership o left join o.units u where u.id = ?1")
+	Ownership findUnitLocation(int unitId);
 }

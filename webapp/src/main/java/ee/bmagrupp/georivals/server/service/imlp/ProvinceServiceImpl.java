@@ -3,7 +3,6 @@ package ee.bmagrupp.georivals.server.service.imlp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -16,21 +15,18 @@ import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
-import ee.bmagrupp.georivals.server.core.domain.Unit;
-import ee.bmagrupp.georivals.server.core.domain.UnitState;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
-import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
+import ee.bmagrupp.georivals.server.game.GameLogic;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.CalculationUtil;
-import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.GeneratorUtil;
 import ee.bmagrupp.georivals.server.util.ServerResult;
 
@@ -40,7 +36,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@SuppressWarnings("unused")
 	private static final Logger LOG = LoggerFactory
 			.getLogger(ProvinceServiceImpl.class);
-	private Random rand = new Random();
 
 	@Autowired
 	ProvinceRepository provRepo;
@@ -53,9 +48,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	@Autowired
 	HomeOwnershipRepository homeRepo;
-
-	@Autowired
-	UnitRepository unitRepo;
 
 	@Autowired
 	private MovementRepository movementRepo;
@@ -92,9 +84,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 		for (Ownership a : provinces) {
 			Province temp = a.getProvince();
 			boolean underAttack = movementRepo.checkIfDestination(temp.getId());
-			int unitSize = countUnits(a.getUnits());
-			int newUnits = generateNewUnits(a.getLastVisit(), new Date(),
-					unitSize);
+			int unitSize = a.countUnits();
+			int newUnits = GameLogic.generateNewUnits(a.getLastVisit(),
+					new Date(), unitSize);
 			list.add(new ProvinceDTO(temp.getLatitude(), temp.getLongitude(),
 					ProvinceType.PLAYER, a.getProvinceName(), player
 							.getUserName(), false, underAttack, unitSize,
@@ -201,28 +193,27 @@ public class ProvinceServiceImpl implements ProvinceService {
 							&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
 						// -----
 						Province temp = a.getProvince();
-						int provinceStrength = getProvinceStrength(a);
+						int provinceStrength = a.countUnits();
 						Player player = playerRepo.findOwnerOfProvince(temp
 								.getId());
 						int playerId = player.getId();
 						int newUnits = 0;
 						if (curPlayerId == playerId) {
-							newUnits = generateNewUnits(a.getLastVisit(),
-									currentDate, provinceStrength);
+							newUnits = GameLogic.generateNewUnits(
+									a.getLastVisit(), currentDate,
+									provinceStrength);
 						}
 						// -----
 						if (curPlayerId == playerId) {
 							rtrn.add(new ProvinceDTO(temp.getLatitude(), temp
 									.getLongitude(), ProvinceType.PLAYER, a
 									.getProvinceName(), player.getUserName(),
-									true, false, countUnits(a.getUnits()),
-									newUnits));
+									true, false, a.countUnits(), newUnits));
 						} else {
 							rtrn.add(new ProvinceDTO(temp.getLatitude(), temp
 									.getLongitude(), ProvinceType.OTHER_PLAYER,
 									a.getProvinceName(), player.getUserName(),
-									true, false, countUnits(a.getUnits()),
-									newUnits));
+									true, false, a.countUnits(), newUnits));
 						}
 						found = true;
 						foundArea = a;
@@ -230,7 +221,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 					}
 				}
 				if (!found) {
-					rtrn.add(generateProvince(baseLat + (i * PROVINCE_HEIGHT)
+					rtrn.add(createBOTProvince(baseLat + (i * PROVINCE_HEIGHT)
 							+ (PROVINCE_HEIGHT / 2), baseLong
 							+ (j * PROVINCE_WIDTH) + (PROVINCE_WIDTH / 2),
 							playerStrength));
@@ -242,82 +233,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 		return rtrn;
 	}
 
-	private ProvinceDTO generateProvince(double latitude, double longitude,
-			int playerStrength) {
-		int min = playerStrength
-				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		int max = playerStrength
-				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		int botStrength = rand.nextInt((max - min) + 1) + min;
-		if (botStrength > 100) {
-			botStrength = 100;
-		} else if (botStrength < 1) {
-			botStrength = 1;
-		}
-		String name = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH);
-
-		return new ProvinceDTO(latitude, longitude, name, botStrength);
-	}
-
-	/**
-	 * Returns the number of new Units to be added to this Province. New units
-	 * are added if: <br>
-	 * 1) The difference between currentDate and lastVisitDate is more than
-	 * {@link Constants#UNIT_GENERATION_TIME}<br>
-	 * 2) The provinceStrenght is less than {@link Constants#PROVINCE_UNIT_MAX}<br>
-	 * If both 1 and 2 are true then an int between
-	 * {@link Constants#UNIT_GENERATION_MIN} and
-	 * {@link Constants#UNIT_GENERATION_MAX} is returned. If this int +
-	 * provinceStrenght now exceeds {@link Constants#PROVINCE_UNIT_MAX}, the
-	 * return int will be decreased so that there are a total of
-	 * {@link Constants#PROVINCE_UNIT_MAX} Units in this province. <br>
-	 * Otherwise 0 will be returned.
-	 * 
-	 * @param lastVisitDate
-	 *            The last visit {@link Date} from {@link Ownership}
-	 * @param currentDate
-	 *            The current {@link Date}
-	 * @param provinceStrength
-	 *            The number of units in this province
-	 * @author TKasekamp
-	 * @return Integer
-	 */
-	private int generateNewUnits(Date lastVisitDate, Date currentDate,
-			int provinceStrength) {
-		long a = currentDate.getTime() - lastVisitDate.getTime();
-		if ((a > UNIT_GENERATION_TIME)
-				&& (provinceStrength < PROVINCE_UNIT_MAX)) {
-			int b = GeneratorUtil.generateWithSeed(lastVisitDate);
-			if (b + provinceStrength > PROVINCE_UNIT_MAX) {
-				b = PROVINCE_UNIT_MAX - provinceStrength;
-			}
-			return b;
-		}
-		return 0;
-	}
-
-	/**
-	 * Returns the total number of units for this player. If player is null,
-	 * returns {@link Constants#PLAYER_DEFAULT_STRENGTH}
-	 * 
-	 * @author Sander
-	 * @author TKasekamp
-	 * @param Player
-	 *            {@link Player}
-	 * @return returns the overall strength of a player
-	 */
-
-	private int findPlayerStrength(Player player) {
+	public int findPlayerStrength(Player player) {
 		if (player == null) {
 			return PLAYER_DEFAULT_STRENGTH;
 		}
-		Set<Ownership> provinces = player.getOwnedProvinces();
-		int overall = 0;
-		for (Ownership b : provinces) {
-			overall += countUnits(b.getUnits());
-		}
-		overall += countUnits(player.getHome().getUnits());
-		return overall;
+		return player.findPlayerUnitCount();
 	}
 
 	/**
@@ -345,53 +265,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 			long2 = ((long2 * 1000) + 1) / 1000.0;
 		}
 		return (int) Math.round(((long2 - long1) / PROVINCE_WIDTH));
-	}
-
-	/**
-	 * @author Sander
-	 * @param a
-	 *            - Ownership object
-	 * @return all available units
-	 */
-
-	private int getProvinceStrength(Ownership a) {
-		return countUnits(a.getUnits());
-	}
-
-	/**
-	 * Returns the sum of the unit sizes.
-	 * 
-	 * @author TKasekamp
-	 * @param units
-	 * @return
-	 */
-	private int countUnits(Set<Unit> units) {
-		int overall = 0;
-		for (Unit unit : units) {
-			if (unit.getState() == UnitState.CLAIMED) {
-				overall += unit.getSize();
-			}
-		}
-		return overall;
-	}
-
-	/**
-	 * Checks if the player defined by player1Strength can attack the provinces
-	 * owned by player2Strength. Returns true if player1 is not over 2 times
-	 * bigger then player2.
-	 * 
-	 * @param player1Strength
-	 *            Current player
-	 * @param player2Strength
-	 *            Player to check against
-	 * @author TKasekamp
-	 * @return {@code boolean}
-	 */
-	private boolean canAttack(int player1Strength, int player2Strength) {
-		if (player2Strength * 2 >= player1Strength) {
-			return true;
-		}
-		return false;
 	}
 
 	// ProvinceViewDTO creation
@@ -445,7 +318,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 			int playerStrength) {
 		String provName = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH,
 				lat, lon);
-		int unitCount = GeneratorUtil.botUnits(lat, lon, playerStrength);
+		int unitCount = GameLogic.botUnits(lat, lon, playerStrength);
 		return new ProvinceDTO(lat, lon, provName, unitCount);
 	}
 
@@ -461,9 +334,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 * @return {@link ProvinceDTO} with default values for a home province.
 	 */
 	private ProvinceDTO createHomeProvince(Province prov, Player player) {
-		int unitSize = countUnits(player.getHome().getUnits());
-		int newUnits = generateNewUnits(player.getHome().getLastVisit(),
-				new Date(), unitSize);
+		int unitSize = player.getHome().countUnits();
+		int newUnits = GameLogic.generateNewUnits(player.getHome()
+				.getLastVisit(), new Date(), unitSize);
 		return new ProvinceDTO(prov.getLatitude(), prov.getLongitude(),
 				player.getUserName(), player.getHome().getProvinceName(),
 				unitSize, newUnits);
@@ -495,20 +368,22 @@ public class ProvinceServiceImpl implements ProvinceService {
 		}
 
 		Player player2 = playerRepo.findOwnerOfProvince(prov.getId());
-		int unitSize = countUnits(ow.getUnits());
+		int unitSize = ow.countUnits();
+
 		ProvinceType type;
 		boolean isAttackable = false;
 		int newUnits = 0;
 		if ((player != null) && (player.getId() == player2.getId())) {
 			// Province owned by the player
 			type = ProvinceType.PLAYER;
-			newUnits = generateNewUnits(ow.getLastVisit(), new Date(), unitSize);
+			newUnits = GameLogic.generateNewUnits(ow.getLastVisit(),
+					new Date(), unitSize);
 
 		} else {
 			// Province owned by somebody else
 			type = ProvinceType.OTHER_PLAYER;
 			int player2Strength = findPlayerStrength(player2);
-			isAttackable = canAttack(playerStrength, player2Strength);
+			isAttackable = GameLogic.canAttack(playerStrength, player2Strength);
 		}
 
 		boolean underAttack = movementRepo.checkIfDestination(prov.getId());

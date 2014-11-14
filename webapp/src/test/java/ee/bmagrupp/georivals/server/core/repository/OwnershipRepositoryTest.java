@@ -67,4 +67,10 @@ public class OwnershipRepositoryTest {
 		assertEquals("Ownership id", 1, ow.getId());
 	}
 
+	@Test
+	public void findUnitLocationTest() {
+		Ownership ow = ownerRepo.findUnitLocation(6);
+		assertEquals("Ownership id", 1, ow.getId());
+	}
+
 }

@@ -34,4 +34,11 @@ public class HomeOwnershipRepositoryTest {
 		assertEquals("HomeOwnership id", 1, owner.getId());
 	}
 
+	@Test
+	public void findHomeUnitLocation() {
+		HomeOwnership home = homeRepo.findHomeUnitLocation(7);
+
+		assertEquals("HomeOwnership id", 1, home.getId());
+	}
+
 }

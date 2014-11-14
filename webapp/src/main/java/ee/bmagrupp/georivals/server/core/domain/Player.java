@@ -111,6 +111,24 @@ public class Player implements Serializable {
 		return ownedProvinces.add(e);
 	}
 
+	/**
+	 * Returns the total number of units for this player.
+	 * 
+	 * @author TKasekamp
+	 * @param Player
+	 *            {@link Player}
+	 * @return int
+	 */
+
+	public int findPlayerUnitCount() {
+		int overall = 0;
+		for (Ownership b : ownedProvinces) {
+			overall += b.countUnits();
+		}
+		overall += home.countUnits();
+		return overall;
+	}
+
 	@Override
 	public String toString() {
 		return "Player [id=" + id + ", userName=" + userName + ", email="

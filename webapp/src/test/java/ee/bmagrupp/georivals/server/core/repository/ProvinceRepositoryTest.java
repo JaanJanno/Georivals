@@ -63,4 +63,18 @@ public class ProvinceRepositoryTest {
 		assertEquals("Province longitude", 26.123, prov2.getLongitude(), 0.0001);
 	}
 
+	@Test
+	public void findUnitLocation() {
+		Province prov = provRepo.findUnitLocation(6);
+		assertEquals("Province id", 6, prov.getId());
+
+	}
+
+	@Test
+	public void findHomeUnitLocation() {
+		Province prov = provRepo.findHomeUnitLocation(7);
+		assertEquals("Province id", 1, prov.getId());
+
+	}
+
 }

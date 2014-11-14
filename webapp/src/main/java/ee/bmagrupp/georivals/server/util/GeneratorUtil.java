@@ -1,7 +1,5 @@
 package ee.bmagrupp.georivals.server.util;
 
-import static ee.bmagrupp.georivals.server.util.Constants.BOT_STRENGTH_CONSTANT;
-
 import java.util.Date;
 import java.util.Random;
 
@@ -102,32 +100,4 @@ public class GeneratorUtil {
 		return a;
 	}
 
-	/**
-	 * Generates a Province unit size when the province is owned by a bot.
-	 * Latitude and longitude are used as seeds. This method will always return
-	 * the same int for the same inputs.
-	 * 
-	 * @param latitude
-	 * @param longitude
-	 * @param playerStrength
-	 * @author TKasekamp
-	 * @return int
-	 */
-	public static int botUnits(double latitude, double longitude,
-			int playerStrength) {
-		int min = playerStrength
-				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		int max = playerStrength
-				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		long seed = (long) (((latitude * 1000.0) + ((longitude) / 1000.0)) * 1000000);
-		Random rand = new Random(seed);
-		int botStrength = rand.nextInt((max - min) + 1) + min;
-		if (botStrength > Constants.PROVINCE_UNIT_MAX) {
-			botStrength = Constants.PROVINCE_UNIT_MAX;
-		} else if (botStrength < Constants.PROVINCE_UNIT_MIN) {
-			botStrength = Constants.PROVINCE_UNIT_MIN;
-		}
-
-		return botStrength;
-	}
 }

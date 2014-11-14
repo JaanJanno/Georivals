@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
-import ee.bmagrupp.georivals.server.core.domain.Unit;
-import ee.bmagrupp.georivals.server.core.domain.UnitState;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.georivals.server.service.HighScoreService;
@@ -45,32 +42,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 	}
 
 	private HighScoreEntry createHighScore(Player player) {
-		double provinces = 0;
-		double units = 0;
+		double provinces = player.getOwnedProvinces().size();
+		double units = player.findPlayerUnitCount();
 		double average = 0;
-
-		if (player.getOwnedProvinces() != null) {
-			for (Ownership own : player.getOwnedProvinces()) {
-				provinces += 1;
-				if (own.getUnits() != null) {
-					for (Unit unit : own.getUnits()) {
-						if(unit.getState() == UnitState.CLAIMED){
-							units += unit.getSize();
-						}
-					}
-				}
-			}
-
-		}
-
-		if (player.getHome().getUnits() != null) {
-			for (Unit unit : player.getHome().getUnits()) {
-				if(unit.getState() == UnitState.CLAIMED){
-					units += unit.getSize();
-				}
-			}
-
-		}
 
 		if (provinces != 0) {
 			average = units / provinces;

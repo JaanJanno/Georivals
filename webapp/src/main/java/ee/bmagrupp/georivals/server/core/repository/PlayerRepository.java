@@ -3,6 +3,7 @@ package ee.bmagrupp.georivals.server.core.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 
@@ -15,6 +16,12 @@ public interface PlayerRepository extends CrudRepository<Player, Integer> {
 
 	Player findBySid(String sid);
 
+	/**
+	 * Finds the {@link Player} who is connected to this {@link Ownership}.
+	 * 
+	 * @param ownershipId
+	 * @return {@link Player}
+	 */
 	@Query("from Player p left join p.ownedProvinces op where op.id = ?1")
 	Player findOwner(int ownershipId);
 

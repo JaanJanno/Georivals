@@ -52,12 +52,4 @@ public class GeneratorUtilTest {
 		assertEquals("The Strings should be equal", a1, a2);
 	}
 
-	@Test
-	public void botStengthTest() {
-		int a1 = GeneratorUtil.botUnits(36.3605, 138.727, 13);
-		int a2 = GeneratorUtil.botUnits(36.3605, 138.727, 13);
-		assertEquals("The returned ints should be the same", a1, a2);
-
-	}
-
 }
