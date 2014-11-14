@@ -195,7 +195,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 						// -----
 						Province temp = a.getProvince();
 						int provinceStrength = getProvinceStrength(a);
-						Player player = playerRepo.findOwner(temp.getId());
+						Player player = playerRepo.findOwnerOfProvince(temp.getId());
 						int playerId = player.getId();
 						int newUnits = 0;
 						if (curPlayerId == playerId) {
