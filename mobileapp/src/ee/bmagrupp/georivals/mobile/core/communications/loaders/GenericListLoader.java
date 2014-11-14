@@ -1,30 +1,26 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders;
 
-import java.util.HashMap;
+import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
-
 import com.google.gson.Gson;
-
 import ee.bmagrupp.georivals.mobile.core.communications.Connection;
 
 /**
  * Class for making a HTTP get request to the server and retrieving a
- * generic object parsed from JSON.
- * To define the class of the object to be retrieved put its class name in the <>
+ * generic list parsed from JSON.
+ * To define the class of the object in list to be retrieved put its class name in the <>
  * brackets and pass its class as the first argument to the constructor.
- * Use this by overriding the handleResponseObject() method and calling 
- * retrieveObject() method.
+ * Use this by overriding the handleResponseList() method and calling 
+ * retrieveList() method.
  * @author	Jaan Janno
  */
 
-abstract public class GenericObjectLoader<T> implements Runnable {
+abstract public class GenericListLoader<T> implements Runnable {
 	
-	final Class<T> typeParameterClass;
+	final protected Type typeToken;
 
 	protected String url; 		// URL of the connection destination.
 	protected String cookie = "";	// Cookie string;
-	private Map<String, String> parameters = new HashMap<String, String>();
 	
 	/**
 	 * 
@@ -32,9 +28,9 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * @param url
 	 */
 
-	public GenericObjectLoader(Class<T> typeParameterClass, String url) {
+	public GenericListLoader(Type typeToken, String url) {
 		this.url = url;
-		this.typeParameterClass = typeParameterClass;
+		this.typeToken = typeToken;
 	}
 	
 	/**
@@ -43,10 +39,10 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * @param url
 	 */
 	
-	public GenericObjectLoader(Class<T> typeParameterClass, String url, String cookie) {
+	public GenericListLoader(Type typeToken, String url, String cookie) {
 		this.url = url;
 		this.cookie = cookie;
-		this.typeParameterClass = typeParameterClass;
+		this.typeToken = typeToken;
 	}
 	
 	/**
@@ -56,7 +52,7 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * with the list as argument.
 	 */
 
-	public void retrieveObject() {
+	public void retrieveList() {
 		new Thread(this).start();
 	}
 	
@@ -64,8 +60,8 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * Parses a JSON string and returns a generic object of class T.
 	 */
 
-	protected T getObjectFromJSON(String json) {
-		return (T) new Gson().fromJson(json, typeParameterClass);
+	protected List<T> getObjectFromJSON(String json) {
+		return new Gson().fromJson(json, typeToken);
 	}
 	
 	/**
@@ -78,46 +74,24 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 
 			@Override
 			public void handleResponseBody(String response) {
-				T object = getObjectFromJSON(response);
-				handleResponseObject(object);			
+				handleResponseList(null);
 			}
 
 			@Override
 			public void handleResponseCookies(List<String> cookies) {
 				// No cookies expected.
 			}
+
 		};
-		handleParameters(c);
 		c.sendRequest();
 	}
 	
-	/**
-	 * Add parameter that will be sent on to
-	 * the Connection object.
-	 * @param key
-	 * @param value
-	 */
-	
-	protected void addParamter(String key, String value) {
-		parameters.put(key, value);
-	}
-	
-	/*
-	 * Adds all parameters to the Connection object
-	 * that's about to be created.
-	 */
-	
-	private void handleParameters(Connection c) {
-		for (String key: parameters.keySet()){
-			c.addParameter(key, parameters.get(key));
-		}
-	}
-
 	/**
 	 * Override this method to define the behavior
 	 * after an object has been retrieved.
 	 * Remember this method doesn't run on the UI thread!
 	 */
 	
-	abstract public void handleResponseObject(T responseObject);
+	abstract public void handleResponseList(List<T> responseList);
+
 }

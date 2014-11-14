@@ -37,6 +37,7 @@ import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.georivals.mobile.ui.listeners.MapClickListener;
@@ -269,7 +270,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 						.from(activity).inflate(R.layout.province1, null);
 
 				setProvinceBackgroundAndTitle(provinceLayout, province);
-				setProvinceUnitCount(provinceLayout, province.getUnitCount());
+				setProvinceUnitCount(provinceLayout, province.getUnitSize());
 				Bitmap provinceBitmap = createBitmap(provinceLayout);
 
 				LatLngBounds provinceBounds = new LatLngBounds(new LatLng(
@@ -299,18 +300,17 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	@SuppressWarnings("deprecation")
 	private void setProvinceBackgroundAndTitle(RelativeLayout provinceLayout,
 			ProvinceDTO province) {
-		int ownerId = province.getPlayerId();
 		TextView provinceName = (TextView) provinceLayout
 				.findViewById(R.id.province_name);
 		int provinceColor;
-		if (ownerId == 0) {
+		if (province.getType() == ProvinceType.BOT) {
 			provinceName.setVisibility(View.INVISIBLE);
 			provinceColor = activity.getResources().getColor(
 					R.color.brown_transparent);
 		} else {
-			provinceName.setText(province.getName());
+			provinceName.setText(province.getOwnerName());
 			provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
-			if (ownerId == MainActivity.userId)
+			if (province.getType() == ProvinceType.HOME || province.getType() == ProvinceType.PLAYER)
 				provinceColor = activity.getResources().getColor(
 						R.color.green_transparent);
 			else

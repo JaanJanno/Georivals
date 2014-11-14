@@ -4,7 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
-import com.google.gson.Gson;
 
 import ee.bmagrupp.georivals.mobile.core.communications.PostConnection;
 
@@ -18,56 +17,14 @@ import ee.bmagrupp.georivals.mobile.core.communications.PostConnection;
  * @author	Jaan Janno
  */
 
-abstract public class GenericListPostLoader<T> implements Runnable {
-	
-	final Class<T>  typeParameterClass;
-	final Type typeToken;
+abstract public class GenericListPostLoader<T> extends GenericListLoader<T> implements Runnable {
 
-	private String url; 		// URL of the connection destination.
-	protected String cookie = "";	// Cookie string;
-	
-	/**
-	 * 
-	 * @param typeParameterClass Class of the object to be received.
-	 * @param url
-	 */
-
-	public GenericListPostLoader(Class<T> typeParameterClass, Type typeToken, String url) {
-		this.url = url;
-		this.typeParameterClass = typeParameterClass;
-		this.typeToken = typeToken;
+	public GenericListPostLoader(Type typeToken, String url) {
+		super(typeToken, url);
 	}
 	
-	/**
-	 * 
-	 * @param typeParameterClass Class of the object to be received.
-	 * @param url
-	 */
-	
-	public GenericListPostLoader(Class<T> typeParameterClass, Type typeToken, String url, String cookie) {
-		this.url = url;
-		this.cookie = cookie;
-		this.typeParameterClass = typeParameterClass;
-		this.typeToken = typeToken;
-	}
-	
-	/**
-	 * Call this method to start a new thread that
-	 * retrieves information from given URL and
-	 * then calls the overridden handleResponseList() method
-	 * with the list as argument.
-	 */
-
-	public void retrieveList() {
-		new Thread(this).start();
-	}
-	
-	/*
-	 * Parses a JSON string and returns a generic object of class T.
-	 */
-
-	protected List<T> getObjectFromJSON(String json) {
-		return new Gson().fromJson(json, typeToken);
+	public GenericListPostLoader(Type typeToken, String url, String cookie) {
+		super(typeToken, url, cookie);
 	}
 	
 	/**
@@ -100,7 +57,7 @@ abstract public class GenericListPostLoader<T> implements Runnable {
 	
 	/**
 	 * Override this method to define the behavior
-	 * after an object has been retrieved.
+	 * after a list has been retrieved.
 	 * Remember this method doesn't run on the UI thread!
 	 */
 	

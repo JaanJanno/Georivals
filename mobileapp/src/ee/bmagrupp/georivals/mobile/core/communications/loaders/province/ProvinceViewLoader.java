@@ -2,7 +2,7 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
-import ee.bmagrupp.georivals.mobile.models.province.ProvinceViewDTO;
+import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
 
 /**
  * Class for making a HTTP get request to the server and retrieving ProvinceViewDTO
@@ -12,7 +12,7 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceViewDTO;
  * @author	Jaan Janno
  */
 
-public abstract class ProvinceViewLoader extends GenericObjectLoader<ProvinceViewDTO> {
+public abstract class ProvinceViewLoader extends GenericObjectLoader<ProvinceDTO> {
 
 	/**
 	 * 
@@ -21,7 +21,7 @@ public abstract class ProvinceViewLoader extends GenericObjectLoader<ProvinceVie
 	 */
 	
 	public ProvinceViewLoader(Double longitude, Double latitude) {
-		super(ProvinceViewDTO.class, Constants.PROVINCE);
+		super(ProvinceDTO.class, Constants.PROVINCE);
 		addParameters(longitude, latitude);
 	}
 	
@@ -33,7 +33,7 @@ public abstract class ProvinceViewLoader extends GenericObjectLoader<ProvinceVie
 	 */
 
 	public ProvinceViewLoader(String sid, Double longitude, Double latitude) {
-		super(ProvinceViewDTO.class, Constants.PROVINCE, "sid=" + sid);
+		super(ProvinceDTO.class, Constants.PROVINCE, "sid=" + sid);
 		addParameters(longitude, latitude);
 	}
 	
@@ -54,6 +54,6 @@ public abstract class ProvinceViewLoader extends GenericObjectLoader<ProvinceVie
 	 */
 
 	@Override
-	abstract public void handleResponseObject(ProvinceViewDTO responseObject);
+	abstract public void handleResponseObject(ProvinceDTO responseObject);
 
 }

@@ -32,7 +32,7 @@ public abstract class ProvinceLoader extends GenericListPostLoader<ProvinceDTO> 
 	 */
 	
 	public ProvinceLoader(String sid, CameraFOV fov) {
-		super(ProvinceDTO.class, listType, Constants.PROVINCE, "sid="+sid);
+		super(listType, Constants.PROVINCE, "sid="+sid);
 		this.fov = fov;
 	}
 	

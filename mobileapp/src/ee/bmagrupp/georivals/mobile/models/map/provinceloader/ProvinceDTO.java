@@ -1,35 +1,41 @@
 package ee.bmagrupp.georivals.mobile.models.map.provinceloader;
 
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
+
 /**
- * Container object for sending province data. Missing stuff: is this province
- * under attack. And probably more stuff.
- *
+ * DTO used for doing everything with provinces. This includes MapView,
+ * ProvinceView and my provinces tab.
+ * 
  * @author TKasekamp
- *
+ * 
  */
 public class ProvinceDTO {
-	private final int id;
 	private final double latitude;
 	private final double longitude;
-	private final int unitCount;
-	private final int playerId;
-	private final String name;
-	private final int newUnitCount;
 
-	public ProvinceDTO(int id, double latitude, double longitude,
-			int unitCount, int playerId, String name, int newUnitCount) {
+	private final ProvinceType type;
+	private final String provinceName;
+	private final String ownerName;
+
+	private final boolean isAttackable;
+	private final boolean underAttack;
+
+	private final int unitSize;
+	private final int newUnitSize;
+
+	public ProvinceDTO(double latitude, double longitude, ProvinceType type,
+			String provinceName, String ownerName, boolean isAttackable,
+			boolean underAttack, int unitSize, int newUnitSize) {
 		super();
-		this.id = id;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.unitCount = unitCount;
-		this.playerId = playerId;
-		this.name = name;
-		this.newUnitCount = newUnitCount;
-	}
-
-	public int getId() {
-		return id;
+		this.type = type;
+		this.provinceName = provinceName;
+		this.ownerName = ownerName;
+		this.isAttackable = isAttackable;
+		this.underAttack = underAttack;
+		this.unitSize = unitSize;
+		this.newUnitSize = newUnitSize;
 	}
 
 	public double getLatitude() {
@@ -40,19 +46,32 @@ public class ProvinceDTO {
 		return longitude;
 	}
 
-	public int getUnitCount() {
-		return unitCount;
+	public ProvinceType getType() {
+		return type;
 	}
 
-	public int getPlayerId() {
-		return playerId;
+	public String getProvinceName() {
+		return provinceName;
 	}
 
-	public String getName() {
-		return name;
+	public String getOwnerName() {
+		return ownerName;
 	}
 
-	public int getNewUnitCount() {
-		return newUnitCount;
+	public boolean isAttackable() {
+		return isAttackable;
 	}
+
+	public boolean isUnderAttack() {
+		return underAttack;
+	}
+
+	public int getUnitSize() {
+		return unitSize;
+	}
+
+	public int getNewUnitSize() {
+		return newUnitSize;
+	}
+
 }
