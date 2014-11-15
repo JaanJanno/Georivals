@@ -20,6 +20,16 @@ import ee.bmagrupp.georivals.mobile.core.communications.PostConnection;
 public abstract class GenericObjectPostLoader<T> extends GenericObjectLoader<T> {
 	
 	Object post; // Object sent to the server.
+	
+	/**
+	 * 
+	 * @param typeParameterClass
+	 * @param url
+	 */
+	
+	public GenericObjectPostLoader(Class<T> typeParameterClass, String url) {
+		super(typeParameterClass, url, "");
+	}
 
 	/**
 	 * 
@@ -69,9 +79,10 @@ public abstract class GenericObjectPostLoader<T> extends GenericObjectLoader<T> 
 			@Override
 			public void writeToConnection(DataOutputStream writer)
 					throws IOException {
-				String json = new Gson().toJson(post);
-				System.out.println(json);
-				writer.writeBytes(json);
+				if (post != null){
+					String json = new Gson().toJson(post);
+					writer.writeBytes(json);
+				}
 			}
 		};
 		c.sendRequest();

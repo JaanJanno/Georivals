@@ -3,9 +3,9 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.registration.RegistrationPhase1Poster;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.registration.RegistrationPhase2Poster;
+import ee.bmagrupp.georivals.mobile.models.ServerResponse;
+import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
-import ee.bmagrupp.georivals.mobile.models.registration.RegistrationResponse;
-import ee.bmagrupp.georivals.mobile.models.registration.ServerResult;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -91,7 +91,7 @@ public class RegistrationFragment extends Fragment {
 				new RegistrationDTO(username, email)) {
 
 			@Override
-			public void handleResponseObject(RegistrationResponse responseObject) {
+			public void handleResponseObject(ServerResponse responseObject) {
 				if (responseObject.getResult() == ServerResult.OK)
 					showPhase1ConfirmationDialog();
 				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
@@ -220,7 +220,7 @@ public class RegistrationFragment extends Fragment {
 				new RegistrationDTO(username, email, homeLat, homeLong)) {
 
 			@Override
-			public void handleResponseObject(RegistrationResponse responseObject) {
+			public void handleResponseObject(ServerResponse responseObject) {
 				ServerResult result = responseObject.getResult();
 				String SID = responseObject.getValue();
 				int userId = responseObject.getId();

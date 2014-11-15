@@ -10,7 +10,7 @@ public class Constants {
 	
 	static{
 		if (isLocalMobile)
-			WEBPAGE = "http://10.0.2.2:8080/";
+			WEBPAGE = "http://10.0.2.2:8080/"; // Only Google API emulators.
 		else
 			WEBPAGE = "http://pacific-plains-8541.herokuapp.com/";
 	}
@@ -22,5 +22,6 @@ public class Constants {
 	static final public String MYPROVINCES = PROVINCE + "myprovinces/";
 	static final public String REGISTRATION_PHASE1 = WEBPAGE + "registration/phase1/";
 	static final public String REGISTRATION_PHASE2 = WEBPAGE + "registration/phase2/";
+	static final public String CLAIM = WEBPAGE + "movement/claim/";
 	
 }

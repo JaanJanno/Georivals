@@ -2,8 +2,8 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.registration;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectPostLoader;
+import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
-import ee.bmagrupp.georivals.mobile.models.registration.RegistrationResponse;
 
 /**
  * Class for handling the first phase of registration.
@@ -11,7 +11,7 @@ import ee.bmagrupp.georivals.mobile.models.registration.RegistrationResponse;
  *
  */
 
-public abstract class RegistrationPhase1Poster extends GenericObjectPostLoader<RegistrationResponse>{
+public abstract class RegistrationPhase1Poster extends GenericObjectPostLoader<ServerResponse>{
 
 	/**
 	 * 
@@ -19,7 +19,7 @@ public abstract class RegistrationPhase1Poster extends GenericObjectPostLoader<R
 	 */
 	
 	public RegistrationPhase1Poster(RegistrationDTO post) {
-		super(RegistrationResponse.class, post, Constants.REGISTRATION_PHASE1);
+		super(ServerResponse.class, post, Constants.REGISTRATION_PHASE1);
 	}
 	
 	/**
@@ -27,5 +27,5 @@ public abstract class RegistrationPhase1Poster extends GenericObjectPostLoader<R
 	 */
 
 	@Override
-	abstract public void handleResponseObject(RegistrationResponse responseObject);
+	abstract public void handleResponseObject(ServerResponse responseObject);
 }
