@@ -107,6 +107,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		Province newHome = new Province(lat, long1);
 		home.setProvince(newHome);
 		homeRepo.save(home);
+		
 		ServerResponse resp = new ServerResponse(ServerResult.OK);
 		return resp;
 	}
@@ -153,11 +154,13 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Override
 	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
 		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
-
+		
+		// calculate the amount of rows and columns
 		int columns = calculateColumnNr(fov.getSwlongitude(),
 				fov.getNelongitude());
-
 		int rows = calculateRowsNr(fov.getSwlatitude(), fov.getNelatitude());
+		// ------
+		// Get player related stats from the system and set variables
 		Player tempPlayer = playerRepo.findBySid(cookie);
 		int playerStrength = PLAYER_DEFAULT_STRENGTH;
 		int curPlayerId = PLAYER_DEFAULT_ID;
@@ -165,19 +168,30 @@ public class ProvinceServiceImpl implements ProvinceService {
 			curPlayerId = tempPlayer.getId();
 			playerStrength = findPlayerStrength(tempPlayer);
 		}
-
+		// ------
+		// calculate base coordinates on which to un the FOR loops
 		double baseLat = Math.floor(fov.getSwlatitude() * 1000.0) / 1000.0;
 		double baseLong = Math.floor(fov.getSwlongitude() * 1000.0) / 1000.0;
 		if ((baseLong * 1000.0) % 2 != 0) {
 			baseLong = ((baseLong * 1000) - 1) / 1000.0;
 		}
-
+		// -------
+		// find all areas within the specified coordinates
 		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(
 				fov.getSwlatitude(), fov.getSwlongitude(), fov.getNelatitude(),
 				fov.getNelongitude());
-
+		// -------
 		// For generating new units
 		Date currentDate = new Date();
+		// -------
+		// Find out if home province is within the boundaries
+		boolean homeIncluded = false;
+		HomeOwnership home = null;
+		if(tempPlayer != null){
+			home = tempPlayer.getHome();
+			homeIncluded = HomeInArea(fov.getSwlatitude(),fov.getSwlongitude(),fov.getNelatitude(),fov.getNelongitude(),home);
+		}
+		// -------
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
 				boolean found = false;
@@ -185,6 +199,19 @@ public class ProvinceServiceImpl implements ProvinceService {
 				for (Ownership a : lst) {
 					double x = a.getProvince().getLongitude();
 					double y = a.getProvince().getLatitude();
+					if(homeIncluded && home.getProvince().getLongitude() == x && home.getProvince().getLatitude() == y){
+						int newUnits = 0;
+						newUnits = GameLogic.generateNewUnits(
+								home.getLastVisit(), currentDate,
+								home.countUnits());
+						rtrn.add(new ProvinceDTO(home.getProvince().getLatitude(), home.getProvince()
+								.getLongitude(), ProvinceType.HOME, home.getProvinceName()
+								, tempPlayer.getUserName(), true, false, home.countUnits(), newUnits));
+						found = true;
+						foundArea = a;
+						break;
+					}
+					
 					// Flow control for determining whether the ownership is
 					// inside The marked area or not
 					if (x > (baseLong + (j * PROVINCE_WIDTH))
@@ -231,6 +258,16 @@ public class ProvinceServiceImpl implements ProvinceService {
 			}
 		}
 		return rtrn;
+	}
+
+	private boolean HomeInArea(double swlatitude, double swlongitude,
+			double nelatitude, double nelongitude, HomeOwnership home) {
+		Province homeProv = home.getProvince();
+		if(swlatitude < homeProv.getLatitude() && nelatitude > homeProv.getLatitude()
+			&& swlongitude < homeProv.getLongitude() && nelongitude > homeProv.getLongitude()){
+			return true;
+		}
+		return false;
 	}
 
 	public int findPlayerStrength(Player player) {

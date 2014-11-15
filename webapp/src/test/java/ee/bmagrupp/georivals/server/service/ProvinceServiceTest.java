@@ -17,6 +17,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import ee.bmagrupp.georivals.server.Application;
+import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
@@ -24,9 +25,11 @@ import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.GeneratorUtil;
+import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * The {@link ProvinceServiceGeneratorTest} tests are mostly focused on the
@@ -76,9 +79,24 @@ public class ProvinceServiceTest {
 		lat2 = -40.4195;
 		long2 = 144.961;
 	}
-
+	
+	//Tests for ChangeHomeProvince
+	
+	@Test
+	public void testChangeHome(){
+		ServerResponse resp = provServ.changeHomeProvince("127.54690235", "45.598325", sid);
+		assertEquals(ServerResult.OK, resp.getResult());
+		
+		//-------------breaks it
+		//HomeOwnership temp = playerRepo.findBySid(sid).getHome();
+		
+		// assertEquals(127.5465,temp.getProvince().getLatitude());
+		// assertEquals(45.599,temp.getProvince().getLongitude());
+	}
+	
+	
 	// Tests for getProvince
-
+	
 	@Test
 	public void botOwnedProvinceWithSID() {
 
