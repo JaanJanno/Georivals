@@ -3,10 +3,8 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.gson.Gson;
-
 import ee.bmagrupp.georivals.mobile.core.communications.Connection;
+import ee.bmagrupp.georivals.mobile.core.communications.GsonParser;
 
 /**
  * Class for making a HTTP get request to the server and retrieving a
@@ -65,7 +63,7 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 */
 
 	protected T getObjectFromJSON(String json) {
-		return (T) new Gson().fromJson(json, typeParameterClass);
+		return (T) GsonParser.getInstance().fromJson(json, typeParameterClass);
 	}
 	
 	/**

@@ -2,8 +2,8 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders;
 
 import java.lang.reflect.Type;
 import java.util.List;
-import com.google.gson.Gson;
 import ee.bmagrupp.georivals.mobile.core.communications.Connection;
+import ee.bmagrupp.georivals.mobile.core.communications.GsonParser;
 
 /**
  * Class for making a HTTP get request to the server and retrieving a
@@ -61,7 +61,7 @@ abstract public class GenericListLoader<T> implements Runnable {
 	 */
 
 	protected List<T> getObjectFromJSON(String json) {
-		return new Gson().fromJson(json, typeToken);
+		return GsonParser.getInstance().fromJson(json, typeToken);
 	}
 	
 	/**

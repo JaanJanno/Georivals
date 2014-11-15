@@ -22,6 +22,7 @@ public class Constants {
 	static final public String MYPROVINCES = PROVINCE + "myprovinces/";
 	static final public String REGISTRATION_PHASE1 = WEBPAGE + "registration/phase1/";
 	static final public String REGISTRATION_PHASE2 = WEBPAGE + "registration/phase2/";
-	static final public String CLAIM = WEBPAGE + "movement/claim/";
+	static final public String MOVEMENT = WEBPAGE + "movement/";
+	static final public String CLAIM = MOVEMENT + "claim/";
 	
 }
