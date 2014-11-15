@@ -2,7 +2,9 @@ package ee.bmagrupp.georivals.server.service;
 
 import java.util.List;
 
+import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
+import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
@@ -10,6 +12,8 @@ import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * Everything to do with moving units around.
@@ -53,4 +57,21 @@ public interface MovementService {
 	 * @return List of {@link MovementViewDTO}
 	 */
 	List<MovementViewDTO> getMyMovements(String cookie);
+
+	/**
+	 * Claims the new {@link Unit}'s at this location. If successful, will
+	 * return {@link ServerResult#OK} and {@link ServerResponse#getId()} as the
+	 * number of claimed units. The {@link Ownership#getLastVisit()} or
+	 * {@link HomeOwnership#getLastVisit()} will be updated to current date. If
+	 * unsuccessful, will return {@link ServerResult#FAIL}.
+	 * 
+	 * @param lat
+	 *            {@link Province} latitude
+	 * @param lon
+	 *            {@link Province} longitude
+	 * @param cookie
+	 *            Cookie value
+	 * @return {@link ServerResponse}
+	 */
+	ServerResponse claimUnits(String lat, String lon, String cookie);
 }

@@ -27,6 +27,7 @@ import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.MovementService;
 import ee.bmagrupp.georivals.server.util.CalculationUtil;
 import ee.bmagrupp.georivals.server.util.ServerResult;
@@ -111,6 +112,12 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public List<MovementViewDTO> getMyMovements(String cookie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServerResponse claimUnits(String lat, String lon, String cookie) {
 		// TODO Auto-generated method stub
 		return null;
 	}

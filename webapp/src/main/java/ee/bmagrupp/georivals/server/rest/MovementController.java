@@ -18,6 +18,7 @@ import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.MovementService;
 
 @RestController
@@ -65,6 +66,18 @@ public class MovementController {
 				longitude, beginMoveList, cookie);
 		return new ResponseEntity<BeginMovementResponse>(response,
 				HttpStatus.OK);
+
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/claim")
+	public ResponseEntity<ServerResponse> claimUnits(
+			@RequestParam(value = "latitude") String latitude,
+			@RequestParam(value = "longitude") String longitude,
+			@CookieValue(value = "sid") String cookie) {
+
+		ServerResponse response = moveServ.claimUnits(latitude, longitude,
+				cookie);
+		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
 
 	}
 

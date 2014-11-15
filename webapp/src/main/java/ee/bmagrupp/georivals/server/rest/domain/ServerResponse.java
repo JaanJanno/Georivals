@@ -2,6 +2,13 @@ package ee.bmagrupp.georivals.server.rest.domain;
 
 import ee.bmagrupp.georivals.server.util.ServerResult;
 
+/**
+ * Multifunfctional object used for all kinds of stuff. Code responsibly,
+ * recycle Java objects.
+ * 
+ * @author TKasekamp
+ *
+ */
 public class ServerResponse {
 
 	private ServerResult result;
@@ -15,6 +22,11 @@ public class ServerResponse {
 	public ServerResponse(ServerResult result, String value) {
 		this.result = result;
 		this.value = value;
+	}
+
+	public ServerResponse(ServerResult result, int id) {
+		this.result = result;
+		this.id = id;
 	}
 
 	public ServerResponse(ServerResult result, String value, int id) {

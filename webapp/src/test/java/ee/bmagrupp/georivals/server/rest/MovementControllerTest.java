@@ -38,6 +38,7 @@ import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.MovementService;
 import ee.bmagrupp.georivals.server.util.ServerResult;
 
@@ -154,6 +155,45 @@ public class MovementControllerTest {
 				.andExpect(jsonPath("$.[0].unitSize", is(12)))
 				.andExpect(jsonPath("$.[0].attack", is(false)))
 				.andExpect(jsonPath("$.[0].endDate", is(curDate.getTime())));
+
+	}
+
+	@Test
+	public void claimUnitSuccess() throws Exception {
+		String lat = "23.4565";
+		String lon = "83.453";
+
+		ServerResponse response = new ServerResponse(ServerResult.OK, 5);
+		when(moveServ.claimUnits(lat, lon, cookie.getValue())).thenReturn(
+				response);
+
+		mockMvc.perform(
+				post("/movement/claim").param("latitude", lat)
+						.param("longitude", lon).cookie(cookie)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())))
+				.andExpect(jsonPath("$.id", is(5)));
+
+	}
+
+	@Test
+	public void claimUnitFail() throws Exception {
+		String lat = "23.4565";
+		String lon = "83.453";
+
+		ServerResponse response = new ServerResponse(ServerResult.FAIL);
+		when(moveServ.claimUnits(lat, lon, cookie.getValue())).thenReturn(
+				response);
+
+		mockMvc.perform(
+				post("/movement/claim").param("latitude", lat)
+						.param("longitude", lon).cookie(cookie)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(
+						jsonPath("$.result", is(ServerResult.FAIL.toString())))
+				.andExpect(jsonPath("$.id", is(0)));
 
 	}
 
