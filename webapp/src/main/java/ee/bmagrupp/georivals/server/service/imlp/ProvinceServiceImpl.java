@@ -104,7 +104,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 		double long1 = Double.parseDouble(longitude);
 		lat = CalculationUtil.normalizeLatitute(lat);
 		long1 = CalculationUtil.normalizeLongitude(long1);
-		Province newHome = new Province(lat, long1);
+		Province newHome = null;
+		newHome = provRepo.findWithLatLong(lat, long1);
+		if(newHome == null){
+			newHome = new Province(lat, long1);
+			provRepo.save(newHome);
+		}
 		home.setProvince(newHome);
 		homeRepo.save(home);
 		
@@ -135,6 +140,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 				&& home.getProvince().getLongitude() == prov.getLongitude()) {
 			home.setProvinceName(newName);
 			homeRepo.save(home);
+			ServerResponse resp = new ServerResponse(ServerResult.OK);
+			return resp;
 		}
 		ServerResponse resp = new ServerResponse(ServerResult.OTHER,
 				"Not your province");
