@@ -70,7 +70,7 @@ public class ProfileServiceImpl implements ProfileService {
 		if (player == null)
 			return null;
 		int totalUnits = player.findPlayerUnitCount();
-		int ownedProvinces = player.getOwnedProvinces().size();
+		int ownedProvinces = player.getOwnedProvinces().size() + 1; // + 1 == home province
 
 		return new PlayerProfile(player.getId(), player.getUserName(),
 				player.getEmail(), totalUnits, ownedProvinces);
