@@ -5,7 +5,7 @@ import java.util.List;
 import android.app.Activity;
 
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
-import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
  * Class for retrieving ProvinceDTO lists from server. Able 

@@ -36,7 +36,7 @@ import com.google.android.gms.location.LocationServices;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
-import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.listeners.ButtonClickListener;

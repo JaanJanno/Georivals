@@ -28,6 +28,7 @@ public abstract class Connection implements Runnable {
 	private String urlString;				// URL of the connection destination.
 	private String cookie = "";				// Cookie for the request.
 	private String parameters = null;
+	private String requestMethod;			// Method of HTTP request.
 	
 	public Connection(String urlString) {
 		this.urlString = urlString;
@@ -85,6 +86,15 @@ public abstract class Connection implements Runnable {
 			parameters += "&" + key + "=" + value;
 	}
 	
+	/**
+	 * Use this to override the default request method.
+	 * @param requestMethod
+	 */
+	
+	public void setRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
+	}
+	
 	/*
 	 * Generates a query.
 	 */
@@ -95,13 +105,22 @@ public abstract class Connection implements Runnable {
 		else
 			return urlString + "?" + parameters; 
 	}
+	
+	/**
+	 * 
+	 * @return Used request method in string format.
+	 */
+	
+	protected String getRequestMethod() {
+		return requestMethod;
+	}	
 
 	/*
-	 * Connects to given URL and returns its response string.
+	 * Connects to given URL and handles its response string.
 	 */
 
 	protected void httpRequest(HttpURLConnection connection) throws Exception {
-		handleRequestProperties(connection, false, null);	
+		handleRequestProperties(connection, false, requestMethod);
 		readStream (connection.getInputStream());	
 		List<String> cookies = collectResponseCookies(connection);
 		handleResponseCookies(cookies);

@@ -2,10 +2,10 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
-import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
- * Class for making a HTTP get request to the server and retrieving ProvinceViewDTO
+ * Class for making a HTTP get request to the server and retrieving ProvinceDTO
  * parsed from JSON to objects.
  * Use this by overriding the handleResponseObject() method and calling 
  * retrieveObject() method.

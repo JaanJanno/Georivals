@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
-import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import android.app.Activity;
 
 /**

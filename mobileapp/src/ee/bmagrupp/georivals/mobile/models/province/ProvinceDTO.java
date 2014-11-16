@@ -1,6 +1,8 @@
-package ee.bmagrupp.georivals.mobile.models.map.provinceloader;
+package ee.bmagrupp.georivals.mobile.models.province;
 
-import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * DTO used for doing everything with provinces. This includes MapView,
@@ -10,6 +12,10 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
  * 
  */
 public class ProvinceDTO {
+
+	public static final Type listType = new TypeToken<ArrayList<ProvinceDTO>>() {
+	}.getType();
+
 	private final double latitude;
 	private final double longitude;
 
@@ -72,6 +78,15 @@ public class ProvinceDTO {
 
 	public int getNewUnitSize() {
 		return newUnitSize;
+	}
+
+	@Override
+	public String toString() {
+		return "ProvinceDTO [latitude=" + latitude + ", longitude=" + longitude
+				+ ", type=" + type + ", provinceName=" + provinceName
+				+ ", ownerName=" + ownerName + ", isAttackable=" + isAttackable
+				+ ", underAttack=" + underAttack + ", unitSize=" + unitSize
+				+ ", newUnitSize=" + newUnitSize + "]";
 	}
 
 }
