@@ -125,6 +125,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 		lat = CalculationUtil.normalizeLatitute(lat);
 		long1 = CalculationUtil.normalizeLongitude(long1);
 		Province prov = provRepo.findWithLatLong(lat, long1);
+		if(prov == null){
+			ServerResponse resp = new ServerResponse(ServerResult.FAIL,
+					"Not your province");
+			return resp;
+		}
 		Player player = playerRepo.findBySid(cookie);
 		Set<Ownership> lst = player.getOwnedProvinces();
 		for (Ownership a : lst) {
@@ -143,7 +148,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 			ServerResponse resp = new ServerResponse(ServerResult.OK);
 			return resp;
 		}
-		ServerResponse resp = new ServerResponse(ServerResult.OTHER,
+		ServerResponse resp = new ServerResponse(ServerResult.FAIL,
 				"Not your province");
 		return resp;
 	}

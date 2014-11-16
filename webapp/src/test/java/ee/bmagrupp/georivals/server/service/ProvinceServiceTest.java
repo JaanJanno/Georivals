@@ -99,12 +99,27 @@ public class ProvinceServiceTest {
 	
 	@Test
 	public void testChangeName(){
+		//Owned Province
 		ServerResponse resp = provServ.renameProvince("-40.4225", "144.963", "testing", sid);
 		assertEquals(ServerResult.OK, resp.getResult());
 		
 		Ownership a = ownerRepo.findByProvinceId(provRepo.findWithLatLong(-40.4225, 144.963).getId());
 		assertEquals("testing", a.getProvinceName());
 		
+		//Home province
+		ServerResponse resp2 = provServ.renameProvince("-40.4195", "144.961", "testing2", sid);
+		assertEquals(ServerResult.OK, resp2.getResult());
+		
+		HomeOwnership a2 = playerRepo.findBySid(sid).getHome();
+		assertEquals("testing2", a2.getProvinceName());
+		
+		//Test error
+		ServerResponse resp3 = provServ.renameProvince("75.686", "32.533", "testing2", sid);
+		assertEquals(ServerResult.FAIL, resp3.getResult());
+		
+		//Test error2
+		ServerResponse resp4 = provServ.renameProvince("-40.4195", "144.965", "testing", sid);
+		assertEquals(ServerResult.FAIL, resp4.getResult());
 	}
 	
 	// Tests for getProvince
