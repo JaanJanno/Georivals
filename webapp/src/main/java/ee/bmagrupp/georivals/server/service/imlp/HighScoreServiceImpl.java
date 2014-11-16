@@ -42,8 +42,10 @@ public class HighScoreServiceImpl implements HighScoreService {
 	}
 
 	private HighScoreEntry createHighScore(Player player) {
-		double provinces = player.getOwnedProvinces().size();
+		// needs to be double, so that calculating average also returns double
+		double provinces = player.getOwnedProvinces().size() + 1; //Home area is ALWAYS available. It is not possible for this value to be 0
 		double units = player.findPlayerUnitCount();
+		
 		double average = 0;
 
 		if (provinces != 0) {
