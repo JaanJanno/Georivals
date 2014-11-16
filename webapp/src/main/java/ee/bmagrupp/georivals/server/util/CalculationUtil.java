@@ -56,6 +56,6 @@ public class CalculationUtil {
 	 * @return correct double value
 	 */
 	public static double normalizeLatitute(String latitutude) {
-		return normalizeLongitude(Double.parseDouble(latitutude));
+		return normalizeLatitute(Double.parseDouble(latitutude));
 	}
 }
