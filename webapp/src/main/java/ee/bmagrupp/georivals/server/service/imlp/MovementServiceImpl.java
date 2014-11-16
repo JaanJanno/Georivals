@@ -85,11 +85,8 @@ public class MovementServiceImpl implements MovementService {
 	@Override
 	public BeginMovementResponse moveUnitsTo(String lat, String lon,
 			List<BeginMovementDTO> beginMoveList, String cookie) {
-		double latitude = Double.parseDouble(lat);
-		double longitude = Double.parseDouble(lon);
-
-		latitude = CalculationUtil.normalizeLatitute(latitude);
-		longitude = CalculationUtil.normalizeLongitude(longitude);
+		double latitude = CalculationUtil.normalizeLatitute(lat);
+		double longitude = CalculationUtil.normalizeLongitude(lon);
 
 		Player player = playerRepo.findBySid(cookie);
 		int playerStrength = player.findPlayerUnitCount();

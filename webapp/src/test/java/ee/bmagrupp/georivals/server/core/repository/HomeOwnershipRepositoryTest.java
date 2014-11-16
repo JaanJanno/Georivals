@@ -41,4 +41,12 @@ public class HomeOwnershipRepositoryTest {
 		assertEquals("HomeOwnership id", 1, home.getId());
 	}
 
+	@Test
+	public void someTest() {
+		HomeOwnership home = homeRepo.findHomeProvinceOfPlayer(-40.4195,
+				144.961, "BPUYYOU62flwiWJe");
+
+		assertEquals("HomeOwnership id", 1, home.getId());
+	}
+
 }

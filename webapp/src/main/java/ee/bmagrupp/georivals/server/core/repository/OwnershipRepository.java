@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
+import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
 
@@ -55,4 +56,24 @@ public interface OwnershipRepository extends CrudRepository<Ownership, Integer> 
 	 */
 	@Query("from Ownership o left join o.units u where u.id = ?1")
 	Ownership findUnitLocation(int unitId);
+
+	/**
+	 * Finds the {@link Ownership} with this {@link Province}. Also checks that
+	 * this {@link Ownership} actually belongs to the {@link Player} with this
+	 * sid. To check if a {@link HomeOwnership} belongs to a {@link Player},
+	 * look at
+	 * {@link HomeOwnershipRepository#findHomeProvinceOfPlayer(double, double, String)}
+	 * <br>
+	 * 
+	 * This query might be a bit inefficient.
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param cookie
+	 *            SID of {@link Player}
+	 * @return {@link Ownership}. null if not found
+	 */
+	@Query("select op from Player p left join p.ownedProvinces op left join op.province prov where p.sid = ?3 and prov.longitude =?2 and prov.latitude = ?1")
+	Ownership findProvinceOfPlayer(double latitude, double longitude,
+			String cookie);
 }

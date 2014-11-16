@@ -73,4 +73,11 @@ public class OwnershipRepositoryTest {
 		assertEquals("Ownership id", 1, ow.getId());
 	}
 
+	@Test
+	public void findProvinceOfPlayer() {
+		Ownership ow = ownerRepo.findProvinceOfPlayer(-40.4225, 144.963,
+				"BPUYYOU62flwiWJe");
+		assertEquals("Ownership id", 1, ow.getId());
+	}
+
 }

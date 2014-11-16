@@ -36,4 +36,26 @@ public class CalculationUtil {
 		rtrn += (Constants.PROVINCE_HEIGHT / 2);
 		return rtrn;
 	}
+
+	/**
+	 * Corrects the double rounding error.
+	 * 
+	 * @param longitude
+	 * @author TKasekamp
+	 * @return correct double value
+	 */
+	public static double normalizeLongitude(String longitude) {
+		return normalizeLongitude(Double.parseDouble(longitude));
+	}
+
+	/**
+	 * Corrects the double rounding error.
+	 * 
+	 * @param latitude
+	 * @author TKasekamp
+	 * @return correct double value
+	 */
+	public static double normalizeLatitute(String latitutude) {
+		return normalizeLongitude(Double.parseDouble(latitutude));
+	}
 }
