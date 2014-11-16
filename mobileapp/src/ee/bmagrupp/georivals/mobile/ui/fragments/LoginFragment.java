@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+@SuppressWarnings("deprecation")
 public class LoginFragment extends Fragment {
 	private RelativeLayout loginLayout;
 	private MainActivity activity;

@@ -20,11 +20,20 @@ import java.util.List;
 
 public abstract class PostConnection extends Connection {
 	
-	private String requestMethod;			// Method of HTTP request.
+	/**
+	 * 
+	 * @param urlString URL connected to.
+	 */
 	
 	public PostConnection(String urlString) {
 		super(urlString);
 	}
+	
+	/**
+	 * 
+	 * @param urlString URL connected to.
+	 * @param cookie Cookie string sent along the request.
+	 */
 
 	public PostConnection(String urlString, String cookie) {
 		super(urlString, cookie);
@@ -35,7 +44,7 @@ public abstract class PostConnection extends Connection {
 	 */
 	
 	protected void httpRequest(HttpURLConnection connection) throws Exception {
-		handleRequestProperties(connection, true, requestMethod);
+		handleRequestProperties(connection, true, getRequestMethod());
 		writeStream(connection.getOutputStream());
 		readStream (connection.getInputStream());	
 		List<String> cookies = collectResponseCookies(connection);
@@ -51,15 +60,6 @@ public abstract class PostConnection extends Connection {
 		writeToConnection(writer);
 		writer.flush ();
 		writer.close();
-	}
-	
-	/**
-	 * Use this to override the default POST request method.
-	 * @param requestMethod
-	 */
-	
-	public void setRequestMethod(String requestMethod) {
-		this.requestMethod = requestMethod;
 	}
 	
 	/**

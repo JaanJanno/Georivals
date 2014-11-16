@@ -8,6 +8,7 @@ import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
+@SuppressWarnings("deprecation")
 public class TabListener implements ActionBar.TabListener {
 	private MainActivity activity;
 	private TabItem tabItem;

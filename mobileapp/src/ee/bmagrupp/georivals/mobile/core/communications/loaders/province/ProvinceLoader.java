@@ -2,15 +2,12 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericListPostLoader;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
-import ee.bmagrupp.georivals.mobile.models.map.provinceloader.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
  * Class for loading provinces from server given an CameraFOV object to
@@ -23,8 +20,6 @@ public abstract class ProvinceLoader extends GenericListPostLoader<ProvinceDTO> 
 	
 	CameraFOV fov; // Represent the visible area on map view.
 	
-	static Type listType = new TypeToken<ArrayList<ProvinceDTO>>() {}.getType();
-	
 	/**
 	 * 
 	 * @param sid Unique secret ID of the player.
@@ -32,7 +27,7 @@ public abstract class ProvinceLoader extends GenericListPostLoader<ProvinceDTO> 
 	 */
 	
 	public ProvinceLoader(String sid, CameraFOV fov) {
-		super(listType, Constants.PROVINCE, "sid="+sid);
+		super(ProvinceDTO.listType, Constants.PROVINCE, "sid="+sid);
 		this.fov = fov;
 	}
 	

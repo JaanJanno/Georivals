@@ -74,7 +74,8 @@ abstract public class GenericListLoader<T> implements Runnable {
 
 			@Override
 			public void handleResponseBody(String response) {
-				handleResponseList(null);
+				List<T> object = getObjectFromJSON(response);
+				handleResponseList(object);
 			}
 
 			@Override

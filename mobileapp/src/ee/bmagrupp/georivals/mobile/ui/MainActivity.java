@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressWarnings("deprecation")
 @SuppressLint("InflateParams")
 public class MainActivity extends Activity {
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
