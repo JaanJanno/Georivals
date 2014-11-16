@@ -3,6 +3,7 @@ package ee.bmagrupp.georivals.server.service.imlp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,8 +116,34 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public ServerResponse claimUnits(String lat, String lon, String cookie) {
-		// TODO Auto-generated method stub
-		return null;
+		double latitude = CalculationUtil.normalizeLatitute(lat);
+		double longitude = CalculationUtil.normalizeLongitude(lon);
+		Ownership a = ownerRepo.findProvinceOfPlayer(latitude, longitude, cookie);
+		Date curDate = new Date();
+		int newUnits = 0;
+		if(a == null){
+			HomeOwnership b = homeRepo.findHomeProvinceOfPlayer(latitude, longitude, cookie);
+			if(b == null){
+				ServerResponse resp = new ServerResponse(ServerResult.FAIL,"Not your province");
+				return resp;
+			}
+			for(Unit u : b.getUnits()){
+				newUnits = GameLogic.generateNewUnits(b.getLastVisit(), curDate, b.countUnits());
+				u.setSize(u.getSize() + newUnits);
+			}
+			b.setLastVisit(curDate);
+			homeRepo.save(b);
+			ServerResponse resp = new ServerResponse(ServerResult.OK, newUnits);
+			return resp;
+		}
+		for(Unit u : a.getUnits()){
+			newUnits = GameLogic.generateNewUnits(a.getLastVisit(), curDate, a.countUnits());
+			u.setSize(u.getSize() + newUnits);
+		}
+		a.setLastVisit(curDate);
+		ownerRepo.save(a);
+		ServerResponse resp = new ServerResponse(ServerResult.OK, newUnits);
+		return resp;
 	}
 
 	private Movement createMovement(Province destination, BeginMovementDTO dto,
