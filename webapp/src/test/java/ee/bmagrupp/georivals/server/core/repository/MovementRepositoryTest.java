@@ -75,9 +75,20 @@ public class MovementRepositoryTest {
 	public void checkDestinationTest() {
 		boolean result = moveRepo.checkIfDestination(3);
 		assertTrue("is a destination", result);
-		
+
 		boolean result2 = moveRepo.checkIfDestination(1);
 		assertFalse("is not a destination", result2);
+	}
+
+	@Test
+	public void findPlayerMovements() {
+		List<Movement> resultList = moveRepo
+				.findByPlayerSid("BPUYYOU62flwiWJe");
+		assertEquals("List size", 1, resultList.size());
+		assertEquals("Destination id", 3, resultList.get(0).getDestination()
+				.getId());
+		assertEquals("Player id", 1, resultList.get(0).getPlayer().getId());
+
 	}
 
 }

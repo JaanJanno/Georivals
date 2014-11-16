@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import ee.bmagrupp.georivals.server.core.domain.Movement;
+import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 
 /**
@@ -32,5 +33,15 @@ public interface MovementRepository extends CrudRepository<Movement, Integer> {
 	 */
 	@Query("select case when (count(m) > 0) then true else false end from Movement m where m.destination.id = ?1")
 	boolean checkIfDestination(int provinceId);
+
+	/**
+	 * Finds all the {@link Movement}'s of the {@link Player} with this sid.
+	 * 
+	 * @param sid
+	 *            {@link Player#getSid()}
+	 * @return {@code List<Movement>}
+	 */
+	@Query("from Movement m where m.player.sid = ?1")
+	List<Movement> findByPlayerSid(String sid);
 
 }
