@@ -11,7 +11,7 @@
 	<div id="text">
 		<h2>Greetings from Georivals!</h2>
 		<p>The following requests are available as of server version
-			0.4.4. This may be horribly out of date by the time you read this.</p>
+			0.5.0. This may be horribly out of date by the time you read this.</p>
 		<ul>
 			<li><b><a href="/download">/download</a></b> - link to mobile
 				app .apk download</li>
@@ -27,6 +27,8 @@
 				this id</li>
 			<li><b>/movement</b> - GET all the moving units of this player.
 				Works only with valid sid.</li>
+			<li><b>/movement/claim?latitude=xxx&longitude=xxxx</b> - GET.
+				Claim the units at this location. Works only with valid sid.</li>
 			<li><b>/movement/myunits</b> - GET all the units of the player.
 				Works only with valid sid.</li>
 			<li><b>/movement/to?latitude=xxx&longitude=xxxx</b> - POST move

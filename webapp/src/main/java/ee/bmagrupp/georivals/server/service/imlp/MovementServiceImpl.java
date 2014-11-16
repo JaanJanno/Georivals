@@ -3,11 +3,13 @@ package ee.bmagrupp.georivals.server.service.imlp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
@@ -23,6 +25,7 @@ import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.game.GameLogic;
+import ee.bmagrupp.georivals.server.game.MovementWorker;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
@@ -63,6 +66,12 @@ public class MovementServiceImpl implements MovementService {
 
 	@Autowired
 	HomeOwnershipRepository homeRepo;
+	
+    @Autowired
+    ThreadPoolTaskScheduler threadPoolTaskScheduler;
+        
+    @Resource
+    MovementWorker worker;
 
 	@Override
 	public List<MovementSelectionViewDTO> getMyUnits(String cookie) {
@@ -130,6 +139,7 @@ public class MovementServiceImpl implements MovementService {
 			for(Unit u : b.getUnits()){
 				newUnits = GameLogic.generateNewUnits(b.getLastVisit(), curDate, b.countUnits());
 				u.setSize(u.getSize() + newUnits);
+				unitRepo.save(u);
 			}
 			b.setLastVisit(curDate);
 			homeRepo.save(b);
@@ -139,6 +149,7 @@ public class MovementServiceImpl implements MovementService {
 		for(Unit u : a.getUnits()){
 			newUnits = GameLogic.generateNewUnits(a.getLastVisit(), curDate, a.countUnits());
 			u.setSize(u.getSize() + newUnits);
+			unitRepo.save(u);
 		}
 		a.setLastVisit(curDate);
 		ownerRepo.save(a);
@@ -161,6 +172,10 @@ public class MovementServiceImpl implements MovementService {
 		}
 
 		movementRepo.save(movement);
+		
+		// Scheduling movement
+		worker.setMovementId(movement.getId());
+		threadPoolTaskScheduler.schedule(worker, movement.getEndDate());
 		return movement;
 	}
 

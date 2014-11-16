@@ -86,6 +86,10 @@ public class Unit implements Serializable {
 		return type;
 	}
 
+	public void increaseSize(int increase) {
+		this.size += increase;
+	}
+
 	@Override
 	public String toString() {
 		return "Unit [id=" + id + ", size=" + size + ", state=" + state

@@ -5,6 +5,7 @@ import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MAX;
 import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MIN;
 import static ee.bmagrupp.georivals.server.util.Constants.UNIT_GENERATION_TIME;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -120,7 +121,10 @@ public class GameLogic {
 	public static Date calculateTime(Province start, Province destination,
 			Date curDate) {
 		// TODO implement some sort of calculation
-		return curDate;
+		Calendar cal = Calendar.getInstance(); // creates calendar
+	    cal.setTime(curDate); // sets calendar time/date
+	    cal.add(Calendar.SECOND, 5); 
+		return cal.getTime();
 	}
 
 }
