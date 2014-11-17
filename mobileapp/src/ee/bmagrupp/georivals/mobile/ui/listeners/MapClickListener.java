@@ -18,7 +18,7 @@ public class MapClickListener implements OnMapClickListener {
 	public void onMapClick(LatLng point) {
 		if (MainActivity.choosingHomeProvince) {
 			MainActivity.REGISTRATION_FRAGMENT
-					.showPhase2ConfirmationDialog(getProvinceCenterLatLng(point));
+					.showPhase2ConfirmationDialog(point);
 		} else if (MainActivity.userId == 0) {
 			activity.getFragmentManager()
 					.beginTransaction()
@@ -26,21 +26,13 @@ public class MapClickListener implements OnMapClickListener {
 							MainActivity.REGISTRATION_FRAGMENT, "Registration")
 					.commit();
 		} else {
-			ProvinceFragment.provinceLatLng = getProvinceCenterLatLng(point);
+			ProvinceFragment.provinceLatLng = point;
 			activity.getFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_container,
 							MainActivity.PROVINCE_FRAGMENT, "Province")
 					.commit();
 		}
-	}
-
-	private LatLng getProvinceCenterLatLng(LatLng clickedPoint) {
-		double provinceCenterLatitude = MainActivity.roundDouble(
-				clickedPoint.latitude, 2000);
-		double provinceCenterLongitude = MainActivity.roundDouble(
-				clickedPoint.longitude, 1000);
-		return new LatLng(provinceCenterLatitude, provinceCenterLongitude);
 	}
 
 }
