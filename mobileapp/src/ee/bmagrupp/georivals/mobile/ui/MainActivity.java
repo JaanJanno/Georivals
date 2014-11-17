@@ -7,6 +7,7 @@ import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MyPlacesFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.ProvinceFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.RegistrationFragment;
 import ee.bmagrupp.georivals.mobile.ui.listeners.TabListener;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
@@ -34,13 +35,19 @@ import android.widget.Toast;
 @SuppressWarnings("deprecation")
 @SuppressLint("InflateParams")
 public class MainActivity extends Activity {
+	public static final ProvinceFragment PROVINCE_FRAGMENT = new ProvinceFragment();
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
 	public static final LoginFragment LOGIN_FRAGMENT = new LoginFragment();
-	public static MapFragment MAP_FRAGMENT;
-	public static MissionLogFragment MISSION_LOG_FRAGMENT;
-	public static ProfileFragment PROFILE_FRAGMENT;
-	public static HighScoreFragment HIGH_SCORE_FRAGMENT;
-	public static MyPlacesFragment MY_PLACES_FRAGMENT;
+	public static final MapFragment MAP_FRAGMENT = new MapFragment(
+			R.string.map, R.drawable.places_icon);
+	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment(
+			R.string.mission_log, R.drawable.log_icon);;
+	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment(
+			R.string.profile, R.drawable.profile_icon);
+	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment(
+			R.string.highscores, R.drawable.leaders_icon);
+	public static final MyPlacesFragment MY_PLACES_FRAGMENT = new MyPlacesFragment(
+			R.string.my_places, R.drawable.places_icon);
 	public static Typeface GABRIOLA_FONT;
 	private final Activity activity = this;
 	private Resources resources;
@@ -74,18 +81,6 @@ public class MainActivity extends Activity {
 	}
 
 	private void createTabs() {
-		MAP_FRAGMENT = new MapFragment(resources.getString(R.string.map),
-				R.drawable.places_icon);
-		MISSION_LOG_FRAGMENT = new MissionLogFragment(
-				resources.getString(R.string.mission_log), R.drawable.log_icon);
-		PROFILE_FRAGMENT = new ProfileFragment(
-				resources.getString(R.string.profile), R.drawable.profile_icon);
-		HIGH_SCORE_FRAGMENT = new HighScoreFragment(
-				resources.getString(R.string.highscores),
-				R.drawable.leaders_icon);
-		MY_PLACES_FRAGMENT = new MyPlacesFragment(
-				resources.getString(R.string.my_places), R.drawable.places_icon);
-
 		TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
 				MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
 				MY_PLACES_FRAGMENT };
@@ -93,7 +88,7 @@ public class MainActivity extends Activity {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		for (TabItem tabItem : tabItemArray) {
-			String tabName = tabItem.getTabName();
+			String tabName = resources.getString(tabItem.getTabNameId());
 			int tabIconId = tabItem.getTabIconId();
 
 			RelativeLayout tabLayout = (RelativeLayout) LayoutInflater.from(
@@ -168,23 +163,17 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	public void logout(View v) {
-		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString("sid", "");
-		editor.putString("userName", "");
-		editor.putInt("userId", 0);
-		editor.commit();
-		updatePlayerInfo();
-		actionBar.setSelectedNavigationItem(0);
-	}
-
 	public void sortByUnits(View v) {
 		HIGH_SCORE_FRAGMENT.sortEntries("averageUnits");
 	}
 
 	public void sortByProvinces(View v) {
 		HIGH_SCORE_FRAGMENT.sortEntries("provincesOwned");
+	}
+
+	public static double roundDouble(double roundable, int precision) {
+		double rounded = Math.round(roundable * precision);
+		return rounded / precision;
 	}
 
 }

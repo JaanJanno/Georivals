@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment" >
 
     <TextView
@@ -9,109 +10,46 @@
         style="@style/HeaderStyle"
         android:text="@string/profile" />
 
-    <View
-        android:id="@+id/profile_line1"
-        style="@style/HeaderLineStyle"
-        android:layout_below="@id/profile_title_header" />
+    <View style="@style/HeaderLineStyle" />
 
     <TextView
         android:id="@+id/profile_general_header"
         style="@style/HeaderStyle"
-        android:layout_below="@id/profile_line1"
         android:text="@string/general_information" />
 
-    <View
-        android:id="@+id/profile_line2"
-        style="@style/HeaderLineStyle"
-        android:layout_below="@id/profile_general_header" />
-
-    <TextView
-        android:id="@+id/registration_username_labe"
-        style="@style/ProfileTextStyle"
-        android:layout_below="@id/profile_line2"
-        android:text="@string/username_colon" />
-
-    <TextView
-        android:id="@+id/registration_email_label"
-        style="@style/ProfileTextStyle"
-        android:layout_below="@+id/registration_username_labe"
-        android:text="@string/email_colon" />
+    <View style="@style/HeaderLineStyle" />
 
     <TextView
         android:id="@+id/profile_username"
-        style="@style/ProfileTextStyle"
-        android:layout_alignBaseline="@+id/registration_username_labe"
-        android:layout_toEndOf="@+id/registration_username_labe"
-        android:layout_toRightOf="@+id/registration_username_labe" />
+        style="@style/TextStyle"
+        android:text="@string/username_colon" />
 
     <TextView
         android:id="@+id/profile_email"
-        style="@style/ProfileTextStyle"
-        android:layout_alignBaseline="@+id/registration_email_label"
-        android:layout_toEndOf="@+id/registration_email_label"
-        android:layout_toRightOf="@+id/registration_email_label" />
+        style="@style/TextStyle"
+        android:text="@string/email_colon" />
 
     <TextView
         android:id="@+id/profile_strategical_header"
         style="@style/HeaderStyle"
-        android:layout_below="@id/registration_email_label"
         android:layout_marginTop="@dimen/margin_small"
         android:text="@string/strategical_information" />
 
-    <View
-        android:id="@+id/profile_line3"
-        style="@style/HeaderLineStyle"
-        android:layout_below="@id/profile_strategical_header" />
-
-    <TextView
-        android:id="@+id/total_units_label"
-        style="@style/ProfileTextStyle"
-        android:layout_below="@id/profile_line3"
-        android:text="@string/total_units" />
-
-    <TextView
-        android:id="@+id/average_units_label"
-        style="@style/ProfileTextStyle"
-        android:layout_below="@+id/total_units_label"
-        android:text="@string/average_units" />
-
-    <TextView
-        android:id="@+id/provinces_owned_label"
-        style="@style/ProfileTextStyle"
-        android:layout_below="@+id/average_units_label"
-        android:text="@string/provinces_owned" />
+    <View style="@style/HeaderLineStyle" />
 
     <TextView
         android:id="@+id/profile_total_units"
-        style="@style/ProfileTextStyle"
-        android:layout_alignBaseline="@+id/total_units_label"
-        android:layout_toEndOf="@+id/total_units_label"
-        android:layout_toRightOf="@+id/total_units_label" />
+        style="@style/TextStyle"
+        android:text="@string/units_total" />
 
     <TextView
         android:id="@+id/profile_average_units"
-        style="@style/ProfileTextStyle"
-        android:layout_alignBaseline="@+id/average_units_label"
-        android:layout_toEndOf="@+id/average_units_label"
-        android:layout_toRightOf="@+id/average_units_label" />
+        style="@style/TextStyle"
+        android:text="@string/units_average" />
 
     <TextView
         android:id="@+id/profile_provinces"
-        style="@style/ProfileTextStyle"
-        android:layout_alignBaseline="@+id/provinces_owned_label"
-        android:layout_toEndOf="@+id/provinces_owned_label"
-        android:layout_toRightOf="@+id/provinces_owned_label" />
+        style="@style/TextStyle"
+        android:text="@string/provinces_owned" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/brown_transparent"
-        android:onClick="logout"
-        android:text="@string/logout"
-        android:textColor="@color/dark_brown"
-        android:textSize="@dimen/text_medium" />
-
-</RelativeLayout>
+</LinearLayout>

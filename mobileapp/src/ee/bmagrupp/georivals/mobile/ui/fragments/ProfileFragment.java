@@ -14,29 +14,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment implements TabItem {
-	private final String tabName;
+	private final int tabNameId;
 	private final int tabIconId;
 
 	private MainActivity activity;
 	private Resources resources;
 	private ProfileEntryLoader profileEntryLoader;
-	private RelativeLayout profileLayout;
+	private LinearLayout profileLayout;
 	private ProfileEntry profile;
 
-	public ProfileFragment(String tabName, int tabIconId) {
-		this.tabName = tabName;
+	public ProfileFragment(int tabNameId, int tabIconId) {
+		this.tabNameId = tabNameId;
 		this.tabIconId = tabIconId;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		profileLayout = (RelativeLayout) inflater.inflate(
+		profileLayout = (LinearLayout) inflater.inflate(
 				R.layout.profile_layout, container, false);
+		activity = (MainActivity) getActivity();
+		resources = activity.getResources();
+		requestProfileData();
 		MainActivity.changeFonts(profileLayout);
 		return profileLayout;
 	}
@@ -48,36 +51,29 @@ public class ProfileFragment extends Fragment implements TabItem {
 		super.onDestroyView();
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (activity == null) {
-			activity = (MainActivity) getActivity();
-			resources = activity.getResources();
-			profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE,
-					MainActivity.userId) {
-				@Override
-				public void handleResponseObject(final ProfileEntry profileEntry) {
-					activity.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							if (profileEntry != null) {
-								profile = profileEntry;
-								populateLayout();
-							} else
-								activity.showMessage(resources
-										.getString(R.string.error_retrieval_fail));
-						}
-					});
-				}
+	private void requestProfileData() {
+		profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE,
+				MainActivity.userId) {
+			@Override
+			public void handleResponseObject(final ProfileEntry profileEntry) {
+				activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if (profileEntry != null) {
+							profile = profileEntry;
+							populateLayout();
+						} else
+							activity.showMessage(resources
+									.getString(R.string.error_retrieval_fail));
+					}
+				});
+			}
 
-				@Override
-				public void addRequestParameters(Map<String, String> parameters) {
-					// TODO Auto-generated method stub
+			@Override
+			public void addRequestParameters(Map<String, String> parameters) {
 
-				}
-			};
-		}
+			}
+		};
 		profileEntryLoader.retrieveProfileEntry();
 	}
 
@@ -98,15 +94,22 @@ public class ProfileFragment extends Fragment implements TabItem {
 		TextView provincesTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_provinces);
 
-		usernameTextview.setText(username);
-		emailTextview.setText(email);
-		totalUnitsTextview.setText(Integer.toString(totalUnits));
+		usernameTextview.setText(resources.getString(R.string.username_colon)
+				+ " " + username);
+		emailTextview.setText(resources.getString(R.string.email_colon) + " "
+				+ email);
+		totalUnitsTextview.setText(resources.getString(R.string.units_total)
+				+ " " + Integer.toString(totalUnits));
 		if (ownedProvinces != 0)
-			averageUnitsTextview.setText(Integer.toString(totalUnits
-					/ ownedProvinces));
+			averageUnitsTextview.setText(resources
+					.getString(R.string.units_average)
+					+ " "
+					+ Integer.toString(totalUnits / ownedProvinces));
 		else
-			averageUnitsTextview.setText("0");
-		provincesTextview.setText(Integer.toString(ownedProvinces));
+			averageUnitsTextview.setText(resources
+					.getString(R.string.units_average) + " 0");
+		provincesTextview.setText(resources.getString(R.string.provinces_owned)
+				+ " " + Integer.toString(ownedProvinces));
 
 	}
 
@@ -114,7 +117,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 		return profileEntryLoader;
 	}
 
-	public RelativeLayout getProfileLayout() {
+	public LinearLayout getProfileLayout() {
 		return profileLayout;
 	}
 
@@ -128,7 +131,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 	}
 
 	@Override
-	public String getTabName() {
-		return tabName;
+	public int getTabNameId() {
+		return tabNameId;
 	}
 }

@@ -1,7 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment" >
 
     <TextView
@@ -9,15 +10,11 @@
         style="@style/HeaderStyle"
         android:text="@string/highscores" />
 
-    <View
-        android:id="@+id/highscore_line1"
-        style="@style/HeaderLineStyle"
-        android:layout_below="@id/highscore_title_header" />
+    <View style="@style/HeaderLineStyle" />
 
     <RelativeLayout
         android:id="@+id/highscore_icon_header"
-        style="@style/HeaderStyle"
-        android:layout_below="@+id/highscore_line1" >
+        style="@style/HeaderStyle" >
 
         <ImageView
             android:id="@+id/rank_icon"
@@ -43,7 +40,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:contentDescription="@string/sort_units"
+            android:contentDescription="@string/units_sort"
             android:onClick="sortByUnits"
             android:src="@drawable/ic_unit" />
 
@@ -53,23 +50,19 @@
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/unit_sort_button"
             android:layout_toStartOf="@+id/unit_sort_button"
-            android:contentDescription="@string/sort_provinces"
+            android:contentDescription="@string/provinces_sort"
             android:onClick="sortByProvinces"
             android:src="@drawable/ic_provinces" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/highscore_line2"
-        style="@style/HeaderLineStyle"
-        android:layout_below="@id/highscore_icon_header" />
+    <View style="@style/HeaderLineStyle" />
 
     <ListView
         android:id="@+id/highscore_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/highscore_line2"
         android:divider="@color/dark_brown"
         android:dividerHeight="1dp" >
     </ListView>
 
-</RelativeLayout>
+</LinearLayout>

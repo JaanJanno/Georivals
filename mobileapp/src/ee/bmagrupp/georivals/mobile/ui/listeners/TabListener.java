@@ -37,7 +37,9 @@ public class TabListener implements ActionBar.TabListener {
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-
+		String fragmentTag = (String) tab.getTag();
+		if (fragmentTag.equals("Map"))
+			ft.replace(R.id.fragment_container, (Fragment) tabItem, fragmentTag);
 	}
 
 }

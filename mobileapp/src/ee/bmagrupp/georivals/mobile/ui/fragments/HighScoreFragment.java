@@ -16,11 +16,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 public class HighScoreFragment extends Fragment implements TabItem {
-	private final String tabName;
+	private final int tabNameId;
 	private final int tabIconId;
 
 	private List<HighScoreEntry> playerList;
@@ -28,18 +28,21 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	private MainActivity activity;
 	private Resources resources;
 	private HighScoreListLoader highScoreListLoader;
-	private RelativeLayout highscoreLayout;
+	private LinearLayout highscoreLayout;
 
-	public HighScoreFragment(String tabName, int tabIconId) {
-		this.tabName = tabName;
+	public HighScoreFragment(int tabNameId, int tabIconId) {
+		this.tabNameId = tabNameId;
 		this.tabIconId = tabIconId;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		highscoreLayout = (RelativeLayout) inflater.inflate(
+		highscoreLayout = (LinearLayout) inflater.inflate(
 				R.layout.highscore_layout, container, false);
+		activity = (MainActivity) getActivity();
+		resources = activity.getResources();
+		requestHighScoreData();
 		MainActivity.changeFonts(highscoreLayout);
 		return highscoreLayout;
 	}
@@ -51,38 +54,34 @@ public class HighScoreFragment extends Fragment implements TabItem {
 		super.onDestroyView();
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	private void requestHighScoreData() {
+		highScoreListLoader = new HighScoreListLoader(
+				ee.bmagrupp.georivals.mobile.core.communications.Constants.HIGHSCORE) {
 
-		if (activity == null) {
-			activity = (MainActivity) getActivity();
-			resources = activity.getResources();
-			highScoreListLoader = new HighScoreListLoader(
-					ee.bmagrupp.georivals.mobile.core.communications.Constants.HIGHSCORE) {
-
-				public void handleResponseList(final List<HighScoreEntry> list) {
-					activity.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
+			public void handleResponseList(final List<HighScoreEntry> list) {
+				activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if (list != null) {
 							playerList = list;
-							sortEntries("averageUnits");
-							if (playerList != null) {
-								ListView listview = (ListView) highscoreLayout
-										.findViewById(R.id.highscore_listView);
-								adapter = new HighScoreAdapter(activity,
-										playerList);
-								listview.setAdapter(adapter);
-							} else {
-								activity.showMessage(resources
-										.getString(R.string.error_retrieval_fail));
-							}
+							populateLayout();
+						} else {
+							activity.showMessage(resources
+									.getString(R.string.error_retrieval_fail));
 						}
-					});
-				}
-			};
-		}
+					}
+				});
+			}
+		};
 		highScoreListLoader.retrieveHighScoreEntries();
+	}
+
+	private void populateLayout() {
+		sortEntries("averageUnits");
+		ListView listview = (ListView) highscoreLayout
+				.findViewById(R.id.highscore_listView);
+		adapter = new HighScoreAdapter(activity, playerList);
+		listview.setAdapter(adapter);
 	}
 
 	public void sortEntries(final String sortBy) {
@@ -131,7 +130,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 		return highScoreListLoader;
 	}
 
-	public RelativeLayout getHighscoreLayout() {
+	public LinearLayout getHighscoreLayout() {
 		return highscoreLayout;
 	}
 
@@ -141,8 +140,8 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	}
 
 	@Override
-	public String getTabName() {
-		return tabName;
+	public int getTabNameId() {
+		return tabNameId;
 	}
 
 }

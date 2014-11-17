@@ -24,7 +24,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/province_name"
-        android:layout_marginTop="140px"
         android:background="@drawable/units_count"
         android:gravity="center"
         android:paddingLeft="40px"

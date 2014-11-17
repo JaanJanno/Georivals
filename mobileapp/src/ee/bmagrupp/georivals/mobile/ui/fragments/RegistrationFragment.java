@@ -1,5 +1,7 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.registration.RegistrationPhase1Poster;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.registration.RegistrationPhase2Poster;
@@ -161,8 +163,7 @@ public class RegistrationFragment extends Fragment {
 		});
 	}
 
-	public void showPhase2ConfirmationDialog(final double homeLat,
-			final double homeLong) {
+	public void showPhase2ConfirmationDialog(final LatLng provinceLatLng) {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -195,11 +196,7 @@ public class RegistrationFragment extends Fragment {
 						setHomeButton.setVisibility(View.INVISIBLE);
 						MainActivity.choosingHomeProvince = false;
 
-						// rounds to the current province's center coordinates
-						double homeProvinceLat = Math.round(homeLat * 2000) / 2000;
-						double homeProvinceLong = Math.round(homeLong * 1000) / 1000;
-
-						registrationPhase2(homeProvinceLat, homeProvinceLong);
+						registrationPhase2(provinceLatLng);
 						confirmationDialog.dismiss();
 					}
 				});
@@ -216,9 +213,10 @@ public class RegistrationFragment extends Fragment {
 
 	}
 
-	private void registrationPhase2(double homeLat, double homeLong) {
+	private void registrationPhase2(LatLng homeLatLng) {
 		RegistrationPhase2Poster p2 = new RegistrationPhase2Poster(
-				new RegistrationDTO(username, email, homeLat, homeLong)) {
+				new RegistrationDTO(username, email, homeLatLng.latitude,
+						homeLatLng.longitude)) {
 
 			@Override
 			public void handleResponseObject(ServerResponse responseObject) {

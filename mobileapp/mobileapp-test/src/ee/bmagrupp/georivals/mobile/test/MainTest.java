@@ -4,11 +4,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
 import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.Instrumentation;
 import android.content.Context;
@@ -23,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private Instrumentation instrumentation;
@@ -106,18 +103,16 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		instrumentation.waitForIdleSync();
 
 		// test if map fragment is visible
-		Fragment fragment = fragmentManager.findFragmentByTag("Map");
-		MapFragment mapFragment = (MapFragment) fragment;
-		assertNotNull(mapFragment);
-		assertTrue(mapFragment instanceof com.google.android.gms.maps.MapFragment);
-		assertTrue(mapFragment.isVisible());
+		assertNotNull(MainActivity.MAP_FRAGMENT);
+		assertTrue(MainActivity.MAP_FRAGMENT instanceof com.google.android.gms.maps.MapFragment);
+		assertTrue(MainActivity.MAP_FRAGMENT.isVisible());
 
 		// test different fields
-		GoogleMap map = mapFragment.getMap();
+		GoogleMap map = MainActivity.MAP_FRAGMENT.getMap();
 		assertNotNull(map);
-		assertNotNull(mapFragment.getLocationRequest());
-		assertNotNull(mapFragment.getLocationManager());
-		assertNotNull(mapFragment.getGoogleApiClient());
+		assertNotNull(MainActivity.MAP_FRAGMENT.getLocationRequest());
+		assertNotNull(MainActivity.MAP_FRAGMENT.getLocationManager());
+		assertNotNull(MainActivity.MAP_FRAGMENT.getGoogleApiClient());
 	}
 
 	public void testProfileFragment() {
@@ -131,17 +126,15 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		instrumentation.waitForIdleSync();
 
 		// test if profile fragment is visible
-		Fragment fragment = fragmentManager.findFragmentByTag("Profile");
-		ProfileFragment profileFragment = (ProfileFragment) fragment;
-		assertNotNull(profileFragment);
-		assertTrue(profileFragment.isVisible());
+		assertNotNull(MainActivity.PROFILE_FRAGMENT);
+		assertTrue(MainActivity.PROFILE_FRAGMENT.isVisible());
 
 		// test different fields
-		assertNotNull(profileFragment.getProfileEntryLoader());
-		assertNotNull(profileFragment.getProfileLayout());
+		assertNotNull(MainActivity.PROFILE_FRAGMENT.getProfileEntryLoader());
+		assertNotNull(MainActivity.PROFILE_FRAGMENT.getProfileLayout());
 
 		if (isNetworkAvailable()) {
-			waitForField(profileFragment.getProfile(), 5000);
+			waitForField(MainActivity.PROFILE_FRAGMENT.getProfile(), 5000);
 
 			TextView username = (TextView) activity
 					.findViewById(R.id.profile_username);
@@ -173,19 +166,17 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		instrumentation.waitForIdleSync();
 
 		// test if highscore fragment is visible
-		Fragment fragment = fragmentManager.findFragmentByTag("Highscores");
-		HighScoreFragment highScoreFragment = (HighScoreFragment) fragment;
-		assertNotNull(highScoreFragment);
-		assertTrue(highScoreFragment.isVisible());
+		assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT);
+		assertTrue(MainActivity.HIGH_SCORE_FRAGMENT.isVisible());
 
 		// test different fields
-		assertNotNull(highScoreFragment.getHighScoreListLoader());
-		assertNotNull(highScoreFragment.getHighscoreLayout());
+		assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getHighScoreListLoader());
+		assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getHighscoreLayout());
 
 		if (isNetworkAvailable()) {
-			waitForField(highScoreFragment.getPlayerList(), 5000);
-			assertNotNull(highScoreFragment.getPlayerList());
-			assertNotNull(highScoreFragment.getAdapter());
+			waitForField(MainActivity.HIGH_SCORE_FRAGMENT.getPlayerList(), 5000);
+			assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getPlayerList());
+			assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getAdapter());
 
 			// test first item in highscore list and its subviews
 			ListView listView = (ListView) activity

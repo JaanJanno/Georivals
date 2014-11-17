@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Georivals</string>
-    <string name="average_units">Average number of units:</string>
+    <string name="attack">Attack</string>
     <string name="choose_name">Choose you name:</string>
     <string name="choose_email">Enter your e-mail:</string>
     <string name="choose_home">Please choose your home province by clicking on a province or the button below.</string>
@@ -27,22 +27,29 @@
     <string name="login_send_key">Send me my login key</string>
     <string name="login_existing">I already have an account</string>
     <string name="logout">Log Out</string>
+    <string name="make_home">Make home</string>
     <string name="map">Map</string>
     <string name="mission_log">Mission log</string>
     <string name="my_places">My places</string>
     <string name="name_title">Name</string>
     <string name="no">No</string>
+    <string name="owner_name">Owner name:</string>
     <string name="profile">Profile</string>
     <string name="provinces_owned">Number of provinces owned:</string>
+    <string name="provinces_sort">Sort provinces</string>
+    <string name="province_name">Province name:</string>
     <string name="rank">Rank</string>
     <string name="register">Register</string>
+    <string name="rename">Rename</string>
     <string name="set_home_current">Make my current location my home province</string>
     <string name="settings">Settings</string>
-    <string name="sort_provinces">Sort provinces</string>
-    <string name="sort_units">Sort units</string>
     <string name="start">Start</string>
     <string name="strategical_information">Strategical information</string>
-    <string name="total_units">Total number of units:</string>
+    <string name="units_average">Average number of units:</string>
+    <string name="units_number">Number of units:</string>
+    <string name="units_sort">Sort units</string>
+    <string name="units_total">Total number of units:</string>
+    <string name="units_transfer">Transfer units</string>
     <string name="user_created">User created!</string>
     <string name="username">Username</string>
     <string name="username_colon">Username:</string>

@@ -4,11 +4,11 @@ import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
 
 public class MyPlacesFragment extends Fragment implements TabItem {
-	private final String tabName;
+	private final int tabNameId;
 	private final int tabIconId;
 
-	public MyPlacesFragment(String tabName, int tabIconId) {
-		this.tabName = tabName;
+	public MyPlacesFragment(int tabNameId, int tabIconId) {
+		this.tabNameId = tabNameId;
 		this.tabIconId = tabIconId;
 	}
 
@@ -18,8 +18,8 @@ public class MyPlacesFragment extends Fragment implements TabItem {
 	}
 
 	@Override
-	public String getTabName() {
-		return tabName;
+	public int getTabNameId() {
+		return tabNameId;
 	}
 
 }
