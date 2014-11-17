@@ -21,6 +21,9 @@ public class Constants {
 	// Unit
 	public static final int UNIT_GENERATION_MAX = 10;
 	public static final int UNIT_GENERATION_MIN = 0;
+	
+	// Battle (Odds are in %)
+	public static final int ATTACKER_ODDS = 35;
 
 	/**
 	 * 24h in milliseconds.
