@@ -24,6 +24,8 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	protected String cookie = "";	// Cookie string;
 	private Map<String, String> parameters = new HashMap<String, String>();
 	
+	private String requestMethod;
+	
 	/**
 	 * 
 	 * @param typeParameterClass Class of the object to be received.
@@ -90,6 +92,15 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	}
 	
 	/**
+	 * 
+	 * @param requestMethod Set HTTP request method.
+	 */
+	
+	public void setRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
+	}
+
+	/**
 	 * Add parameter that will be sent on to
 	 * the Connection object.
 	 * @param key
@@ -109,6 +120,8 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 		for (String key: parameters.keySet()){
 			c.addParameter(key, parameters.get(key));
 		}
+		if (requestMethod != null)
+			c.setRequestMethod(requestMethod);
 	}
 
 	/**

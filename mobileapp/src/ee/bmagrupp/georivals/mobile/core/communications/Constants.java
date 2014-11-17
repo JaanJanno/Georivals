@@ -24,5 +24,6 @@ public class Constants {
 	static final public String REGISTRATION_PHASE2 = WEBPAGE + "registration/phase2/";
 	static final public String MOVEMENT = WEBPAGE + "movement/";
 	static final public String CLAIM = MOVEMENT + "claim/";
+	static final public String CANCEL_MOVE = MOVEMENT + "delete/";
 	
 }
