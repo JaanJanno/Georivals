@@ -4,8 +4,19 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -22,13 +33,22 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import ee.bmagrupp.georivals.server.Application;
+import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
+import ee.bmagrupp.georivals.server.core.domain.Ownership;
+import ee.bmagrupp.georivals.server.core.domain.Province;
+import ee.bmagrupp.georivals.server.core.domain.Unit;
+import ee.bmagrupp.georivals.server.core.domain.UnitState;
+import ee.bmagrupp.georivals.server.core.domain.UnitType;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
+import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
+import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
@@ -55,14 +75,54 @@ public class MovementServiceTest {
 	@Autowired
 	UnitRepository unitRepo;
 	
+	@Autowired
+	PlayerRepository playerRepo;
+	
+	@Autowired
+	ProvinceRepository provRepo;
+	
 	double latitude;
 	double longitude;
+	String sid;
 	
 	@Before
 	public void setUp() {
+		sid = "BPUYYOU62flwiWJe";
 		latitude = 24.4525;
 		longitude = 54.321;
 	}
+	
+	@Test
+	public void claimUnitsTest(){
+		Set<Ownership> lst = playerRepo.findBySid(sid).getOwnedProvinces();
+		Province a = null;
+		int value = 0; 
+		for(Ownership o : lst){
+			a = o.getProvince();
+			value = o.countUnits();			
+			break;
+		}
+		ServerResponse resp = movServ.claimUnits(String.valueOf(a.getLatitude()), String.valueOf(a.getLongitude()), sid);
+		assertEquals("Expected: ",ServerResult.OK ,resp.getResult());
+		
+		lst = playerRepo.findBySid(sid).getOwnedProvinces();
+		for(Ownership o : lst){
+			assertNotEquals("Expected", value, o.countUnits());
+			break;
+		}	
+	}
+	
+	@Test
+	public void claimHomeUnitsTest(){
+		HomeOwnership home = playerRepo.findBySid(sid).getHome();
+		int value = home.countUnits();
+		
+		ServerResponse resp = movServ.claimUnits(String.valueOf(home.getProvince().getLatitude()), String.valueOf(home.getProvince().getLongitude()), sid);
+		assertEquals("Expected: ",ServerResult.OK ,resp.getResult());
+		
+		home = playerRepo.findBySid(sid).getHome();
+		assertNotEquals("Expected", value, home.countUnits());
+}
 
 	@Test
 	public void getMyUnitsTest() {
