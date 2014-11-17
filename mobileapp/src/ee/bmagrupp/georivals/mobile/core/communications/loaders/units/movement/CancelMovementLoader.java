@@ -11,7 +11,7 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
  * Response can be handled by overriding the 
  * handleResponseObject() method.
  * 
- * @author jaan
+ * @author Jaan Janno
  *
  */
 

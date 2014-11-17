@@ -96,7 +96,7 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * @param requestMethod Set HTTP request method.
 	 */
 	
-	public void setRequestMethod(String requestMethod) {
+	protected void setRequestMethod(String requestMethod) {
 		this.requestMethod = requestMethod;
 	}
 
