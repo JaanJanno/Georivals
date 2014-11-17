@@ -14,6 +14,7 @@ import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,6 +25,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -174,6 +177,53 @@ public class MainActivity extends Activity {
 	public static double roundDouble(double roundable, int precision) {
 		double rounded = Math.round(roundable * precision);
 		return rounded / precision;
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (MAP_FRAGMENT.isVisible())
+			showExitConfirmationDialog();
+		else
+			activity.getFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container,
+							MainActivity.MAP_FRAGMENT,
+							resources.getString(R.string.map)).commit();
+	}
+
+	private void showExitConfirmationDialog() {
+		final Dialog confirmationDialog = new Dialog(activity);
+		confirmationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		confirmationDialog.setContentView(R.layout.dialog_layout);
+
+		TextView questionTextView = (TextView) confirmationDialog
+				.findViewById(R.id.dialog_question_label);
+		Button yesButton = (Button) confirmationDialog
+				.findViewById(R.id.dialog_yes);
+		Button noButton = (Button) confirmationDialog
+				.findViewById(R.id.dialog_no);
+
+		questionTextView.setText(resources
+				.getString(R.string.confirmation_exit));
+		questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+		yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
+		noButton.setTypeface(MainActivity.GABRIOLA_FONT);
+
+		yesButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				confirmationDialog.dismiss();
+				moveTaskToBack(true);
+			}
+		});
+
+		noButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				confirmationDialog.dismiss();
+			}
+		});
+		confirmationDialog.show();
 	}
 
 }

@@ -9,6 +9,7 @@
     <string name="confirmation_username1">Are you sure you want to choose \'</string>
     <string name="confirmation_username2">\' as your name?</string>
     <string name="confirmation_province">Do you want to make this your home province?</string>
+    <string name="confirmation_exit">Are you sure you want to exit?</string>
     <string name="enter_key">Enter your login key:</string>
     <string name="email">E-mail</string>
     <string name="email_colon">E-mail:</string>
