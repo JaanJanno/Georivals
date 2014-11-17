@@ -11,7 +11,6 @@ import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,7 +32,6 @@ public class ProvinceFragment extends Fragment {
 			Bundle savedInstanceState) {
 		provinceLayout = (LinearLayout) inflater.inflate(
 				R.layout.province_layout, container, false);
-		Log.d("DEBUG", provinceLatLng.toString());
 		activity = (MainActivity) getActivity();
 		resources = activity.getResources();
 		MainActivity.changeFonts(provinceLayout);
@@ -118,7 +116,7 @@ public class ProvinceFragment extends Fragment {
 			};
 			createButton(R.string.rename, RenameClickListener);
 
-			if (province.getType() == ProvinceType.HOME) {
+			if (province.getType() != ProvinceType.HOME) {
 				OnClickListener MakeHomeClickListener = new OnClickListener() {
 
 					@Override

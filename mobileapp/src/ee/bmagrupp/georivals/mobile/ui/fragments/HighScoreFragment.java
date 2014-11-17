@@ -79,7 +79,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	private void populateLayout() {
 		sortEntries("averageUnits");
 		ListView listview = (ListView) highscoreLayout
-				.findViewById(R.id.highscore_listView);
+				.findViewById(R.id.highscore_listview);
 		adapter = new HighScoreAdapter(activity, playerList);
 		listview.setAdapter(adapter);
 	}

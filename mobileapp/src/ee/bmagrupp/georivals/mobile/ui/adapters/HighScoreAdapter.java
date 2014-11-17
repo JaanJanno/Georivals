@@ -33,9 +33,8 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		RelativeLayout rowView = null;
-		rowView = (RelativeLayout) inflater.inflate(R.layout.highscore_item,
-				parent, false);
+		RelativeLayout rowView = (RelativeLayout) inflater.inflate(
+				R.layout.highscore_item, parent, false);
 
 		MainActivity.changeFonts(rowView);
 

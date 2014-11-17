@@ -180,7 +180,7 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 			// test first item in highscore list and its subviews
 			ListView listView = (ListView) activity
-					.findViewById(R.id.highscore_listView);
+					.findViewById(R.id.highscore_listview);
 			View firstListItem = listView.getChildAt(0);
 			assertNotNull(firstListItem);
 

@@ -5,7 +5,7 @@ import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MyPlacesFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MyProvincesFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.ProvinceFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.RegistrationFragment;
@@ -46,8 +46,8 @@ public class MainActivity extends Activity {
 			R.string.profile, R.drawable.profile_icon);
 	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment(
 			R.string.highscores, R.drawable.leaders_icon);
-	public static final MyPlacesFragment MY_PLACES_FRAGMENT = new MyPlacesFragment(
-			R.string.my_places, R.drawable.places_icon);
+	public static final MyProvincesFragment MY_PLACES_FRAGMENT = new MyProvincesFragment(
+			R.string.my_provinces, R.drawable.places_icon);
 	public static Typeface GABRIOLA_FONT;
 	private final Activity activity = this;
 	private Resources resources;

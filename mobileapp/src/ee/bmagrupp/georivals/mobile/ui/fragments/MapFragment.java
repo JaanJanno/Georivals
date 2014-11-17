@@ -268,9 +268,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 			if (!drawnProvincesMap.containsKey(centerLatLng)) {
 				RelativeLayout provinceLayout;
-				if (province.isUnderAttack()
-						|| province.getType() == ProvinceType.OTHER_PLAYER
-						&& !province.isAttackable()) {
+				if (province.isUnderAttack() || !province.isAttackable()) {
 					provinceLayout = (RelativeLayout) LayoutInflater.from(
 							activity).inflate(R.layout.province_tile_special,
 							null);

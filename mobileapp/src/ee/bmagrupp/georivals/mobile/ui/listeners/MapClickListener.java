@@ -36,8 +36,10 @@ public class MapClickListener implements OnMapClickListener {
 	}
 
 	private LatLng getProvinceCenterLatLng(LatLng clickedPoint) {
-		double provinceCenterLatitude = MainActivity.roundDouble(clickedPoint.latitude, 2000);
-		double provinceCenterLongitude = MainActivity.roundDouble(clickedPoint.longitude, 1000);
+		double provinceCenterLatitude = MainActivity.roundDouble(
+				clickedPoint.latitude, 2000);
+		double provinceCenterLongitude = MainActivity.roundDouble(
+				clickedPoint.longitude, 1000);
 		return new LatLng(provinceCenterLatitude, provinceCenterLongitude);
 	}
 

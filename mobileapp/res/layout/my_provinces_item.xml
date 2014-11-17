@@ -2,27 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/HeaderStyle" >
 
-    <TextView
-        android:id="@+id/player_rank"
+    <FrameLayout
+        android:id="@+id/province_rank"
         style="@style/ListItemStyle"
         android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="@dimen/margin_small" />
+        android:layout_marginRight="@dimen/margin_small" >
+    </FrameLayout>
 
     <TextView
-        android:id="@+id/player_name"
+        android:id="@+id/my_province_name"
         style="@style/ListItemStyle"
         android:layout_width="wrap_content"
-        android:layout_toEndOf="@+id/player_rank"
-        android:layout_toRightOf="@+id/player_rank" />
+        android:layout_toEndOf="@+id/province_rank"
+        android:layout_toRightOf="@+id/province_rank" />
 
     <TextView
-        android:id="@+id/provinces_owned"
-        style="@style/ListItemStyle"
-        android:layout_toLeftOf="@+id/average_units"
-        android:layout_toStartOf="@+id/average_units" />
-
-    <TextView
-        android:id="@+id/average_units"
+        android:id="@+id/my_provinces_units"
         style="@style/ListItemStyle"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true" />

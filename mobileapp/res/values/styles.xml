@@ -50,7 +50,7 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="HighscoreItemStyle">
+    <style name="ListItemStyle">
         <item name="android:layout_width">@dimen/width_list_item</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
