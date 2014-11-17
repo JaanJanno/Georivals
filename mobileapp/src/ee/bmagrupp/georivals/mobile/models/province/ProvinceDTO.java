@@ -23,14 +23,14 @@ public class ProvinceDTO {
 	private final String provinceName;
 	private final String ownerName;
 
-	private final boolean isAttackable;
+	private final boolean attackable;
 	private final boolean underAttack;
 
 	private final int unitSize;
 	private final int newUnitSize;
-
+	
 	public ProvinceDTO(double latitude, double longitude, ProvinceType type,
-			String provinceName, String ownerName, boolean isAttackable,
+			String provinceName, String ownerName, boolean attackable,
 			boolean underAttack, int unitSize, int newUnitSize) {
 		super();
 		this.latitude = latitude;
@@ -38,10 +38,14 @@ public class ProvinceDTO {
 		this.type = type;
 		this.provinceName = provinceName;
 		this.ownerName = ownerName;
-		this.isAttackable = isAttackable;
+		this.attackable = attackable;
 		this.underAttack = underAttack;
 		this.unitSize = unitSize;
 		this.newUnitSize = newUnitSize;
+	}
+
+	public static Type getListtype() {
+		return listType;
 	}
 
 	public double getLatitude() {
@@ -65,7 +69,7 @@ public class ProvinceDTO {
 	}
 
 	public boolean isAttackable() {
-		return isAttackable;
+		return attackable;
 	}
 
 	public boolean isUnderAttack() {
@@ -84,7 +88,7 @@ public class ProvinceDTO {
 	public String toString() {
 		return "ProvinceDTO [latitude=" + latitude + ", longitude=" + longitude
 				+ ", type=" + type + ", provinceName=" + provinceName
-				+ ", ownerName=" + ownerName + ", isAttackable=" + isAttackable
+				+ ", ownerName=" + ownerName + ", attackable=" + attackable
 				+ ", underAttack=" + underAttack + ", unitSize=" + unitSize
 				+ ", newUnitSize=" + newUnitSize + "]";
 	}
