@@ -40,11 +40,14 @@ public class BattleLogic {
 	
 	public static BattleHistory battle(Province location,Player attacker,Player defender, int attackerStrength, int defenderStrength){
 		Date curDate = new Date();
-		
-		//
-		
-		//return new BattleHistory(location, curDate, attacker, defender, attackerWon, attackerStrength, defenderStrength, attackerLosses, defenderLosses);
-		return null;
+		int[] result = resolveBattle(attackerStrength, defenderStrength);
+		boolean attackerWon = false;
+		if(result[1] == 0){
+			attackerWon = true;
+		}
+		int attackerLosses = attackerStrength - result[0];
+		int defenderLosses = defenderStrength - result[1];
+		return new BattleHistory(location, curDate, attacker, defender, attackerWon, attackerStrength, defenderStrength, attackerLosses, defenderLosses);
 	}
 }
 
