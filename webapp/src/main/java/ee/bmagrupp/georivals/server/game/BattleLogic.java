@@ -21,7 +21,7 @@ public class BattleLogic {
 		Random r = new Random(new Date().getTime());
 		Random r2 = new Random(r.nextLong());	// a little black boxing so math nerds won't cheat
 		
-		while(player1 > 0 || player2 > 0){
+		while(player1 > 0 && player2 > 0){
 			int n = r2.nextInt(100) + 1; // range 1 - 100
 			if(n >= 1 && n <= ATTACKER_ODDS){
 				player2 -= 1;
@@ -47,6 +47,10 @@ public class BattleLogic {
 		}
 		int attackerLosses = attackerStrength - result[0];
 		int defenderLosses = defenderStrength - result[1];
+		// all logic connected to changing ownerships and so on still required
+		
+		//--------------------------------------
+		
 		return new BattleHistory(location, curDate, attacker, defender, attackerWon, attackerStrength, defenderStrength, attackerLosses, defenderLosses);
 	}
 }

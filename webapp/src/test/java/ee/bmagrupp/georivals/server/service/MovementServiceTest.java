@@ -8,18 +8,6 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
-
-
-
-
-
-
-
-
-
-
-
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,9 +25,6 @@ import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Province;
-import ee.bmagrupp.georivals.server.core.domain.Unit;
-import ee.bmagrupp.georivals.server.core.domain.UnitState;
-import ee.bmagrupp.georivals.server.core.domain.UnitType;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
