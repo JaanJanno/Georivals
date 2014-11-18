@@ -211,7 +211,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 				for (Ownership a : lst) {
 					double x = a.getProvince().getLongitude();
 					double y = a.getProvince().getLatitude();
-					if(homeIncluded && home.getProvince().getLongitude() == x && home.getProvince().getLatitude() == y){
+					//Find if this is home
+					if(homeIncluded && home.getProvince().getLongitude() > (baseLong + (j * PROVINCE_WIDTH))
+							&& home.getProvince().getLongitude() < (baseLong + ((j + 1) * PROVINCE_WIDTH))
+							&& home.getProvince().getLatitude() > (baseLat + (i * PROVINCE_HEIGHT))
+							&& home.getProvince().getLatitude() < (baseLat + ((i + 1) * PROVINCE_HEIGHT))){
 						int newUnits = 0;
 						newUnits = GameLogic.generateNewUnits(
 								home.getLastVisit(), currentDate,
