@@ -35,12 +35,15 @@ public class BattleLogicTest {
 	@Autowired
 	PlayerRepository playerRepo;
 	
+	@Autowired
+	BattleLogic battleLog;
+	
 	@Test
 	public void resolveBattleTest() {
 		int player1Units = 100;
 		int player2Units = 100;
 		
-		int[] result = BattleLogic.resolveBattle(player1Units, player2Units);
+		int[] result = battleLog.resolveBattle(player1Units, player2Units);
 		if(result[0] != 0){
 			assertEquals("Expected", 0, result[1]);
 		}
@@ -52,7 +55,7 @@ public class BattleLogicTest {
 	@Test
 	public void battleTest() {
 		Player player = playerRepo.findBySid("BPUYYOU62flwiWJe");
-		BattleHistory result =  BattleLogic.battle(new Province(56.6545, 93.877), player, player, 100, 1);
+		BattleHistory result =  battleLog.battle(new Province(56.6545, 93.877), player, player, 100, 1);
 		
 		assertEquals("Expected", true, result.isAttackerWon());
 	}

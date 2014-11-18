@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
 import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
+import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
@@ -35,6 +37,9 @@ public class EndMovementServiceImpl implements EndMovementService {
 
 	@Autowired
 	UnitRepository unitRepo;
+	
+	@Autowired
+	BattleLogic battleLog;
 
 	@Override
 	public void handleMovement(int movementId) {
@@ -106,9 +111,9 @@ public class EndMovementServiceImpl implements EndMovementService {
 	}
 
 	private void handleBattle(Movement mov, Ownership ow) {
-		LOG.info("Battle at " + ow.getId());
-		// TODO implement this
-
+		Player defender = playerRepo.findOwner(ow.getId());
+		BattleHistory history = battleLog.battle(ow.getProvince(), mov.getPlayer(), defender, mov.getUnit().getSize(), ow.countUnits());
+		// some more database magic
 	}
 
 	/**

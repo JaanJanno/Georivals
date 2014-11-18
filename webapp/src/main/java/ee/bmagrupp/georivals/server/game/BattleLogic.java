@@ -3,12 +3,21 @@ package ee.bmagrupp.georivals.server.game;
 import java.util.Date;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
+import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
+import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import static ee.bmagrupp.georivals.server.util.Constants.ATTACKER_ODDS;
 
+@Service
 public class BattleLogic {
+	
+	@Autowired
+	static OwnershipRepository ownerRepo;
 	
 	/**
 	 * @author Sander
@@ -17,7 +26,7 @@ public class BattleLogic {
 	 * @return returns a integer array with 2 values, player 1 left over men and player 2 left over men
 	 */
 	
-	public static int[] resolveBattle(int player1, int player2){
+	public int[] resolveBattle(int player1, int player2){
 		Random r = new Random(new Date().getTime());
 		Random r2 = new Random(r.nextLong());	// a little black boxing so math nerds won't cheat
 		
@@ -38,7 +47,7 @@ public class BattleLogic {
 		return result;
 	}
 	
-	public static BattleHistory battle(Province location,Player attacker,Player defender, int attackerStrength, int defenderStrength){
+	public synchronized BattleHistory battle(Province location,Player attacker,Player defender, int attackerStrength, int defenderStrength){
 		Date curDate = new Date();
 		int[] result = resolveBattle(attackerStrength, defenderStrength);
 		boolean attackerWon = false;
@@ -47,11 +56,23 @@ public class BattleLogic {
 		}
 		int attackerLosses = attackerStrength - result[0];
 		int defenderLosses = defenderStrength - result[1];
-		// all logic connected to changing ownerships and so on still required
 		
-		//--------------------------------------
-		
+		if(attackerWon){
+			changeOwner(location,attacker,result[0]);
+		}
+		else{
+			changeOwner(location,defender,result[1]);
+		}
 		return new BattleHistory(location, curDate, attacker, defender, attackerWon, attackerStrength, defenderStrength, attackerLosses, defenderLosses);
+	}
+
+	private void changeOwner(Province location, Player player, int leftOverMen) {
+		//Ownership battleground = ownerRepo.findByProvinceId(location.getId());
+		/**
+		 * \todo - do your magic tõnis
+		 * 
+		 */
+		
 	}
 }
 

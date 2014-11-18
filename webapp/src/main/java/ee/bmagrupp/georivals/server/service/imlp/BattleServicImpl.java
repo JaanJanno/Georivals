@@ -9,7 +9,7 @@ import ee.bmagrupp.georivals.server.service.BattleService;
 
 @Service
 public class BattleServicImpl implements BattleService {
-
+	
 	@Override
 	public List<BattleHistoryDTO> getBattles(String cookie) {
 		// TODO Auto-generated method stub
