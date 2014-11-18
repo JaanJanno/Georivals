@@ -174,7 +174,7 @@ public class MovementServiceImpl implements MovementService {
 		movementRepo.save(movement);
 		
 		// Scheduling movement
-		worker.setMovementId(movement.getId());
+		worker.setEndDate(movement.getEndDate());
 		threadPoolTaskScheduler.schedule(worker, movement.getEndDate());
 		return movement;
 	}

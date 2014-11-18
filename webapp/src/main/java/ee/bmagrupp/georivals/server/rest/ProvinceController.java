@@ -26,7 +26,7 @@ import ee.bmagrupp.georivals.server.service.ProvinceService;
 public class ProvinceController {
 
 	private static Logger LOG = LoggerFactory
-			.getLogger(ProfileController.class);
+			.getLogger(ProvinceController.class);
 
 	@Autowired
 	ProvinceService provServ;

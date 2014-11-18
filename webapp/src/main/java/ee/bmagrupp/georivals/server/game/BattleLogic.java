@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
-import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
@@ -17,7 +16,7 @@ import static ee.bmagrupp.georivals.server.util.Constants.ATTACKER_ODDS;
 public class BattleLogic {
 	
 	@Autowired
-	static OwnershipRepository ownerRepo;
+	OwnershipRepository ownerRepo;
 	
 	/**
 	 * @author Sander

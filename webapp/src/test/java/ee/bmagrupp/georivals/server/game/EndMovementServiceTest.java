@@ -2,6 +2,7 @@ package ee.bmagrupp.georivals.server.game;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -77,11 +79,15 @@ public class EndMovementServiceTest {
 				player, new Date(), new Date());
 		moveRepo.save(homeMov);
 
+		
+		Calendar cal = Calendar.getInstance(); // creates calendar
+		cal.setTime(new Date()); // sets calendar time/date
+		cal.add(Calendar.SECOND, 20);
 		Unit newUnit = new Unit(24);
 		unitRepo.save(newUnit);
 		Province destination = provRepo.findOne(6);
 		ownedProvMov = new Movement(newUnit, player.getHome().getProvince(),
-				destination, player, new Date(), new Date());
+				destination, player, new Date(), cal.getTime());
 		moveRepo.save(ownedProvMov);
 	}
 
@@ -92,10 +98,10 @@ public class EndMovementServiceTest {
 				.getSize());
 
 		// I know it's there
-		int movId = homeMov.getId();
-		endMovServ.handleMovement(movId);
+		Date endDate = homeMov.getEndDate();
+		endMovServ.handleMovement(endDate);
 
-		assertEquals("No such movement", null, moveRepo.findOne(movId));
+		assertTrue("No such movement", moveRepo.findByEndDate(endDate, new PageRequest(0, 1)).isEmpty());
 		assertEquals("Units added to home", 37, unitRepo.findOne(7).getSize());
 
 		// Checking the movement unit was deleted
@@ -121,10 +127,10 @@ public class EndMovementServiceTest {
 		assertEquals("No unit at home", null, unitRepo.findOne(7));
 
 		// I know it's there
-		int movId = homeMov.getId();
-		endMovServ.handleMovement(movId);
+		Date endDate = homeMov.getEndDate();
+		endMovServ.handleMovement(endDate);
 
-		assertEquals("No such movement", null, moveRepo.findOne(movId));
+		assertTrue("No such movement", moveRepo.findByEndDate(endDate, new PageRequest(0, 1)).isEmpty());
 		assertEquals("Units at home", 27, playerRepo.findOne(1).getHome()
 				.getUnits().iterator().next().getSize());
 
@@ -134,10 +140,10 @@ public class EndMovementServiceTest {
 	public void addToExistingOwnedUnit() {
 
 		// I know it's there
-		int movId = ownedProvMov.getId();
-		endMovServ.handleMovement(movId);
+		Date endDate = ownedProvMov.getEndDate();
+		endMovServ.handleMovement(endDate);
 
-		assertEquals("No such movement", null, moveRepo.findOne(movId));
+		assertTrue("No such movement", moveRepo.findByEndDate(endDate, new PageRequest(0, 1)).isEmpty());
 		assertEquals("Units added to home", 33, unitRepo.findOne(6).getSize());
 
 		// Checking the movement unit was deleted

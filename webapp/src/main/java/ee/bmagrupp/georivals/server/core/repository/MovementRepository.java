@@ -1,7 +1,9 @@
 package ee.bmagrupp.georivals.server.core.repository;
 
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -43,5 +45,31 @@ public interface MovementRepository extends CrudRepository<Movement, Integer> {
 	 */
 	@Query("from Movement m where m.player.sid = ?1")
 	List<Movement> findByPlayerSid(String sid);
+
+	/**
+	 * Find by {@link Movement} endDate. To avoid problems when more than one
+	 * Movement ends at the same time, a {@link Pageable} parameter was added.
+	 * To get only the first result, do
+	 * {@code PageRequest page = new PageRequest(0, 1);}
+	 * 
+	 * @param endDate
+	 * @param page
+	 *            {@link Pageable}
+	 * @return {@link Movement} List
+	 */
+	List<Movement> findByEndDate(Date endDate, Pageable page);
+
+	/**
+	 * Finds the most recent {@link Movement}. To avoid problems when more than
+	 * one Movement ends at the same time, a {@link Pageable} parameter was
+	 * added. To get only the first result, do
+	 * {@code PageRequest page = new PageRequest(0, 1);}
+	 * 
+	 * @param page
+	 *            {@link Pageable}
+	 * @return {@link Movement} List
+	 */
+	@Query("from Movement m order by endDate asc")
+	List<Movement> getMostRecent(Pageable page);
 
 }

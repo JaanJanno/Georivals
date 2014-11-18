@@ -1,8 +1,14 @@
 package ee.bmagrupp.georivals.server.game;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
@@ -18,6 +24,7 @@ import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.util.Constants;
 
+@Transactional
 @Service
 public class EndMovementServiceImpl implements EndMovementService {
 
@@ -42,9 +49,20 @@ public class EndMovementServiceImpl implements EndMovementService {
 	BattleLogic battleLog;
 
 	@Override
-	public void handleMovement(int movementId) {
-		LOG.info("Ending movement " + movementId);
-		Movement mov = movRepo.findOne(movementId);
+	public void handleMovement(Date endDate) {
+		LOG.info("Ending movement " + endDate);
+		PageRequest page = new PageRequest(0, 1);
+		List<Movement> movList = movRepo.findByEndDate(endDate, page);
+		
+		Movement mov = null;
+		if (movList.size() == 1) {
+			mov = movList.get(0);
+		}
+		else {
+			LOG.error("No movement was found!");
+			// can't throw anything because it's in a separate thread
+			return;
+		}
 
 		// Checking who owns destination
 		// Hibernate.initialize(mov.getPlayer());
@@ -63,6 +81,8 @@ public class EndMovementServiceImpl implements EndMovementService {
 			// handle battle
 			handleBattle(mov, ow);
 		}
+		
+		LOG.info("Movement ended");
 
 	}
 
@@ -138,6 +158,15 @@ public class EndMovementServiceImpl implements EndMovementService {
 			LOG.info("Size over limit for unit " + unit.getId());
 			unit.setSize(Constants.PROVINCE_UNIT_MAX);
 		}
+	}
+
+	@Override
+	public Date getNextMovement() {
+		PageRequest page = new PageRequest(0, 1);
+		List<Movement> mov = movRepo.getMostRecent(page);
+		if (mov.size() == 0) 
+			return null;
+		return mov.get(0).getEndDate();
 	}
 
 }

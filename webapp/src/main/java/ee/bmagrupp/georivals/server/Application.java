@@ -28,7 +28,7 @@ public class Application {
 	public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
 		ThreadPoolTaskScheduler t = new ThreadPoolTaskScheduler();
 		// TODO these settings must be optimal
-		t.setPoolSize(10);
+		t.setPoolSize(1);
 		return t;
 	}
 

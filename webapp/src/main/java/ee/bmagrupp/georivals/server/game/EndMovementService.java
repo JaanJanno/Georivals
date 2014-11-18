@@ -1,5 +1,7 @@
 package ee.bmagrupp.georivals.server.game;
 
+import java.util.Date;
+
 import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
@@ -19,7 +21,14 @@ public interface EndMovementService {
 	 * existing {@link Ownership} or {@link HomeOwnership} or by creating a
 	 * battle.
 	 * 
-	 * @param movementId
+	 * @param endDate
 	 */
-	void handleMovement(int movementId);
+	void handleMovement(Date endDate);
+
+	/**
+	 * Get the endDate of the next {@link Movement} from the database.
+	 * 
+	 * @return {@link Date} when found. null when no movements
+	 */
+	Date getNextMovement();
 }

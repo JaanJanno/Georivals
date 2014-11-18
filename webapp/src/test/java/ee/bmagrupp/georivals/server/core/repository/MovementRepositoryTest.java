@@ -2,6 +2,7 @@ package ee.bmagrupp.georivals.server.core.repository;
 
 import static org.junit.Assert.*;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -52,21 +54,33 @@ public class MovementRepositoryTest {
 	@Autowired
 	private PlayerRepository playerRepo;
 
+	private Date endDate;
+
 	@Before
 	public void setUp() {
 		Player player = playerRepo.findOne(1);
 		Unit unit = player.getHome().getUnits().iterator().next();
 		Province destination = provRepo.findOne(3);
+		endDate = new Date();
 		Movement mov = new Movement(unit, player.getHome().getProvince(),
-				destination, player, new Date(), new Date());
+				destination, player, new Date(), endDate);
 		moveRepo.save(mov);
+
+		Calendar cal = Calendar.getInstance(); // creates calendar
+		cal.setTime(endDate); // sets calendar time/date
+		cal.add(Calendar.SECOND, 20);
+
+		Player player2 = playerRepo.findOne(2);
+
+		Movement mov2 = new Movement(unit, player2.getHome().getProvince(),
+				destination, player2, new Date(), endDate);
+		moveRepo.save(mov2);
 	}
 
 	@Test
 	public void findByDestinationTest() {
 
 		List<Movement> resultList = moveRepo.findByDestination(3);
-		assertEquals("List size", 1, resultList.size());
 		assertEquals("Destination id", 3, resultList.get(0).getDestination()
 				.getId());
 	}
@@ -84,10 +98,25 @@ public class MovementRepositoryTest {
 	public void findPlayerMovements() {
 		List<Movement> resultList = moveRepo
 				.findByPlayerSid("BPUYYOU62flwiWJe");
-		assertEquals("List size", 1, resultList.size());
 		assertEquals("Destination id", 3, resultList.get(0).getDestination()
 				.getId());
 		assertEquals("Player id", 1, resultList.get(0).getPlayer().getId());
+
+	}
+
+	@Test
+	public void findByEndDateTest() {
+		PageRequest pageR = new PageRequest(0, 1);
+		List<Movement> mov = moveRepo.findByEndDate(endDate, pageR);
+		assertEquals("Player id", 1, mov.get(0).getPlayer().getId());
+
+	}
+
+	@Test
+	public void findMostRecent() {
+		PageRequest pageR = new PageRequest(0, 1);
+		List<Movement> mov = moveRepo.getMostRecent(pageR);
+		assertEquals("Player id", 1, mov.get(0).getPlayer().getId());
 
 	}
 

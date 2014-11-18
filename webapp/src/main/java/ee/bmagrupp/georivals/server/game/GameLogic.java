@@ -22,6 +22,8 @@ import ee.bmagrupp.georivals.server.util.GeneratorUtil;
  *
  */
 public class GameLogic {
+	// These are for testing purposes only
+	static int time = 10;
 
 	/**
 	 * Checks if the player defined by player1Strength can attack the provinces
@@ -123,7 +125,12 @@ public class GameLogic {
 		// TODO implement some sort of calculation
 		Calendar cal = Calendar.getInstance(); // creates calendar
 	    cal.setTime(curDate); // sets calendar time/date
-	    cal.add(Calendar.SECOND, 5); 
+	    cal.add(Calendar.SECOND, time);
+	    
+	    time-=2;
+	    if (time <= 0) {
+	    	time = 10;
+	    }
 		return cal.getTime();
 	}
 
