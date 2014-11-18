@@ -188,14 +188,6 @@ public class RegistrationFragment extends Fragment {
 				yesButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						TextView chooseHomeLabel = (TextView) activity
-								.findViewById(R.id.choose_home_label);
-						chooseHomeLabel.setVisibility(View.INVISIBLE);
-						Button setHomeButton = (Button) activity
-								.findViewById(R.id.set_home_current);
-						setHomeButton.setVisibility(View.INVISIBLE);
-						MainActivity.choosingHomeProvince = false;
-
 						registrationPhase2(provinceLatLng);
 						confirmationDialog.dismiss();
 					}
@@ -224,6 +216,14 @@ public class RegistrationFragment extends Fragment {
 				String SID = responseObject.getValue();
 				int userId = responseObject.getId();
 				if (result == ServerResult.OK) {
+					TextView chooseHomeLabel = (TextView) activity
+							.findViewById(R.id.choose_home_label);
+					chooseHomeLabel.setVisibility(View.INVISIBLE);
+					Button setHomeButton = (Button) activity
+							.findViewById(R.id.set_home_current);
+					setHomeButton.setVisibility(View.INVISIBLE);
+					MainActivity.choosingHomeProvince = false;
+
 					SharedPreferences sharedPref = activity
 							.getPreferences(Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = sharedPref.edit();

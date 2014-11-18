@@ -7,31 +7,32 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.res.Resources;
 
 @SuppressWarnings("deprecation")
 public class TabListener implements ActionBar.TabListener {
 	private MainActivity activity;
-	private TabItem tabItem;
+	private Fragment fragment;
+	private Resources resources;
 
-	public TabListener(MainActivity activity, TabItem fragment) {
+	public TabListener(MainActivity activity, TabItem tabItem) {
 		this.activity = activity;
-		this.tabItem = fragment;
+		this.fragment = (Fragment) tabItem;
+		this.resources = activity.getResources();
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		String fragmentTag = (String) tab.getTag();
-		if (MainActivity.choosingHomeProvince
-				&& !fragmentTag.equals(activity.getResources().getString(
-						R.string.map)))
-			activity.getActionBar().setSelectedNavigationItem(0);
-		else if (fragmentTag.equals(activity.getResources().getString(
-				R.string.profile))
-				&& MainActivity.userId == 0)
-			ft.replace(R.id.fragment_container,
-					MainActivity.REGISTRATION_FRAGMENT, "Registration");
-		else
-			ft.replace(R.id.fragment_container, (Fragment) tabItem, fragmentTag);
+		if (!fragmentTag.equals(resources.getString(R.string.map))) {
+			if (MainActivity.choosingHomeProvince)
+				activity.getActionBar().setSelectedNavigationItem(0);
+			else if (MainActivity.userId == 0
+					&& !MainActivity.REGISTRATION_FRAGMENT.isVisible())
+				ft.replace(R.id.fragment_container,
+						MainActivity.REGISTRATION_FRAGMENT, "Registration");
+		} else
+			ft.replace(R.id.fragment_container, fragment, fragmentTag);
 	}
 
 	@Override
@@ -41,8 +42,10 @@ public class TabListener implements ActionBar.TabListener {
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		String fragmentTag = (String) tab.getTag();
-		ft.replace(R.id.fragment_container, (Fragment) tabItem, fragmentTag);
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			String fragmentTag = (String) tab.getTag();
+			ft.replace(R.id.fragment_container, fragment, fragmentTag);
+		}
 	}
 
 }
