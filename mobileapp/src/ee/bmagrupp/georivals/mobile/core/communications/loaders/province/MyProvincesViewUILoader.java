@@ -53,7 +53,8 @@ public abstract class MyProvincesViewUILoader extends MyProvincesViewLoader {
 	/**
 	 * Override to handle retrieved list in UI.
 	 * 
-	 * @param responseList List retrieved from server.
+	 * @param responseList
+	 *            List retrieved from server.
 	 */
 
 	abstract public void handleResponseListInUI(List<ProvinceDTO> responseList);
@@ -61,7 +62,8 @@ public abstract class MyProvincesViewUILoader extends MyProvincesViewLoader {
 	/**
 	 * Override to handle retrieved list in background.
 	 * 
-	 * @param responseList List retrieved from server.
+	 * @param responseList
+	 *            List retrieved from server.
 	 */
 
 	abstract public void handleResponseListInBackground(

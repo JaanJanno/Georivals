@@ -1,7 +1,5 @@
 package ee.bmagrupp.georivals.mobile.models;
 
-
-
 public class ServerResponse {
 
 	private ServerResult result;

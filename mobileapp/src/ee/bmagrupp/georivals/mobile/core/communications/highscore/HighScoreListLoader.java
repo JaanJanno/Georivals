@@ -9,11 +9,11 @@ import ee.bmagrupp.georivals.mobile.core.communications.Connection;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 
 /**
- * Class for making a HTTP get request to the server and retrieving HighScore data
- * parsed from JSON to objects.
- * Use this by overriding the handleResponseList() method and calling 
- * retrieveHighScoreEntries() method.
- *  @author	Jaan Janno
+ * Class for making a HTTP get request to the server and retrieving HighScore
+ * data parsed from JSON to objects. Use this by overriding the
+ * handleResponseList() method and calling retrieveHighScoreEntries() method.
+ * 
+ * @author Jaan Janno
  */
 
 abstract public class HighScoreListLoader implements Runnable {
@@ -23,18 +23,17 @@ abstract public class HighScoreListLoader implements Runnable {
 	public HighScoreListLoader(String url) {
 		this.url = url;
 	}
-	
+
 	/**
-	 * Call this method to start a new thread that
-	 * retrieves information from given URL and
-	 * then calls the overridden handleResponseList() method
-	 * with the list as argument.
+	 * Call this method to start a new thread that retrieves information from
+	 * given URL and then calls the overridden handleResponseList() method with
+	 * the list as argument.
 	 */
 
 	public void retrieveHighScoreEntries() {
 		new Thread(this).start();
 	}
-	
+
 	/*
 	 * Parses a JSON string and returns a list of HighScoreEntries.
 	 */
@@ -44,13 +43,14 @@ abstract public class HighScoreListLoader implements Runnable {
 		}.getType();
 		return new Gson().fromJson(json, listType);
 	}
-	
+
 	/**
-	 * Method called by separate thread. Call retrieveHighScoreEntries() instead of this!
+	 * Method called by separate thread. Call retrieveHighScoreEntries() instead
+	 * of this!
 	 */
 
 	@Override
-	public void run() {	
+	public void run() {
 		Connection c = new Connection(url) {
 
 			@Override
@@ -67,12 +67,11 @@ abstract public class HighScoreListLoader implements Runnable {
 		};
 		c.sendRequest();
 	}
-	
+
 	/**
-	 * Override this method to define the behavior
-	 * after a list has been retrieved.
-	 * Remember this method doesn't run on the UI thread!
+	 * Override this method to define the behavior after a list has been
+	 * retrieved. Remember this method doesn't run on the UI thread!
 	 */
-	
+
 	abstract public void handleResponseList(List<HighScoreEntry> list);
 }

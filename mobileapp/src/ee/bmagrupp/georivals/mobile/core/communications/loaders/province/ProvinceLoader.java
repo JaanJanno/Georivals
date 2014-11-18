@@ -12,25 +12,28 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 /**
  * Class for loading provinces from server given an CameraFOV object to
  * represent the extent of the query.
+ * 
  * @author Jaan Janno
- *
+ * 
  */
 
 public abstract class ProvinceLoader extends GenericListPostLoader<ProvinceDTO> {
-	
+
 	CameraFOV fov; // Represent the visible area on map view.
-	
+
 	/**
 	 * 
-	 * @param sid Unique secret ID of the player.
-	 * @param fov Area visible on map.
+	 * @param sid
+	 *            Unique secret ID of the player.
+	 * @param fov
+	 *            Area visible on map.
 	 */
-	
+
 	public ProvinceLoader(String sid, CameraFOV fov) {
-		super(ProvinceDTO.listType, Constants.PROVINCE, "sid="+sid);
+		super(ProvinceDTO.listType, Constants.PROVINCE, "sid=" + sid);
 		this.fov = fov;
 	}
-	
+
 	/*
 	 * Writes JSON of sent FOV object to the server.
 	 */
@@ -40,12 +43,12 @@ public abstract class ProvinceLoader extends GenericListPostLoader<ProvinceDTO> 
 		String JSON = new Gson().toJson(fov);
 		writer.writeBytes(JSON);
 	}
-	
+
 	/**
-	 * Override this method to handle the list of province objects
-	 * retrieved from the server.
+	 * Override this method to handle the list of province objects retrieved
+	 * from the server.
 	 */
-	
+
 	@Override
 	abstract public void handleResponseList(List<ProvinceDTO> responseList);
 

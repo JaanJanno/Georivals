@@ -58,8 +58,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		LocationListener {
 	private final double provinceLatitudeRadius = 0.0005;
 	private final double provinceLongitudeRadius = 0.001;
-	private final int tabNameId;
-	private final int tabIconId;
+	private final int tabNameId = R.string.map;
+	private final int tabIconId = R.drawable.places_icon;
 
 	private GoogleMap map;
 	private GoogleApiClient googleApiClient;
@@ -74,11 +74,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private Location playerLocation;
 	private HashMap<LatLng, GroundOverlay> drawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
 	private List<ProvinceDTO> provinceList;
-
-	public MapFragment(int tabNameId, int tabIconId) {
-		this.tabNameId = tabNameId;
-		this.tabIconId = tabIconId;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

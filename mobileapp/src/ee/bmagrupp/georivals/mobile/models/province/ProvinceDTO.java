@@ -28,7 +28,7 @@ public class ProvinceDTO {
 
 	private final int unitSize;
 	private final int newUnitSize;
-	
+
 	public ProvinceDTO(double latitude, double longitude, ProvinceType type,
 			String provinceName, String ownerName, boolean attackable,
 			boolean underAttack, int unitSize, int newUnitSize) {

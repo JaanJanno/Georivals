@@ -11,17 +11,17 @@ public class CameraFOV {
 
 	public CameraFOV(double swlatitude, double swlongitude, double nelatitude,
 			double nelongitude) {
-		this.swlatitude 	= swlatitude;
-		this.swlongitude 	= swlongitude;
-		this.nelatitude 	= nelatitude;
-		this.nelongitude 	= nelongitude;
+		this.swlatitude = swlatitude;
+		this.swlongitude = swlongitude;
+		this.nelatitude = nelatitude;
+		this.nelongitude = nelongitude;
 	}
 
 	public CameraFOV(LatLngBounds latLngBounds) {
-		this.swlatitude 	= latLngBounds.southwest.latitude;
-		this.swlongitude 	= latLngBounds.southwest.longitude;
-		this.nelatitude 	= latLngBounds.northeast.latitude;
-		this.nelongitude 	= latLngBounds.northeast.longitude;
+		this.swlatitude = latLngBounds.southwest.latitude;
+		this.swlongitude = latLngBounds.southwest.longitude;
+		this.nelatitude = latLngBounds.northeast.latitude;
+		this.nelongitude = latLngBounds.northeast.longitude;
 	}
 
 	public double getSWlatitude() {

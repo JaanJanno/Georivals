@@ -1,30 +1,32 @@
 package ee.bmagrupp.georivals.mobile.core.communications;
 
 public class Constants {
-	
+
 	static final public boolean isLocalMobile = false;
 
 	/*
 	 * URL's on the server used for retrieving information.
 	 */
-	
-	static{
+
+	static {
 		if (isLocalMobile)
 			WEBPAGE = "http://10.0.2.2:8080/"; // Only Google API emulators.
 		else
 			WEBPAGE = "http://pacific-plains-8541.herokuapp.com/";
 	}
-	
+
 	static final public String WEBPAGE;
 	static final public String HIGHSCORE = WEBPAGE + "highscore/";
 	static final public String PROFILE = WEBPAGE + "profile/id/";
 	static final public String PROVINCE = WEBPAGE + "province/";
 	static final public String RENAME_PROVINCE = PROVINCE + "rename/";
 	static final public String MYPROVINCES = PROVINCE + "myprovinces/";
-	static final public String REGISTRATION_PHASE1 = WEBPAGE + "registration/phase1/";
-	static final public String REGISTRATION_PHASE2 = WEBPAGE + "registration/phase2/";
+	static final public String REGISTRATION_PHASE1 = WEBPAGE
+			+ "registration/phase1/";
+	static final public String REGISTRATION_PHASE2 = WEBPAGE
+			+ "registration/phase2/";
 	static final public String MOVEMENT = WEBPAGE + "movement/";
 	static final public String CLAIM = MOVEMENT + "claim/";
 	static final public String CANCEL_MOVE = MOVEMENT + "delete/";
-	
+
 }

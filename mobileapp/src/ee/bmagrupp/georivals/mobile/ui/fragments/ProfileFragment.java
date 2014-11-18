@@ -18,19 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment implements TabItem {
-	private final int tabNameId;
-	private final int tabIconId;
+	private final int tabNameId = R.string.profile;
+	private final int tabIconId = R.drawable.profile_icon;
 
 	private MainActivity activity;
 	private Resources resources;
 	private ProfileEntryLoader profileEntryLoader;
 	private LinearLayout profileLayout;
 	private ProfileEntry profile;
-
-	public ProfileFragment(int tabNameId, int tabIconId) {
-		this.tabNameId = tabNameId;
-		this.tabIconId = tabIconId;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

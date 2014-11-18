@@ -10,8 +10,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 /**
- * Class for defining a singleton Gson object that supports Date objects.
- * Use the getInstance() method to get the singleton object.
+ * Class for defining a singleton Gson object that supports Date objects. Use
+ * the getInstance() method to get the singleton object.
  * 
  * @author Jaan Janno
  */
@@ -23,8 +23,8 @@ public class GsonParser {
 	static {
 
 		/*
-		 * Builds the singleton Gson object and adds support 
-		 * for Date object parsing.
+		 * Builds the singleton Gson object and adds support for Date object
+		 * parsing.
 		 */
 
 		GsonBuilder builder = new GsonBuilder();
@@ -37,11 +37,11 @@ public class GsonParser {
 		});
 		instance = builder.create();
 	}
-	
+
 	// Singleton, so private constructor.
 
 	private GsonParser() {
-	} 
+	}
 
 	/**
 	 * 

@@ -24,8 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class MyProvincesFragment extends Fragment implements TabItem {
-	private final int tabNameId;
-	private final int tabIconId;
+	private final int tabNameId = R.string.my_provinces;
+	private final int tabIconId = R.drawable.places_icon;
 
 	private List<ProvinceDTO> myProvincesList;
 	private MyProvincesAdapter adapter;
@@ -33,11 +33,6 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 	private Resources resources;
 	private MyProvincesViewUILoader myProvincesListLoader;
 	private LinearLayout myProvincesLayout;
-
-	public MyProvincesFragment(int tabNameId, int tabIconId) {
-		this.tabNameId = tabNameId;
-		this.tabIconId = tabIconId;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

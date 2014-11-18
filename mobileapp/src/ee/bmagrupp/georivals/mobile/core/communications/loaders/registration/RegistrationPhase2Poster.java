@@ -7,22 +7,25 @@ import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
 
 /**
  * Class for handling the second phase of registration.
+ * 
  * @author Jaan Janno
- *
+ * 
  */
 
-public abstract class RegistrationPhase2Poster extends GenericObjectPostLoader<ServerResponse>{
+public abstract class RegistrationPhase2Poster extends
+		GenericObjectPostLoader<ServerResponse> {
 
 	/**
 	 * 
-	 * @param post Info of registration. Provides name and email and
-	 * selected home province latitude and longitude.
+	 * @param post
+	 *            Info of registration. Provides name and email and selected
+	 *            home province latitude and longitude.
 	 */
-	
+
 	public RegistrationPhase2Poster(RegistrationDTO post) {
 		super(ServerResponse.class, post, Constants.REGISTRATION_PHASE2);
 	}
-	
+
 	/**
 	 * Override this to handle registration response from server.
 	 */

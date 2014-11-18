@@ -20,8 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class HighScoreFragment extends Fragment implements TabItem {
-	private final int tabNameId;
-	private final int tabIconId;
+	private final int tabNameId = R.string.highscores;
+	private final int tabIconId = R.drawable.leaders_icon;
 
 	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
@@ -29,11 +29,6 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	private Resources resources;
 	private HighScoreListLoader highScoreListLoader;
 	private LinearLayout highscoreLayout;
-
-	public HighScoreFragment(int tabNameId, int tabIconId) {
-		this.tabNameId = tabNameId;
-		this.tabIconId = tabIconId;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -41,16 +41,11 @@ public class MainActivity extends Activity {
 	public static final ProvinceFragment PROVINCE_FRAGMENT = new ProvinceFragment();
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
 	public static final LoginFragment LOGIN_FRAGMENT = new LoginFragment();
-	public static final MapFragment MAP_FRAGMENT = new MapFragment(
-			R.string.map, R.drawable.places_icon);
-	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment(
-			R.string.mission_log, R.drawable.log_icon);;
-	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment(
-			R.string.profile, R.drawable.profile_icon);
-	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment(
-			R.string.highscores, R.drawable.leaders_icon);
-	public static final MyProvincesFragment MY_PLACES_FRAGMENT = new MyProvincesFragment(
-			R.string.my_provinces, R.drawable.places_icon);
+	public static final MapFragment MAP_FRAGMENT = new MapFragment();
+	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment();
+	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
+	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
+	public static final MyProvincesFragment MY_PLACES_FRAGMENT = new MyProvincesFragment();
 	public static Typeface GABRIOLA_FONT;
 	private final Activity activity = this;
 	private Resources resources;

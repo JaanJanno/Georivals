@@ -7,8 +7,9 @@ import com.google.gson.reflect.TypeToken;
 
 public class MovementViewDTO {
 
-	public static final Type listType = new TypeToken<ArrayList<MovementViewDTO>>() {}.getType();
-	
+	public static final Type listType = new TypeToken<ArrayList<MovementViewDTO>>() {
+	}.getType();
+
 	private final int movementId;
 	private final int unitSize;
 	private final String destinationName;

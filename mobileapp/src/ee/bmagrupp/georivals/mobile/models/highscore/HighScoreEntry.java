@@ -15,7 +15,7 @@ public class HighScoreEntry {
 		this.averageUnits = averageUnits;
 		this.provincesOwned = provincesOwned;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

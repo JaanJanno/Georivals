@@ -4,7 +4,7 @@ package ee.bmagrupp.georivals.mobile.models.registration;
  * Data transfer object for registration.
  * 
  * @author TKasekamp
- *
+ * 
  */
 public class RegistrationDTO {
 	private String userName;

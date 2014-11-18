@@ -23,7 +23,7 @@ public abstract class MyProvincesViewLoader extends
 	 */
 
 	public MyProvincesViewLoader(String sid) {
-		super(ProvinceDTO.listType, Constants.MYPROVINCES, "sid="+sid);
+		super(ProvinceDTO.listType, Constants.MYPROVINCES, "sid=" + sid);
 	}
 
 	/**
