@@ -25,7 +25,7 @@ public class Player implements Serializable {
 	@Column(nullable = false, unique = true)
 	private String userName;
 
-	@Column(nullable = true, unique = true)
+	@Column(nullable = true)
 	private String email;
 
 	@Column(nullable = false)
