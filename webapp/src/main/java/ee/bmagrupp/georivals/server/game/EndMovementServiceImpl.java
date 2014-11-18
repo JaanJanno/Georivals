@@ -17,6 +17,7 @@ import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
+import ee.bmagrupp.georivals.server.core.repository.BattleHistoryRepository;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
@@ -47,6 +48,9 @@ public class EndMovementServiceImpl implements EndMovementService {
 	
 	@Autowired
 	BattleLogic battleLog;
+	
+	@Autowired
+	BattleHistoryRepository batHistRepo;
 
 	@Override
 	public void handleMovement(Date endDate) {
@@ -133,7 +137,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 	private void handleBattle(Movement mov, Ownership ow) {
 		Player defender = playerRepo.findOwner(ow.getId());
 		BattleHistory history = battleLog.battle(ow.getProvince(), mov.getPlayer(), defender, mov.getUnit().getSize(), ow.countUnits());
-		// some more database magic
+		batHistRepo.save(history);
 	}
 
 	/**
