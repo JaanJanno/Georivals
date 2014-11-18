@@ -329,12 +329,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			provinceName.setVisibility(View.INVISIBLE);
 			provinceColor = resources.getColor(R.color.brown_transparent);
 		} else {
-			provinceName.setText(province.getOwnerName());
+			provinceName.setText(province.getProvinceName());
 			provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
 			if (province.getType() == ProvinceType.HOME
-					|| province.getType() == ProvinceType.PLAYER)
+					|| province.getType() == ProvinceType.PLAYER) {
 				provinceColor = resources.getColor(R.color.green_transparent);
-			else
+			} else
 				provinceColor = resources
 						.getColor(R.color.dark_brown_transparent);
 		}
