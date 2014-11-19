@@ -1,35 +1,32 @@
-package ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify;
+package ee.bmagrupp.georivals.mobile.core.communications.loaders.battle.history;
 
+import java.util.List;
 import android.app.Activity;
-import ee.bmagrupp.georivals.mobile.models.ServerResponse;
+import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
 
 /**
- * Class to handle moving a home province straight on UI. Use by overriding the
- * abstract response handling methods to use the response.
+ * Class to handle battle history response list straight on UI. <br>
+ * 
+ * Use by overriding the abstract response handling methods to use the response.
  * 
  * @author Jaan Janno
  * 
  */
 
-public abstract class ChangeHomeUILoader extends ChangeHomeLoader {
+public abstract class BattleHistoryUILoader extends BattleHistoryLoader {
 
 	private Activity activity;
 
 	/**
 	 * 
-	 * @param latitude
-	 *            Latitude of the new home province.
-	 * @param longitude
-	 *            Longitude of the new home province.
 	 * @param sid
 	 *            Unique ID that identifies the player.
 	 * @param activity
 	 *            Android activity that is modified.
 	 */
 
-	public ChangeHomeUILoader(double latitude, double longitude, String sid,
-			Activity activity) {
-		super(latitude, longitude, sid);
+	public BattleHistoryUILoader(String sid, Activity activity) {
+		super(sid);
 		this.activity = activity;
 	}
 
@@ -40,7 +37,7 @@ public abstract class ChangeHomeUILoader extends ChangeHomeLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final ServerResponse responseObject) {
+	public void handleResponseList(final List<BattleHistoryDTO> responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override
@@ -57,7 +54,8 @@ public abstract class ChangeHomeUILoader extends ChangeHomeLoader {
 	 * @param responseObject
 	 */
 
-	abstract public void handleResponseObjectInUI(ServerResponse responseObject);
+	abstract public void handleResponseObjectInUI(
+			List<BattleHistoryDTO> responseObject);
 
 	/**
 	 * Override to handle retrieved response in background.
@@ -66,6 +64,6 @@ public abstract class ChangeHomeUILoader extends ChangeHomeLoader {
 	 */
 
 	abstract public void handleResponseObjectInBackground(
-			ServerResponse responseObject);
+			List<BattleHistoryDTO> responseObject);
 
 }
