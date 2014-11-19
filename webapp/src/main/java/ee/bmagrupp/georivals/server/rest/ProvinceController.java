@@ -35,9 +35,7 @@ public class ProvinceController {
 	public ResponseEntity<List<ProvinceDTO>> getProvinces(
 			@RequestBody CameraFOV fov,
 			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
-		LOG.info("All provinces");
-		LOG.info(fov.toJson());
-		LOG.info(cookie);
+		LOG.info("All provinces for " + cookie + " with " + fov.toJson());
 		List<ProvinceDTO> provs = provServ.getProvinces(fov, cookie);
 		LOG.info("The number of provs to return " + provs.size());
 		return new ResponseEntity<List<ProvinceDTO>>(provs, HttpStatus.ACCEPTED);
@@ -51,8 +49,7 @@ public class ProvinceController {
 
 		LOG.info("One province lat: " + latitude + ", long:" + longitude);
 		LOG.info(cookie);
-		ProvinceDTO prov = provServ
-				.getProvince(latitude, longitude, cookie);
+		ProvinceDTO prov = provServ.getProvince(latitude, longitude, cookie);
 		return new ResponseEntity<ProvinceDTO>(prov, HttpStatus.OK);
 
 	}
@@ -60,7 +57,9 @@ public class ProvinceController {
 	@RequestMapping(method = RequestMethod.GET, value = "/myprovinces")
 	public ResponseEntity<List<ProvinceDTO>> getMyProvinces(
 			@CookieValue(value = "sid") String cookie) {
-
+		if (cookie.equals("")) {
+			return new ResponseEntity<List<ProvinceDTO>>(HttpStatus.FORBIDDEN);
+		}
 		LOG.info("My provinces for user with cookie " + cookie);
 		List<ProvinceDTO> provs = provServ.getMyProvinces(cookie);
 		return new ResponseEntity<List<ProvinceDTO>>(provs, HttpStatus.OK);
@@ -72,7 +71,9 @@ public class ProvinceController {
 			@RequestParam(value = "latitude") String latitude,
 			@RequestParam(value = "longitude") String longitude,
 			@CookieValue(value = "sid") String cookie) {
-
+		if (cookie.equals("")) {
+			return new ResponseEntity<ServerResponse>(HttpStatus.FORBIDDEN);
+		}
 		LOG.info("Change home province to lat: " + latitude + ", long:"
 				+ longitude + " for player " + cookie);
 		ServerResponse response = provServ.changeHomeProvince(latitude,
@@ -87,7 +88,9 @@ public class ProvinceController {
 			@RequestParam(value = "longitude") String longitude,
 			@RequestParam(value = "newname") String newName,
 			@CookieValue(value = "sid") String cookie) {
-
+		if (cookie.equals("")) {
+			return new ResponseEntity<ServerResponse>(HttpStatus.FORBIDDEN);
+		}
 		LOG.info("Change province name to " + newName
 				+ " for province with lat: " + latitude + ", long:" + longitude
 				+ " for player " + cookie);

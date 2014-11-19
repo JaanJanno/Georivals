@@ -179,7 +179,11 @@ public class EndMovementServiceTest {
 		Unit unit = new Unit(27);
 		unitRepo.save(unit);
 		Province origin = provRepo.findOne(6);
-		Date endDate = new Date();
+
+		Calendar cal = Calendar.getInstance(); // creates calendar
+		cal.setTime(new Date()); // sets calendar time/date
+		cal.add(Calendar.SECOND, 30);
+		Date endDate = cal.getTime();
 		Movement battleMov = new Movement(unit, origin, provRepo.findOne(2),
 				player, new Date(), endDate);
 		moveRepo.save(battleMov);

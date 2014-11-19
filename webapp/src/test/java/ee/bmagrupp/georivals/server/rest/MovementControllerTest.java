@@ -56,6 +56,7 @@ public class MovementControllerTest {
 	private MockMvc mockMvc;
 
 	private Cookie cookie;
+	private Cookie co;
 	private Date curDate;
 	private List<MovementSelectionViewDTO> movList;
 	private List<BeginMovementDTO> beginMoveList;
@@ -76,6 +77,7 @@ public class MovementControllerTest {
 				.build();
 
 		cookie = new Cookie("sid", "BPUYYOU62flwiWJe");
+		co = new Cookie("sid", "");
 		curDate = new Date();
 
 		movList = new ArrayList<MovementSelectionViewDTO>();
@@ -195,6 +197,48 @@ public class MovementControllerTest {
 						jsonPath("$.result", is(ServerResult.FAIL.toString())))
 				.andExpect(jsonPath("$.id", is(0)));
 
+	}
+
+	@Test
+	public void botMyMovementsTest() throws Exception {
+		mockMvc.perform(
+				get("/movement").cookie(co).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	public void botMyUnitsTest() throws Exception {
+		mockMvc.perform(
+				get("/movement/myunits").cookie(co).accept(
+						MediaType.APPLICATION_JSON)).andExpect(
+				status().isForbidden());
+	}
+
+	@Test
+	public void botMoveToTest() throws Exception {
+		String lat = "23.4565";
+		String lon = "83.453";
+
+		String json = "[" + beginMoveList.get(0).toJson() + ","
+				+ beginMoveList.get(0).toJson() + "]";
+		mockMvc.perform(
+				post("/movement/to").cookie(co).param("latitude", lat)
+						.param("longitude", lon).content(json)
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON)).andExpect(
+				status().isForbidden());
+	}
+
+	@Test
+	public void botClaimTest() throws Exception {
+		String lat = "23.4565";
+		String lon = "83.453";
+
+		mockMvc.perform(
+				post("/movement/claim").cookie(co).param("latitude", lat)
+						.param("longitude", lon)
+						.accept(MediaType.APPLICATION_JSON)).andExpect(
+				status().isForbidden());
 	}
 
 }

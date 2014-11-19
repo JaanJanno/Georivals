@@ -107,4 +107,12 @@ public class ProfileControllerTest {
 				.andExpect(status().isOk()).andExpect(content().string(""));
 	}
 
+	@Test
+	public void botProfile() throws Exception {
+		Cookie co = new Cookie("sid", "");
+		mockMvc.perform(
+				get("/profile").cookie(co).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isForbidden());
+	}
+
 }

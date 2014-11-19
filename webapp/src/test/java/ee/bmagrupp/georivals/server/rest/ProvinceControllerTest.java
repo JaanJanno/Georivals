@@ -47,6 +47,7 @@ public class ProvinceControllerTest {
 	private MockMvc mockMvc;
 	private CameraFOV fov;
 	private Cookie cookie;
+	private Cookie co;
 	private List<ProvinceDTO> provList;
 	private double latitude;
 	private double longitude;
@@ -69,6 +70,7 @@ public class ProvinceControllerTest {
 
 		fov = new CameraFOV(2, 3, 4, 5);
 		cookie = new Cookie("sid", "BPUYYOU62flwiWJe");
+		co = new Cookie("sid", "");
 
 		provList = new ArrayList<ProvinceDTO>();
 		provList.add(new ProvinceDTO(2, 3, ProvinceType.PLAYER, "bla", "owner",
@@ -177,6 +179,36 @@ public class ProvinceControllerTest {
 				.andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())));
+
+	}
+
+	@Test
+	public void botChangeHome() throws Exception {
+		mockMvc.perform(
+				post("/province/changehome")
+						.param("latitude", Double.toString(latitude))
+						.param("longitude", Double.toString(longitude))
+						.cookie(co).accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	public void botMyProvinces() throws Exception {
+		mockMvc.perform(
+				get("/province/myprovinces").cookie(co).accept(
+						MediaType.APPLICATION_JSON)).andExpect(
+				status().isForbidden());
+	}
+
+	@Test
+	public void botRenameProvinceTest() throws Exception {
+		mockMvc.perform(
+				post("/province/rename")
+						.param("latitude", Double.toString(latitude))
+						.param("longitude", Double.toString(longitude))
+						.param("newname", "Mordor").cookie(co)
+						.accept(MediaType.APPLICATION_JSON)).andExpect(
+				status().isForbidden());
 
 	}
 

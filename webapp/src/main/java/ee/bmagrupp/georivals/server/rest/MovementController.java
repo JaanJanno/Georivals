@@ -35,7 +35,10 @@ public class MovementController {
 	public ResponseEntity<List<MovementViewDTO>> getMyMovements(
 			@CookieValue(value = "sid") String cookie) {
 		LOG.info("Creating list of player movements for " + cookie);
-		LOG.info(cookie);
+		if (cookie.equals("")) {
+			return new ResponseEntity<List<MovementViewDTO>>(
+					HttpStatus.FORBIDDEN);
+		}
 		List<MovementViewDTO> movements = moveServ.getMyMovements(cookie);
 		return new ResponseEntity<List<MovementViewDTO>>(movements,
 				HttpStatus.OK);
@@ -45,8 +48,11 @@ public class MovementController {
 	@RequestMapping(method = RequestMethod.GET, value = "/myunits")
 	public ResponseEntity<List<MovementSelectionViewDTO>> getMyUnits(
 			@CookieValue(value = "sid") String cookie) {
-		LOG.info("Creating list of units to move");
-		LOG.info(cookie);
+		LOG.info("Creating list of units to move for " + cookie);
+		if (cookie.equals("")) {
+			return new ResponseEntity<List<MovementSelectionViewDTO>>(
+					HttpStatus.FORBIDDEN);
+		}
 		List<MovementSelectionViewDTO> units = moveServ.getMyUnits(cookie);
 		return new ResponseEntity<List<MovementSelectionViewDTO>>(units,
 				HttpStatus.OK);
@@ -59,9 +65,12 @@ public class MovementController {
 			@RequestParam(value = "longitude") String longitude,
 			@RequestBody List<BeginMovementDTO> beginMoveList,
 			@CookieValue(value = "sid") String cookie) {
-		LOG.info("Moving units");
-		LOG.info(cookie);
+		LOG.info("Moving units for " + cookie);
 		LOG.info(beginMoveList.toString());
+		if (cookie.equals("")) {
+			return new ResponseEntity<BeginMovementResponse>(
+					HttpStatus.FORBIDDEN);
+		}
 		BeginMovementResponse response = moveServ.moveUnitsTo(latitude,
 				longitude, beginMoveList, cookie);
 		return new ResponseEntity<BeginMovementResponse>(response,
@@ -74,7 +83,11 @@ public class MovementController {
 			@RequestParam(value = "latitude") String latitude,
 			@RequestParam(value = "longitude") String longitude,
 			@CookieValue(value = "sid") String cookie) {
-
+		LOG.info("Claim units at " + latitude + ", " + longitude + " for "
+				+ cookie);
+		if (cookie.equals("")) {
+			return new ResponseEntity<ServerResponse>(HttpStatus.FORBIDDEN);
+		}
 		ServerResponse response = moveServ.claimUnits(latitude, longitude,
 				cookie);
 		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);

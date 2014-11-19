@@ -29,6 +29,10 @@ public class BattleController {
 	public ResponseEntity<List<BattleHistoryDTO>> getBattleHistory(
 			@CookieValue(value = "sid") String cookie) {
 		LOG.info("Creating battle history for " + cookie);
+		if (cookie.equals("")) {
+			return new ResponseEntity<List<BattleHistoryDTO>>(
+					HttpStatus.FORBIDDEN);
+		}
 		List<BattleHistoryDTO> battles = battleServ.getBattles(cookie);
 		return new ResponseEntity<List<BattleHistoryDTO>>(battles,
 				HttpStatus.OK);

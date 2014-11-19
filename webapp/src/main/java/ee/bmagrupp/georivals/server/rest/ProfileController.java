@@ -31,17 +31,13 @@ public class ProfileController {
 		return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/special")
-	public String createSample() {
-		LOG.info("create sample data");
-		// profServ.createSampleData();
-		return "This is a legacy method for generating sample data. Go to ProfileController to activate it.";
-	}
-
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<PlayerProfile> getProfileWithCookie(
-			@CookieValue(value = "sid", defaultValue = "cookie") String cookie) {
+			@CookieValue(value = "sid") String cookie) {
 		LOG.debug("Get player with cookie " + cookie);
+		if (cookie.equals("")) {
+			return new ResponseEntity<PlayerProfile>(HttpStatus.FORBIDDEN);
+		}
 		PlayerProfile player = profServ.getPlayerProfile(cookie);
 		return new ResponseEntity<PlayerProfile>(player, HttpStatus.OK);
 	}

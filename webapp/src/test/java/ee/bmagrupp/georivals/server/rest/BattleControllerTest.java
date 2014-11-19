@@ -92,4 +92,13 @@ public class BattleControllerTest {
 								is(BattleType.ATTACK_PLAYER_WON.toString())));
 	}
 
+	@Test
+	public void botTest() throws Exception {
+		Cookie co = new Cookie("sid", "");
+		mockMvc.perform(
+				get("/battle/history").cookie(co).accept(
+						MediaType.APPLICATION_JSON)).andExpect(
+				status().isForbidden());
+	}
+
 }

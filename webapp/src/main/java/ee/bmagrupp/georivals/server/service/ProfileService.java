@@ -7,8 +7,6 @@ import ee.bmagrupp.georivals.server.rest.domain.PlayerProfile;
 
 public interface ProfileService {
 
-	void createSampleData();
-
 	PlayerProfile getPlayerProfile(int id);
 
 	List<PlayerProfile> findAll();
