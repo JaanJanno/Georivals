@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+@SuppressWarnings("unused")
 public class MissionLogFragment extends Fragment implements TabItem {
 	private final int tabNameId = R.string.mission_log;
 	private final int tabIconId = R.drawable.log_icon;

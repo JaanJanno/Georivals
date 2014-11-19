@@ -10,11 +10,11 @@ import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.ProvinceFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.RegistrationFragment;
 import ee.bmagrupp.georivals.mobile.ui.listeners.TabListener;
+import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -24,9 +24,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -46,6 +45,9 @@ public class MainActivity extends Activity {
 	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
 	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
 	public static final MyProvincesFragment MY_PLACES_FRAGMENT = new MyProvincesFragment();
+	private final TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
+			MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
+			MY_PLACES_FRAGMENT };
 	public static Typeface GABRIOLA_FONT;
 	private final Activity activity = this;
 	private Resources resources;
@@ -79,10 +81,6 @@ public class MainActivity extends Activity {
 	}
 
 	private void createTabs() {
-		TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
-				MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
-				MY_PLACES_FRAGMENT };
-
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		for (TabItem tabItem : tabItemArray) {
@@ -187,38 +185,21 @@ public class MainActivity extends Activity {
 	}
 
 	private void showExitConfirmationDialog() {
-		final Dialog confirmationDialog = new Dialog(activity);
-		confirmationDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		confirmationDialog.setContentView(R.layout.dialog_layout);
-
-		TextView questionTextView = (TextView) confirmationDialog
-				.findViewById(R.id.dialog_question_label);
-		Button yesButton = (Button) confirmationDialog
-				.findViewById(R.id.dialog_yes);
-		Button noButton = (Button) confirmationDialog
-				.findViewById(R.id.dialog_no);
-
-		questionTextView.setText(resources
+		final CustomDialog exitConfirmationDialog = new CustomDialog(activity);
+		exitConfirmationDialog.setMessage(resources
 				.getString(R.string.confirmation_exit));
-		questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
-		noButton.setTypeface(MainActivity.GABRIOLA_FONT);
+		exitConfirmationDialog.hideInput();
 
-		yesButton.setOnClickListener(new OnClickListener() {
+		exitConfirmationDialog.setPositiveButton(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				confirmationDialog.dismiss();
+				exitConfirmationDialog.dismiss();
 				moveTaskToBack(true);
 			}
 		});
 
-		noButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				confirmationDialog.dismiss();
-			}
-		});
-		confirmationDialog.show();
+		exitConfirmationDialog.show();
+
 	}
 
 }

@@ -4,9 +4,13 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceViewUILoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.RenameProvinceUILoader;
+import ee.bmagrupp.georivals.mobile.models.ServerResponse;
+import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
+import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
 import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -36,7 +40,6 @@ public class ProvinceFragment extends Fragment {
 		resources = activity.getResources();
 		MainActivity.changeFonts(provinceLayout);
 		requestProvinceData();
-		setButtonListeners();
 		return provinceLayout;
 	}
 
@@ -110,7 +113,7 @@ public class ProvinceFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-
+					showRenameConfirmationDialog();
 				}
 
 			};
@@ -154,11 +157,64 @@ public class ProvinceFragment extends Fragment {
 		button.setTypeface(MainActivity.GABRIOLA_FONT);
 		button.setId(buttonTextId);
 		button.setBackgroundResource(R.drawable.button);
+		button.setOnClickListener(clickListener);
 
 		provinceLayout.addView(button);
 	}
 
-	private void setButtonListeners() {
+	private void showRenameConfirmationDialog() {
+		final CustomDialog renameConfirmationDialog = new CustomDialog(activity);
+		renameConfirmationDialog.setMessage(resources
+				.getString(R.string.enter_province_name));
+		renameConfirmationDialog.setInput(resources.getString(R.string.name));
 
+		renameConfirmationDialog.setPositiveButton(
+				resources.getString(R.string.ok), new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String newName = renameConfirmationDialog
+								.getInputValue();
+						if (!newName.equals("")) {
+							renameConfirmationDialog.dismiss();
+							requestProvinceRename(newName);
+						}
+					}
+				});
+
+		renameConfirmationDialog.setNegativeButton(resources
+				.getString(R.string.cancel));
+
+		renameConfirmationDialog.show();
+	}
+
+	private void requestProvinceRename(String newName) {
+		RenameProvinceUILoader l = new RenameProvinceUILoader(
+				provinceLatLng.longitude, provinceLatLng.latitude, newName,
+				MainActivity.sid, activity) {
+
+			@Override
+			public void handleResponseObjectInUI(ServerResponse responseObject) {
+				ServerResult result = responseObject.getResult();
+				if (result == ServerResult.OK) {
+					activity.showMessage(resources
+							.getString(R.string.province_renamed));
+					activity.getFragmentManager().beginTransaction()
+							.detach(MainActivity.PROVINCE_FRAGMENT)
+							.attach(MainActivity.PROVINCE_FRAGMENT).commit();
+				} else {
+					activity.showMessage(resources
+							.getString(R.string.error_unknown));
+				}
+
+			}
+
+			@Override
+			public void handleResponseObjectInBackground(
+					ServerResponse responseObject) {
+
+			}
+
+		};
+		l.retrieveObject();
 	}
 }

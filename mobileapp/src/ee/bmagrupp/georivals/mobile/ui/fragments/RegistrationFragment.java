@@ -9,7 +9,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import android.app.Dialog;
+import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -112,27 +111,16 @@ public class RegistrationFragment extends Fragment {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				final Dialog confirmationDialog = new Dialog(activity);
-				confirmationDialog
-						.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				confirmationDialog.setContentView(R.layout.dialog_layout);
+				final CustomDialog confirmationDialog = new CustomDialog(
+						activity);
 
-				TextView questionTextView = (TextView) confirmationDialog
-						.findViewById(R.id.dialog_question_label);
-				Button yesButton = (Button) confirmationDialog
-						.findViewById(R.id.dialog_yes);
-				Button noButton = (Button) confirmationDialog
-						.findViewById(R.id.dialog_no);
-
-				questionTextView.setText(resources
+				confirmationDialog.setMessage(resources
 						.getString(R.string.confirmation_username1)
 						+ username
 						+ resources.getString(R.string.confirmation_username2));
-				questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-				yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
-				noButton.setTypeface(MainActivity.GABRIOLA_FONT);
+				confirmationDialog.hideInput();
 
-				yesButton.setOnClickListener(new OnClickListener() {
+				confirmationDialog.setPositiveButton(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						MainActivity.choosingHomeProvince = true;
@@ -151,14 +139,8 @@ public class RegistrationFragment extends Fragment {
 					}
 				});
 
-				noButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						confirmationDialog.dismiss();
-					}
-				});
-
 				confirmationDialog.show();
+
 			}
 		});
 	}
@@ -167,25 +149,14 @@ public class RegistrationFragment extends Fragment {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				final Dialog confirmationDialog = new Dialog(activity);
-				confirmationDialog
-						.requestWindowFeature(Window.FEATURE_NO_TITLE);
-				confirmationDialog.setContentView(R.layout.dialog_layout);
+				final CustomDialog confirmationDialog = new CustomDialog(
+						activity);
 
-				TextView questionTextView = (TextView) confirmationDialog
-						.findViewById(R.id.dialog_question_label);
-				Button yesButton = (Button) confirmationDialog
-						.findViewById(R.id.dialog_yes);
-				Button noButton = (Button) confirmationDialog
-						.findViewById(R.id.dialog_no);
-
-				questionTextView.setText(resources
+				confirmationDialog.setMessage(resources
 						.getString(R.string.confirmation_province));
-				questionTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-				yesButton.setTypeface(MainActivity.GABRIOLA_FONT);
-				noButton.setTypeface(MainActivity.GABRIOLA_FONT);
+				confirmationDialog.hideInput();
 
-				yesButton.setOnClickListener(new OnClickListener() {
+				confirmationDialog.setPositiveButton(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						registrationPhase2(provinceLatLng);
@@ -193,13 +164,8 @@ public class RegistrationFragment extends Fragment {
 					}
 				});
 
-				noButton.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						confirmationDialog.dismiss();
-					}
-				});
 				confirmationDialog.show();
+
 			}
 		});
 
@@ -211,35 +177,40 @@ public class RegistrationFragment extends Fragment {
 						homeLatLng.longitude)) {
 
 			@Override
-			public void handleResponseObject(ServerResponse responseObject) {
-				ServerResult result = responseObject.getResult();
-				String SID = responseObject.getValue();
-				int userId = responseObject.getId();
-				if (result == ServerResult.OK) {
-					TextView chooseHomeLabel = (TextView) activity
-							.findViewById(R.id.choose_home_label);
-					chooseHomeLabel.setVisibility(View.INVISIBLE);
-					Button setHomeButton = (Button) activity
-							.findViewById(R.id.set_home_current);
-					setHomeButton.setVisibility(View.INVISIBLE);
-					MainActivity.choosingHomeProvince = false;
+			public void handleResponseObject(final ServerResponse responseObject) {
+				activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						ServerResult result = responseObject.getResult();
+						String SID = responseObject.getValue();
+						int userId = responseObject.getId();
+						if (result == ServerResult.OK) {
+							TextView chooseHomeLabel = (TextView) activity
+									.findViewById(R.id.choose_home_label);
+							chooseHomeLabel.setVisibility(View.INVISIBLE);
+							Button setHomeButton = (Button) activity
+									.findViewById(R.id.set_home_current);
+							setHomeButton.setVisibility(View.INVISIBLE);
+							MainActivity.choosingHomeProvince = false;
 
-					SharedPreferences sharedPref = activity
-							.getPreferences(Context.MODE_PRIVATE);
-					SharedPreferences.Editor editor = sharedPref.edit();
-					editor.putString("sid", SID);
-					editor.putInt("userId", userId);
-					editor.commit();
-					activity.updatePlayerInfo();
-					activity.showMessage(resources
-							.getString(R.string.user_created));
-				} else if (result == ServerResult.USERNAME_IN_USE) {
-					activity.showMessage(resources
-							.getString(R.string.error_username_taken));
-				} else {
-					activity.showMessage(resources
-							.getString(R.string.error_unknown));
-				}
+							SharedPreferences sharedPref = activity
+									.getPreferences(Context.MODE_PRIVATE);
+							SharedPreferences.Editor editor = sharedPref.edit();
+							editor.putString("sid", SID);
+							editor.putInt("userId", userId);
+							editor.commit();
+							activity.updatePlayerInfo();
+							activity.showMessage(resources
+									.getString(R.string.user_created));
+						} else if (result == ServerResult.USERNAME_IN_USE) {
+							activity.showMessage(resources
+									.getString(R.string.error_username_taken));
+						} else {
+							activity.showMessage(resources
+									.getString(R.string.error_unknown));
+						}
+					}
+				});
 
 			}
 		};

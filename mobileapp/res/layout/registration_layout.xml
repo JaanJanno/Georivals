@@ -12,7 +12,7 @@
 
     <EditText
         android:id="@+id/registration_username_textbox"
-        style="@style/LoginTextboxStyle"
+        style="@style/TextboxStyle"
         android:layout_below="@id/registration_username_label" >
 
         <requestFocus />
@@ -27,7 +27,7 @@
 
     <EditText
         android:id="@+id/registration_email_textbox"
-        style="@style/LoginTextboxStyle"
+        style="@style/TextboxStyle"
         android:layout_below="@id/registration_email_label"
         android:inputType="textEmailAddress" />
 

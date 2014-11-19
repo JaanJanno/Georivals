@@ -3,6 +3,7 @@
 
     <string name="app_name">Georivals</string>
     <string name="attack">Attack</string>
+    <string name="cancel">Cancel</string>
     <string name="choose_name">Choose you name:</string>
     <string name="choose_email">Enter your e-mail:</string>
     <string name="choose_home">Please choose your home province by clicking on a province or the button below.</string>
@@ -11,6 +12,7 @@
     <string name="confirmation_province">Do you want to make this your home province?</string>
     <string name="confirmation_exit">Are you sure you want to exit?</string>
     <string name="enter_key">Enter your login key:</string>
+    <string name="enter_province_name">Please enter a new name for your province:</string>
     <string name="email">E-mail</string>
     <string name="email_colon">E-mail:</string>
     <string name="email_info">E-mail is optional, but it will be useful in case you lose your phone and you will need backup.</string>
@@ -32,13 +34,15 @@
     <string name="map">Map</string>
     <string name="mission_log">Mission log</string>
     <string name="my_provinces">My provinces</string>
-    <string name="name_title">Name</string>
+    <string name="name">Name</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
     <string name="owner_name">Owner name:</string>
     <string name="profile">Profile</string>
     <string name="provinces_owned">Number of provinces owned:</string>
     <string name="provinces_sort">Sort provinces</string>
     <string name="province_name">Province name:</string>
+    <string name="province_renamed">Province renamed!</string>
     <string name="rank">Rank</string>
     <string name="register">Register</string>
     <string name="rename">Rename</string>

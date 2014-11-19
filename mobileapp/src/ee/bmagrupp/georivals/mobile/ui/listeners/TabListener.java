@@ -7,28 +7,27 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.res.Resources;
 
 @SuppressWarnings("deprecation")
 public class TabListener implements ActionBar.TabListener {
 	private MainActivity activity;
 	private Fragment fragment;
-	private Resources resources;
+	private String mapString;
 
 	public TabListener(MainActivity activity, TabItem tabItem) {
 		this.activity = activity;
 		this.fragment = (Fragment) tabItem;
-		this.resources = activity.getResources();
+		mapString = activity.getResources().getString(R.string.map);
+
 	}
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		String fragmentTag = (String) tab.getTag();
-		if (!fragmentTag.equals(resources.getString(R.string.map))) {
+		if (!fragmentTag.equals(mapString) && MainActivity.userId == 0) {
 			if (MainActivity.choosingHomeProvince)
 				activity.getActionBar().setSelectedNavigationItem(0);
-			else if (MainActivity.userId == 0
-					&& !MainActivity.REGISTRATION_FRAGMENT.isVisible())
+			else if (!MainActivity.REGISTRATION_FRAGMENT.isVisible())
 				ft.replace(R.id.fragment_container,
 						MainActivity.REGISTRATION_FRAGMENT, "Registration");
 		} else
@@ -42,10 +41,12 @@ public class TabListener implements ActionBar.TabListener {
 
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-			String fragmentTag = (String) tab.getTag();
+		String fragmentTag = (String) tab.getTag();
+		if (!fragment.isVisible()
+				&& (MainActivity.userId != 0 || fragmentTag.equals(mapString))) {
 			ft.replace(R.id.fragment_container, fragment, fragmentTag);
+		} else if (fragment.isVisible() && !fragmentTag.equals(mapString)) {
+			ft.detach(fragment).attach(fragment);
 		}
 	}
-
 }

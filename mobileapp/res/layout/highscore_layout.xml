@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/player_rank_icon"
             android:layout_toRightOf="@+id/player_rank_icon"
-            android:text="@string/name_title"
+            android:text="@string/name"
             android:textColor="@color/dark_brown"
             android:textSize="@dimen/text_large2" />
 
