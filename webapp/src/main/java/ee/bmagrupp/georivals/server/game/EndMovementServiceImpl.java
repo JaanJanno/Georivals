@@ -16,6 +16,7 @@ import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
+import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
 import ee.bmagrupp.georivals.server.core.repository.BattleHistoryRepository;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
@@ -45,10 +46,10 @@ public class EndMovementServiceImpl implements EndMovementService {
 
 	@Autowired
 	UnitRepository unitRepo;
-	
+
 	@Autowired
 	BattleLogic battleLog;
-	
+
 	@Autowired
 	BattleHistoryRepository batHistRepo;
 
@@ -57,12 +58,11 @@ public class EndMovementServiceImpl implements EndMovementService {
 		LOG.info("Ending movement " + endDate);
 		PageRequest page = new PageRequest(0, 1);
 		List<Movement> movList = movRepo.findByEndDate(endDate, page);
-		
+
 		Movement mov = null;
 		if (movList.size() == 1) {
 			mov = movList.get(0);
-		}
-		else {
+		} else {
 			LOG.error("No movement was found!");
 			// can't throw anything because it's in a separate thread
 			return;
@@ -85,7 +85,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 			// handle battle
 			handleBattle(mov, ow);
 		}
-		
+
 		LOG.info("Movement ended");
 
 	}
@@ -136,8 +136,98 @@ public class EndMovementServiceImpl implements EndMovementService {
 
 	private void handleBattle(Movement mov, Ownership ow) {
 		Player defender = playerRepo.findOwner(ow.getId());
-		BattleHistory history = battleLog.battle(ow.getProvince(), mov.getPlayer(), defender, mov.getUnit().getSize(), ow.countUnits());
+		BattleHistory history = battleLog.battle(ow.getProvince(),
+				mov.getPlayer(), defender, mov.getUnit().getSize(),
+				ow.countUnits());
+
+		if (history.isAttackerWon()) {
+			attackerWon(history, mov, ow);
+		} else {
+			defenderWon(history, mov, ow);
+		}
+
+		LOG.info(history.toString());
+		// assuming attacker won
+		// the attacker must now controll this province
+		// the defenders ownership must be destroyed
+		// the defenders unit must be destroyed
+		// the movement unit must be added to ownership
+		// movement must be deleted
 		batHistRepo.save(history);
+		movRepo.delete(mov);
+	}
+
+	/**
+	 * Called when the {@link Movement} initiator wins the battle. Deletes the
+	 * defenders {@link Unit}'s and {@link Ownership}. Creates a new
+	 * {@link Ownership} for the attacker. Movement {@link Unit}'s are resized
+	 * and added to the new {@link Ownership}.
+	 * 
+	 * @param history
+	 *            {@link BattleHistory}
+	 * @param mov
+	 *            {@link Movement}
+	 * @param ow
+	 *            {@link Ownership}
+	 */
+	private void attackerWon(BattleHistory history, Movement mov, Ownership ow) {
+		// delete defender units
+		deleteDefender(history, ow);
+
+		// resize attacker unit
+		mov.getUnit().increaseSize(-history.getAttackerLosses());
+		unitRepo.save(mov.getUnit());
+		// create new ownership
+		Ownership newOw = new Ownership(mov.getDestination(), mov.getUnit());
+		ownerRepo.save(newOw);
+		history.getAttacker().addOwnership(newOw);
+		playerRepo.save(history.getAttacker());
+
+	}
+
+	/**
+	 * Called when the defender wins. Decreases the size of the defenders
+	 * {@link Unit}. Deletes the attackers {@link Unit}. If the defender was the
+	 * BOT, deletes the {@link Ownership} and {@link Province}
+	 * 
+	 * @param history
+	 *            {@link BattleHistory}
+	 * @param mov
+	 *            {@link Movement}
+	 * @param ow
+	 *            {@link Ownership}
+	 */
+	private void defenderWon(BattleHistory history, Movement mov, Ownership ow) {
+
+		// delete movement unit
+		unitRepo.delete(mov.getUnit());
+
+		if (history.getDefender().getUserName().equals(Constants.BOT_NAME)) {
+			LOG.info("Deleting BOT ownership and unit");
+			deleteDefender(history, ow);
+		} else {
+			// decrease defenders unit
+			ow.getUnits().iterator().next()
+					.increaseSize(-history.getDefenderLosses());
+			unitRepo.save(ow.getUnits());
+		}
+	}
+
+	/**
+	 * Deletes the defenders {@link Ownership} and {@link Unit}.
+	 * 
+	 * @param history
+	 *            {@link BattleHistory}
+	 * @param ow
+	 *            {@link Ownership}
+	 */
+	private void deleteDefender(BattleHistory history, Ownership ow) {
+		LOG.info("Deleting the defenders ownership and unit ");
+		unitRepo.delete(ow.getUnits());
+		ow.getUnits().clear();
+		history.getDefender().getOwnedProvinces().remove(ow);
+		ownerRepo.delete(ow);
+		playerRepo.save(history.getDefender());
 	}
 
 	/**
@@ -168,7 +258,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 	public Date getNextMovement() {
 		PageRequest page = new PageRequest(0, 1);
 		List<Movement> mov = movRepo.getMostRecent(page);
-		if (mov.size() == 0) 
+		if (mov.size() == 0)
 			return null;
 		return mov.get(0).getEndDate();
 	}

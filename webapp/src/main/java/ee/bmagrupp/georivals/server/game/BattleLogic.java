@@ -3,20 +3,15 @@ package ee.bmagrupp.georivals.server.game;
 import java.util.Date;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
-import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import static ee.bmagrupp.georivals.server.util.Constants.ATTACKER_ODDS;
 
 @Service
 public class BattleLogic {
-	
-	@Autowired
-	OwnershipRepository ownerRepo;
 	
 	/**
 	 * @author Sander
@@ -56,22 +51,7 @@ public class BattleLogic {
 		int attackerLosses = attackerStrength - result[0];
 		int defenderLosses = defenderStrength - result[1];
 		
-		if(attackerWon){
-			changeOwner(location,attacker,result[0]);
-		}
-		else{
-			changeOwner(location,defender,result[1]);
-		}
 		return new BattleHistory(location, curDate, attacker, defender, attackerWon, attackerStrength, defenderStrength, attackerLosses, defenderLosses);
 	}
 
-	private void changeOwner(Province location, Player player, int leftOverMen) {
-		//Ownership battleground = ownerRepo.findByProvinceId(location.getId());
-		/**
-		 * \todo - do your magic tõnis
-		 * 
-		 */
-		
-	}
 }
-
