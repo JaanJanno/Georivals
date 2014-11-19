@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
+package ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;

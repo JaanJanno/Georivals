@@ -1,10 +1,9 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
 import com.google.android.gms.maps.model.LatLng;
-
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceViewUILoader;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.RenameProvinceUILoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify.RenameProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;

@@ -20,6 +20,7 @@ public class Constants {
 	static final public String PROFILE = WEBPAGE + "profile/id/";
 	static final public String PROVINCE = WEBPAGE + "province/";
 	static final public String RENAME_PROVINCE = PROVINCE + "rename/";
+	static final public String SET_HOME_PROVINCE = PROVINCE + "changehome/";
 	static final public String MYPROVINCES = PROVINCE + "myprovinces/";
 	static final public String REGISTRATION_PHASE1 = WEBPAGE
 			+ "registration/phase1/";

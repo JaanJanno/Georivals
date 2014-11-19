@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
+package ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify;
 
 import android.app.Activity;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
@@ -56,7 +56,7 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 	/**
 	 * Override to handle retrieved response in UI.
 	 * 
-	 * @param responseList
+	 * @param responseObject Response retrieved from server.
 	 */
 
 	abstract public void handleResponseObjectInUI(ServerResponse responseObject);
@@ -64,7 +64,7 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 	/**
 	 * Override to handle retrieved response in background.
 	 * 
-	 * @param responseList
+	 * @param responseObject Response retrieved from server.
 	 */
 
 	abstract public void handleResponseObjectInBackground(
