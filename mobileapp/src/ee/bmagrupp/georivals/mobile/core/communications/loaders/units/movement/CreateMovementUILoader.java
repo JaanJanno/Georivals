@@ -23,17 +23,17 @@ public abstract class CreateMovementUILoader extends CreateMovementLoader {
 	 *            List of movements the user wishes to do.
 	 * @param sid
 	 *            Unique secret ID of the player.
-	 * @param longitude
-	 *            Longitude of the province moved to.
 	 * @param latitude
 	 *            Latitude of the province moved to.
+	 * @param longitude
+	 *            Longitude of the province moved to.
 	 * @param activity
 	 *            Android activity that is modified.
 	 */
 
 	public CreateMovementUILoader(List<BeginMovementDTO> post, String sid,
-			double longitude, double latitude, Activity activity) {
-		super(post, sid, longitude, latitude);
+			double latitude, double longitude, Activity activity) {
+		super(post, sid, latitude, longitude);
 		this.activity = activity;
 	}
 

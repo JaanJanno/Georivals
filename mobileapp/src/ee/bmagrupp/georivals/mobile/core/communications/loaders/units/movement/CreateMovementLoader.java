@@ -23,19 +23,19 @@ public abstract class CreateMovementLoader extends
 	 *            List of movements the user wishes to do.
 	 * @param sid
 	 *            Unique secret ID of the player.
-	 * @param longitude
-	 *            Longitude of the province moved to.
 	 * @param latitude
 	 *            Latitude of the province moved to.
+	 * @param longitude
+	 *            Longitude of the province moved to.
 	 * 
 	 */
 
 	public CreateMovementLoader(List<BeginMovementDTO> post, String sid,
-			double longitude, double latitude) {
+			double latitude, double longitude) {
 		super(BeginMovementResponse.class, post.toArray(), Constants.MOVE_TO,
 				"sid=" + sid);
-		addParamter("longitude", Double.toString(longitude));
 		addParamter("latitude", Double.toString(latitude));
+		addParamter("longitude", Double.toString(longitude));
 	}
 
 	/**
