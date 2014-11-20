@@ -35,7 +35,7 @@ public class MovementSelectionFragment extends Fragment {
 	private static Resources resources;
 	private MovableUnitsUILoader movableUnitsListLoader;
 	private static LinearLayout movementSelectionLayout;
-	public static int totalUnitCount = 0;
+	public static int totalUnitCount;
 	public static int maxUnitCount;
 	public static int[] selectedUnitCountList;
 
@@ -95,6 +95,7 @@ public class MovementSelectionFragment extends Fragment {
 	}
 
 	private void setTypeDependables() {
+		totalUnitCount = 0;
 		TextView titleTextView = (TextView) movementSelectionLayout
 				.findViewById(R.id.movement_selection_title_header);
 		if (movementType == MovementType.ATTACK) {
