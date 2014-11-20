@@ -27,6 +27,9 @@ public class CalculationUtilTest {
 
 		double output4 = CalculationUtil.normalizeLatitute(0);
 		assertEquals("Rounding stuff", 0.0005, output4, 0.0001);
+
+		double output5 = CalculationUtil.normalizeLatitute(-30.4195);
+		assertEquals("Rounding stuff", -30.4195, output5, 0.0001);
 	}
 
 	@Test

@@ -106,6 +106,12 @@ public class MovementServiceImpl implements MovementService {
 			destination = createNewBotProvince(latitude, longitude,
 					playerStrength);
 		}
+		// If the destination is not the players home AND
+		// no ownership exists, then create a bot ownership
+		if (!(destination.getId() == player.getHome().getProvince().getId())
+				&& (ownerRepo.findByProvinceId(destination.getId()) == null)) {
+			createBotOwnership(destination, playerStrength);
+		}
 
 		List<Movement> movList = new ArrayList<>();
 
@@ -257,8 +263,22 @@ public class MovementServiceImpl implements MovementService {
 			int playerStrength) {
 		Province province = new Province(latitude, longitude);
 		provRepo.save(province);
-		Unit unit = new Unit(GameLogic.botUnits(latitude, longitude,
-				playerStrength));
+		LOG.info("Created new province for BOT " + province.toString());
+		return createBotOwnership(province, playerStrength);
+	}
+
+	/**
+	 * Create a new {@link Ownership} for an unowned {@link Province}. Populate
+	 * it with units.
+	 * 
+	 * @param province
+	 * @param playerStrength
+	 * @return BOT owned {@link Province}
+	 */
+	private Province createBotOwnership(Province province, int playerStrength) {
+		LOG.info("Creating BOT ownership for " + province.toString());
+		Unit unit = new Unit(GameLogic.botUnits(province.getLatitude(),
+				province.getLongitude(), playerStrength));
 		unitRepo.save(unit);
 		Ownership ow = new Ownership(province, unit);
 		ownerRepo.save(ow);

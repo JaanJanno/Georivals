@@ -5,7 +5,7 @@
 
 	<groupId>ee.bmagrupp</groupId>
 	<artifactId>georivals-server</artifactId>
-	<version>0.5.1</version>
+	<version>0.5.2</version>
 
 	<name>georivals-server</name>
 	<description>Georivals-server</description>

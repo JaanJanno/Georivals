@@ -119,4 +119,16 @@ public class BattleHistory implements Serializable {
 				+ defenderLosses + "]";
 	}
 
+	public String logString() {
+		return "BattleHistory [id=" + id + ", location=" + location + ", date="
+				+ date + ", attackerName=" + attacker.getUserName()
+				+ ", attackerId=" + attacker.getId() + ", defenderName="
+				+ defender.getUserName() + ", defenderId="
+				+ defender.getUserName() + ", attackerWon=" + attackerWon
+				+ ", attackerStrength=" + attackerStrength
+				+ ", defenderStrength=" + defenderStrength
+				+ ", attackerLosses=" + attackerLosses + ", defenderLosses="
+				+ defenderLosses + "]";
+	}
+
 }

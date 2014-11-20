@@ -91,4 +91,11 @@ public class Movement implements Serializable {
 				+ ", start=" + start + ", endDate=" + endDate + "]";
 	}
 
+	public String logString() {
+		return "Movement [id=" + id + ", unit=" + unit + ", origin=" + origin
+				+ ", destination=" + destination + ", playerName="
+				+ player.getUserName() + ", playerId=" + player.getId()
+				+ ", start=" + start + ", endDate=" + endDate + "]";
+	}
+
 }

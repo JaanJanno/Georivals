@@ -60,16 +60,16 @@ public class EndMovementServiceImpl implements EndMovementService {
 		List<Movement> movList = movRepo.findByEndDate(endDate, page);
 
 		Movement mov = null;
-		if (movList.size() == 1) {
+		if (movList.size() >= 1) {
 			mov = movList.get(0);
 		} else {
 			LOG.error("No movement was found!");
 			// can't throw anything because it's in a separate thread
 			return;
 		}
+		LOG.info(mov.logString());
 
 		// Checking who owns destination
-		// Hibernate.initialize(mov.getPlayer());
 		if (mov.getPlayer().getHome().getProvince().getId() == mov
 				.getDestination().getId()) {
 			// handle home unit addition
@@ -77,7 +77,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 			return;
 		}
 		Ownership ow = ownerRepo.findByProvinceId(mov.getDestination().getId());
-
+		LOG.info(ow.toString());
 		if (mov.getPlayer().getId() == playerRepo.findOwner(ow.getId()).getId()) {
 			// handle owned province addition
 			handleOwnershipAddition(mov, ow);
@@ -146,14 +146,8 @@ public class EndMovementServiceImpl implements EndMovementService {
 			defenderWon(history, mov, ow);
 		}
 
-		LOG.info(history.toString());
-		// assuming attacker won
-		// the attacker must now controll this province
-		// the defenders ownership must be destroyed
-		// the defenders unit must be destroyed
-		// the movement unit must be added to ownership
-		// movement must be deleted
 		batHistRepo.save(history);
+		LOG.info(history.logString());
 
 	}
 
@@ -189,7 +183,10 @@ public class EndMovementServiceImpl implements EndMovementService {
 	/**
 	 * Called when the defender wins. Decreases the size of the defenders
 	 * {@link Unit}. Deletes the attackers {@link Unit}. If the defender was the
-	 * BOT, deletes the {@link Ownership} and {@link Province}
+	 * BOT, deletes the {@link Ownership} and {@link Province}<br>
+	 * 
+	 * If the province is owned by the BOT, but is under attack from somewhere
+	 * else, then the {@link Ownership} is NOT deleted.
 	 * 
 	 * @param history
 	 *            {@link BattleHistory}
@@ -204,7 +201,11 @@ public class EndMovementServiceImpl implements EndMovementService {
 		// delete movement unit
 		unitRepo.delete(unitId);
 
-		if (history.getDefender().getUserName().equals(Constants.BOT_NAME)) {
+		boolean ownedByBot = history.getDefender().getUserName()
+				.equals(Constants.BOT_NAME);
+		boolean isDestination = movRepo.checkIfDestination(history
+				.getLocation().getId());
+		if (ownedByBot && !isDestination) {
 			LOG.info("Deleting BOT ownership and unit");
 			deleteDefender(history, ow);
 		} else {
