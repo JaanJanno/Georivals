@@ -75,6 +75,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private HashMap<LatLng, GroundOverlay> drawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
 	private List<ProvinceDTO> provinceList;
 
+	private static MapFragment instance;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -126,12 +128,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	public void onStart() {
 		super.onStart();
 		googleApiClient.connect();
+		instance = this;
 	}
 
 	@Override
 	public void onStop() {
 		googleApiClient.disconnect();
 		super.onStop();
+		instance = null;
 	}
 
 	@Override
@@ -139,6 +143,24 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		super.onPause();
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
+	}
+
+	/**
+	 * Calls for a map refresh when a MapFragment is open.
+	 */
+
+	public static void callMapRefresh() {
+		if (instance != null)
+			instance.refreshMap();
+	}
+
+	private void refreshMap() {
+		if (map.getCameraPosition().zoom > 15)
+			requestProvinceListData();
+		else if (drawnProvincesMap.size() > 0) {
+			map.clear();
+			drawnProvincesMap.clear();
+		}
 	}
 
 	@Override
@@ -215,12 +237,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
 			public void onCameraChange(CameraPosition position) {
-				if (map.getCameraPosition().zoom > 15)
-					requestProvinceListData();
-				else if (drawnProvincesMap.size() > 0) {
-					map.clear();
-					drawnProvincesMap.clear();
-				}
+				refreshMap();
 			}
 		});
 	}

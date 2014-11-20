@@ -1,7 +1,7 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectPostLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
@@ -16,7 +16,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
  */
 
 public abstract class UnitClaimLoader extends
-		GenericObjectPostLoader<ServerResponse> {
+		GenericObjectLoader<ServerResponse> {
 
 	/**
 	 * 
@@ -32,6 +32,7 @@ public abstract class UnitClaimLoader extends
 		super(ServerResponse.class, Constants.CLAIM, "sid=" + sid);
 		addParamter("latitude", Double.toString(latitude));
 		addParamter("longitude", Double.toString(longitude));
+		setRequestMethod("POST");
 	}
 
 	/**

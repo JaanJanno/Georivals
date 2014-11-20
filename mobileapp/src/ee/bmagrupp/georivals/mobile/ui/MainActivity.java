@@ -1,6 +1,7 @@
 package ee.bmagrupp.georivals.mobile.ui;
 
 import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
 import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
@@ -20,6 +21,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,6 +59,9 @@ public class MainActivity extends Activity {
 	public static int userId;
 	public static String sid = "";
 	public static boolean choosingHomeProvince;
+	
+	public static final long unitClaimInterval = 1000; // Minimal milliseconds between location update.
+	public static final int unitClaimMinDistance = 10; // Minimal meters of movement for a new unit claim.
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,17 @@ public class MainActivity extends Activity {
 		addTabRibbon();
 		hideViews();
 		updatePlayerInfo();
+		
+		setUnitClaimHandler();
+	}
+	
+	/*
+	 * Creates a listener that sends unit claim requests to server when the player has moved.
+	 */
+	
+	private void setUnitClaimHandler(){
+		LocationManager l = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+		l.requestLocationUpdates("gps", unitClaimInterval, unitClaimMinDistance, new LocationChangeUIHandler(this));
 	}
 
 	@Override
