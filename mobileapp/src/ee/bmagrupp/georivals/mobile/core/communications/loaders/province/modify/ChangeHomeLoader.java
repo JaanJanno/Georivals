@@ -5,10 +5,9 @@ import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoa
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
- * Class for sending a request to change the players
- * home province. Use this by overriding the
- * handleResponseObject() method and calling 
- * retrieveObject() method.
+ * Class for sending a request to change the players home province. Use this by
+ * overriding the handleResponseObject() method and calling retrieveObject()
+ * method.
  * 
  * @author Jaan Janno
  * 

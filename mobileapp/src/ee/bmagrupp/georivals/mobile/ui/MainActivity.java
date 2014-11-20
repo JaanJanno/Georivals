@@ -6,6 +6,7 @@ import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MovementSelectionFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MyProvincesFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.ProvinceFragment;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 @SuppressWarnings("deprecation")
 @SuppressLint("InflateParams")
 public class MainActivity extends Activity {
+	public static final MovementSelectionFragment MOVEMENT_SELECTION_FRAGMENT = new MovementSelectionFragment();
 	public static final ProvinceFragment PROVINCE_FRAGMENT = new ProvinceFragment();
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
 	public static final LoginFragment LOGIN_FRAGMENT = new LoginFragment();
@@ -46,10 +48,10 @@ public class MainActivity extends Activity {
 	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment();
 	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
 	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
-	public static final MyProvincesFragment MY_PLACES_FRAGMENT = new MyProvincesFragment();
+	public static final MyProvincesFragment MY_PROVINCES_FRAGMENT = new MyProvincesFragment();
 	private final TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
 			MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
-			MY_PLACES_FRAGMENT };
+			MY_PROVINCES_FRAGMENT };
 	public static Typeface GABRIOLA_FONT;
 	private final Activity activity = this;
 	private Resources resources;
@@ -59,9 +61,13 @@ public class MainActivity extends Activity {
 	public static int userId;
 	public static String sid = "";
 	public static boolean choosingHomeProvince;
-	
-	public static final long unitClaimInterval = 1000; // Minimal milliseconds between location update.
-	public static final int unitClaimMinDistance = 10; // Minimal meters of movement for a new unit claim.
+
+	public static final long unitClaimInterval = 1000; // Minimal milliseconds
+														// between location
+														// update.
+	public static final int unitClaimMinDistance = 10; // Minimal meters of
+														// movement for a new
+														// unit claim.
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,17 +82,20 @@ public class MainActivity extends Activity {
 		addTabRibbon();
 		hideViews();
 		updatePlayerInfo();
-		
+
 		setUnitClaimHandler();
 	}
-	
+
 	/*
-	 * Creates a listener that sends unit claim requests to server when the player has moved.
+	 * Creates a listener that sends unit claim requests to server when the
+	 * player has moved.
 	 */
-	
-	private void setUnitClaimHandler(){
-		LocationManager l = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-		l.requestLocationUpdates("gps", unitClaimInterval, unitClaimMinDistance, new LocationChangeUIHandler(this));
+
+	private void setUnitClaimHandler() {
+		LocationManager l = (LocationManager) getApplicationContext()
+				.getSystemService(Context.LOCATION_SERVICE);
+		l.requestLocationUpdates("gps", unitClaimInterval,
+				unitClaimMinDistance, new LocationChangeUIHandler(this));
 	}
 
 	@Override

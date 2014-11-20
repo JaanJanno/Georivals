@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/movement_selection_title_header"
+        style="@style/HeaderStyle" />
+
+    <View style="@style/HeaderLineStyle" />
+
+    <ExpandableListView
+        android:id="@+id/movement_selection_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.71"
+        android:divider="@color/dark_brown"
+        android:dividerHeight="1dp" >
+    </ExpandableListView>
+
+    <View style="@style/HeaderLineStyle" />
+
+    <TextView
+        android:id="@+id/movement_selection_unit_count"
+        style="@style/HeaderStyle" />
+
+    <View style="@style/HeaderLineStyle" />
+
+    <Button
+        android:id="@+id/movement_selection_button"
+        style="@style/LoginButtonStyle"
+        android:layout_margin="@dimen/margin_small"
+        android:text="@string/units_send" />
+
+</LinearLayout>

@@ -9,10 +9,10 @@ import ee.bmagrupp.georivals.mobile.models.battle.BattleType;
  * DTO for battles that have happened in mission log view.
  * 
  * @author TKasekamp
- *
+ * 
  */
 public class BattleHistoryDTO {
-	
+
 	public static final Type listType = new TypeToken<ArrayList<BattleHistoryDTO>>() {
 	}.getType();
 

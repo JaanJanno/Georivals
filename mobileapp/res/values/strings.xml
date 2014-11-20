@@ -50,11 +50,15 @@
     <string name="settings">Settings</string>
     <string name="start">Start</string>
     <string name="strategical_information">Strategical information</string>
+    <string name="units_arrive">Units will arrive at</string>
     <string name="units_average">Average number of units:</string>
     <string name="units_number">Number of units:</string>
+    <string name="units_send">Send units</string>
     <string name="units_sort">Sort units</string>
-    <string name="units_total">Total number of units:</string>
+    <string name="units_total_number">Total number of units:</string>
+    <string name="units_total">Total units:</string>
     <string name="units_transfer">Transfer units</string>
+    <string name="units_transfer_to">Transfer units to</string>
     <string name="user_created">User created!</string>
     <string name="username">Username</string>
     <string name="username_colon">Username:</string>

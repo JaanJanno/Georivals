@@ -40,7 +40,7 @@
     <TextView
         android:id="@+id/profile_total_units"
         style="@style/TextStyle"
-        android:text="@string/units_total" />
+        android:text="@string/units_total_number" />
 
     <TextView
         android:id="@+id/profile_average_units"

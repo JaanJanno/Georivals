@@ -52,7 +52,8 @@ public class LoginFragment extends Fragment {
 				EditText keyEditText = (EditText) loginLayout
 						.findViewById(R.id.login_key_textbox);
 				String loginKey = keyEditText.getText().toString();
-				if (loginKey.length() == 16 || loginKey.equals("test")) {
+				if (loginKey.length() == 16 || loginKey.equals("test")
+						|| loginKey.equals("johnny")) {
 					loginRequest(loginKey);
 				} else {
 					activity.showMessage(resources
@@ -78,12 +79,22 @@ public class LoginFragment extends Fragment {
 	}
 
 	private void loginRequest(String loginKey) {
+		// test users
 		if (loginKey.equals("test")) {
 			SharedPreferences sharedPref = activity
 					.getPreferences(Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putString("sid", loginKey);
+			editor.putString("sid", "BPUYYOU62flwiWJe");
 			editor.putInt("userId", 1);
+			editor.commit();
+			activity.updatePlayerInfo();
+			activity.getActionBar().setSelectedNavigationItem(0);
+		} else if (loginKey.equals("johnny")) {
+			SharedPreferences sharedPref = activity
+					.getPreferences(Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = sharedPref.edit();
+			editor.putString("sid", "UJ86IpW5xK8ZZH7t");
+			editor.putInt("userId", 5);
 			editor.commit();
 			activity.updatePlayerInfo();
 			activity.getActionBar().setSelectedNavigationItem(0);

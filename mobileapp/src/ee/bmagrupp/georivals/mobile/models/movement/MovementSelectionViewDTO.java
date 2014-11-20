@@ -12,10 +12,10 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
  * that aren't moving.
  * 
  * @author TKasekamp
- *
+ * 
  */
 public class MovementSelectionViewDTO {
-	
+
 	public static final Type listType = new TypeToken<ArrayList<MovementSelectionViewDTO>>() {
 	}.getType();
 
@@ -73,5 +73,5 @@ public class MovementSelectionViewDTO {
 				+ ", unitId=" + unitId + ", unitSize=" + unitSize + ", type="
 				+ type + "]";
 	}
-	
+
 }

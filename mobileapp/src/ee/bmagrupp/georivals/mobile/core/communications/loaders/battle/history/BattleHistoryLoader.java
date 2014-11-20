@@ -6,11 +6,9 @@ import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericListLoade
 import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
 
 /**
- * Class for sending a request to get players battle
- * history. <br>
+ * Class for sending a request to get players battle history. <br>
  * 
- * Use this by overriding the
- * handleResponseList() method and calling 
+ * Use this by overriding the handleResponseList() method and calling
  * retrieveList() method.
  * 
  * @author Jaan Janno

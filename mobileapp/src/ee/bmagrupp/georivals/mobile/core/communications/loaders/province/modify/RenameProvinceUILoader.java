@@ -56,7 +56,8 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 	/**
 	 * Override to handle retrieved response in UI.
 	 * 
-	 * @param responseObject Response retrieved from server.
+	 * @param responseObject
+	 *            Response retrieved from server.
 	 */
 
 	abstract public void handleResponseObjectInUI(ServerResponse responseObject);
@@ -64,7 +65,8 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 	/**
 	 * Override to handle retrieved response in background.
 	 * 
-	 * @param responseObject Response retrieved from server.
+	 * @param responseObject
+	 *            Response retrieved from server.
 	 */
 
 	abstract public void handleResponseObjectInBackground(

@@ -1,11 +1,13 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
 import com.google.android.gms.maps.model.LatLng;
+
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceViewUILoader;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify.RenameProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.ServerResult;
+import ee.bmagrupp.georivals.mobile.models.movement.MovementType;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
@@ -28,7 +30,7 @@ public class ProvinceFragment extends Fragment {
 	private Resources resources;
 
 	public static LatLng provinceLatLng;
-	private ProvinceDTO province;
+	public static ProvinceDTO province;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,7 +104,12 @@ public class ProvinceFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-
+					MovementSelectionFragment.movementType = MovementType.TRANSFER;
+					activity.getFragmentManager()
+							.beginTransaction()
+							.replace(R.id.fragment_container,
+									MainActivity.MOVEMENT_SELECTION_FRAGMENT,
+									"Movement selection").commit();
 				}
 
 			};
@@ -135,7 +142,12 @@ public class ProvinceFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-
+					MovementSelectionFragment.movementType = MovementType.ATTACK;
+					activity.getFragmentManager()
+							.beginTransaction()
+							.replace(R.id.fragment_container,
+									MainActivity.MOVEMENT_SELECTION_FRAGMENT,
+									"Movement selection").commit();
 				}
 
 			};

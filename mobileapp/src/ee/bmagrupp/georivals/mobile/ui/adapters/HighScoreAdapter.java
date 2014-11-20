@@ -1,6 +1,5 @@
 package ee.bmagrupp.georivals.mobile.ui.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ee.bmagrupp.georivals.mobile.R;
@@ -18,12 +17,12 @@ import android.widget.TextView;
 public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 
 	private final Context context;
-	private final ArrayList<HighScoreEntry> playersArrayList;
+	private final List<HighScoreEntry> entriesList;
 
-	public HighScoreAdapter(Context context, List<HighScoreEntry> playerList) {
-		super(context, R.layout.highscore_item, playerList);
+	public HighScoreAdapter(Context context, List<HighScoreEntry> entriesList) {
+		super(context, R.layout.highscore_item, entriesList);
 		this.context = context;
-		this.playersArrayList = (ArrayList<HighScoreEntry>) playerList;
+		this.entriesList = entriesList;
 	}
 
 	@SuppressLint("ViewHolder")
@@ -45,7 +44,7 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		TextView unitsView = (TextView) rowView
 				.findViewById(R.id.average_units);
 
-		HighScoreEntry playerInfo = playersArrayList.get(position);
+		HighScoreEntry playerInfo = entriesList.get(position);
 
 		rankView.setText((position + 1) + ".");
 		nameView.setText(playerInfo.getUsername());

@@ -4,7 +4,7 @@ package ee.bmagrupp.georivals.mobile.models.movement;
  * For making units move. Sent from MovementSelectionView.
  * 
  * @author TKasekamp
- *
+ * 
  */
 public class BeginMovementDTO {
 	private int unitId;
