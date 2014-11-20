@@ -24,6 +24,7 @@ import ee.bmagrupp.georivals.server.Application;
 import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
+import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
@@ -59,55 +60,59 @@ public class MovementServiceTest {
 
 	@Autowired
 	UnitRepository unitRepo;
-	
+
 	@Autowired
 	PlayerRepository playerRepo;
-	
+
 	@Autowired
 	ProvinceRepository provRepo;
-	
+
 	double latitude;
 	double longitude;
 	String sid;
-	
+
 	@Before
 	public void setUp() {
 		sid = "BPUYYOU62flwiWJe";
 		latitude = 24.4525;
 		longitude = 54.321;
 	}
-	
+
 	@Test
-	public void claimUnitsTest(){
+	public void claimUnitsTest() {
 		Set<Ownership> lst = playerRepo.findBySid(sid).getOwnedProvinces();
 		Province a = null;
-		int value = 0; 
-		for(Ownership o : lst){
+		int value = 0;
+		for (Ownership o : lst) {
 			a = o.getProvince();
-			value = o.countUnits();			
+			value = o.countUnits();
 			break;
 		}
-		ServerResponse resp = movServ.claimUnits(String.valueOf(a.getLatitude()), String.valueOf(a.getLongitude()), sid);
-		assertEquals("Expected: ",ServerResult.OK ,resp.getResult());
-		
+		ServerResponse resp = movServ.claimUnits(
+				String.valueOf(a.getLatitude()),
+				String.valueOf(a.getLongitude()), sid);
+		assertEquals("Expected: ", ServerResult.OK, resp.getResult());
+
 		lst = playerRepo.findBySid(sid).getOwnedProvinces();
-		for(Ownership o : lst){
+		for (Ownership o : lst) {
 			assertNotEquals("Expected", value, o.countUnits());
 			break;
-		}	
+		}
 	}
-	
+
 	@Test
-	public void claimHomeUnitsTest(){
+	public void claimHomeUnitsTest() {
 		HomeOwnership home = playerRepo.findBySid(sid).getHome();
 		int value = home.countUnits();
-		
-		ServerResponse resp = movServ.claimUnits(String.valueOf(home.getProvince().getLatitude()), String.valueOf(home.getProvince().getLongitude()), sid);
-		assertEquals("Expected: ",ServerResult.OK ,resp.getResult());
-		
+
+		ServerResponse resp = movServ.claimUnits(
+				String.valueOf(home.getProvince().getLatitude()),
+				String.valueOf(home.getProvince().getLongitude()), sid);
+		assertEquals("Expected: ", ServerResult.OK, resp.getResult());
+
 		home = playerRepo.findBySid(sid).getHome();
 		assertNotEquals("Expected", value, home.countUnits());
-}
+	}
 
 	@Test
 	public void getMyUnitsTest() {
@@ -185,14 +190,51 @@ public class MovementServiceTest {
 		Movement mov = movList.get(movList.size() - 1);
 		assertEquals("Origin id", 1, mov.getOrigin().getId());
 		assertEquals("Destination id", 2, mov.getDestination().getId(), 0.0001);
-		assertEquals("Destination lat", lat, mov.getDestination()
-				.getLatitude(), 0.0001);
+		assertEquals("Destination lat", lat,
+				mov.getDestination().getLatitude(), 0.0001);
 		assertEquals("Destination longitude", lon, mov.getDestination()
 				.getLongitude(), 0.0001);
 		assertEquals("Player id", 1, mov.getPlayer().getId());
 		assertEquals("New Unit size", 6, mov.getUnit().getSize());
 		// Dates won't be tested because they kinda change all the time
 
+	}
+
+	@Test
+	public void moveToBotProvince() {
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(7, 6));
+		double lat = 13.1235;
+		double lon = 10.567;
+
+		BeginMovementResponse response = movServ.moveUnitsTo(
+				Double.toString(lat), Double.toString(lon), list,
+				"BPUYYOU62flwiWJe");
+
+		assertEquals("Result is ok", ServerResult.OK, response.getResult());
+
+		// Checking for decreased unit size
+		assertEquals("Unit size", 4, unitRepo.findOne(7).getSize());
+
+		List<Movement> movList = (List<Movement>) movRepo.findAll();
+		// The movement made has to be the last one
+		Movement mov = movList.get(movList.size() - 1);
+		assertEquals("Origin id", 1, mov.getOrigin().getId());
+		assertEquals("Destination lat", lat,
+				mov.getDestination().getLatitude(), 0.0001);
+		assertEquals("Destination longitude", lon, mov.getDestination()
+				.getLongitude(), 0.0001);
+		assertEquals("Player id", 1, mov.getPlayer().getId());
+		assertEquals("New Unit size", 6, mov.getUnit().getSize());
+
+		// Checking that the BOT has ownership
+		Player bot = playerRepo.findOne(0);
+		assertEquals("BOT has one ownerhip", 1, bot.getOwnedProvinces().size());
+		assertEquals("BOT ownership has movement destination", mov
+				.getDestination().getId(), bot.getOwnedProvinces().iterator()
+				.next().getProvince().getId());
+		assertNotNull("BOT has units in that province", bot.getOwnedProvinces()
+				.iterator().next().getUnits().iterator().next());
 	}
 
 	@Test(expected = RuntimeException.class)

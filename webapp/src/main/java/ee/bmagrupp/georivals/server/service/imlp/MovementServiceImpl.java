@@ -66,12 +66,12 @@ public class MovementServiceImpl implements MovementService {
 
 	@Autowired
 	HomeOwnershipRepository homeRepo;
-	
-    @Autowired
-    ThreadPoolTaskScheduler threadPoolTaskScheduler;
-        
-    @Resource
-    MovementWorker worker;
+
+	@Autowired
+	ThreadPoolTaskScheduler threadPoolTaskScheduler;
+
+	@Resource
+	MovementWorker worker;
 
 	@Override
 	public List<MovementSelectionViewDTO> getMyUnits(String cookie) {
@@ -127,17 +127,21 @@ public class MovementServiceImpl implements MovementService {
 	public ServerResponse claimUnits(String lat, String lon, String cookie) {
 		double latitude = CalculationUtil.normalizeLatitute(lat);
 		double longitude = CalculationUtil.normalizeLongitude(lon);
-		Ownership a = ownerRepo.findProvinceOfPlayer(latitude, longitude, cookie);
+		Ownership a = ownerRepo.findProvinceOfPlayer(latitude, longitude,
+				cookie);
 		Date curDate = new Date();
 		int newUnits = 0;
-		if(a == null){
-			HomeOwnership b = homeRepo.findHomeProvinceOfPlayer(latitude, longitude, cookie);
-			if(b == null){
-				ServerResponse resp = new ServerResponse(ServerResult.FAIL,"Not your province");
+		if (a == null) {
+			HomeOwnership b = homeRepo.findHomeProvinceOfPlayer(latitude,
+					longitude, cookie);
+			if (b == null) {
+				ServerResponse resp = new ServerResponse(ServerResult.FAIL,
+						"Not your province");
 				return resp;
 			}
-			for(Unit u : b.getUnits()){
-				newUnits = GameLogic.generateNewUnits(b.getLastVisit(), curDate, b.countUnits());
+			for (Unit u : b.getUnits()) {
+				newUnits = GameLogic.generateNewUnits(b.getLastVisit(),
+						curDate, b.countUnits());
 				u.setSize(u.getSize() + newUnits);
 				unitRepo.save(u);
 			}
@@ -146,8 +150,9 @@ public class MovementServiceImpl implements MovementService {
 			ServerResponse resp = new ServerResponse(ServerResult.OK, newUnits);
 			return resp;
 		}
-		for(Unit u : a.getUnits()){
-			newUnits = GameLogic.generateNewUnits(a.getLastVisit(), curDate, a.countUnits());
+		for (Unit u : a.getUnits()) {
+			newUnits = GameLogic.generateNewUnits(a.getLastVisit(), curDate,
+					a.countUnits());
 			u.setSize(u.getSize() + newUnits);
 			unitRepo.save(u);
 		}
@@ -160,6 +165,12 @@ public class MovementServiceImpl implements MovementService {
 	private Movement createMovement(Province destination, BeginMovementDTO dto,
 			Player player) {
 		Unit unit = unitRepo.findOne(dto.getUnitId());
+		if (!checkIfPlayerIsOwnerOfUnit(player, unit)) {
+			LOG.info("Unauthorized! Player " + player.getUserName()
+					+ " tried to move unit " + unit.getId());
+			throw new RuntimeException("Unauthorised unit movement!");
+		}
+
 		Ownership ow = ownerRepo.findUnitLocation(unit.getId());
 		Movement movement;
 		if (ow != null) {
@@ -172,7 +183,7 @@ public class MovementServiceImpl implements MovementService {
 		}
 
 		movementRepo.save(movement);
-		
+
 		// Scheduling movement
 		worker.setEndDate(movement.getEndDate());
 		threadPoolTaskScheduler.schedule(worker, movement.getEndDate());
@@ -180,18 +191,14 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	/**
-	 * Creates a new movement when the origin is the players normal province.
-	 * Checks if the {@link Player} is really the owner of this province.
+	 * Creates a new movement when the destination is the players normal
+	 * province. Checks if the {@link Player} is really the owner of this
+	 * province.
 	 * 
 	 * @return {@link Movement}
 	 */
 	private Movement createNormalProvinceMovement(Ownership ow, Player player,
 			Province destination, Unit unit, BeginMovementDTO dto) {
-		if (player.getId() != playerRepo.findOne(ow.getId()).getId()) {
-			LOG.error("Player " + player.getUserName()
-					+ " is not the owner of home province" + ow.toString());
-			throw new RuntimeException("Unauthorised unit movement!");
-		}
 
 		if (unit.getSize() - dto.getUnitSize() < PROVINCE_UNIT_MIN) {
 			// Yeah, this is bad error handling, but i don't give a fuck
@@ -212,18 +219,13 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	/**
-	 * Creates a new movement when the origin is the players home province.
+	 * Creates a new movement when the destination is the players home province.
 	 * Checks if the {@link Player} is really the owner of this province.
 	 * 
 	 * @return {@link Movement}
 	 */
 	private Movement createHomeProvinceMovement(HomeOwnership ow,
 			Player player, Province destination, Unit unit, BeginMovementDTO dto) {
-		if (player.getHome().getId() != ow.getId()) {
-			LOG.error("Player " + player.getUserName()
-					+ " is not the owner of home province" + ow.toString());
-			throw new RuntimeException("Unauthorised unit movement!");
-		}
 
 		if (unit.getSize() - dto.getUnitSize() < 0) {
 			// Yeah, this is bad error handling, but i don't give a fuck
@@ -262,6 +264,7 @@ public class MovementServiceImpl implements MovementService {
 		ownerRepo.save(ow);
 		Player bot = playerRepo.findOne(0);
 		bot.addOwnership(ow);
+		playerRepo.save(bot);
 		return province;
 	}
 
@@ -279,6 +282,28 @@ public class MovementServiceImpl implements MovementService {
 		unitRepo.save(oldUnit);
 		unitRepo.save(newUnit);
 		return newUnit;
+	}
+
+	/**
+	 * Checks that the {@link Unit} belongs to this {@link Player}. Checks in
+	 * both {@link Ownership} and {@link HomeOwnership}.
+	 * 
+	 * @param player
+	 *            {@link Player}
+	 * @param unit
+	 *            {@link Unit}
+	 * @return {@code true} if it belongs. false if not
+	 */
+	private boolean checkIfPlayerIsOwnerOfUnit(Player player, Unit unit) {
+		Player unitOwner = playerRepo.findOwnerOfUnit(unit.getId());
+		if ((unitOwner != null) && (player.getId() == unitOwner.getId())) {
+			return true;
+		}
+		unitOwner = playerRepo.findOwnerOfHomeUnit(unit.getId());
+		if ((unitOwner != null) && (player.getId() == unitOwner.getId())) {
+			return true;
+		}
+		return false;
 	}
 
 }

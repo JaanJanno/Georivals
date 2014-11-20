@@ -155,4 +155,18 @@ public class PlayerRepositoryTest {
 		assertEquals("Player name", "Mr. TK", player.getUserName());
 	}
 
+	@Test
+	public void findOwnerOfUnit() {
+		Player player = playerRepo.findOwnerOfUnit(6);
+		assertEquals("Player id", 1, player.getId());
+		assertEquals("Player name", "Mr. TK", player.getUserName());
+	}
+
+	@Test
+	public void findOwnerOfHomeUnit() {
+		Player player = playerRepo.findOwnerOfHomeUnit(7);
+		assertEquals("Player id", 1, player.getId());
+		assertEquals("Player name", "Mr. TK", player.getUserName());
+	}
+
 }

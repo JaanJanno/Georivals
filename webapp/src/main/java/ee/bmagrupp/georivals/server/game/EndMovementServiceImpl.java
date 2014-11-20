@@ -154,7 +154,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 		// the movement unit must be added to ownership
 		// movement must be deleted
 		batHistRepo.save(history);
-		movRepo.delete(mov);
+
 	}
 
 	/**
@@ -182,6 +182,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 		ownerRepo.save(newOw);
 		history.getAttacker().addOwnership(newOw);
 		playerRepo.save(history.getAttacker());
+		movRepo.delete(mov);
 
 	}
 
@@ -198,9 +199,10 @@ public class EndMovementServiceImpl implements EndMovementService {
 	 *            {@link Ownership}
 	 */
 	private void defenderWon(BattleHistory history, Movement mov, Ownership ow) {
-
+		int unitId = mov.getUnit().getId();
+		movRepo.delete(mov);
 		// delete movement unit
-		unitRepo.delete(mov.getUnit());
+		unitRepo.delete(unitId);
 
 		if (history.getDefender().getUserName().equals(Constants.BOT_NAME)) {
 			LOG.info("Deleting BOT ownership and unit");
@@ -242,6 +244,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 	private void addToExisting(Unit unit, Movement mov) {
 		unit.increaseSize(mov.getUnit().getSize());
 		normalizeUnits(unit);
+		LOG.info("ADDITION: New unit size is " + unit.toString());
 		unitRepo.save(unit);
 		movRepo.delete(mov);
 		unitRepo.delete(mov.getUnit());

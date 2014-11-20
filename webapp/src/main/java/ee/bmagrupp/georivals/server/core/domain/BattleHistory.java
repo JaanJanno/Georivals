@@ -109,4 +109,14 @@ public class BattleHistory implements Serializable {
 		return defenderLosses;
 	}
 
+	@Override
+	public String toString() {
+		return "BattleHistory [id=" + id + ", location=" + location + ", date="
+				+ date + ", attacker=" + attacker + ", defender=" + defender
+				+ ", attackerWon=" + attackerWon + ", attackerStrength="
+				+ attackerStrength + ", defenderStrength=" + defenderStrength
+				+ ", attackerLosses=" + attackerLosses + ", defenderLosses="
+				+ defenderLosses + "]";
+	}
+
 }

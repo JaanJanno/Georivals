@@ -194,8 +194,8 @@ public class EndMovementServiceTest {
 				moveRepo.findByEndDate(endDate, new PageRequest(0, 1))
 						.isEmpty());
 
-		// Because there are no other
-		BattleHistory battle = batHistRepo.findOne(1);
+		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
+		BattleHistory battle = list.get(0);
 
 		assertEquals("Attacker id", 1, battle.getAttacker().getId());
 		assertEquals("Defender id", 2, battle.getDefender().getId());
@@ -211,6 +211,160 @@ public class EndMovementServiceTest {
 
 			// Defender units gone
 			assertEquals("No defender units", null, unitRepo.findOne(2));
+		}
+
+	}
+
+	@Test
+	public void battleDefenderWinsTest() {
+		// Doge attacks Mr.TK
+		Player player = playerRepo.findOne(2);
+		Unit unit = new Unit(1);
+		unitRepo.save(unit);
+		int unitId = unit.getId();
+		Province origin = provRepo.findOne(1);
+
+		Calendar cal = Calendar.getInstance(); // creates calendar
+		cal.setTime(new Date()); // sets calendar time/date
+		cal.add(Calendar.SECOND, 35);
+		Date endDate = cal.getTime();
+		Movement battleMov = new Movement(unit, origin, provRepo.findOne(6),
+				player, new Date(), endDate);
+		moveRepo.save(battleMov);
+
+		// Making the move happen
+		endMovServ.handleMovement(endDate);
+
+		assertTrue("No such movement",
+				moveRepo.findByEndDate(endDate, new PageRequest(0, 1))
+						.isEmpty());
+
+		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
+		BattleHistory battle = list.get(0);
+
+		assertEquals("Attacker id", 2, battle.getAttacker().getId());
+		assertEquals("Defender id", 1, battle.getDefender().getId());
+		assertEquals("Battle location", 6, battle.getLocation().getId());
+		assertEquals("Attacker strength", 1, battle.getAttackerStrength());
+		assertEquals("Defender strength", 9, battle.getDefenderStrength());
+		if (!battle.isAttackerWon()) {
+			Ownership ow = ownerRepo.findByProvinceId(6);
+			assertEquals("Defender controls the province", 2, playerRepo
+					.findOwnerOfProvince(2).getId());
+			assertEquals("Owner units", 9 - battle.getDefenderLosses(), ow
+					.getUnits().iterator().next().getSize());
+
+			// Attacking unit gone
+			assertNull("Attacking unit gone", unitRepo.findOne(unitId));
+
+		}
+
+	}
+
+	@Test
+	public void attackBotAndWin() {
+		// Create bot ownership
+		Province prov = new Province(11.1115, 22.222);
+		provRepo.save(prov);
+		Unit botUnit = new Unit(5);
+		unitRepo.save(botUnit);
+		Ownership botow = new Ownership(prov, botUnit);
+		ownerRepo.save(botow);
+		Player bot = playerRepo.findOne(0);
+		bot.addOwnership(botow);
+		playerRepo.save(bot);
+
+		// create movement
+		Player player = playerRepo.findOne(1);
+		Unit unit = new Unit(27);
+		unitRepo.save(unit);
+		Province origin = provRepo.findOne(6);
+
+		Calendar cal = Calendar.getInstance(); // creates calendar
+		cal.setTime(new Date()); // sets calendar time/date
+		cal.add(Calendar.SECOND, 22);
+		Date endDate = cal.getTime();
+		Movement battleMov = new Movement(unit, origin, prov, player,
+				new Date(), endDate);
+		moveRepo.save(battleMov);
+
+		endMovServ.handleMovement(endDate);
+
+		assertTrue("No such movement",
+				moveRepo.findByEndDate(endDate, new PageRequest(0, 1))
+						.isEmpty());
+
+		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
+		BattleHistory battle = list.get(0);
+
+		assertEquals("Attacker id", 1, battle.getAttacker().getId());
+		assertEquals("Defender id", 0, battle.getDefender().getId());
+		assertEquals("Battle location", prov.getId(), battle.getLocation()
+				.getId());
+		assertEquals("Attacker strength", 27, battle.getAttackerStrength());
+		assertEquals("Defender strength", 5, battle.getDefenderStrength());
+		if (battle.isAttackerWon()) {
+			Ownership ow = ownerRepo.findByProvinceId(prov.getId());
+			assertEquals("Attacker controls the province", 1, playerRepo
+					.findOwnerOfProvince(prov.getId()).getId());
+			assertEquals("Owner units", 27 - battle.getAttackerLosses(), ow
+					.getUnits().iterator().next().getSize());
+
+			// Defender units gone
+			assertNull("No defender units", unitRepo.findOne(botUnit.getId()));
+		}
+
+	}
+
+	@Test
+	public void attackBotAndLose() {
+		// Create bot ownership
+		Province prov = new Province(11.1115, 22.222);
+		provRepo.save(prov);
+		Unit botUnit = new Unit(15);
+		unitRepo.save(botUnit);
+		Ownership botow = new Ownership(prov, botUnit);
+		ownerRepo.save(botow);
+		Player bot = playerRepo.findOne(0);
+		bot.addOwnership(botow);
+		playerRepo.save(bot);
+
+		// create movement
+		Player player = playerRepo.findOne(1);
+		Unit unit = new Unit(2);
+		unitRepo.save(unit);
+		Province origin = provRepo.findOne(6);
+
+		Calendar cal = Calendar.getInstance(); // creates calendar
+		cal.setTime(new Date()); // sets calendar time/date
+		cal.add(Calendar.SECOND, 21);
+		Date endDate = cal.getTime();
+		Movement battleMov = new Movement(unit, origin, prov, player,
+				new Date(), endDate);
+		moveRepo.save(battleMov);
+
+		endMovServ.handleMovement(endDate);
+
+		assertTrue("No such movement",
+				moveRepo.findByEndDate(endDate, new PageRequest(0, 1))
+						.isEmpty());
+
+		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
+		BattleHistory battle = list.get(0);
+
+		assertEquals("Attacker id", 1, battle.getAttacker().getId());
+		assertEquals("Defender id", 0, battle.getDefender().getId());
+		assertEquals("Battle location", prov.getId(), battle.getLocation()
+				.getId());
+		assertEquals("Attacker strength", 2, battle.getAttackerStrength());
+		assertEquals("Defender strength", 15, battle.getDefenderStrength());
+		if (!battle.isAttackerWon()) {
+			// BOT ownership has been deleted
+			assertNull("Attacker controls the province",
+					ownerRepo.findByProvinceId(prov.getId()));
+
+			// Defender units gone
+			assertNull("No defender units", unitRepo.findOne(botUnit.getId()));
 		}
 
 	}
