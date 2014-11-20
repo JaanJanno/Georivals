@@ -3,6 +3,7 @@ package ee.bmagrupp.georivals.server.service;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ import ee.bmagrupp.georivals.server.core.domain.Movement;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
+import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
@@ -67,9 +69,12 @@ public class MovementServiceTest {
 	@Autowired
 	ProvinceRepository provRepo;
 
-	double latitude;
-	double longitude;
-	String sid;
+	@Autowired
+	HomeOwnershipRepository homeRepo;
+
+	private double latitude;
+	private double longitude;
+	private String sid;
 
 	@Before
 	public void setUp() {
@@ -111,7 +116,23 @@ public class MovementServiceTest {
 		assertEquals("Expected: ", ServerResult.OK, resp.getResult());
 
 		home = playerRepo.findBySid(sid).getHome();
-		assertNotEquals("Expected", value, home.countUnits());
+		assertEquals("Expected", value + resp.getId(), home.countUnits());
+	}
+
+	@Test
+	public void claimUnitsNoNewUnits() {
+		HomeOwnership home = playerRepo.findBySid(sid).getHome();
+		home.setLastVisit(new Date());
+		homeRepo.save(home);
+		int value = home.countUnits();
+
+		ServerResponse resp = movServ.claimUnits(
+				String.valueOf(home.getProvince().getLatitude()),
+				String.valueOf(home.getProvince().getLongitude()), sid);
+		assertEquals("Expected: ", ServerResult.NO_NEW_UNITS, resp.getResult());
+
+		home = playerRepo.findBySid(sid).getHome();
+		assertEquals("Expected", value + resp.getId(), home.countUnits());
 	}
 
 	@Test

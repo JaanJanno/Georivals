@@ -3,6 +3,7 @@ package ee.bmagrupp.georivals.server.service.imlp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -133,39 +134,55 @@ public class MovementServiceImpl implements MovementService {
 	public ServerResponse claimUnits(String lat, String lon, String cookie) {
 		double latitude = CalculationUtil.normalizeLatitute(lat);
 		double longitude = CalculationUtil.normalizeLongitude(lon);
-		Ownership a = ownerRepo.findProvinceOfPlayer(latitude, longitude,
+
+		Ownership ow = ownerRepo.findProvinceOfPlayer(latitude, longitude,
 				cookie);
-		Date curDate = new Date();
 		int newUnits = 0;
-		if (a == null) {
-			HomeOwnership b = homeRepo.findHomeProvinceOfPlayer(latitude,
+		Date curDate = new Date();
+		if (ow != null) {
+			newUnits = claimOwnershipUnits(ow, curDate);
+		} else {
+			HomeOwnership home = homeRepo.findHomeProvinceOfPlayer(latitude,
 					longitude, cookie);
-			if (b == null) {
-				ServerResponse resp = new ServerResponse(ServerResult.FAIL,
+			if (home == null) {
+				return new ServerResponse(ServerResult.FAIL,
 						"Not your province");
-				return resp;
 			}
-			for (Unit u : b.getUnits()) {
-				newUnits = GameLogic.generateNewUnits(b.getLastVisit(),
-						curDate, b.countUnits());
-				u.setSize(u.getSize() + newUnits);
-				unitRepo.save(u);
-			}
-			b.setLastVisit(curDate);
-			homeRepo.save(b);
-			ServerResponse resp = new ServerResponse(ServerResult.OK, newUnits);
-			return resp;
+			newUnits = claimHomeUnits(home, curDate);
 		}
-		for (Unit u : a.getUnits()) {
-			newUnits = GameLogic.generateNewUnits(a.getLastVisit(), curDate,
-					a.countUnits());
+
+		if (newUnits == 0) {
+			return new ServerResponse(ServerResult.NO_NEW_UNITS);
+		}
+		return new ServerResponse(ServerResult.OK, newUnits);
+	}
+
+	private int claimHomeUnits(HomeOwnership home, Date curDate) {
+		int newUnits = addToUnits(home.getUnits(), home.getLastVisit(),
+				curDate, home.countUnits());
+		home.setLastVisit(curDate);
+		homeRepo.save(home);
+		return newUnits;
+	}
+
+	private int claimOwnershipUnits(Ownership ow, Date curDate) {
+		int newUnits = addToUnits(ow.getUnits(), ow.getLastVisit(), curDate,
+				ow.countUnits());
+		ow.setLastVisit(curDate);
+		ownerRepo.save(ow);
+		return newUnits;
+	}
+
+	private int addToUnits(Set<Unit> units, Date lastVisitDate, Date curDate,
+			int unitCount) {
+		int newUnits = 0;
+		for (Unit u : units) {
+			newUnits = GameLogic.generateNewUnits(lastVisitDate, curDate,
+					unitCount);
 			u.setSize(u.getSize() + newUnits);
 			unitRepo.save(u);
 		}
-		a.setLastVisit(curDate);
-		ownerRepo.save(a);
-		ServerResponse resp = new ServerResponse(ServerResult.OK, newUnits);
-		return resp;
+		return newUnits;
 	}
 
 	private Movement createMovement(Province destination, BeginMovementDTO dto,
