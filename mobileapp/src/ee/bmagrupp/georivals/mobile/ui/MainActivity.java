@@ -2,6 +2,7 @@ package ee.bmagrupp.georivals.mobile.ui;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
+import ee.bmagrupp.georivals.mobile.core.location.service.LocationService;
 import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
@@ -19,12 +20,14 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,12 +65,14 @@ public class MainActivity extends Activity {
 	public static String sid = "";
 	public static boolean choosingHomeProvince;
 
-	public static final long unitClaimInterval = 1000; // Minimal milliseconds
-														// between location
-														// update.
-	public static final int unitClaimMinDistance = 10; // Minimal meters of
-														// movement for a new
-														// unit claim.
+	// Minimal milliseconds between location update.
+	public static final long unitClaimInterval = 1000;
+
+	// Minimal meters of movement for a new unit claim.
+	public static final float unitClaimMinDistance = 10;
+
+	// Whether a service for claiming units in background is started.
+	private static boolean locationServiceEnabled = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +88,61 @@ public class MainActivity extends Activity {
 		hideViews();
 		updatePlayerInfo();
 
+		// Starts a listener that claims units and updates map if claimed.
 		setUnitClaimHandler();
+
+		// Handles unit claiming background service starting.
+		setLocationService();
+
+	}
+
+	/**
+	 * 
+	 * @return Whether a service always remains running that claims units in
+	 *         background.
+	 */
+
+	public static boolean isLocationServiceEnabled() {
+		return locationServiceEnabled;
+	}
+
+	/**
+	 * Sets whether a service remains always running that claims units in
+	 * background.
+	 * 
+	 * @param locationServiceEnabled
+	 *            Service remains running in background?
+	 */
+
+	public void setLocationServiceEnabled(boolean locationServiceEnabled) {
+		MainActivity.locationServiceEnabled = locationServiceEnabled;
+		setLocationService();
+	}
+
+	/*
+	 * Starts the location service if enabled and stops it if disabled.
+	 */
+
+	private void setLocationService() {
+		setLocationServicePreferences();
+		if (isLocationServiceEnabled()) {
+			Intent service = new Intent(this, LocationService.class);
+			startService(service);
+		} else
+			stopService(new Intent(this, LocationService.class));
+	}
+
+	/*
+	 * Stores the players SID in shared preferences for the location service to
+	 * use when the program isn't running.
+	 */
+
+	private void setLocationServicePreferences() {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("sid", sid);
+		editor.commit();
 	}
 
 	/*

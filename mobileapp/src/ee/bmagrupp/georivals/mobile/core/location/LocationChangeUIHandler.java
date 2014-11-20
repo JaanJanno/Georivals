@@ -9,7 +9,6 @@ import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
 import android.app.Activity;
 import android.location.Location;
 import android.location.LocationListener;
-import android.os.Bundle;
 import android.util.Log;
 
 /**
@@ -20,7 +19,8 @@ import android.util.Log;
  * 
  */
 
-public class LocationChangeUIHandler implements LocationListener {
+public class LocationChangeUIHandler extends LocationChangeHandler implements
+		LocationListener {
 
 	private Activity activity;
 
@@ -71,21 +71,6 @@ public class LocationChangeUIHandler implements LocationListener {
 
 	private void updateMap() {
 		MapFragment.callMapRefresh();
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-
 	}
 
 }
