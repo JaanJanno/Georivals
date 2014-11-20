@@ -25,7 +25,7 @@ public interface ProvinceRepository extends CrudRepository<Province, Integer> {
 	 *            For Tartu something like 26.72
 	 * @return {@link Province} if found. null if not found
 	 */
-	@Query("from Province p where p.latitude = ?1 and p.longitude = ?2")
+	@Query("from Province p where (p.latitude between ?1-0.00001 and ?1+0.00001) and (p.longitude between ?2-0.0001 and ?2+0.0001)")
 	Province findWithLatLong(double latitude, double longitude);
 
 	/**
