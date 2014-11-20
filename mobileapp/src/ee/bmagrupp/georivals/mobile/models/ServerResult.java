@@ -1,5 +1,5 @@
 package ee.bmagrupp.georivals.mobile.models;
 
 public enum ServerResult {
-	OK, USERNAME_IN_USE, OTHER, FAIL
+	OK, USERNAME_IN_USE, OTHER, FAIL, NO_NEW_UNITS
 }

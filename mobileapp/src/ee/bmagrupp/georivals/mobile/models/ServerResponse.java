@@ -51,8 +51,8 @@ public class ServerResponse {
 
 	@Override
 	public String toString() {
-		return "RegistrationResponse [result=" + result + ", value=" + value
-				+ "]";
+		return "ServerResponse [result=" + result + ", value=" + value
+				+ ", id=" + id + "]";
 	}
 
 }
