@@ -118,7 +118,7 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * Adds all parameters to the Connection object that's about to be created.
 	 */
 
-	private void handleParameters(Connection c) {
+	protected void handleParameters(Connection c) {
 		for (String key : parameters.keySet()) {
 			c.addParameter(key, parameters.get(key));
 		}

@@ -1,32 +1,39 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement;
 
+import java.util.List;
 import android.app.Activity;
-import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
+import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementDTO;
+import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementResponse;
 
 /**
- * Class for canceling a movement from server. Able to handle response straight
+ * Class for handling creating new movements. Able to handle response straight
  * on UI. Use this by overriding the response handling methods and calling
  * retrieveObject() method.
  * 
  * @author Jaan Janno
  */
 
-public abstract class CancelMovementUILoader extends CancelMovementLoader {
+public abstract class CreateMovementUILoader extends CreateMovementLoader {
 
 	private Activity activity;
 
 	/**
 	 * 
+	 * @param post
+	 *            List of movements the user wishes to do.
 	 * @param sid
-	 *            User identifier sent in cookie.
-	 * @param movementId
-	 *            Id of movement to be deleted.
+	 *            Unique secret ID of the player.
+	 * @param longitude
+	 *            Longitude of the province moved to.
+	 * @param latitude
+	 *            Latitude of the province moved to.
 	 * @param activity
 	 *            Android activity that is modified.
 	 */
 
-	public CancelMovementUILoader(String sid, int movementId, Activity activity) {
-		super(sid, movementId);
+	public CreateMovementUILoader(List<BeginMovementDTO> post, String sid,
+			double longitude, double latitude, Activity activity) {
+		super(post, sid, longitude, latitude);
 		this.activity = activity;
 	}
 
@@ -37,7 +44,7 @@ public abstract class CancelMovementUILoader extends CancelMovementLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final MovementViewDTO responseObject) {
+	public void handleResponseObject(final BeginMovementResponse responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override
@@ -54,7 +61,8 @@ public abstract class CancelMovementUILoader extends CancelMovementLoader {
 	 * @param responseObject
 	 */
 
-	abstract public void handleResponseObjectInUI(MovementViewDTO responseObject);
+	abstract public void handleResponseObjectInUI(
+			BeginMovementResponse responseObject);
 
 	/**
 	 * Override to handle retrieved object in background.
@@ -63,6 +71,6 @@ public abstract class CancelMovementUILoader extends CancelMovementLoader {
 	 */
 
 	abstract public void handleResponseObjectInBackground(
-			MovementViewDTO responseObject);
+			BeginMovementResponse responseObject);
 
 }

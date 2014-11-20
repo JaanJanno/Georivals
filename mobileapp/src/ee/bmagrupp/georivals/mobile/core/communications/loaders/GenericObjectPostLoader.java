@@ -92,6 +92,7 @@ public abstract class GenericObjectPostLoader<T> extends GenericObjectLoader<T> 
 				}
 			}
 		};
+		handleParameters(c);
 		c.sendRequest();
 	}
 
