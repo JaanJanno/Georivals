@@ -93,9 +93,9 @@ public class GameLogic {
 	 */
 	public static int botUnits(double latitude, double longitude,
 			int playerStrength) {
-		int min = playerStrength
+		int min = (playerStrength / 2)
 				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		int max = playerStrength
+		int max = (playerStrength / 2)
 				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
 		long seed = (long) (((latitude * 1000.0) + ((longitude) / 1000.0)) * 1000000);
 		Random rand = new Random(seed);
