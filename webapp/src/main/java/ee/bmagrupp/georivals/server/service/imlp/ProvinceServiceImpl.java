@@ -165,120 +165,215 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 */
 
 	@Override
-	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {
-		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
-		
+	public List<ProvinceDTO> getProvinces(CameraFOV fov, String cookie) {		
 		// calculate the amount of rows and columns
 		int columns = calculateColumnNr(fov.getSwlongitude(),
 				fov.getNelongitude());
 		int rows = calculateRowsNr(fov.getSwlatitude(), fov.getNelatitude());
-		// ------
+		
 		// Get player related stats from the system and set variables
-		Player tempPlayer = playerRepo.findBySid(cookie);
-		int playerStrength = PLAYER_DEFAULT_STRENGTH;
-		int curPlayerId = PLAYER_DEFAULT_ID;
-		if (tempPlayer != null) {
-			curPlayerId = tempPlayer.getId();
-			playerStrength = findPlayerStrength(tempPlayer);
-		}
-		// ------
+		Player requestMaker = playerRepo.findBySid(cookie);
+		int playerStrength = findPlayerStrength(requestMaker);
+		int requestMakerId = findPlayerID(requestMaker);
+		
 		// calculate base coordinates on which to un the FOR loops
 		double baseLat = Math.floor(fov.getSwlatitude() * 1000.0) / 1000.0;
-		double baseLong = Math.floor(fov.getSwlongitude() * 1000.0) / 1000.0;
-		if ((baseLong * 1000.0) % 2 != 0) {
-			baseLong = ((baseLong * 1000) - 1) / 1000.0;
-		}
-		// -------
+		double baseLong = findBaseLong(fov.getSwlongitude());
+		
 		// find all areas within the specified coordinates
-		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(
-				fov.getSwlatitude(), fov.getSwlongitude(), fov.getNelatitude(),
-				fov.getNelongitude());
-		// -------
+		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(fov.getSwlatitude()
+				, fov.getSwlongitude()
+				, fov.getNelatitude()
+				, fov.getNelongitude());
+		
 		// For generating new units
 		Date currentDate = new Date();
-		// -------
+		
 		// Find out if home province is within the boundaries
-		boolean homeIncluded = false;
-		HomeOwnership home = null;
-		if(tempPlayer != null){
-			home = tempPlayer.getHome();
-			homeIncluded = HomeInArea(fov.getSwlatitude(),fov.getSwlongitude(),fov.getNelatitude(),fov.getNelongitude(),home);
+		HomeOwnership home = getHome(requestMaker);
+		boolean homeIncluded = HomeInArea(fov.getSwlatitude(),fov.getSwlongitude()
+											,fov.getNelatitude(),fov.getNelongitude(),home);
+		
+		//-- Iterate through all rows and columns and create rtrn list
+		ArrayList<ProvinceDTO> rtrn = getProvinceList(columns, rows, playerStrength,
+										requestMakerId, baseLat, 
+										baseLong, lst, currentDate);
+		if(homeIncluded){
+			rtrn = addHome(rtrn, home, currentDate, requestMaker);
 		}
-		// -------
+		return rtrn;
+		
+	}
+	
+	/**
+	 * @author Sander
+	 * @param rtrn
+	 * @param home
+	 * @param currentDate
+	 * @param requestMaker
+	 * @return a list with the home area added, if applicable
+	 */
+	
+	private ArrayList<ProvinceDTO> addHome(ArrayList<ProvinceDTO> rtrn, HomeOwnership home, Date currentDate, Player requestMaker) {
+		for(int i = 0; i < rtrn.size(); i++){
+			ProvinceDTO prov = rtrn.get(i);
+			//-- Is the area the same area as home
+			if(home.getProvince().getLongitude() == prov.getLongitude() &&
+					home.getProvince().getLatitude() == prov.getLatitude()){
+				//-- Generate unclaimed units if applicable
+				int newUnits = GameLogic.generateNewUnits(home.getLastVisit()
+										, currentDate, home.countUnits());
+				//-- Replace the bot province with Home
+				rtrn.set(i, new ProvinceDTO(home.getProvince().getLatitude(), home.getProvince()
+						.getLongitude(), ProvinceType.HOME, home.getProvinceName()
+						, requestMaker.getUserName(), true, false, home.countUnits(), newUnits));
+				break;
+			}
+		}
+		return rtrn;
+		
+	}
+
+	/**
+	 * @author Sander
+	 * @param columns
+	 * @param rows
+	 * @param playerStrength
+	 * @param requestMakerId
+	 * @param baseLat
+	 * @param baseLong
+	 * @param lst
+	 * @param currentDate
+	 * @return returns a list of provinces within the FOV specified coordinates only BOT and Player
+	 */
+	
+	private ArrayList<ProvinceDTO> getProvinceList(int columns, int rows, int playerStrength
+											, int requestMakerId, double baseLat, double baseLong
+											, List<Ownership> lst, Date currentDate) {
+		ArrayList<ProvinceDTO> rtrn = new ArrayList<ProvinceDTO>();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
+				//-- Setup
 				boolean found = false;
-				Ownership foundArea = null;
-				//Find if this is home
-				if(homeIncluded && home.getProvince().getLongitude() > (baseLong + (j * PROVINCE_WIDTH))
-						&& home.getProvince().getLongitude() < (baseLong + ((j + 1) * PROVINCE_WIDTH))
-						&& home.getProvince().getLatitude() > (baseLat + (i * PROVINCE_HEIGHT))
-						&& home.getProvince().getLatitude() < (baseLat + ((i + 1) * PROVINCE_HEIGHT))){
-					int newUnits = 0;
-					newUnits = GameLogic.generateNewUnits(
-							home.getLastVisit(), currentDate,
-							home.countUnits());
-					rtrn.add(new ProvinceDTO(home.getProvince().getLatitude(), home.getProvince()
-							.getLongitude(), ProvinceType.HOME, home.getProvinceName()
-							, tempPlayer.getUserName(), true, false, home.countUnits(), newUnits));
-					continue;
-				}
-				else{
-					for (Ownership a : lst) {
-						double x = a.getProvince().getLongitude();
-						double y = a.getProvince().getLatitude();
-						
-						// Flow control for determining whether the ownership is
-						// inside The marked area or not
-						if (x > (baseLong + (j * PROVINCE_WIDTH))
-								&& x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
-								&& y > (baseLat + (i * PROVINCE_HEIGHT))
-								&& y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
-							// -----
-							Province temp = a.getProvince();
-							int provinceStrength = a.countUnits();
-							Player player = playerRepo.findOwnerOfProvince(temp
-									.getId());
-							int playerId = player.getId();
-							int newUnits = 0;
-							if (curPlayerId == playerId) {
-								newUnits = GameLogic.generateNewUnits(
-										a.getLastVisit(), currentDate,
-										provinceStrength);
-							}
-							// -----
-							if (curPlayerId == playerId) {
-								rtrn.add(new ProvinceDTO(temp.getLatitude(), temp
-										.getLongitude(), ProvinceType.PLAYER, a
-										.getProvinceName(), player.getUserName(),
-										true, false, a.countUnits(), newUnits));
-							} else {
-								rtrn.add(new ProvinceDTO(temp.getLatitude(), temp
-										.getLongitude(), ProvinceType.OTHER_PLAYER,
-										a.getProvinceName(), player.getUserName(),
-										true, false, a.countUnits(), newUnits));
-							}
-							found = true;
-							foundArea = a;
-							break;
-						}
+				//-- search if current square contains a owned province
+				for (Ownership a : lst) {
+					double x = a.getProvince().getLongitude();
+					double y = a.getProvince().getLatitude();
+					//-- Is ownership is within limits
+					if (x > (baseLong + (j * PROVINCE_WIDTH)) && x < (baseLong + ((j + 1) * PROVINCE_WIDTH))
+							&& y > (baseLat + (i * PROVINCE_HEIGHT)) && y < (baseLat + ((i + 1) * PROVINCE_HEIGHT))) {
+						//-- Add province to list
+						rtrn.add(createPlayerProvince(requestMakerId, currentDate, a));
+						//-- We found the area "a"
+						found = true;
+						lst.remove(a);
+						//-- We can stop searching
+						break;
 					}
 				}
+				//-- If not then create bot province
 				if (!found) {
 					rtrn.add(createBOTProvince(baseLat + (i * PROVINCE_HEIGHT)
 							+ (PROVINCE_HEIGHT / 2), baseLong
 							+ (j * PROVINCE_WIDTH) + (PROVINCE_WIDTH / 2),
 							playerStrength));
-				} else {
-					lst.remove(foundArea);
 				}
 			}
 		}
 		return rtrn;
 	}
+	
+	/**
+	 * method for creating a Player owned ProvinceDTO object
+	 * @author Sander
+	 * @param requestMakerId
+	 * @param currentDate
+	 * @param a
+	 * @return ProvinceDTO object
+	 */
+	
+	private ProvinceDTO createPlayerProvince(int requestMakerId
+			, Date currentDate, Ownership a) {
+		Province prov = a.getProvince();
+		Player player = playerRepo.findOwnerOfProvince(prov
+				.getId());
+		int playerId = player.getId();		
+		return createPlayerProvinceObject(requestMakerId, a, prov, player,
+				playerId, currentDate);
+	}
+	
+	/**
+	 * meta-method which creates the ProvinceDTO object depending on whether, it belongs
+	 * to the request maker or not 
+	 * @author Sander
+	 * @param requestMakerId
+	 * @param a
+	 * @param temp
+	 * @param player
+	 * @param playerId
+	 * @param currentDate
+	 * @return ProvinceDTO object
+	 */
+	private ProvinceDTO createPlayerProvinceObject(int requestMakerId,
+			Ownership a, Province temp, Player player, int playerId,
+			 Date currentDate) {
+		int newUnits = 0;
+		//-- if this area belongs to the user making the request
+		if (requestMakerId == playerId) {
+			//-- generate unclaimed units
+			newUnits = GameLogic.generateNewUnits(
+					a.getLastVisit(), currentDate,
+					a.countUnits());
+			return new ProvinceDTO(temp.getLatitude(), temp
+					.getLongitude(), ProvinceType.PLAYER, a
+					.getProvinceName(), player.getUserName(),
+					true, false, a.countUnits(), newUnits);
+		} else {
+			return new ProvinceDTO(temp.getLatitude(), temp
+					.getLongitude(), ProvinceType.OTHER_PLAYER,
+					a.getProvinceName(), player.getUserName(),
+					true, false, a.countUnits(), newUnits);
+		}
+	}
+	
+	private HomeOwnership getHome(Player requestMaker) {
+		if(requestMaker == null){
+			return null;
+		}
+		return requestMaker.getHome();
+	}
+
+	private double findBaseLong(double swlongitude) {
+		double baseLong = Math.floor(swlongitude * 1000.0) / 1000.0;
+		if ((baseLong * 1000.0) % 2 != 0) {
+			baseLong = ((baseLong * 1000) - 1) / 1000.0;
+		}
+		return baseLong;
+	}
+
+	private int findPlayerID(Player requestMaker) {
+		if(requestMaker == null){
+			return PLAYER_DEFAULT_ID;
+		}
+		return requestMaker.getId();
+	}
+	
+	/**
+	 * method for checking if home is in FOV specified area
+	 * @author Sander
+	 * @param swlatitude
+	 * @param swlongitude
+	 * @param nelatitude
+	 * @param nelongitude
+	 * @param home
+	 * @return boolean if true or not
+	 */
 
 	private boolean HomeInArea(double swlatitude, double swlongitude,
 			double nelatitude, double nelongitude, HomeOwnership home) {
+		if(home == null){
+			return false;
+		}
 		Province homeProv = home.getProvince();
 		if(swlatitude < homeProv.getLatitude() && nelatitude > homeProv.getLatitude()
 			&& swlongitude < homeProv.getLongitude() && nelongitude > homeProv.getLongitude()){
@@ -286,6 +381,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 		}
 		return false;
 	}
+	
+	/**
+	 * @author Sander
+	 * @param player
+	 * @return Calculate player total strength
+	 */
 
 	public int findPlayerStrength(Player player) {
 		if (player == null) {
