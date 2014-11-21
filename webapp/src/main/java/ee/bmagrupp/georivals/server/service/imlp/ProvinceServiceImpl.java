@@ -27,6 +27,7 @@ import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
 import ee.bmagrupp.georivals.server.util.CalculationUtil;
+import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.GeneratorUtil;
 import ee.bmagrupp.georivals.server.util.ServerResult;
 
@@ -329,10 +330,18 @@ public class ProvinceServiceImpl implements ProvinceService {
 					.getProvinceName(), player.getUserName(),
 					true, false, a.countUnits(), newUnits);
 		} else {
-			return new ProvinceDTO(temp.getLatitude(), temp
+			if(player.getUserName() == Constants.BOT_NAME){
+				return new ProvinceDTO(temp.getLatitude(), temp
+					.getLongitude(), ProvinceType.BOT,
+					a.getProvinceName(), player.getUserName(),
+					true, false, a.countUnits(), newUnits);
+			}
+			else{
+				return new ProvinceDTO(temp.getLatitude(), temp
 					.getLongitude(), ProvinceType.OTHER_PLAYER,
 					a.getProvinceName(), player.getUserName(),
 					true, false, a.countUnits(), newUnits);
+			}
 		}
 	}
 	
