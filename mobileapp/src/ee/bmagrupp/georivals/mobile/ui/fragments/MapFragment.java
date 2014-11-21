@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -72,7 +72,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private ButtonClickListener buttonClickListener;
 	private MapClickListener mapClickListener;
 	private Location playerLocation;
-	private HashMap<LatLng, GroundOverlay> drawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
+	private ArrayList<ProvinceDTO> drawnProvincesList = new ArrayList<ProvinceDTO>();
 	private List<ProvinceDTO> provinceList;
 
 	private static MapFragment instance;
@@ -120,7 +120,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		lastZoom = map.getCameraPosition().zoom;
 		if (MainActivity.toast != null)
 			MainActivity.toast.cancel();
-		drawnProvincesMap.clear();
+		drawnProvincesList.clear();
 		super.onDestroyView();
 	}
 
@@ -157,9 +157,9 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private void refreshMap() {
 		if (map.getCameraPosition().zoom > 15)
 			requestProvinceListData();
-		else if (drawnProvincesMap.size() > 0) {
+		else if (drawnProvincesList.size() > 0) {
 			map.clear();
-			drawnProvincesMap.clear();
+			drawnProvincesList.clear();
 		}
 	}
 
@@ -270,15 +270,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	@SuppressLint("InflateParams")
 	private void drawProvinces() {
-		HashMap<LatLng, GroundOverlay> newDrawnProvincesMap = new HashMap<LatLng, GroundOverlay>();
-		for (ProvinceDTO province : provinceList) {
-			double centerLatitude = MainActivity.roundDouble(
-					province.getLatitude(), 10000);
-			double centerLongitude = MainActivity.roundDouble(
-					province.getLongitude(), 1000);
-			LatLng centerLatLng = new LatLng(centerLatitude, centerLongitude);
-
-			if (!drawnProvincesMap.containsKey(centerLatLng)) {
+		ArrayList<ProvinceDTO> newDrawnProvincesList = new ArrayList<ProvinceDTO>();
+		for (int i = 0; i < provinceList.size(); i++) {
+			ProvinceDTO province = provinceList.get(i);
+			ProvinceDTO drawnProvince = findDrawnProvince(drawnProvincesList,
+					province);
+			if (!provincesEqual(province, drawnProvince)) {
 				RelativeLayout provinceLayout;
 				if (province.isUnderAttack() || !province.isAttackable()) {
 					provinceLayout = (RelativeLayout) LayoutInflater.from(
@@ -295,22 +292,70 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 				Bitmap provinceBitmap = createBitmap(provinceLayout);
 
 				LatLngBounds provinceBounds = new LatLngBounds(new LatLng(
-						centerLatitude - provinceLatitudeRadius,
-						centerLongitude - provinceLongitudeRadius), new LatLng(
-						centerLatitude + provinceLatitudeRadius,
-						centerLongitude + provinceLongitudeRadius));
+						province.getLatitude() - provinceLatitudeRadius,
+						province.getLongitude() - provinceLongitudeRadius),
+						new LatLng(province.getLatitude()
+								+ provinceLatitudeRadius, province
+								.getLongitude() + provinceLongitudeRadius));
 
-				GroundOverlay provinceOverlay = createGroundOverlay(
+				GroundOverlay groundOverlay = createGroundOverlay(
 						provinceBitmap, provinceBounds);
-
-				newDrawnProvincesMap.put(centerLatLng, provinceOverlay);
+				province.setGroundOverlay(groundOverlay);
+				newDrawnProvincesList.add(province);
 			} else {
-				newDrawnProvincesMap.put(centerLatLng,
-						drawnProvincesMap.get(centerLatLng));
+				newDrawnProvincesList.add(drawnProvince);
 			}
 		}
 
-		removeOldProvinces(newDrawnProvincesMap);
+		removeOldProvinces(newDrawnProvincesList);
+	}
+
+	private ProvinceDTO findDrawnProvince(
+			ArrayList<ProvinceDTO> drawnProvincesList, ProvinceDTO province) {
+		double latitude = province.getLatitude();
+		double longitude = province.getLongitude();
+		for (ProvinceDTO drawnProvince : drawnProvincesList) {
+			if (doublesEqual(drawnProvince.getLatitude(), latitude)
+					&& doublesEqual(drawnProvince.getLongitude(), longitude))
+				return drawnProvince;
+		}
+		return null;
+
+	}
+
+	private boolean doublesEqual(double double1, double double2) {
+		if (double1 > double2 - 0.0001 && double1 < double2 + 0.0001)
+			return true;
+		else
+			return false;
+	}
+
+	private boolean provincesEqual(ProvinceDTO province1, ProvinceDTO province2) {
+		if (province1 != null
+				&& province2 != null
+				&& province1.getUnitSize() == province2.getUnitSize()
+				&& province1.isAttackable() == province2.isAttackable()
+				&& province1.getType() == province2.getType()
+				&& province1.getProvinceName().equals(
+						province2.getProvinceName()))
+			return true;
+		else
+			return false;
+	}
+
+	private void removeOldProvinces(ArrayList<ProvinceDTO> newDrawnProvincesList) {
+		for (ProvinceDTO province : drawnProvincesList) {
+			boolean mustRemove = true;
+			for (ProvinceDTO province2 : newDrawnProvincesList) {
+				if (provincesEqual(province, province2)) {
+					mustRemove = false;
+					break;
+				}
+			}
+			if (mustRemove)
+				province.getGroundOverlay().remove();
+		}
+		drawnProvincesList = newDrawnProvincesList;
 	}
 
 	private void setSpecialProvinceLayout(RelativeLayout provinceLayout,
@@ -389,15 +434,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 				BitmapDescriptorFactory.fromBitmap(bitmap)).positionFromBounds(
 				bounds);
 		return map.addGroundOverlay(overlayOptions);
-	}
-
-	private void removeOldProvinces(
-			HashMap<LatLng, GroundOverlay> newDrawnProvincesMap) {
-		for (LatLng provinceLatLng : drawnProvincesMap.keySet()) {
-			if (!newDrawnProvincesMap.containsKey(provinceLatLng))
-				drawnProvincesMap.get(provinceLatLng).remove();
-		}
-		drawnProvincesMap = newDrawnProvincesMap;
 	}
 
 	public GoogleApiClient getGoogleApiClient() {

@@ -2,6 +2,8 @@ package ee.bmagrupp.georivals.mobile.models.province;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -28,6 +30,8 @@ public class ProvinceDTO {
 
 	private final int unitSize;
 	private final int newUnitSize;
+
+	private GroundOverlay groundOverlay;
 
 	public ProvinceDTO(double latitude, double longitude, ProvinceType type,
 			String provinceName, String ownerName, boolean attackable,
@@ -82,6 +86,14 @@ public class ProvinceDTO {
 
 	public int getNewUnitSize() {
 		return newUnitSize;
+	}
+
+	public GroundOverlay getGroundOverlay() {
+		return groundOverlay;
+	}
+
+	public void setGroundOverlay(GroundOverlay groundOverlay) {
+		this.groundOverlay = groundOverlay;
 	}
 
 	@Override

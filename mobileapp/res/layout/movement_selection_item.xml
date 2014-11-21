@@ -11,8 +11,8 @@
         android:layout_marginLeft="@dimen/margin_large1"
         android:layout_marginStart="@dimen/margin_large1"
         android:layout_weight="0.5"
-        android:progressDrawable="@drawable/red_seekbar_scrubber_progress"
-      android:thumb="@drawable/red_seekbar_scrubber_control_selector" />
+        android:progressDrawable="@drawable/red_seekbar_progress"
+        android:thumb="@drawable/red_seekbar_control_selector" />
 
     <TextView
         android:id="@+id/movement_unit_count"

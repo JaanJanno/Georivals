@@ -251,11 +251,6 @@ public class MainActivity extends Activity {
 		HIGH_SCORE_FRAGMENT.sortEntries("provincesOwned");
 	}
 
-	public static double roundDouble(double roundable, int precision) {
-		double rounded = Math.round(roundable * precision);
-		return rounded / precision;
-	}
-
 	@Override
 	public void onBackPressed() {
 		if (MAP_FRAGMENT.isVisible())
