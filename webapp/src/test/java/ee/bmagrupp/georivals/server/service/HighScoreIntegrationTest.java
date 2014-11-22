@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,6 @@ public class HighScoreIntegrationTest {
 	HighScoreService highScoreServ;
 
 	@Test
-	@Ignore
 	public void highScoreTestAll() {
 		List<HighScoreEntry> highScores = highScoreServ.findAll();
 
