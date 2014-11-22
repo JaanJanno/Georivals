@@ -72,4 +72,13 @@ public interface MovementRepository extends CrudRepository<Movement, Integer> {
 	@Query("from Movement m order by endDate asc")
 	List<Movement> getMostRecent(Pageable page);
 
+	/**
+	 * Returns the endDates of {@link Movement}'s because the movement
+	 * themselves are not needed.
+	 * 
+	 * @return {@link Date} list
+	 */
+	@Query("select endDate from Movement m order by endDate asc")
+	List<Date> getAllEndDates();
+
 }
