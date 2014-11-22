@@ -182,18 +182,21 @@ public class ProvinceServiceImpl implements ProvinceService {
 		double baseLong = findBaseLong(fov.getSwlongitude());
 		
 		// find all areas within the specified coordinates
-		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(fov.getSwlatitude()
-				, fov.getSwlongitude()
-				, fov.getNelatitude()
-				, fov.getNelongitude());
+		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(
+				CalculationUtil.normalizeLatitute(fov.getSwlatitude())
+				, CalculationUtil.normalizeLongitude(fov.getSwlongitude())
+				, CalculationUtil.normalizeLatitute(fov.getNelatitude())
+				, CalculationUtil.normalizeLongitude(fov.getNelongitude()));
 		
 		// For generating new units
 		Date currentDate = new Date();
 		
 		// Find out if home province is within the boundaries
 		HomeOwnership home = getHome(requestMaker);
-		boolean homeIncluded = HomeInArea(fov.getSwlatitude(),fov.getSwlongitude()
-											,fov.getNelatitude(),fov.getNelongitude(),home);
+		boolean homeIncluded = HomeInArea(CalculationUtil.normalizeLatitute(fov.getSwlatitude())
+									,CalculationUtil.normalizeLongitude(fov.getSwlongitude())
+									,CalculationUtil.normalizeLatitute(fov.getNelatitude())
+									,CalculationUtil.normalizeLongitude(fov.getNelongitude()),home);
 		
 		//-- Iterate through all rows and columns and create rtrn list
 		ArrayList<ProvinceDTO> rtrn = getProvinceList(columns, rows, playerStrength,
@@ -221,13 +224,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 			//-- Is the area the same area as home
 			if(home.getProvince().getLongitude() == prov.getLongitude() &&
 					home.getProvince().getLatitude() == prov.getLatitude()){
-				//-- Generate unclaimed units if applicable
-				int newUnits = GameLogic.generateNewUnits(home.getLastVisit()
-										, currentDate, home.countUnits());
 				//-- Replace the bot province with Home
-				rtrn.set(i, new ProvinceDTO(home.getProvince().getLatitude(), home.getProvince()
-						.getLongitude(), ProvinceType.HOME, home.getProvinceName()
-						, requestMaker.getUserName(), true, false, home.countUnits(), newUnits));
+				rtrn.set(i, createHomeProvince(home.getProvince(), requestMaker));
 				break;
 			}
 		}
@@ -305,7 +303,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 	
 	/**
 	 * meta-method which creates the ProvinceDTO object depending on whether, it belongs
-	 * to the request maker or not 
+	 * to the request maker or not
 	 * @author Sander
 	 * @param requestMakerId
 	 * @param a
@@ -384,8 +382,8 @@ public class ProvinceServiceImpl implements ProvinceService {
 			return false;
 		}
 		Province homeProv = home.getProvince();
-		if(swlatitude < homeProv.getLatitude() && nelatitude > homeProv.getLatitude()
-			&& swlongitude < homeProv.getLongitude() && nelongitude > homeProv.getLongitude()){
+		if(swlatitude <= homeProv.getLatitude() && nelatitude >= homeProv.getLatitude()
+			&& swlongitude <= homeProv.getLongitude() && nelongitude >= homeProv.getLongitude()){
 			return true;
 		}
 		return false;
