@@ -183,20 +183,20 @@ public class ProvinceServiceImpl implements ProvinceService {
 		
 		// find all areas within the specified coordinates
 		List<Ownership> lst = (List<Ownership>) ownerRepo.findBetween(
-				CalculationUtil.normalizeLatitute(fov.getSwlatitude())
-				, CalculationUtil.normalizeLongitude(fov.getSwlongitude())
-				, CalculationUtil.normalizeLatitute(fov.getNelatitude())
-				, CalculationUtil.normalizeLongitude(fov.getNelongitude()));
+				roundLatitude(fov.getSwlatitude(),-1)
+				, roundLongitude(fov.getSwlongitude(),-1)
+				, roundLatitude(fov.getNelatitude(),1)
+				, roundLongitude(fov.getNelongitude(),1));
 		
 		// For generating new units
 		Date currentDate = new Date();
 		
 		// Find out if home province is within the boundaries
 		HomeOwnership home = getHome(requestMaker);
-		boolean homeIncluded = HomeInArea(CalculationUtil.normalizeLatitute(fov.getSwlatitude())
-									,CalculationUtil.normalizeLongitude(fov.getSwlongitude())
-									,CalculationUtil.normalizeLatitute(fov.getNelatitude())
-									,CalculationUtil.normalizeLongitude(fov.getNelongitude()),home);
+		boolean homeIncluded = HomeInArea(roundLatitude(fov.getSwlatitude(),-1)
+									,roundLongitude(fov.getSwlongitude(),-1)
+									,roundLatitude(fov.getNelatitude(),1)
+									,roundLongitude(fov.getNelongitude(),1),home);
 		
 		//-- Iterate through all rows and columns and create rtrn list
 		ArrayList<ProvinceDTO> rtrn = getProvinceList(columns, rows, playerStrength,
@@ -412,24 +412,43 @@ public class ProvinceServiceImpl implements ProvinceService {
 	 */
 
 	private int calculateRowsNr(double lat1, double lat2) {
-		lat1 = Math.floor(lat1 * 1000) / 1000;
-		lat2 = Math.ceil(lat2 * 1000) / 1000;
+		lat1 = roundLatitude(lat1, -1);
+		lat2 = roundLatitude(lat2, 1);
 		return (int) Math.round(((lat2 - lat1) / PROVINCE_HEIGHT));
 	}
 
 	private int calculateColumnNr(double long1, double long2) {
-		long1 = Math.floor(long1 * 1000) / 1000;
-		if ((long1 * 1000.0) % 2 != 0) {
-			long1 = ((long1 * 1000) - 1) / 1000.0;
-		}
-		long2 = Math.ceil(long2 * 1000) / 1000;
-		if ((long2 * 1000.0) % 2 != 0) {
-			long2 = ((long2 * 1000) + 1) / 1000.0;
-		}
+		long1 = roundLongitude(long1, -1);
+		long2 = roundLongitude(long2, 1);
 		return (int) Math.round(((long2 - long1) / PROVINCE_WIDTH));
 	}
-
-	// ProvinceViewDTO creation
+	
+	private double roundLatitude(double lat, int way){
+		if(way == 1){
+			lat = Math.ceil(lat * 1000) / 1000;
+		}
+		else{
+			lat = Math.floor(lat * 1000) / 1000;
+		}
+		return lat;
+	}
+	
+	private double roundLongitude(double long1, int way){
+		if(way == 1){
+			long1 = Math.ceil(long1 * 1000) / 1000;
+			if ((long1 * 1000.0) % 2 != 0) {
+				long1 = ((long1 * 1000) + 1) / 1000.0;
+			}
+		}
+		else{
+			long1 = Math.floor(long1 * 1000) / 1000;
+			if ((long1 * 1000.0) % 2 != 0) {
+				long1 = ((long1 * 1000) - 1) / 1000.0;
+			}
+		}
+		return long1;
+		
+	}
 
 	/**
 	 * Returns a {@link ProvinceDTO} defined by the coordinates.
