@@ -12,6 +12,7 @@ import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.georivals.server.service.HighScoreService;
+import ee.bmagrupp.georivals.server.util.Constants;
 
 @Service
 public class HighScoreServiceImpl implements HighScoreService {
@@ -36,7 +37,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 		List<Player> pList = (List<Player>) playerRepo.findAll();
 		List<HighScoreEntry> highList = new ArrayList<>();
 		for (Player player : pList) {
-			highList.add(createHighScore(player));
+			if(player.getId() != Constants.BOT_ID){
+				highList.add(createHighScore(player));
+			}
 		}
 		return highList;
 	}

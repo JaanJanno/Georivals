@@ -19,6 +19,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import ee.bmagrupp.georivals.server.Application;
 import ee.bmagrupp.georivals.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.georivals.server.service.HighScoreService;
+import ee.bmagrupp.georivals.server.util.Constants;
 import static org.junit.Assert.*;
 
 /**
@@ -46,6 +47,14 @@ public class HighScoreIntegrationTest {
 
 		assertEquals("There should be 6 highscores", 6, highScores.size());
 
+	}
+	
+	@Test
+	public void highScoreTestBot() {
+		List<HighScoreEntry> highScores = highScoreServ.findAll();
+		for (HighScoreEntry h : highScores){
+			assertNotEquals("Should not be bot", Constants.BOT_NAME, h.getUsername());
+		}
 	}
 
 	/**
