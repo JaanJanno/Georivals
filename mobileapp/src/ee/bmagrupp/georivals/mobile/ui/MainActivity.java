@@ -19,8 +19,11 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -55,6 +58,7 @@ public class MainActivity extends Activity {
 	public static Typeface GABRIOLA_FONT;
 	public static final long UNIT_CLAIM_INTERVAL = 1000;
 	public static final float UNIT_CLAIM_MIN_DISTANCE = 10;
+	public static final int MIN_ALLOWED_HEAP_SIZE = 48;
 
 	// non-static immutable variables (local constants)
 	private final TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
@@ -86,6 +90,7 @@ public class MainActivity extends Activity {
 		updateUserInfo();
 		setUnitClaimHandler();
 		setLocationService();
+		checkMemoryHeapSize();
 	}
 
 	/**
@@ -348,6 +353,46 @@ public class MainActivity extends Activity {
 
 	public void setToMapTab() {
 		this.getActionBar().setSelectedNavigationItem(0);
+	}
+
+	/**
+	 * Checks if the device's maximum memory heap size is at least the minimum
+	 * allowed size. Devices with a lower heap size can't handle the edited map
+	 * and tend to crash because of insufficient memory.
+	 * 
+	 * If the minimum heap size is lower than allowed, a warning dialog is
+	 * displayed to the user where he can decide whether to exit the application
+	 * or continue.
+	 */
+
+	private void checkMemoryHeapSize() {
+		int maxHeapSize = ((ActivityManager) getSystemService(ACTIVITY_SERVICE))
+				.getMemoryClass();
+		if (maxHeapSize < MIN_ALLOWED_HEAP_SIZE) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle(getString(R.string.warning));
+			builder.setMessage(getString(R.string.memory_too_low) + "\n"
+					+ getString(R.string.confirmation_exit2));
+			builder.setCancelable(true);
+			builder.setPositiveButton(getString(R.string.yes),
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+							activity.finish();
+						}
+					});
+
+			builder.setNegativeButton(getString(R.string.no),
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+
+			AlertDialog alertDialog = builder.create();
+			alertDialog.show();
+
+		}
 	}
 
 }

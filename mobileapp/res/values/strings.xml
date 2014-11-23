@@ -12,6 +12,7 @@
     <string name="confirmation_username2">\' as your name?</string>
     <string name="confirmation_province">Do you want to make this your home province?</string>
     <string name="confirmation_exit">Are you sure you want to exit?</string>
+    <string name="confirmation_exit2">Would you like to exit now?</string>
     <string name="enter_key">Enter your login key:</string>
     <string name="enter_province_name">Please enter a new name for your province:</string>
     <string name="email">E-mail</string>
@@ -34,6 +35,7 @@
     <string name="logout">Log Out</string>
     <string name="make_home">Make home</string>
     <string name="map">Map</string>
+    <string name="memory_too_low">Your device\'s memory is too low for this application.</string>
     <string name="mission_log">Mission log</string>
     <string name="movement_selection">Movement selection</string>
     <string name="my_provinces">My provinces</string>
@@ -67,6 +69,7 @@
     <string name="user_created">User created!</string>
     <string name="username">Username</string>
     <string name="username_colon">Username:</string>
+    <string name="warning">Warning!</string>
     <string name="welcome">Welcome</string>
     <string name="yes">Yes</string>
 
