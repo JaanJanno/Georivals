@@ -151,7 +151,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		lastLatLng = map.getCameraPosition().target;
 		lastZoom = map.getCameraPosition().zoom;
 		activity.cancelToastMessage();
-		drawnProvincesList.clear();
 		super.onDestroyView();
 	}
 

@@ -306,10 +306,23 @@ public class MainActivity extends Activity {
 	 */
 
 	public void changeFragment(Fragment fragment, String fragmentTag) {
+		if (currentFragment == null) {
+			getFragmentManager().beginTransaction()
+					.add(R.id.fragment_container, fragment, fragmentTag)
+					.commit();
+		} else if (currentFragment == MAP_FRAGMENT) {
+			getFragmentManager().beginTransaction().detach(currentFragment)
+					.add(R.id.fragment_container, fragment, fragmentTag)
+					.commit();
+		} else if (fragment == MAP_FRAGMENT) {
+			getFragmentManager().beginTransaction().remove(currentFragment)
+					.attach(fragment).commit();
+		} else {
+			getFragmentManager().beginTransaction()
+					.replace(R.id.fragment_container, fragment, fragmentTag)
+					.commit();
+		}
 		currentFragment = fragment;
-		getFragmentManager().beginTransaction()
-				.replace(R.id.fragment_container, fragment, fragmentTag)
-				.commit();
 	}
 
 	/**
