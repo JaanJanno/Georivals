@@ -17,25 +17,25 @@ public abstract class ProvinceViewLoader extends
 
 	/**
 	 * 
-	 * @param longitude
 	 * @param latitude
+	 * @param longitude
 	 */
 
-	public ProvinceViewLoader(Double longitude, Double latitude) {
+	public ProvinceViewLoader(Double latitude, Double longitude) {
 		super(ProvinceDTO.class, Constants.PROVINCE);
-		addParameters(longitude, latitude);
+		addParameters(latitude, longitude);
 	}
 
 	/**
 	 * 
 	 * @param sid
-	 * @param longitude
 	 * @param latitude
+	 * @param longitude
 	 */
 
-	public ProvinceViewLoader(String sid, Double longitude, Double latitude) {
+	public ProvinceViewLoader(String sid, Double latitude, Double longitude) {
 		super(ProvinceDTO.class, Constants.PROVINCE, "sid=" + sid);
-		addParameters(longitude, latitude);
+		addParameters(latitude, longitude);
 	}
 
 	/*
@@ -43,9 +43,9 @@ public abstract class ProvinceViewLoader extends
 	 * created by the superclass methods.
 	 */
 
-	private void addParameters(Double longitude, Double latitude) {
-		addParamter("longitude", Double.toString(longitude));
+	private void addParameters(Double latitude, Double longitude) {
 		addParamter("latitude", Double.toString(latitude));
+		addParamter("longitude", Double.toString(longitude));
 	}
 
 	/**

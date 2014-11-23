@@ -17,28 +17,28 @@ public abstract class ProvinceViewUILoader extends ProvinceViewLoader {
 
 	/**
 	 * 
-	 * @param longitude
 	 * @param latitude
+	 * @param longitude
 	 * @param activity
 	 */
 
-	public ProvinceViewUILoader(Double longitude, Double latitude,
+	public ProvinceViewUILoader(Double latitude, Double longitude,
 			Activity activity) {
-		super(longitude, latitude);
+		super(latitude, longitude);
 		this.activity = activity;
 	}
 
 	/**
 	 * 
 	 * @param sid
-	 * @param longitude
 	 * @param latitude
+	 * @param longitude
 	 * @param activity
 	 */
 
-	public ProvinceViewUILoader(String sid, Double longitude, Double latitude,
+	public ProvinceViewUILoader(String sid, Double latitude, Double longitude,
 			Activity activity) {
-		super(sid, longitude, latitude);
+		super(sid, latitude, longitude);
 		this.activity = activity;
 	}
 

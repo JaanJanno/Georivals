@@ -126,9 +126,23 @@ public abstract class Connection implements Runnable {
 
 	protected void httpRequest(HttpURLConnection connection) throws Exception {
 		handleRequestProperties(connection, false, requestMethod);
-		readStream(connection.getInputStream());
+		doIo(connection);
 		List<String> cookies = collectResponseCookies(connection);
 		handleResponseCookies(cookies);
+	}
+
+	/*
+	 * Collects a response from server and calls its handling method.
+	 */
+
+	private void doIo(HttpURLConnection connection) {
+		String serverResponse = "";
+		try {
+			serverResponse = readStream(connection.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		handleResponseBody(serverResponse);
 	}
 
 	/*
@@ -174,7 +188,7 @@ public abstract class Connection implements Runnable {
 	 * Reads input stream incoming from the server.
 	 */
 
-	protected void readStream(InputStream in) throws Exception {
+	protected String readStream(InputStream in) throws Exception {
 		String serverResponse = new String();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		for (String line = reader.readLine(); line != null;) {
@@ -182,7 +196,7 @@ public abstract class Connection implements Runnable {
 			line = reader.readLine();
 		}
 		reader.close();
-		handleResponseBody(serverResponse);
+		return serverResponse;
 	}
 
 	/**

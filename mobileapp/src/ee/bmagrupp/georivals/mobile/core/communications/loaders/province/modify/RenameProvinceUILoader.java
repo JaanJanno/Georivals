@@ -17,10 +17,10 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 
 	/**
 	 * 
-	 * @param longitude
-	 *            Longitude of the renamed province.
 	 * @param latitude
 	 *            Latitude of the renamed province.
+	 * @param longitude
+	 *            Longitude of the renamed province.
 	 * @param newname
 	 *            New name for the province.
 	 * @param sid
@@ -29,9 +29,9 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 	 *            Android activity that is modified.
 	 */
 
-	public RenameProvinceUILoader(double longitude, double latitude,
+	public RenameProvinceUILoader(double latitude, double longitude,
 			String newname, String sid, Activity activity) {
-		super(longitude, latitude, newname, sid);
+		super(latitude, longitude, newname, sid);
 		this.activity = activity;
 	}
 

@@ -57,7 +57,7 @@ public class ProvinceFragment extends Fragment {
 
 	private void requestProvinceData() {
 		ProvinceViewUILoader l = new ProvinceViewUILoader(MainActivity.sid,
-				provinceLatLng.longitude, provinceLatLng.latitude, activity) {
+				provinceLatLng.latitude, provinceLatLng.longitude, activity) {
 
 			@Override
 			public void handleResponseObjectInUI(ProvinceDTO responseObject) {
@@ -220,7 +220,7 @@ public class ProvinceFragment extends Fragment {
 
 	private void requestProvinceRename(String newName) {
 		RenameProvinceUILoader l = new RenameProvinceUILoader(
-				provinceLatLng.longitude, provinceLatLng.latitude, newName,
+				provinceLatLng.latitude, provinceLatLng.longitude, newName,
 				MainActivity.sid, activity) {
 
 			@Override
