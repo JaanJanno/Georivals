@@ -11,7 +11,7 @@ Server accessible from: http://pacific-plains-8541.herokuapp.com/
 'Georivals' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng, kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks, et alad oleksid alluvad ja et sul jätkuks sõjamehi, tuleb neid pidevalt külastada.
 
 ### Serveri käivitamise juhised
-Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus olevat andmebaasi. 
+Server on võimeline kasutama nii Postgres andmebaasi kui ka mälus olevat andmebaasi. 
 
 #### Vajalikud asjad
 * Maven. Hea seadistamise juhis siin http://www.mkyong.com/maven/how-to-install-maven-in-windows/. Linuxi peal järgida seda http://iambusychangingtheworld.blogspot.com/2014/04/install-and-configure-java-and-maven-in.html
@@ -19,12 +19,12 @@ Server on võimeline kasutama nii MySQL ja Postgres andmebaasi kui ka mälus ole
 #### Soovitatud asjad
 * Eclipse (soovitavalt Spring Tool Suite)
 * Eclipse m2e plugin (ilma selleta arvab Eclipse, et projekt on katki). Eclipse'ile lisamiseks "Install new software", lehekülg http://download.eclipse.org/technology/m2e/releases
-* MySQL või Postgres andmebaas
+* Postgres andmebaas
 
 #### Projekti seadistamine
 1. Tõmba alla giti repo
 2. Mine käsurealt webapp kausta
-3.  Mälus oleva andmebaasi kasutamiseks peab minema faili src/main/resources/application.properties ja muutma rida `spring.profiles.active=default`. `default` asemele kirjuta `test`. Kohaliku andmebaasi kasutamiseks kirjuta `mysql`või `postgres`. 
+3.  Mälus oleva andmebaasi kasutamiseks peab minema faili src/main/resources/application.properties ja muutma rida `spring.profiles.active=default`. `default` asemele kirjuta `test`. Kohaliku andmebaasi kasutamiseks kirjuta `postgres`. 
 4. webapp kaustas käsk `mvn spring-boot:run`
 5. Nüüd peaks server olema ligipääsetav aadressil `localhost:8080`. Andmete nägemiseks võid proovida `localhost:8080/highscore`
 6. Käsk `mvn eclipse:eclipse` genereerib Eclipse jaoks vajalikud failid
@@ -34,9 +34,9 @@ Serveri käivitamiseks on vaja ainult käsku `mvn spring-boot:run`
 
 
 #### Andmebaasi setup
-`test` ehk mälus olev andmebaas kasutab andmeid, mis on kirjas `import.sql` failis. Postgres või MySQL pead ise tõmbama.  Nende paroolid ja muu info peab ühtima `application-mysql.properties` või `application-postgres.properties` kirjeldatuga. Andmebaasi tabelid tekitab server ise. 
+`test` ehk mälus olev andmebaas kasutab andmeid, mis on kirjas `import.sql` failis. Postgres pead ise tõmbama.  Nende paroolid ja muu info peab ühtima  `application-postgres.properties` kirjeldatuga. Andmebaasi tabelid tekitab server ise. 
 
-Päris andmebaasi  näidisandmeid hetkel ei impordita.
+Päris andmebaasi näidisandmeid hetkel ei impordita. TÄHTIS: import.sql andmed ei suurenda päris andmebaasi sequence'eid. Seega, kui sisestad testandmed ja siis tahad sinna otsa veel serveri kaudu andmeid lisada, siis kõik läheb katki. Lahendus on käsitsi suurendada sequence'ide algusarvu. Kui selliseks jamaks huvi puudub, siis kasuta mälus olevat andmebaasi. 
 
 Herokus töötab andmebaas `DATABASE_URL` kaudu, nii et soovi kõrval võib Heroku stiilis Postgres ühendamise stringi süsteemi keskonnamuutujatesse panna. Sellisel juhul ei pea `application.properties` failis midagi muutma. 
 

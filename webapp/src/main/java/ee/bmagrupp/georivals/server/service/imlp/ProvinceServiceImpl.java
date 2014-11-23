@@ -554,11 +554,13 @@ public class ProvinceServiceImpl implements ProvinceService {
 		ProvinceType type;
 		boolean isAttackable = false;
 		int newUnits = 0;
+		boolean underAttack = false;
 		if ((player != null) && (player.getId() == player2.getId())) {
 			// Province owned by the player
 			type = ProvinceType.PLAYER;
 			newUnits = GameLogic.generateNewUnits(ow.getLastVisit(),
 					new Date(), unitSize);
+			underAttack = movementRepo.checkIfUnderAttack(player.getId(), prov.getId());
 
 		} else if(player2.getId() == BOT_ID) {
 			type = ProvinceType.BOT;
@@ -571,7 +573,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 			isAttackable = GameLogic.canAttack(playerStrength, player2Strength);
 		}
 
-		boolean underAttack = movementRepo.checkIfDestination(prov.getId());
 		return new ProvinceDTO(prov.getLatitude(), prov.getLongitude(), type,
 				ow.getProvinceName(), player2.getUserName(), isAttackable,
 				underAttack, unitSize, newUnits);

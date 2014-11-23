@@ -75,6 +75,25 @@ public class MovementRepositoryTest {
 		Movement mov2 = new Movement(unit, player2.getHome().getProvince(),
 				destination, player2, new Date(), cal.getTime());
 		moveRepo.save(mov2);
+
+		// For under attack query
+
+		// Attack movement
+		cal.add(Calendar.SECOND, 22);
+		Province destination1 = provRepo.findOne(4);
+		// endDate = new Date();
+		Movement mov3 = new Movement(unit, player.getHome().getProvince(),
+				destination1, player, new Date(), cal.getTime());
+		moveRepo.save(mov3);
+
+		// // friendly movement
+		// cal.add(Calendar.SECOND, 20);
+		//
+		// Player player3 = playerRepo.findOne(5);
+		//
+		// Movement mov4 = new Movement(unit, player3.getHome().getProvince(),
+		// destination1, player3, new Date(), cal.getTime());
+		// moveRepo.save(mov4);
 	}
 
 	@Test
@@ -125,6 +144,13 @@ public class MovementRepositoryTest {
 		List<Date> endDates = moveRepo.getAllEndDates();
 		assertTrue("First date is before the second",
 				endDates.get(0).before(endDates.get(1)));
+
+	}
+
+	@Test
+	public void checkIfUnderAttack() {
+		boolean a1 = moveRepo.checkIfUnderAttack(5, 4);
+		assertTrue("Province is under attack", a1);
 
 	}
 

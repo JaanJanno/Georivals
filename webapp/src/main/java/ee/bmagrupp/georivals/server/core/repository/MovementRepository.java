@@ -81,4 +81,18 @@ public interface MovementRepository extends CrudRepository<Movement, Integer> {
 	@Query("select endDate from Movement m order by endDate asc")
 	List<Date> getAllEndDates();
 
+	/**
+	 * Check if any {@link Movement} targets a province that the owner of that
+	 * province did not initiate.
+	 * 
+	 * @param playerId
+	 *            id of {@link Player} making the request.
+	 * @param provinceId
+	 *            {@link Province} owned by this {@link Player}, destination of
+	 *            movement
+	 * @return true if there is at least one movement not created by this player
+	 */
+	@Query("select case when (count(m) > 0) then true else false end from Movement m where (m.destination.id = ?2) and (m.player.id != ?1)")
+	boolean checkIfUnderAttack(int playerId, int provinceId);
+
 }
