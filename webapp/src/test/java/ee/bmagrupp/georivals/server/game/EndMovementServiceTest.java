@@ -9,7 +9,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,7 +170,6 @@ public class EndMovementServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void battleAttackerWinsTest() {
 		// Testing when the attacker will win
 
@@ -197,13 +195,20 @@ public class EndMovementServiceTest {
 						.isEmpty());
 
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
-		BattleHistory battle = list.get(0);
+		
+		BattleHistory battle = null;
+		for (BattleHistory battleHistory : list) {
+			if(battleHistory.getLocation().getId() == 2) {
+				battle = battleHistory;
+				break;
+			}
+		}
 
 		assertEquals("Attacker id", 1, battle.getAttacker().getId());
 		assertEquals("Defender id", 2, battle.getDefender().getId());
-		assertEquals("Battle location", 6, battle.getLocation().getId());
-		assertEquals("Attacker strength", 21, battle.getAttackerStrength());
-		assertEquals("Defender strength", 9, battle.getDefenderStrength());
+		assertEquals("Battle location", 2, battle.getLocation().getId());
+		assertEquals("Attacker strength", 27, battle.getAttackerStrength());
+		assertEquals("Defender strength", 2, battle.getDefenderStrength());
 		if (battle.isAttackerWon()) {
 			Ownership ow = ownerRepo.findByProvinceId(2);
 			assertEquals("Attacker controls the province", 1, playerRepo
@@ -218,7 +223,6 @@ public class EndMovementServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void battleDefenderWinsTest() {
 		// Doge attacks Mr.TK
 		Player player = playerRepo.findOne(2);
@@ -243,10 +247,16 @@ public class EndMovementServiceTest {
 						.isEmpty());
 
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
-		BattleHistory battle = list.get(0);
+		BattleHistory battle = null;
+		for (BattleHistory battleHistory : list) {
+			if((battleHistory.getLocation().getId() == 6)&&(battleHistory.getAttackerStrength() == 1)) {
+				battle = battleHistory;
+				break;
+			}
+		}
 
-		assertEquals("Attacker id", 1, battle.getAttacker().getId());
-		assertEquals("Defender id", 2, battle.getDefender().getId());
+		assertEquals("Attacker id", 2, battle.getAttacker().getId());
+		assertEquals("Defender id", 1, battle.getDefender().getId());
 		assertEquals("Battle location", 6, battle.getLocation().getId());
 		assertEquals("Attacker strength", 1, battle.getAttackerStrength());
 		assertEquals("Defender strength", 9, battle.getDefenderStrength());
@@ -265,7 +275,6 @@ public class EndMovementServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void attackBotAndWin() {
 		// Create bot ownership
 		Province prov = new Province(11.1115, 22.222);
@@ -299,11 +308,17 @@ public class EndMovementServiceTest {
 						.isEmpty());
 
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
-		BattleHistory battle = list.get(0);
+		BattleHistory battle = null;
+		for (BattleHistory battleHistory : list) {
+			if(battleHistory.getLocation().getId() == prov.getId()) {
+				battle = battleHistory;
+				break;
+			}
+		}
 
 		assertEquals("Attacker id", 1, battle.getAttacker().getId());
-		assertEquals("Defender id", 2, battle.getDefender().getId());
-		assertEquals("Battle location", 6, battle.getLocation()
+		assertEquals("Defender id", 0, battle.getDefender().getId());
+		assertEquals("Battle location", prov.getId(), battle.getLocation()
 				.getId());
 		assertEquals("Attacker strength", 27, battle.getAttackerStrength());
 		assertEquals("Defender strength", 5, battle.getDefenderStrength());
@@ -321,7 +336,6 @@ public class EndMovementServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void attackBotAndLose() {
 		// Create bot ownership
 		Province prov = new Province(11.1115, 22.222);
@@ -355,11 +369,17 @@ public class EndMovementServiceTest {
 						.isEmpty());
 
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
-		BattleHistory battle = list.get(0);
+		BattleHistory battle = null;
+		for (BattleHistory battleHistory : list) {
+			if(battleHistory.getLocation().getId() == prov.getId()) {
+				battle = battleHistory;
+				break;
+			}
+		}
 
 		assertEquals("Attacker id", 1, battle.getAttacker().getId());
-		assertEquals("Defender id", 2, battle.getDefender().getId());
-		assertEquals("Battle location", 26, battle.getLocation()
+		assertEquals("Defender id", 0, battle.getDefender().getId());
+		assertEquals("Battle location", prov.getId(), battle.getLocation()
 				.getId());
 		assertEquals("Attacker strength", 2, battle.getAttackerStrength());
 		assertEquals("Defender strength", 15, battle.getDefenderStrength());
