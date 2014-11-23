@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -56,9 +56,9 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	 */
 
 	private void setButtonListeners() {
-		Button unitSortButton = (Button) highscoreLayout
+		ImageButton unitSortButton = (ImageButton) highscoreLayout
 				.findViewById(R.id.unit_sort_button);
-		Button provincesSortButton = (Button) highscoreLayout
+		ImageButton provincesSortButton = (ImageButton) highscoreLayout
 				.findViewById(R.id.provinces_sort_button);
 
 		unitSortButton.setOnClickListener(new OnClickListener() {
