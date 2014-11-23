@@ -13,12 +13,11 @@ import android.widget.LinearLayout;
 
 @SuppressWarnings("unused")
 public class MissionLogFragment extends Fragment implements TabItem {
+	// non-static immutable variables (local constants)
+	private MainActivity activity;
+	private LinearLayout missionLogLayout;
 	private final int tabNameId = R.string.mission_log;
 	private final int tabIconId = R.drawable.log_icon;
-
-	private MainActivity activity;
-	private Resources resources;
-	private LinearLayout missionLogLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,15 +25,13 @@ public class MissionLogFragment extends Fragment implements TabItem {
 		missionLogLayout = (LinearLayout) inflater.inflate(
 				R.layout.mission_log_layout, container, false);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		MainActivity.changeFonts(missionLogLayout);
 		return missionLogLayout;
 	}
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
 

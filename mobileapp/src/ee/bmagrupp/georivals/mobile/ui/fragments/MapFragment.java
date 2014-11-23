@@ -15,23 +15,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
@@ -39,7 +32,6 @@ import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import ee.bmagrupp.georivals.mobile.ui.listeners.ButtonClickListener;
 import ee.bmagrupp.georivals.mobile.ui.listeners.MapClickListener;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
@@ -50,45 +42,85 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
 
+@SuppressLint("InflateParams")
 @SuppressWarnings("deprecation")
 public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements TabItem, ConnectionCallbacks, OnConnectionFailedListener,
-		LocationListener {
-	private final double provinceLatitudeRadius = 0.0005;
-	private final double provinceLongitudeRadius = 0.001;
-	private final int tabNameId = R.string.map;
-	private final int tabIconId = R.drawable.places_icon;
-
-	private GoogleMap map;
-	private GoogleApiClient googleApiClient;
-	private LocationRequest locationRequest;
-	private LocationManager locationManager;
+		implements TabItem {
+	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private Resources resources;
-	private LatLng lastLatLng;
-	private float lastZoom;
-	private ButtonClickListener buttonClickListener;
-	private MapClickListener mapClickListener;
+	private final int tabNameId = R.string.map;
+	private final int tabIconId = R.drawable.places_icon;
+	private final double provinceLatitudeRadius = 0.0005;
+	private final double provinceLongitudeRadius = 0.001;
+
+	// static mutable variables
+	private static MapFragment instance;
+
+	// non-static mutable variables
+	private GoogleMap map;
+	private LatLng lastLatLng = new LatLng(59.437046, 24.753742);
+	private float lastZoom = 17;
 	private Location playerLocation;
 	private ArrayList<ProvinceDTO> drawnProvincesList = new ArrayList<ProvinceDTO>();
 	private List<ProvinceDTO> provinceList;
-
-	private static MapFragment instance;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = super.onCreateView(inflater, container, savedInstanceState);
-		setupMap();
+		activity = (MainActivity) getActivity();
+		resources = activity.getResources();
+		initializeMap();
 		if (MainActivity.choosingHomeProvince) {
-			addSetHomeViews((ViewGroup) v);
+			addSetHomeViews();
 		}
 		return v;
 	}
 
-	private void addSetHomeViews(ViewGroup v) {
+	/**
+	 * Initializes the map; moves the camera to the right location, sets whether
+	 * 'My Location' is enabled, sets 'My Location' click listener, map click
+	 * listener and camera change listener.
+	 */
+
+	private void initializeMap() {
+		map = this.getMap();
+		if (map != null) {
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng,
+					lastZoom));
+			map.setMyLocationEnabled(true);
+			map.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
+				@Override
+				public boolean onMyLocationButtonClick() {
+					LocationManager locationManager = (LocationManager) activity
+							.getSystemService(Context.LOCATION_SERVICE);
+					if (!locationManager
+							.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+						activity.showToastMessage("GPS is disabled!");
+					} else {
+						activity.showToastMessage("Waiting for location...");
+						return false;
+					}
+					return false;
+				}
+			});
+			map.setOnMapClickListener(new MapClickListener(activity));
+			map.setOnCameraChangeListener(new OnCameraChangeListener() {
+				@Override
+				public void onCameraChange(CameraPosition position) {
+					refreshMap();
+				}
+			});
+		}
+	}
+
+	/**
+	 * Sets up all 'Set Home' views.
+	 */
+
+	private void addSetHomeViews() {
 		TextView chooseHomeLabel = (TextView) activity
 				.findViewById(R.id.choose_home_label);
 		chooseHomeLabel.setVisibility(View.VISIBLE);
@@ -107,7 +139,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 									playerLocation.getLatitude(),
 									playerLocation.getLongitude()));
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(resources
 							.getString(R.string.error_get_location));
 				}
 			}
@@ -118,8 +150,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	public void onDestroyView() {
 		lastLatLng = map.getCameraPosition().target;
 		lastZoom = map.getCameraPosition().zoom;
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		drawnProvincesList.clear();
 		super.onDestroyView();
 	}
@@ -127,22 +158,13 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	@Override
 	public void onStart() {
 		super.onStart();
-		googleApiClient.connect();
 		instance = this;
 	}
 
 	@Override
 	public void onStop() {
-		googleApiClient.disconnect();
 		super.onStop();
 		instance = null;
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
 	}
 
 	/**
@@ -154,6 +176,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			instance.refreshMap();
 	}
 
+	/**
+	 * Refreshes the map; checks whether new province tiles need to be drawn or
+	 * old ones cleared.
+	 */
+
 	private void refreshMap() {
 		if (map.getCameraPosition().zoom > 15)
 			requestProvinceListData();
@@ -163,84 +190,10 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		}
 	}
 
-	@Override
-	public void onConnected(Bundle bundle) {
-		locationRequest = LocationRequest.create();
-		locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		locationRequest.setInterval(1000);
-		locationRequest.setFastestInterval(500);
-		LocationServices.FusedLocationApi.requestLocationUpdates(
-				googleApiClient, locationRequest, this);
-	}
-
-	@Override
-	public void onConnectionSuspended(int i) {
-		Log.d("DEBUG", "Google Api Client connection has been suspended.");
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		Log.d("DEBUG", "Google Api Client connection has failed.");
-	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
-		playerLocation = location;
-	}
-
-	// currently not in use, but this will be used later
-	public void focusOnLocation(Location location) {
-		float currentZoom = map.getCameraPosition().zoom;
-		LatLng latLng = new LatLng(location.getLatitude(),
-				location.getLongitude());
-		map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-		CameraPosition cameraPosition = new CameraPosition.Builder()
-				.target(latLng).zoom(currentZoom).bearing(0).tilt(0).build();
-		CameraUpdate cameraUpdate = CameraUpdateFactory
-				.newCameraPosition(cameraPosition);
-		map.animateCamera(cameraUpdate);
-	}
-
-	private void setupMap() {
-		if (map == null) {
-			activity = (MainActivity) getActivity();
-			resources = activity.getResources();
-			locationManager = (LocationManager) activity
-					.getSystemService(Context.LOCATION_SERVICE);
-			googleApiClient = new GoogleApiClient.Builder(activity)
-					.addApi(LocationServices.API).addConnectionCallbacks(this)
-					.addOnConnectionFailedListener(this).build();
-			buttonClickListener = new ButtonClickListener(activity,
-					locationManager);
-			mapClickListener = new MapClickListener((MainActivity) activity);
-			map = this.getMap();
-
-			if (map != null) {
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-						59.437046, 24.753742), 17.0f));
-				setMapSettings();
-			}
-		} else {
-			map = this.getMap();
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng,
-					lastZoom));
-			setMapSettings();
-		}
-	}
-
-	private void setMapSettings() {
-		map.setMyLocationEnabled(true);
-		map.setOnMyLocationButtonClickListener(buttonClickListener);
-		map.setOnMapClickListener(mapClickListener);
-		map.setOnCameraChangeListener(new OnCameraChangeListener() {
-			@Override
-			public void onCameraChange(CameraPosition position) {
-				refreshMap();
-			}
-		});
-	}
+	/**
+	 * Requests displayable provinces list data from the server. If successful,
+	 * it draws the provinces on the map.
+	 */
 
 	private void requestProvinceListData() {
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
@@ -253,7 +206,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 					provinceList = responseList;
 					drawProvinces();
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(resources
 							.getString(R.string.error_retrieval_fail));
 				}
 			}
@@ -268,25 +221,25 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		l.retrieveList();
 	}
 
-	@SuppressLint("InflateParams")
+	/**
+	 * Draws all the new provinces, which were returned from the server, on the
+	 * map.
+	 */
+
 	private void drawProvinces() {
 		ArrayList<ProvinceDTO> newDrawnProvincesList = new ArrayList<ProvinceDTO>();
 		for (int i = 0; i < provinceList.size(); i++) {
 			ProvinceDTO province = provinceList.get(i);
-			ProvinceDTO drawnProvince = findDrawnProvince(drawnProvincesList,
-					province);
+			ProvinceDTO drawnProvince = findDrawnProvince(province);
 			if (!provincesEqual(province, drawnProvince)) {
 				RelativeLayout provinceLayout;
-				if (province.isUnderAttack() || !province.isAttackable()) {
-					provinceLayout = (RelativeLayout) LayoutInflater.from(
-							activity).inflate(R.layout.province_tile_special,
-							null);
-					setSpecialProvinceLayout(provinceLayout, province);
+				if (province.getType() != ProvinceType.PLAYER
+						&& province.getType() != ProvinceType.HOME
+						&& (province.isUnderAttack() || !province
+								.isAttackable())) {
+					provinceLayout = getSpecialProvinceLayout(province);
 				} else {
-					provinceLayout = (RelativeLayout) LayoutInflater.from(
-							activity).inflate(R.layout.province_tile_normal,
-							null);
-					setNormalProvinceLayout(provinceLayout, province);
+					provinceLayout = getNormalProvinceLayout(province);
 				}
 
 				Bitmap provinceBitmap = createBitmap(provinceLayout);
@@ -310,8 +263,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		removeOldProvinces(newDrawnProvincesList);
 	}
 
-	private ProvinceDTO findDrawnProvince(
-			ArrayList<ProvinceDTO> drawnProvincesList, ProvinceDTO province) {
+	/**
+	 * @param province
+	 * 
+	 * @return The drawn province object which corresponds to the given
+	 *         province.
+	 */
+
+	private ProvinceDTO findDrawnProvince(ProvinceDTO province) {
 		double latitude = province.getLatitude();
 		double longitude = province.getLongitude();
 		for (ProvinceDTO drawnProvince : drawnProvincesList) {
@@ -323,12 +282,26 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	}
 
+	/**
+	 * @param double1
+	 * @param double2
+	 * 
+	 * @return Whether the given doubles are equal or not.
+	 */
+
 	private boolean doublesEqual(double double1, double double2) {
 		if (double1 > double2 - 0.0001 && double1 < double2 + 0.0001)
 			return true;
 		else
 			return false;
 	}
+
+	/**
+	 * @param province1
+	 * @param province2
+	 * 
+	 * @return Whether the given provinces are equal or not.
+	 */
 
 	private boolean provincesEqual(ProvinceDTO province1, ProvinceDTO province2) {
 		if (province1 != null
@@ -342,6 +315,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		else
 			return false;
 	}
+
+	/**
+	 * Removes expired province tiles from the map.
+	 * 
+	 * @param newDrawnProvincesList
+	 */
 
 	private void removeOldProvinces(ArrayList<ProvinceDTO> newDrawnProvincesList) {
 		for (ProvinceDTO province : drawnProvincesList) {
@@ -358,8 +337,15 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		drawnProvincesList = newDrawnProvincesList;
 	}
 
-	private void setSpecialProvinceLayout(RelativeLayout provinceLayout,
-			ProvinceDTO province) {
+	/**
+	 * @param province
+	 * 
+	 * @return The layout of a 'locked' and 'under attack' province tile.
+	 */
+
+	private RelativeLayout getSpecialProvinceLayout(ProvinceDTO province) {
+		RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater.from(
+				activity).inflate(R.layout.province_tile_special, null);
 		ImageView specialIcon = (ImageView) provinceLayout
 				.findViewById(R.id.province_special_icon);
 		int provinceColor;
@@ -375,10 +361,19 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		provinceBackground.setColor(provinceColor);
 		provinceBackground.setStroke(1, Color.BLACK);
 		provinceLayout.setBackgroundDrawable(provinceBackground);
+
+		return provinceLayout;
 	}
 
-	private void setNormalProvinceLayout(RelativeLayout provinceLayout,
-			ProvinceDTO province) {
+	/**
+	 * @param province
+	 * 
+	 * @return The layout of a normal province tile.
+	 */
+
+	private RelativeLayout getNormalProvinceLayout(ProvinceDTO province) {
+		RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater.from(
+				activity).inflate(R.layout.province_tile_normal, null);
 		TextView provinceName = (TextView) provinceLayout
 				.findViewById(R.id.province_name);
 		int provinceColor;
@@ -402,7 +397,16 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		provinceLayout.setBackgroundDrawable(provinceBackground);
 
 		setProvinceUnitCount(provinceLayout, province.getUnitSize());
+
+		return provinceLayout;
 	}
+
+	/**
+	 * Sets the unit count view of the province.
+	 * 
+	 * @param provinceLayout
+	 * @param unitCount
+	 */
 
 	private void setProvinceUnitCount(RelativeLayout provinceLayout,
 			int unitCount) {
@@ -418,6 +422,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		unitCountTextView.setLayoutParams(params);
 	}
 
+	/**
+	 * @param view
+	 * 
+	 * @return A bitmap of the given view.
+	 */
+
 	private Bitmap createBitmap(View view) {
 		view.setDrawingCacheEnabled(true);
 		view.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
@@ -429,6 +439,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		return view.getDrawingCache();
 	}
 
+	/**
+	 * @param bitmap
+	 * @param bounds
+	 * 
+	 * @return A ground overlay object of the given bitmap, which is placed in
+	 *         the given bounds.
+	 */
+
 	private GroundOverlay createGroundOverlay(Bitmap bitmap, LatLngBounds bounds) {
 		GroundOverlayOptions overlayOptions = new GroundOverlayOptions().image(
 				BitmapDescriptorFactory.fromBitmap(bitmap)).positionFromBounds(
@@ -436,28 +454,20 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		return map.addGroundOverlay(overlayOptions);
 	}
 
-	public GoogleApiClient getGoogleApiClient() {
-		return googleApiClient;
-	}
+	/**
+	 * @return The last saved camera location.
+	 */
 
-	public LocationRequest getLocationRequest() {
-		return locationRequest;
-	}
-
-	public LocationManager getLocationManager() {
-		return locationManager;
-	}
-
-	public LatLng getLastLatLng() {
+	public LatLng getLastCameraLatLng() {
 		return lastLatLng;
 	}
 
-	public float getLastZoom() {
-		return lastZoom;
-	}
+	/**
+	 * @return The last saved camera zoom level.
+	 */
 
-	public ButtonClickListener getButtonClickListener() {
-		return buttonClickListener;
+	public float getLastCameraZoom() {
+		return lastZoom;
 	}
 
 	@Override

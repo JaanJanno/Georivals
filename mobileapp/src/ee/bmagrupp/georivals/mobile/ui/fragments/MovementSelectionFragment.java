@@ -17,7 +17,6 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.MovementSelectionAdapter;
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +28,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MovementSelectionFragment extends Fragment {
+	// non-static immutable variables (local constants)
+	private static MainActivity activity;
+	private LinearLayout movementSelectionLayout;
+
+	// non-static mutable variables
 	private List<MovementSelectionViewDTO> movableUnitsList;
 	private MovementSelectionAdapter adapter;
-	private MainActivity activity;
-	private static Resources resources;
 	private MovableUnitsUILoader movableUnitsListLoader;
-	private static LinearLayout movementSelectionLayout;
-	public static int totalUnitCount;
-	public static int maxUnitCount;
-	public static int[] selectedUnitCountList;
-
-	public static MovementType movementType;
+	private int totalUnitCount;
+	private int maxUnitCount;
+	private int[] selectedUnitCountList;
+	private MovementType movementType;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +47,6 @@ public class MovementSelectionFragment extends Fragment {
 		movementSelectionLayout = (LinearLayout) inflater.inflate(
 				R.layout.movement_selection_layout, container, false);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		requestMyProvincesData();
 		MainActivity.changeFonts(movementSelectionLayout);
 		return movementSelectionLayout;
@@ -55,10 +54,14 @@ public class MovementSelectionFragment extends Fragment {
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
+
+	/**
+	 * Requests a list of the player's provinces from the server. If successful,
+	 * it populates the layout.
+	 */
 
 	private void requestMyProvincesData() {
 		movableUnitsListLoader = new MovableUnitsUILoader(MainActivity.sid,
@@ -72,7 +75,7 @@ public class MovementSelectionFragment extends Fragment {
 					selectedUnitCountList = new int[movableUnitsList.size()];
 					populateLayout();
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_retrieval_fail));
 				}
 			}
@@ -86,13 +89,20 @@ public class MovementSelectionFragment extends Fragment {
 		movableUnitsListLoader.retrieveList();
 	}
 
+	/**
+	 * Populates the fragment's layout with more views.
+	 */
 	private void populateLayout() {
 		sortListEntries();
 		setListView();
 		setTypeDependables();
-		setTotalUnitCounter();
+		updateTotalUnitCount(0);
 		setSendUnitsButton();
 	}
+
+	/**
+	 * Sets movement type dependable variables and views.
+	 */
 
 	private void setTypeDependables() {
 		totalUnitCount = 0;
@@ -100,23 +110,20 @@ public class MovementSelectionFragment extends Fragment {
 				.findViewById(R.id.movement_selection_title_header);
 		if (movementType == MovementType.ATTACK) {
 			maxUnitCount = 100;
-			titleTextView.setText(resources.getString(R.string.attack) + " "
+			titleTextView.setText(activity.getString(R.string.attack) + " "
 					+ ProvinceFragment.province.getProvinceName());
 		} else {
 			maxUnitCount = 100 - ProvinceFragment.province.getUnitSize();
-			titleTextView.setText(resources
+			titleTextView.setText(activity
 					.getString(R.string.units_transfer_to)
 					+ " "
 					+ ProvinceFragment.province.getProvinceName());
 		}
 	}
 
-	private void setTotalUnitCounter() {
-		TextView unitCountTextView = (TextView) movementSelectionLayout
-				.findViewById(R.id.movement_selection_unit_count);
-		unitCountTextView.setText(resources.getString(R.string.units_total)
-				+ " 0/" + maxUnitCount);
-	}
+	/**
+	 * Sets up the movement selection list view.
+	 */
 
 	private void setListView() {
 		ExpandableListView listview = (ExpandableListView) movementSelectionLayout
@@ -125,6 +132,10 @@ public class MovementSelectionFragment extends Fragment {
 		adapter = new MovementSelectionAdapter(activity, movableUnitsList);
 		listview.setAdapter(adapter);
 	}
+
+	/**
+	 * Sets the click listener for the 'send units' button.
+	 */
 
 	private void setSendUnitsButton() {
 		Button sendButton = (Button) movementSelectionLayout
@@ -138,6 +149,10 @@ public class MovementSelectionFragment extends Fragment {
 		});
 	}
 
+	/**
+	 * Sends a unit movement request to the server.
+	 */
+
 	private void requestUnitMovement() {
 		List<BeginMovementDTO> movementList = createMovementList();
 
@@ -145,18 +160,17 @@ public class MovementSelectionFragment extends Fragment {
 				MainActivity.sid, ProvinceFragment.province.getLatitude(),
 				ProvinceFragment.province.getLongitude(), activity) {
 
-			@SuppressWarnings("deprecation")
 			@Override
 			public void handleResponseObjectInUI(
 					BeginMovementResponse responseObject) {
 				if (responseObject.getResult() == ServerResult.OK) {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.units_total)
 							+ " "
 							+ responseObject.getArrivalTime());
-					activity.getActionBar().setSelectedNavigationItem(0);
+					activity.setToMapTab();
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_unknown));
 				}
 			}
@@ -171,6 +185,10 @@ public class MovementSelectionFragment extends Fragment {
 		l.retrieveObject();
 	}
 
+	/**
+	 * @return A list with all the unit movements the player wants to make.
+	 */
+
 	private List<BeginMovementDTO> createMovementList() {
 		List<BeginMovementDTO> movementList = new ArrayList<>();
 		int index = 0;
@@ -182,6 +200,10 @@ public class MovementSelectionFragment extends Fragment {
 		}
 		return movementList;
 	}
+
+	/**
+	 * Sorts the provinces list in descending order by the number of units.
+	 */
 
 	private void sortListEntries() {
 		if (movableUnitsList != null) {
@@ -209,11 +231,85 @@ public class MovementSelectionFragment extends Fragment {
 		}
 	}
 
-	public static void updateTotalUnitCount(int change) {
+	/**
+	 * Updates the 'total units' counter variable and view.
+	 * 
+	 * @param change
+	 */
+
+	public void updateTotalUnitCount(int change) {
 		totalUnitCount += change;
 		TextView unitCount = (TextView) movementSelectionLayout
 				.findViewById(R.id.movement_selection_unit_count);
-		unitCount.setText(resources.getString(R.string.units_total) + " "
+		unitCount.setText(activity.getString(R.string.units_total) + " "
 				+ totalUnitCount + "/" + maxUnitCount);
 	}
+
+	/**
+	 * @return The current total number of units to be sent.
+	 */
+
+	public int getTotalUnitCount() {
+		return totalUnitCount;
+	}
+
+	/**
+	 * Sets the current total number of units to be sent.
+	 * 
+	 * @param totalUnitCount
+	 */
+
+	public void setTotalUnitCount(int totalUnitCount) {
+		this.totalUnitCount = totalUnitCount;
+	}
+
+	/**
+	 * @return The maximum number of units that can be sent.
+	 */
+
+	public int getMaxUnitCount() {
+		return maxUnitCount;
+	}
+
+	/**
+	 * @param provinceIndex
+	 *            The list index of a province.
+	 * @return The current number of units that is set to be sent from the
+	 *         province.
+	 */
+
+	public int getSelectedUnitCount(int provinceIndex) {
+		return selectedUnitCountList[provinceIndex];
+	}
+
+	/**
+	 * Sets the current number of units that is set to be sent from the
+	 * province.
+	 * 
+	 * @param provinceIndex
+	 *            The list index of a province.
+	 * @param newCount
+	 *            New number of units to be sent from the province.
+	 */
+
+	public void setSelectedUnitCount(int provinceIndex, int newCount) {
+		this.selectedUnitCountList[provinceIndex] = newCount;
+	}
+
+	/**
+	 * @return The type of unit movement (attack or transfer).
+	 */
+
+	public MovementType getMovementType() {
+		return movementType;
+	}
+
+	/**
+	 * Sets the type of unit movement.
+	 */
+
+	public void setMovementType(MovementType movementType) {
+		this.movementType = movementType;
+	}
+
 }

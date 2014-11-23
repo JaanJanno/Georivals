@@ -102,6 +102,10 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		});
 		instrumentation.waitForIdleSync();
 
+		// test if map initialized
+		waitForField(MainActivity.MAP_FRAGMENT.getMap(), 1000);
+		assertNotNull(MainActivity.MAP_FRAGMENT.getMap());
+
 		// test if map fragment is visible
 		assertNotNull(MainActivity.MAP_FRAGMENT);
 		assertTrue(MainActivity.MAP_FRAGMENT instanceof com.google.android.gms.maps.MapFragment);
@@ -110,9 +114,6 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		// test different fields
 		GoogleMap map = MainActivity.MAP_FRAGMENT.getMap();
 		assertNotNull(map);
-		assertNotNull(MainActivity.MAP_FRAGMENT.getLocationRequest());
-		assertNotNull(MainActivity.MAP_FRAGMENT.getLocationManager());
-		assertNotNull(MainActivity.MAP_FRAGMENT.getGoogleApiClient());
 	}
 
 	public void testProfileFragment() {
@@ -130,11 +131,10 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertTrue(MainActivity.PROFILE_FRAGMENT.isVisible());
 
 		// test different fields
-		assertNotNull(MainActivity.PROFILE_FRAGMENT.getProfileEntryLoader());
 		assertNotNull(MainActivity.PROFILE_FRAGMENT.getProfileLayout());
 
 		if (isNetworkAvailable()) {
-			waitForField(MainActivity.PROFILE_FRAGMENT.getProfile(), 5000);
+			waitForField(MainActivity.PROFILE_FRAGMENT.getProfile(), 1000);
 
 			TextView username = (TextView) activity
 					.findViewById(R.id.profile_username);
@@ -170,11 +170,10 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertTrue(MainActivity.HIGH_SCORE_FRAGMENT.isVisible());
 
 		// test different fields
-		assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getHighScoreListLoader());
 		assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getHighscoreLayout());
 
 		if (isNetworkAvailable()) {
-			waitForField(MainActivity.HIGH_SCORE_FRAGMENT.getPlayerList(), 5000);
+			waitForField(MainActivity.HIGH_SCORE_FRAGMENT.getPlayerList(), 1000);
 			assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getPlayerList());
 			assertNotNull(MainActivity.HIGH_SCORE_FRAGMENT.getAdapter());
 
@@ -227,4 +226,5 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 			// wait
 		}
 	}
+
 }

@@ -2,7 +2,6 @@ package ee.bmagrupp.georivals.mobile.ui.widgets;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import android.app.Activity;
 import android.app.Dialog;
 import android.view.View;
 import android.view.Window;
@@ -17,12 +16,16 @@ public class CustomDialog extends Dialog {
 	private Button negativeButton;
 	private final CustomDialog customDialog = this;
 
-	public CustomDialog(Activity activity) {
+	public CustomDialog(MainActivity activity) {
 		super(activity);
-		setup();
+		initialize();
 	}
 
-	private void setup() {
+	/**
+	 * Sets the initial attributes of the dialog.
+	 */
+
+	private void initialize() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.dialog_layout);
 
@@ -45,58 +48,134 @@ public class CustomDialog extends Dialog {
 				});
 	}
 
+	/**
+	 * Sets the message of the dialog.
+	 * 
+	 * @param message
+	 * 
+	 * @return The updated dialog.
+	 */
+
 	public CustomDialog setMessage(String message) {
 		messageTextView.setText(message);
 		return this;
 	}
 
-	public CustomDialog setInput(String hint) {
+	/**
+	 * Sets the hint of the dialog input view.
+	 * 
+	 * @param hint
+	 * 
+	 * @return The updated dialog.
+	 */
+
+	public CustomDialog setInputHint(String hint) {
 		inputEditText.setHint(hint);
 		return this;
 	}
 
+	/**
+	 * @return The value of the dialog input.
+	 */
+
 	public String getInputValue() {
 		return inputEditText.getText().toString();
 	}
+
+	/**
+	 * Hides the dialog input view.
+	 * 
+	 * @return The updated dialog.
+	 */
 
 	public CustomDialog hideInput() {
 		inputEditText.setVisibility(View.GONE);
 		return this;
 	}
 
-	public CustomDialog setPositiveButton(String positiveButtonName,
-			android.view.View.OnClickListener positiveButtonClickListener) {
-		positiveButton.setText(positiveButtonName);
-		positiveButton.setOnClickListener(positiveButtonClickListener);
+	/**
+	 * Sets the positive button of the dialog.
+	 * 
+	 * @param buttonText
+	 * @param buttonClickListener
+	 * 
+	 * @return The updated dialog.
+	 */
+
+	public CustomDialog setPositiveButton(String buttonText,
+			android.view.View.OnClickListener buttonClickListener) {
+		positiveButton.setText(buttonText);
+		positiveButton.setOnClickListener(buttonClickListener);
 		return this;
 	}
+
+	/**
+	 * Sets the positive button of the dialog.
+	 * 
+	 * @param buttonClickListener
+	 * 
+	 * @return The updated dialog.
+	 */
 
 	public CustomDialog setPositiveButton(
-			android.view.View.OnClickListener positiveButtonClickListener) {
-		positiveButton.setOnClickListener(positiveButtonClickListener);
+			android.view.View.OnClickListener buttonClickListener) {
+		positiveButton.setOnClickListener(buttonClickListener);
 		return this;
 	}
 
-	public CustomDialog setPositiveButton(String positiveButtonName) {
-		positiveButton.setText(positiveButtonName);
+	/**
+	 * Sets the positive button of the dialog.
+	 * 
+	 * @param buttonText
+	 * 
+	 * @return The updated dialog.
+	 */
+
+	public CustomDialog setPositiveButton(String buttonText) {
+		positiveButton.setText(buttonText);
 		return this;
 	}
 
-	public CustomDialog setNegativeButton(String negativeButtonName,
-			android.view.View.OnClickListener negativeButtonClickListener) {
-		negativeButton.setText(negativeButtonName);
-		negativeButton.setOnClickListener(negativeButtonClickListener);
+	/**
+	 * Sets the negative button of the dialog.
+	 * 
+	 * @param buttonText
+	 * @param buttonClickListener
+	 * 
+	 * @return The updated dialog.
+	 */
+
+	public CustomDialog setNegativeButton(String buttonText,
+			android.view.View.OnClickListener buttonClickListener) {
+		negativeButton.setText(buttonText);
+		negativeButton.setOnClickListener(buttonClickListener);
 		return this;
 	}
+
+	/**
+	 * Sets the negative button of the dialog.
+	 * 
+	 * @param buttonClickListener
+	 * 
+	 * @return The updated dialog.
+	 */
 
 	public CustomDialog setNegativeButton(
-			android.view.View.OnClickListener negativeButtonClickListener) {
-		negativeButton.setOnClickListener(negativeButtonClickListener);
+			android.view.View.OnClickListener buttonClickListener) {
+		negativeButton.setOnClickListener(buttonClickListener);
 		return this;
 	}
 
-	public CustomDialog setNegativeButton(String negativeButtonName) {
-		negativeButton.setText(negativeButtonName);
+	/**
+	 * Sets the negative button of the dialog.
+	 * 
+	 * @param buttonText
+	 * 
+	 * @return The updated dialog.
+	 */
+
+	public CustomDialog setNegativeButton(String buttonText) {
+		negativeButton.setText(buttonText);
 		return this;
 	}
 

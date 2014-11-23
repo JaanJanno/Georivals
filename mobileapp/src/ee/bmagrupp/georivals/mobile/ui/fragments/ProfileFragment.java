@@ -9,7 +9,6 @@ import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProfileFragment extends Fragment implements TabItem {
+	// non-static immutable variables (local constants)
+	private MainActivity activity;
 	private final int tabNameId = R.string.profile;
 	private final int tabIconId = R.drawable.profile_icon;
-
-	private MainActivity activity;
-	private Resources resources;
-	private ProfileEntryLoader profileEntryLoader;
 	private LinearLayout profileLayout;
+
+	// non-static mutable variables
 	private ProfileEntry profile;
 
 	@Override
@@ -33,7 +32,6 @@ public class ProfileFragment extends Fragment implements TabItem {
 		profileLayout = (LinearLayout) inflater.inflate(
 				R.layout.profile_layout, container, false);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		requestProfileData();
 		MainActivity.changeFonts(profileLayout);
 		return profileLayout;
@@ -41,14 +39,18 @@ public class ProfileFragment extends Fragment implements TabItem {
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
 
+	/**
+	 * Requests the player's profile data from the server. If successful, it
+	 * populates the layout.
+	 */
+
 	private void requestProfileData() {
-		profileEntryLoader = new ProfileEntryLoader(Constants.PROFILE,
-				MainActivity.userId) {
+		ProfileEntryLoader profileEntryLoader = new ProfileEntryLoader(
+				Constants.PROFILE, MainActivity.userId) {
 			@Override
 			public void handleResponseObject(final ProfileEntry profileEntry) {
 				activity.runOnUiThread(new Runnable() {
@@ -58,7 +60,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 							profile = profileEntry;
 							populateLayout();
 						} else
-							activity.showMessage(resources
+							activity.showToastMessage(activity
 									.getString(R.string.error_retrieval_fail));
 					}
 				});
@@ -71,6 +73,10 @@ public class ProfileFragment extends Fragment implements TabItem {
 		};
 		profileEntryLoader.retrieveProfileEntry();
 	}
+
+	/**
+	 * Populates the layout.
+	 */
 
 	private void populateLayout() {
 		String username = profile.getUsername();
@@ -89,32 +95,36 @@ public class ProfileFragment extends Fragment implements TabItem {
 		TextView provincesTextview = (TextView) profileLayout
 				.findViewById(R.id.profile_provinces);
 
-		usernameTextview.setText(resources.getString(R.string.username_colon)
+		usernameTextview.setText(activity.getString(R.string.username_colon)
 				+ " " + username);
-		emailTextview.setText(resources.getString(R.string.email_colon) + " "
+		emailTextview.setText(activity.getString(R.string.email_colon) + " "
 				+ email);
-		totalUnitsTextview.setText(resources.getString(R.string.units_total)
+		totalUnitsTextview.setText(activity.getString(R.string.units_total)
 				+ " " + Integer.toString(totalUnits));
 		if (ownedProvinces != 0)
-			averageUnitsTextview.setText(resources
+			averageUnitsTextview.setText(activity
 					.getString(R.string.units_average)
 					+ " "
 					+ Integer.toString(totalUnits / ownedProvinces));
 		else
-			averageUnitsTextview.setText(resources
+			averageUnitsTextview.setText(activity
 					.getString(R.string.units_average) + " 0");
-		provincesTextview.setText(resources.getString(R.string.provinces_owned)
+		provincesTextview.setText(activity.getString(R.string.provinces_owned)
 				+ " " + Integer.toString(ownedProvinces));
 
 	}
 
-	public ProfileEntryLoader getProfileEntryLoader() {
-		return profileEntryLoader;
-	}
+	/**
+	 * @return The layout of the profile fragment.
+	 */
 
 	public LinearLayout getProfileLayout() {
 		return profileLayout;
 	}
+
+	/**
+	 * @return The player's profile entry object.
+	 */
 
 	public ProfileEntry getProfile() {
 		return profile;
@@ -129,4 +139,5 @@ public class ProfileFragment extends Fragment implements TabItem {
 	public int getTabNameId() {
 		return tabNameId;
 	}
+
 }

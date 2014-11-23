@@ -11,9 +11,6 @@ import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +23,11 @@ import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
 public class RegistrationFragment extends Fragment {
-	private RelativeLayout registrationLayout;
+	// non-static immutable variables (local constants)
 	private MainActivity activity;
-	private Resources resources;
+	private RelativeLayout registrationLayout;
+
+	// non-static mutable variables
 	private String username;
 	private String email;
 
@@ -39,17 +38,19 @@ public class RegistrationFragment extends Fragment {
 				R.layout.registration_layout, container, false);
 		MainActivity.changeFonts(registrationLayout);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		setButtonListeners();
 		return registrationLayout;
 	}
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
+
+	/**
+	 * Sets click listeners for the layout's buttons.
+	 */
 
 	private void setButtonListeners() {
 		Button startButton = (Button) registrationLayout
@@ -67,7 +68,7 @@ public class RegistrationFragment extends Fragment {
 				String usernameString = usernameEditText.getText().toString();
 				String emailString = emailEditText.getText().toString();
 				if (usernameString.equals("")) {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_username_null));
 				} else {
 					username = usernameString;
@@ -80,13 +81,16 @@ public class RegistrationFragment extends Fragment {
 		existingAccountTextView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getFragmentManager()
-						.beginTransaction()
-						.replace(R.id.fragment_container,
-								MainActivity.LOGIN_FRAGMENT, "Login").commit();
+				activity.changeFragment(MainActivity.LOGIN_FRAGMENT,
+						activity.getString(R.string.login));
 			}
 		});
 	}
+
+	/**
+	 * Registration phase 1 - send a request to the server to check if the
+	 * inserted username is available.
+	 */
 
 	private void registrationPhase1() {
 		RegistrationPhase1Poster p = new RegistrationPhase1Poster(
@@ -97,15 +101,19 @@ public class RegistrationFragment extends Fragment {
 				if (responseObject.getResult() == ServerResult.OK)
 					showPhase1ConfirmationDialog();
 				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_username_taken));
 				else
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_unknown));
 			}
 		};
 		p.retrieveObject();
 	}
+
+	/**
+	 * Sets up and displays a username confirmation dialog.
+	 */
 
 	private void showPhase1ConfirmationDialog() {
 		activity.runOnUiThread(new Runnable() {
@@ -114,10 +122,10 @@ public class RegistrationFragment extends Fragment {
 				final CustomDialog confirmationDialog = new CustomDialog(
 						activity);
 
-				confirmationDialog.setMessage(resources
+				confirmationDialog.setMessage(activity
 						.getString(R.string.confirmation_username1)
 						+ username
-						+ resources.getString(R.string.confirmation_username2));
+						+ activity.getString(R.string.confirmation_username2));
 				confirmationDialog.hideInput();
 
 				confirmationDialog.setPositiveButton(new OnClickListener() {
@@ -125,15 +133,11 @@ public class RegistrationFragment extends Fragment {
 					public void onClick(View v) {
 						MainActivity.choosingHomeProvince = true;
 						if (activity.getActionBar().getSelectedTab().getTag()
-								.equals("Map")) {
-							activity.getFragmentManager()
-									.beginTransaction()
-									.replace(R.id.fragment_container,
-											MainActivity.MAP_FRAGMENT, "Map")
-									.commit();
+								.equals(activity.getString(R.string.map))) {
+							activity.changeFragment(MainActivity.MAP_FRAGMENT,
+									activity.getString(R.string.map));
 						} else {
-							activity.getActionBar()
-									.setSelectedNavigationItem(0);
+							activity.setToMapTab();
 						}
 						confirmationDialog.dismiss();
 					}
@@ -145,6 +149,10 @@ public class RegistrationFragment extends Fragment {
 		});
 	}
 
+	/**
+	 * Sets up and displays a 'Set Home' confirmation dialog.
+	 */
+
 	public void showPhase2ConfirmationDialog(final LatLng provinceLatLng) {
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -152,7 +160,7 @@ public class RegistrationFragment extends Fragment {
 				final CustomDialog confirmationDialog = new CustomDialog(
 						activity);
 
-				confirmationDialog.setMessage(resources
+				confirmationDialog.setMessage(activity
 						.getString(R.string.confirmation_province));
 				confirmationDialog.hideInput();
 
@@ -171,6 +179,13 @@ public class RegistrationFragment extends Fragment {
 
 	}
 
+	/**
+	 * Registration phase 2 - send a request to the server to register a new
+	 * user with the inserted name, email and the given home location.
+	 * 
+	 * @param homeLatLng
+	 */
+
 	private void registrationPhase2(LatLng homeLatLng) {
 		RegistrationPhase2Poster p2 = new RegistrationPhase2Poster(
 				new RegistrationDTO(username, email, homeLatLng.latitude,
@@ -182,7 +197,7 @@ public class RegistrationFragment extends Fragment {
 					@Override
 					public void run() {
 						ServerResult result = responseObject.getResult();
-						String SID = responseObject.getValue();
+						String sid = responseObject.getValue();
 						int userId = responseObject.getId();
 						if (result == ServerResult.OK) {
 							TextView chooseHomeLabel = (TextView) activity
@@ -192,21 +207,14 @@ public class RegistrationFragment extends Fragment {
 									.findViewById(R.id.set_home_current);
 							setHomeButton.setVisibility(View.INVISIBLE);
 							MainActivity.choosingHomeProvince = false;
-
-							SharedPreferences sharedPref = activity
-									.getPreferences(Context.MODE_PRIVATE);
-							SharedPreferences.Editor editor = sharedPref.edit();
-							editor.putString("sid", SID);
-							editor.putInt("userId", userId);
-							editor.commit();
-							activity.updatePlayerInfo();
-							activity.showMessage(resources
+							activity.setUserData(sid, userId);
+							activity.showToastMessage(activity
 									.getString(R.string.user_created));
 						} else if (result == ServerResult.USERNAME_IN_USE) {
-							activity.showMessage(resources
+							activity.showToastMessage(activity
 									.getString(R.string.error_username_taken));
 						} else {
-							activity.showMessage(resources
+							activity.showToastMessage(activity
 									.getString(R.string.error_unknown));
 						}
 					}

@@ -11,24 +11,27 @@ import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.HighScoreAdapter;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 public class HighScoreFragment extends Fragment implements TabItem {
+	// non-static immutable variables (local constants)
+	private MainActivity activity;
 	private final int tabNameId = R.string.highscores;
 	private final int tabIconId = R.drawable.leaders_icon;
+	private final int sortByUnits = 1;
+	private final int sortByProvinces = 2;
+	private LinearLayout highscoreLayout;
 
+	// non-static mutable variables
 	private List<HighScoreEntry> playerList;
 	private HighScoreAdapter adapter;
-	private MainActivity activity;
-	private Resources resources;
-	private HighScoreListLoader highScoreListLoader;
-	private LinearLayout highscoreLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,21 +39,50 @@ public class HighScoreFragment extends Fragment implements TabItem {
 		highscoreLayout = (LinearLayout) inflater.inflate(
 				R.layout.highscore_layout, container, false);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		requestHighScoreData();
 		MainActivity.changeFonts(highscoreLayout);
+		setButtonListeners();
 		return highscoreLayout;
 	}
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
 
+	/**
+	 * Sets click listeners for the layout's buttons.
+	 */
+
+	private void setButtonListeners() {
+		Button unitSortButton = (Button) highscoreLayout
+				.findViewById(R.id.unit_sort_button);
+		Button provincesSortButton = (Button) highscoreLayout
+				.findViewById(R.id.provinces_sort_button);
+
+		unitSortButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sortEntries(sortByUnits);
+			}
+		});
+
+		provincesSortButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sortEntries(sortByProvinces);
+			}
+		});
+	}
+
+	/**
+	 * Requests high scores data from the server. If successful, it populates
+	 * the list view.
+	 */
+
 	private void requestHighScoreData() {
-		highScoreListLoader = new HighScoreListLoader(
+		HighScoreListLoader highScoreListLoader = new HighScoreListLoader(
 				ee.bmagrupp.georivals.mobile.core.communications.Constants.HIGHSCORE) {
 
 			public void handleResponseList(final List<HighScoreEntry> list) {
@@ -59,9 +91,10 @@ public class HighScoreFragment extends Fragment implements TabItem {
 					public void run() {
 						if (list != null) {
 							playerList = list;
+							sortEntries(sortByUnits);
 							populateLayout();
 						} else {
-							activity.showMessage(resources
+							activity.showToastMessage(activity
 									.getString(R.string.error_retrieval_fail));
 						}
 					}
@@ -71,15 +104,24 @@ public class HighScoreFragment extends Fragment implements TabItem {
 		highScoreListLoader.retrieveHighScoreEntries();
 	}
 
+	/**
+	 * Populates the high scores list view.
+	 */
+
 	private void populateLayout() {
-		sortEntries("averageUnits");
 		ListView listview = (ListView) highscoreLayout
 				.findViewById(R.id.highscore_listview);
 		adapter = new HighScoreAdapter(activity, playerList);
 		listview.setAdapter(adapter);
 	}
 
-	public void sortEntries(final String sortBy) {
+	/**
+	 * Sorts the current high scores player list by the given type.
+	 * 
+	 * @param sortBy
+	 */
+
+	public void sortEntries(final int sortBy) {
 		if (playerList != null) {
 			Collections.sort(playerList, new Comparator<HighScoreEntry>() {
 				@Override
@@ -91,7 +133,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 							.getProvincesOwned());
 					Integer provincesOwned2 = Integer.valueOf(entry2
 							.getProvincesOwned());
-					if (sortBy.equals("averageUnits")) {
+					if (sortBy == sortByUnits) {
 						if (averageUnits1 < averageUnits2)
 							return 1;
 						else if (averageUnits1 > averageUnits2)
@@ -113,17 +155,25 @@ public class HighScoreFragment extends Fragment implements TabItem {
 		}
 	}
 
+	/**
+	 * @return The current high scores player list.
+	 */
+
 	public List<HighScoreEntry> getPlayerList() {
 		return playerList;
 	}
+
+	/**
+	 * @return The current high score list adapter.
+	 */
 
 	public HighScoreAdapter getAdapter() {
 		return adapter;
 	}
 
-	public HighScoreListLoader getHighScoreListLoader() {
-		return highScoreListLoader;
-	}
+	/**
+	 * @return The layout of the high scores fragment.
+	 */
 
 	public LinearLayout getHighscoreLayout() {
 		return highscoreLayout;
