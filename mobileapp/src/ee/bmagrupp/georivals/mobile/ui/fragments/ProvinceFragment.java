@@ -104,68 +104,104 @@ public class ProvinceFragment extends Fragment {
 	}
 
 	/**
-	 * Adds suitable button views to the layout and sets their click listeners.
+	 * Checks which buttons are needed and adds them to the layout.
 	 */
 
 	private void addButtons() {
-		if (province.getType() == ProvinceType.PLAYER
-				|| province.getType() == ProvinceType.HOME) {
-			OnClickListener TransferUnitsClickListener = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MainActivity.MOVEMENT_SELECTION_FRAGMENT
-							.setMovementType(MovementType.TRANSFER);
-					activity.changeFragment(
-							MainActivity.MOVEMENT_SELECTION_FRAGMENT,
-							activity.getString(R.string.movement_selection));
-				}
+		ProvinceType provinceType = province.getType();
 
-			};
-			createButton(R.string.units_transfer, TransferUnitsClickListener);
+		if (provinceType != ProvinceType.HOME)
+			addMakeHomeButton();
 
-			OnClickListener RenameClickListener = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					showRenameConfirmationDialog();
-				}
-			};
-			createButton(R.string.rename, RenameClickListener);
-
-			if (province.getType() != ProvinceType.HOME) {
-				OnClickListener MakeHomeClickListener = new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						showHomeChangeConfirmationDialog();
-					}
-				};
-				createButton(R.string.make_home, MakeHomeClickListener);
-			}
-
-		} else if (province.isAttackable()) {
-			OnClickListener AttackClickListener = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MainActivity.MOVEMENT_SELECTION_FRAGMENT
-							.setMovementType(MovementType.ATTACK);
-					activity.changeFragment(
-							MainActivity.MOVEMENT_SELECTION_FRAGMENT,
-							activity.getString(R.string.movement_selection));
-				}
-			};
-
-			createButton(R.string.attack, AttackClickListener);
-		}
+		if (provinceType == ProvinceType.PLAYER
+				|| provinceType == ProvinceType.HOME) {
+			addTransferUnitsButton();
+			addRenameButton();
+		} else if (province.isAttackable())
+			addAttackButton();
 	}
 
 	/**
-	 * Creates a button view with the given text and click listener and adds it
-	 * to the layout.
+	 * Sets the 'Make home' button click listener and adds the button to the
+	 * layout.
+	 */
+
+	private void addMakeHomeButton() {
+		OnClickListener makeHomeClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHomeChangeConfirmationDialog();
+			}
+		};
+		Button button = createButton(R.string.make_home, makeHomeClickListener);
+		provinceLayout.addView(button);
+	}
+
+	/**
+	 * Sets the 'Transfer units' button click listener and adds the button to
+	 * the layout.
+	 */
+
+	private void addTransferUnitsButton() {
+		OnClickListener transferUnitsClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MainActivity.MOVEMENT_SELECTION_FRAGMENT
+						.setMovementType(MovementType.TRANSFER);
+				activity.changeFragment(
+						MainActivity.MOVEMENT_SELECTION_FRAGMENT,
+						activity.getString(R.string.movement_selection));
+			}
+		};
+		Button button = createButton(R.string.units_transfer,
+				transferUnitsClickListener);
+		provinceLayout.addView(button);
+	}
+
+	/**
+	 * Sets the 'Rename' button click listener and adds the button to the
+	 * layout.
+	 */
+
+	private void addRenameButton() {
+		OnClickListener renameClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showRenameConfirmationDialog();
+			}
+		};
+		Button button = createButton(R.string.rename, renameClickListener);
+		provinceLayout.addView(button);
+	}
+
+	/**
+	 * Sets the 'Attack' button click listener and adds the button to the
+	 * layout.
+	 */
+
+	private void addAttackButton() {
+		OnClickListener attackClickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MainActivity.MOVEMENT_SELECTION_FRAGMENT
+						.setMovementType(MovementType.ATTACK);
+				activity.changeFragment(
+						MainActivity.MOVEMENT_SELECTION_FRAGMENT,
+						activity.getString(R.string.movement_selection));
+			}
+		};
+		Button button = createButton(R.string.attack, attackClickListener);
+		provinceLayout.addView(button);
+	}
+
+	/**
+	 * @return A button view with the given text and click listener.
 	 * 
 	 * @param buttonTextId
 	 * @param clickListener
 	 */
 
-	private void createButton(int buttonTextId, OnClickListener clickListener) {
+	private Button createButton(int buttonTextId, OnClickListener clickListener) {
 		Button button = new Button(activity);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -178,8 +214,7 @@ public class ProvinceFragment extends Fragment {
 		button.setId(buttonTextId);
 		button.setBackgroundResource(R.drawable.button);
 		button.setOnClickListener(clickListener);
-
-		provinceLayout.addView(button);
+		return button;
 	}
 
 	/**
