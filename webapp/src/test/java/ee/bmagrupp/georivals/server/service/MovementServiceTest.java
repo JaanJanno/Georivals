@@ -35,6 +35,7 @@ import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
+import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.util.ServerResult;
@@ -82,7 +83,24 @@ public class MovementServiceTest {
 		latitude = 24.4525;
 		longitude = 54.321;
 	}
+	
+	@Test
+	public void getMyMovementsTest(){
+		List<BeginMovementDTO> list = new ArrayList<>();
+		list.add(new BeginMovementDTO(7, 6));
+		double lat = 13.1235;
+		double lon = 10.567;
 
+		BeginMovementResponse response = movServ.moveUnitsTo(
+				Double.toString(lat), Double.toString(lon), list,
+				"BPUYYOU62flwiWJe");
+		assertEquals("Result is ok", ServerResult.OK, response.getResult());
+		
+		List<MovementViewDTO> lst = movServ.getMyMovements("BPUYYOU62flwiWJe");
+		assertEquals("list should contain 1 element", 1, lst.size());
+		assertEquals("it is an attack", true, lst.get(0).isAttack());
+	}
+	
 	@Test
 	public void claimUnitsTest() {
 		Set<Ownership> lst = playerRepo.findBySid(sid).getOwnedProvinces();
