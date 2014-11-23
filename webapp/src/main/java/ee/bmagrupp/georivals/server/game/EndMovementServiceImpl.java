@@ -168,6 +168,13 @@ public class EndMovementServiceImpl implements EndMovementService {
 		// delete defender units
 		deleteDefender(history, ow);
 
+		/*
+		 * WARNING: THE FOLLOWING IS A TERRIBLE HACK! Since I don't have control
+		 * over the Hibernate session, I can't use session.flush() to force
+		 * ownership delete. But by making a query, the deleting will be
+		 * commited and everything works.
+		 */
+		ownerRepo.count();
 		// resize attacker unit
 		mov.getUnit().increaseSize(-history.getAttackerLosses());
 		unitRepo.save(mov.getUnit());

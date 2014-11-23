@@ -73,7 +73,7 @@ public class MovementRepositoryTest {
 		Player player2 = playerRepo.findOne(2);
 
 		Movement mov2 = new Movement(unit, player2.getHome().getProvince(),
-				destination, player2, new Date(), endDate);
+				destination, player2, new Date(), cal.getTime());
 		moveRepo.save(mov2);
 	}
 
@@ -117,6 +117,14 @@ public class MovementRepositoryTest {
 		PageRequest pageR = new PageRequest(0, 1);
 		List<Movement> mov = moveRepo.getMostRecent(pageR);
 		assertEquals("Player id", 1, mov.get(0).getPlayer().getId());
+
+	}
+
+	@Test
+	public void getAllEndDates() {
+		List<Date> endDates = moveRepo.getAllEndDates();
+		assertTrue("First date is before the second",
+				endDates.get(0).before(endDates.get(1)));
 
 	}
 

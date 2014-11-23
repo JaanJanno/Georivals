@@ -13,7 +13,6 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
 import android.app.Fragment;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,10 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ProvinceFragment extends Fragment {
-	private LinearLayout provinceLayout;
+	// non-static immutable variables (local constants)
 	private MainActivity activity;
-	private Resources resources;
+	private LinearLayout provinceLayout;
 
+	// static mutable variables
 	public static LatLng provinceLatLng;
 	public static ProvinceDTO province;
 
@@ -38,7 +38,6 @@ public class ProvinceFragment extends Fragment {
 		provinceLayout = (LinearLayout) inflater.inflate(
 				R.layout.province_layout, container, false);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		MainActivity.changeFonts(provinceLayout);
 		requestProvinceData();
 		return provinceLayout;
@@ -46,10 +45,14 @@ public class ProvinceFragment extends Fragment {
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
+
+	/**
+	 * Requests the province data from the server. If successful, it populates
+	 * the layout.
+	 */
 
 	private void requestProvinceData() {
 		ProvinceViewUILoader l = new ProvinceViewUILoader(MainActivity.sid,
@@ -61,7 +64,7 @@ public class ProvinceFragment extends Fragment {
 					province = responseObject;
 					populateLayout();
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_retrieval_fail));
 				}
 			}
@@ -77,6 +80,10 @@ public class ProvinceFragment extends Fragment {
 
 	}
 
+	/**
+	 * Populates the layout.
+	 */
+
 	private void populateLayout() {
 		TextView provinceNameTextview = (TextView) provinceLayout
 				.findViewById(R.id.province_name);
@@ -85,76 +92,77 @@ public class ProvinceFragment extends Fragment {
 		TextView unitsTextview = (TextView) provinceLayout
 				.findViewById(R.id.province_unit_size);
 
-		provinceNameTextview.setText(resources
-				.getString(R.string.province_name)
-				+ " "
-				+ province.getProvinceName());
-		ownerNameTextview.setText(resources.getString(R.string.owner_name)
-				+ " " + province.getOwnerName());
-		unitsTextview.setText(resources.getString(R.string.units_number) + " "
+		provinceNameTextview.setText(activity.getString(R.string.province_name)
+				+ " " + province.getProvinceName());
+		ownerNameTextview.setText(activity.getString(R.string.owner_name) + " "
+				+ province.getOwnerName());
+		unitsTextview.setText(activity.getString(R.string.units_number) + " "
 				+ Integer.toString(province.getUnitSize()));
 
 		addButtons();
 	}
 
+	/**
+	 * Adds suitable button views to the layout and sets their click listeners.
+	 */
+
 	private void addButtons() {
 		if (province.getType() == ProvinceType.PLAYER
 				|| province.getType() == ProvinceType.HOME) {
 			OnClickListener TransferUnitsClickListener = new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
-					MovementSelectionFragment.movementType = MovementType.TRANSFER;
-					activity.getFragmentManager()
-							.beginTransaction()
-							.replace(R.id.fragment_container,
-									MainActivity.MOVEMENT_SELECTION_FRAGMENT,
-									"Movement selection").commit();
+					MainActivity.MOVEMENT_SELECTION_FRAGMENT
+							.setMovementType(MovementType.TRANSFER);
+					activity.changeFragment(
+							MainActivity.MOVEMENT_SELECTION_FRAGMENT,
+							activity.getString(R.string.movement_selection));
 				}
 
 			};
 			createButton(R.string.units_transfer, TransferUnitsClickListener);
 
 			OnClickListener RenameClickListener = new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					showRenameConfirmationDialog();
 				}
-
 			};
 			createButton(R.string.rename, RenameClickListener);
 
 			if (province.getType() != ProvinceType.HOME) {
 				OnClickListener MakeHomeClickListener = new OnClickListener() {
-
 					@Override
 					public void onClick(View v) {
 
 					}
-
 				};
 				createButton(R.string.make_home, MakeHomeClickListener);
 			}
 
 		} else if (province.isAttackable()) {
 			OnClickListener AttackClickListener = new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
-					MovementSelectionFragment.movementType = MovementType.ATTACK;
-					activity.getFragmentManager()
-							.beginTransaction()
-							.replace(R.id.fragment_container,
-									MainActivity.MOVEMENT_SELECTION_FRAGMENT,
-									"Movement selection").commit();
+					MainActivity.MOVEMENT_SELECTION_FRAGMENT
+							.setMovementType(MovementType.ATTACK);
+					activity.changeFragment(
+							MainActivity.MOVEMENT_SELECTION_FRAGMENT,
+							activity.getString(R.string.movement_selection));
 				}
-
 			};
 
 			createButton(R.string.attack, AttackClickListener);
 		}
 	}
+
+	/**
+	 * Creates a button view with the given text and click listener and adds it
+	 * to the layout.
+	 * 
+	 * @param buttonTextId
+	 * @param clickListener
+	 */
 
 	private void createButton(int buttonTextId, OnClickListener clickListener) {
 		Button button = new Button(activity);
@@ -164,7 +172,7 @@ public class ProvinceFragment extends Fragment {
 		params.topMargin = 10;
 		button.setLayoutParams(params);
 		button.setTextColor(Color.WHITE);
-		button.setText(resources.getString(buttonTextId));
+		button.setText(activity.getString(buttonTextId));
 		button.setTypeface(MainActivity.GABRIOLA_FONT);
 		button.setId(buttonTextId);
 		button.setBackgroundResource(R.drawable.button);
@@ -173,14 +181,19 @@ public class ProvinceFragment extends Fragment {
 		provinceLayout.addView(button);
 	}
 
+	/**
+	 * Sets up the rename confirmation dialog and displays it.
+	 */
+
 	private void showRenameConfirmationDialog() {
 		final CustomDialog renameConfirmationDialog = new CustomDialog(activity);
-		renameConfirmationDialog.setMessage(resources
+		renameConfirmationDialog.setMessage(activity
 				.getString(R.string.enter_province_name));
-		renameConfirmationDialog.setInput(resources.getString(R.string.name));
+		renameConfirmationDialog
+				.setInputHint(activity.getString(R.string.name));
 
 		renameConfirmationDialog.setPositiveButton(
-				resources.getString(R.string.ok), new OnClickListener() {
+				activity.getString(R.string.ok), new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						String newName = renameConfirmationDialog
@@ -192,11 +205,17 @@ public class ProvinceFragment extends Fragment {
 					}
 				});
 
-		renameConfirmationDialog.setNegativeButton(resources
+		renameConfirmationDialog.setNegativeButton(activity
 				.getString(R.string.cancel));
 
 		renameConfirmationDialog.show();
 	}
+
+	/**
+	 * Sends a province rename request to the server.
+	 * 
+	 * @param newName
+	 */
 
 	private void requestProvinceRename(String newName) {
 		RenameProvinceUILoader l = new RenameProvinceUILoader(
@@ -207,13 +226,11 @@ public class ProvinceFragment extends Fragment {
 			public void handleResponseObjectInUI(ServerResponse responseObject) {
 				ServerResult result = responseObject.getResult();
 				if (result == ServerResult.OK) {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.province_renamed));
-					activity.getFragmentManager().beginTransaction()
-							.detach(MainActivity.PROVINCE_FRAGMENT)
-							.attach(MainActivity.PROVINCE_FRAGMENT).commit();
+					activity.refreshCurrentFragment();
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_unknown));
 				}
 
@@ -228,4 +245,5 @@ public class ProvinceFragment extends Fragment {
 		};
 		l.retrieveObject();
 	}
+
 }

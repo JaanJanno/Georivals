@@ -27,8 +27,8 @@ public class LocationService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		LocationManager l = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		l.requestLocationUpdates("gps", MainActivity.unitClaimInterval,
-				MainActivity.unitClaimMinDistance, getListener());
+		l.requestLocationUpdates("gps", MainActivity.UNIT_CLAIM_INTERVAL,
+				MainActivity.UNIT_CLAIM_MIN_DISTANCE, getListener());
 		return START_STICKY;
 	}
 

@@ -14,10 +14,10 @@ public class TabListener implements ActionBar.TabListener {
 	private Fragment fragment;
 	private String mapString;
 
-	public TabListener(MainActivity activity, TabItem tabItem) {
+	public TabListener(MainActivity activity, TabItem TabItem) {
 		this.activity = activity;
-		this.fragment = (Fragment) tabItem;
-		mapString = activity.getResources().getString(R.string.map);
+		this.fragment = (Fragment) TabItem;
+		this.mapString = activity.getString(R.string.map);
 
 	}
 
@@ -26,12 +26,12 @@ public class TabListener implements ActionBar.TabListener {
 		String fragmentTag = (String) tab.getTag();
 		if (!fragmentTag.equals(mapString) && MainActivity.userId == 0) {
 			if (MainActivity.choosingHomeProvince)
-				activity.getActionBar().setSelectedNavigationItem(0);
-			else if (!MainActivity.REGISTRATION_FRAGMENT.isVisible())
-				ft.replace(R.id.fragment_container,
-						MainActivity.REGISTRATION_FRAGMENT, "Registration");
+				activity.setToMapTab();
+			else if (activity.getCurrentFragment() != MainActivity.REGISTRATION_FRAGMENT)
+				activity.changeFragment(MainActivity.REGISTRATION_FRAGMENT,
+						activity.getString(R.string.registration));
 		} else
-			ft.replace(R.id.fragment_container, fragment, fragmentTag);
+			activity.changeFragment(fragment, fragmentTag);
 	}
 
 	@Override
@@ -42,11 +42,12 @@ public class TabListener implements ActionBar.TabListener {
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		String fragmentTag = (String) tab.getTag();
-		if (!fragment.isVisible()
+		if (activity.getCurrentFragment() != fragment
 				&& (MainActivity.userId != 0 || fragmentTag.equals(mapString))) {
-			ft.replace(R.id.fragment_container, fragment, fragmentTag);
-		} else if (fragment.isVisible() && !fragmentTag.equals(mapString)) {
-			ft.detach(fragment).attach(fragment);
+			activity.changeFragment(fragment, fragmentTag);
+		} else if (activity.getCurrentFragment() == fragment
+				&& !fragmentTag.equals(mapString)) {
+			activity.refreshCurrentFragment();
 		}
 	}
 }

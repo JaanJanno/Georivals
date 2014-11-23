@@ -5,7 +5,6 @@ import java.util.List;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MovementSelectionFragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 @SuppressLint("InflateParams")
 public class MovementSelectionAdapter extends BaseExpandableListAdapter {
-
 	private final Context context;
 	private final List<MovementSelectionViewDTO> movableUnitsList;
 
@@ -34,15 +32,15 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 			View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		LinearLayout rowView = (LinearLayout) inflater.inflate(
+		LinearLayout listItemView = (LinearLayout) inflater.inflate(
 				R.layout.movement_selection_group, parent, false);
 		MovementSelectionViewDTO province = movableUnitsList.get(groupPosition);
-		MainActivity.changeFonts(rowView);
-		TextView provinceNameTextView = (TextView) rowView
+		MainActivity.changeFonts(listItemView);
+		TextView provinceNameTextView = (TextView) listItemView
 				.findViewById(R.id.movement_province_name);
 		provinceNameTextView.setText(province.getProvinceName());
 
-		return rowView;
+		return listItemView;
 	}
 
 	@Override
@@ -50,22 +48,30 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		LinearLayout rowView = (LinearLayout) inflater.inflate(
+		LinearLayout listItemView = (LinearLayout) inflater.inflate(
 				R.layout.movement_selection_item, parent, false);
-		MainActivity.changeFonts(rowView);
+		MainActivity.changeFonts(listItemView);
 		MovementSelectionViewDTO province = movableUnitsList.get(groupPosition);
 
-		setUnitSlider(rowView, groupPosition, province);
+		setUnitSlider(listItemView, groupPosition, province);
 
-		return rowView;
+		return listItemView;
 	}
 
-	private void setUnitSlider(LinearLayout rowView, final int groupPosition,
-			MovementSelectionViewDTO province) {
-		final SeekBar unitSlider = (SeekBar) rowView
+	/**
+	 * Sets up the unit slider for the province's list view item.
+	 * 
+	 * @param listItemView
+	 * @param listItemPosition
+	 * @param province
+	 */
+
+	private void setUnitSlider(LinearLayout listItemView,
+			final int listItemPosition, MovementSelectionViewDTO province) {
+		final SeekBar unitSlider = (SeekBar) listItemView
 				.findViewById(R.id.movement_unit_slider);
-		unitSlider
-				.setProgress(MovementSelectionFragment.selectedUnitCountList[groupPosition]);
+		unitSlider.setProgress(MainActivity.MOVEMENT_SELECTION_FRAGMENT
+				.getSelectedUnitCount(listItemPosition));
 		unitSlider.setMax(province.getUnitSize());
 		unitSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
@@ -83,12 +89,16 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				int progressChange = progress
-						- MovementSelectionFragment.selectedUnitCountList[groupPosition];
-				int maxChange = MovementSelectionFragment.maxUnitCount
-						- MovementSelectionFragment.totalUnitCount;
+						- MainActivity.MOVEMENT_SELECTION_FRAGMENT
+								.getSelectedUnitCount(listItemPosition);
+				int maxChange = MainActivity.MOVEMENT_SELECTION_FRAGMENT
+						.getMaxUnitCount()
+						- MainActivity.MOVEMENT_SELECTION_FRAGMENT
+								.getTotalUnitCount();
 				if (progressChange >= maxChange) {
 					progressChange = maxChange;
-					progress = MovementSelectionFragment.selectedUnitCountList[groupPosition]
+					progress = MainActivity.MOVEMENT_SELECTION_FRAGMENT
+							.getSelectedUnitCount(listItemPosition)
 							+ progressChange;
 					unitSlider.setProgress(progress);
 				}
@@ -96,16 +106,19 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 				TextView unitCountTextView = (TextView) parent
 						.findViewById(R.id.movement_unit_count);
 				unitCountTextView.setText(progress + "/" + unitSlider.getMax());
-				MovementSelectionFragment.updateTotalUnitCount(progressChange);
-				MovementSelectionFragment.selectedUnitCountList[groupPosition] = progress;
+				MainActivity.MOVEMENT_SELECTION_FRAGMENT
+						.updateTotalUnitCount(progressChange);
+				MainActivity.MOVEMENT_SELECTION_FRAGMENT.setSelectedUnitCount(
+						listItemPosition, progress);
 			}
 		});
 
-		TextView unitCountTextView = (TextView) rowView
+		TextView unitCountTextView = (TextView) listItemView
 				.findViewById(R.id.movement_unit_count);
-		unitCountTextView
-				.setText(MovementSelectionFragment.selectedUnitCountList[groupPosition]
-						+ "/" + unitSlider.getMax());
+		unitCountTextView.setText(MainActivity.MOVEMENT_SELECTION_FRAGMENT
+				.getSelectedUnitCount(listItemPosition)
+				+ "/"
+				+ unitSlider.getMax());
 	}
 
 	@Override

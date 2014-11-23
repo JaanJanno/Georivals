@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
-
 	private final Context context;
 	private final List<HighScoreEntry> entriesList;
 
@@ -32,16 +31,18 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		RelativeLayout rowView = (RelativeLayout) inflater.inflate(
+		RelativeLayout listItemView = (RelativeLayout) inflater.inflate(
 				R.layout.highscore_item, parent, false);
 
-		MainActivity.changeFonts(rowView);
+		MainActivity.changeFonts(listItemView);
 
-		TextView rankView = (TextView) rowView.findViewById(R.id.player_rank);
-		TextView nameView = (TextView) rowView.findViewById(R.id.player_name);
-		TextView provincesView = (TextView) rowView
+		TextView rankView = (TextView) listItemView
+				.findViewById(R.id.player_rank);
+		TextView nameView = (TextView) listItemView
+				.findViewById(R.id.player_name);
+		TextView provincesView = (TextView) listItemView
 				.findViewById(R.id.provinces_owned);
-		TextView unitsView = (TextView) rowView
+		TextView unitsView = (TextView) listItemView
 				.findViewById(R.id.average_units);
 
 		HighScoreEntry playerInfo = entriesList.get(position);
@@ -51,7 +52,7 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		provincesView.setText(String.valueOf(playerInfo.getProvincesOwned()));
 		unitsView.setText(String.valueOf(playerInfo.getAverageUnits()));
 
-		return rowView;
+		return listItemView;
 	}
 
 }

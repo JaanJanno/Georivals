@@ -20,18 +20,12 @@ public class MapClickListener implements OnMapClickListener {
 			MainActivity.REGISTRATION_FRAGMENT
 					.showPhase2ConfirmationDialog(point);
 		} else if (MainActivity.userId == 0) {
-			activity.getFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container,
-							MainActivity.REGISTRATION_FRAGMENT, "Registration")
-					.commit();
+			activity.changeFragment(MainActivity.REGISTRATION_FRAGMENT,
+					activity.getString(R.string.registration));
 		} else {
 			ProvinceFragment.provinceLatLng = point;
-			activity.getFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container,
-							MainActivity.PROVINCE_FRAGMENT, "Province")
-					.commit();
+			activity.changeFragment(MainActivity.PROVINCE_FRAGMENT,
+					activity.getString(R.string.province));
 		}
 	}
 

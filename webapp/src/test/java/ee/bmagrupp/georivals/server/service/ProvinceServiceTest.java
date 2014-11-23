@@ -21,10 +21,12 @@ import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
+import ee.bmagrupp.georivals.server.core.domain.Unit;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
+import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
@@ -69,9 +71,12 @@ public class ProvinceServiceTest {
 
 	@Autowired
 	private HomeOwnershipRepository homeRepo;
-	
+
 	@Autowired
 	private OwnershipRepository ownerRepo;
+
+	@Autowired
+	private UnitRepository unitRepo;
 
 	@Before
 	public void setUp() {
@@ -84,46 +89,52 @@ public class ProvinceServiceTest {
 		lat2 = -40.4195;
 		long2 = 144.961;
 	}
-	
-	//Tests for ChangeHomeProvince
-	
+
+	// Tests for ChangeHomeProvince
+
 	@Test
-	public void testChangeHome(){
-		ServerResponse resp = provServ.changeHomeProvince("127.54690235", "45.598325", sid);
+	public void testChangeHome() {
+		ServerResponse resp = provServ.changeHomeProvince("127.54690235",
+				"45.598325", sid);
 		assertEquals(ServerResult.OK, resp.getResult());
 
-		HomeOwnership temp = playerRepo.findBySid(sid).getHome();		
-		assertEquals(127.5465,temp.getProvince().getLatitude(),0.0001);
-		assertEquals(45.599,temp.getProvince().getLongitude(),0.001);
+		HomeOwnership temp = playerRepo.findBySid(sid).getHome();
+		assertEquals(127.5465, temp.getProvince().getLatitude(), 0.0001);
+		assertEquals(45.599, temp.getProvince().getLongitude(), 0.001);
 	}
-	
+
 	@Test
-	public void testChangeName(){
-		//Owned Province
-		ServerResponse resp = provServ.renameProvince("-40.4225", "144.963", "testing", sid);
+	public void testChangeName() {
+		// Owned Province
+		ServerResponse resp = provServ.renameProvince("-40.4225", "144.963",
+				"testing", sid);
 		assertEquals(ServerResult.OK, resp.getResult());
-		
-		Ownership a = ownerRepo.findByProvinceId(provRepo.findWithLatLong(-40.4225, 144.963).getId());
+
+		Ownership a = ownerRepo.findByProvinceId(provRepo.findWithLatLong(
+				-40.4225, 144.963).getId());
 		assertEquals("testing", a.getProvinceName());
-		
-		//Home province
-		ServerResponse resp2 = provServ.renameProvince("-40.4195", "144.961", "testing2", sid);
+
+		// Home province
+		ServerResponse resp2 = provServ.renameProvince("-40.4195", "144.961",
+				"testing2", sid);
 		assertEquals(ServerResult.OK, resp2.getResult());
-		
+
 		HomeOwnership a2 = playerRepo.findBySid(sid).getHome();
 		assertEquals("testing2", a2.getProvinceName());
-		
-		//Test error
-		ServerResponse resp3 = provServ.renameProvince("75.686", "32.533", "testing2", sid);
+
+		// Test error
+		ServerResponse resp3 = provServ.renameProvince("75.686", "32.533",
+				"testing2", sid);
 		assertEquals(ServerResult.FAIL, resp3.getResult());
-		
-		//Test error2
-		ServerResponse resp4 = provServ.renameProvince("-40.4195", "144.965", "testing", sid);
+
+		// Test error2
+		ServerResponse resp4 = provServ.renameProvince("-40.4195", "144.965",
+				"testing", sid);
 		assertEquals(ServerResult.FAIL, resp4.getResult());
 	}
-	
+
 	// Tests for getProvince
-	
+
 	@Test
 	public void botOwnedProvinceWithSID() {
 
@@ -248,6 +259,28 @@ public class ProvinceServiceTest {
 				prov1.getOwnerName());
 		assertEquals("Attackable", true, prov1.isAttackable());
 		assertEquals("Under attack", false, prov1.isUnderAttack());
+	}
+
+	@Test
+	public void botOwnedProvinceInDatabase() {
+		Province prov = new Province(lat1, long1);
+		provRepo.save(prov);
+		Unit botUnit = new Unit(45);
+		unitRepo.save(botUnit);
+		Ownership ow = new Ownership(prov, botUnit);
+		ownerRepo.save(ow);
+		Player bot = playerRepo.findOne(0);
+		bot.addOwnership(ow);
+		playerRepo.save(bot);
+
+		ProvinceDTO prov1 = provServ.getProvince(Double.toString(lat1),
+				Double.toString(long1), sid);
+
+		assertEquals("Province latitude", lat1, prov1.getLatitude(), 0.0001);
+		assertEquals("Province longitude", long1, prov1.getLongitude(), 0.001);
+		assertEquals("Province type", ProvinceType.BOT, prov1.getType());
+		assertEquals("Province unit size", 45, prov1.getUnitSize());
+
 	}
 
 	@Test(expected = NumberFormatException.class)

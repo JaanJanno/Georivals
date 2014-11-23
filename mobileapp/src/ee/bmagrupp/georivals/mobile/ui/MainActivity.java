@@ -19,13 +19,12 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.Tab;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -43,6 +42,7 @@ import android.widget.Toast;
 @SuppressWarnings("deprecation")
 @SuppressLint("InflateParams")
 public class MainActivity extends Activity {
+	// static immutable variables (global constants)
 	public static final MovementSelectionFragment MOVEMENT_SELECTION_FRAGMENT = new MovementSelectionFragment();
 	public static final ProvinceFragment PROVINCE_FRAGMENT = new ProvinceFragment();
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
@@ -52,27 +52,26 @@ public class MainActivity extends Activity {
 	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
 	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
 	public static final MyProvincesFragment MY_PROVINCES_FRAGMENT = new MyProvincesFragment();
+	public static Typeface GABRIOLA_FONT;
+	public static final long UNIT_CLAIM_INTERVAL = 1000;
+	public static final float UNIT_CLAIM_MIN_DISTANCE = 10;
+
+	// non-static immutable variables (local constants)
 	private final TabItem[] tabItemArray = new TabItem[] { MAP_FRAGMENT,
 			MISSION_LOG_FRAGMENT, PROFILE_FRAGMENT, HIGH_SCORE_FRAGMENT,
 			MY_PROVINCES_FRAGMENT };
-	public static Typeface GABRIOLA_FONT;
-	private final Activity activity = this;
-	private Resources resources;
+	private final MainActivity activity = this;
 	private ActionBar actionBar;
 
-	public static Toast toast;
+	// static mutable variables
 	public static int userId;
 	public static String sid = "";
 	public static boolean choosingHomeProvince;
-
-	// Minimal milliseconds between location update.
-	public static final long unitClaimInterval = 1000;
-
-	// Minimal meters of movement for a new unit claim.
-	public static final float unitClaimMinDistance = 10;
-
-	// Whether a service for claiming units in background is started.
 	private static boolean locationServiceEnabled = false;
+
+	// non-static mutable variables
+	private Fragment currentFragment;
+	private Toast toast;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,20 +79,13 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.main_layout);
 		GABRIOLA_FONT = Typeface.createFromAsset(getAssets(),
 				"fonts/Gabriola.ttf");
-		resources = activity.getResources();
 		actionBar = getActionBar();
-
 		createTabs();
 		addTabRibbon();
 		hideViews();
-		updatePlayerInfo();
-
-		// Starts a listener that claims units and updates map if claimed.
+		updateUserInfo();
 		setUnitClaimHandler();
-
-		// Handles unit claiming background service starting.
 		setLocationService();
-
 	}
 
 	/**
@@ -124,25 +116,11 @@ public class MainActivity extends Activity {
 	 */
 
 	private void setLocationService() {
-		setLocationServicePreferences();
 		if (isLocationServiceEnabled()) {
 			Intent service = new Intent(this, LocationService.class);
 			startService(service);
 		} else
 			stopService(new Intent(this, LocationService.class));
-	}
-
-	/*
-	 * Stores the players SID in shared preferences for the location service to
-	 * use when the program isn't running.
-	 */
-
-	private void setLocationServicePreferences() {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString("sid", sid);
-		editor.commit();
 	}
 
 	/*
@@ -153,22 +131,19 @@ public class MainActivity extends Activity {
 	private void setUnitClaimHandler() {
 		LocationManager l = (LocationManager) getApplicationContext()
 				.getSystemService(Context.LOCATION_SERVICE);
-		l.requestLocationUpdates("gps", unitClaimInterval,
-				unitClaimMinDistance, new LocationChangeUIHandler(this));
+		l.requestLocationUpdates("gps", UNIT_CLAIM_INTERVAL,
+				UNIT_CLAIM_MIN_DISTANCE, new LocationChangeUIHandler(this));
 	}
 
-	@Override
-	public void onStop() {
-		if ("google_sdk".equals(Build.PRODUCT)) // if emulator is used
-			System.exit(0);
-		super.onStop();
-	}
+	/**
+	 * Creates and sets all action bar tabs.
+	 */
 
 	private void createTabs() {
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		for (TabItem tabItem : tabItemArray) {
-			String tabName = resources.getString(tabItem.getTabNameId());
+			String tabName = getString(tabItem.getTabNameId());
 			int tabIconId = tabItem.getTabIconId();
 
 			RelativeLayout tabLayout = (RelativeLayout) LayoutInflater.from(
@@ -191,8 +166,12 @@ public class MainActivity extends Activity {
 			actionBar.addTab(tab);
 		}
 
-		actionBar.setSelectedNavigationItem(0);
+		setToMapTab();
 	}
+
+	/**
+	 * Adds the ribbon view on top of the tab bar.
+	 */
 
 	private void addTabRibbon() {
 		int actionBarContainerId = getResources().getIdentifier(
@@ -202,6 +181,10 @@ public class MainActivity extends Activity {
 		View ribbonView = inflater.inflate(R.layout.ribbon_layout, null);
 		actionBarContainer.addView(ribbonView);
 	}
+
+	/**
+	 * Hides the action bar and 'set home' views.
+	 */
 
 	private void hideViews() {
 		actionBar.setDisplayShowHomeEnabled(false);
@@ -213,13 +196,42 @@ public class MainActivity extends Activity {
 		setHomeButton.setVisibility(View.INVISIBLE);
 	}
 
-	public void updatePlayerInfo() {
-		SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+	/**
+	 * Sets the given SID and user id into shared preferences.
+	 * 
+	 * @param sid
+	 * @param userId
+	 */
+
+	public void setUserData(String sid, int userId) {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putString("sid", sid);
+		editor.putInt("userId", userId);
+		editor.commit();
+		updateUserInfo();
+	}
+
+	/**
+	 * Gets the SID and user id from shared preferences and saves them as static
+	 * variables.
+	 */
+
+	public void updateUserInfo() {
+		SharedPreferences sharedPref = PreferenceManager
+				.getDefaultSharedPreferences(this);
 		userId = sharedPref.getInt("userId", 0);
 		sid = sharedPref.getString("sid", "");
 	}
 
-	public void showMessage(final String message) {
+	/**
+	 * Displays a toast message with the given message.
+	 * 
+	 * @param message
+	 */
+
+	public void showToastMessage(final String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -228,6 +240,21 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
+
+	/**
+	 * Cancels the currently displayed toast message.
+	 */
+
+	public void cancelToastMessage() {
+		if (toast != null)
+			toast.cancel();
+	}
+
+	/**
+	 * Changes the font (typeface) of the given layout's children to Gabriola.
+	 * 
+	 * @param layout
+	 */
 
 	public static void changeFonts(ViewGroup layout) {
 		for (int i = 0; i < layout.getChildCount(); i++) {
@@ -243,30 +270,22 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	public void sortByUnits(View v) {
-		HIGH_SCORE_FRAGMENT.sortEntries("averageUnits");
-	}
-
-	public void sortByProvinces(View v) {
-		HIGH_SCORE_FRAGMENT.sortEntries("provincesOwned");
-	}
-
 	@Override
 	public void onBackPressed() {
 		if (MAP_FRAGMENT.isVisible())
 			showExitConfirmationDialog();
 		else
-			activity.getFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container,
-							MainActivity.MAP_FRAGMENT,
-							resources.getString(R.string.map)).commit();
+			changeFragment(MainActivity.MAP_FRAGMENT, getString(R.string.map));
 	}
+
+	/**
+	 * Sets up and displays an application exit confirmation dialog.
+	 */
 
 	private void showExitConfirmationDialog() {
 		final CustomDialog exitConfirmationDialog = new CustomDialog(activity);
-		exitConfirmationDialog.setMessage(resources
-				.getString(R.string.confirmation_exit));
+		exitConfirmationDialog
+				.setMessage(getString(R.string.confirmation_exit));
 		exitConfirmationDialog.hideInput();
 
 		exitConfirmationDialog.setPositiveButton(new OnClickListener() {
@@ -276,9 +295,46 @@ public class MainActivity extends Activity {
 				moveTaskToBack(true);
 			}
 		});
-
 		exitConfirmationDialog.show();
+	}
 
+	/**
+	 * Changes the fragment in the fragment container to the given fragment.
+	 * 
+	 * @param fragment
+	 * @param fragmentTag
+	 */
+
+	public void changeFragment(Fragment fragment, String fragmentTag) {
+		currentFragment = fragment;
+		getFragmentManager().beginTransaction()
+				.replace(R.id.fragment_container, fragment, fragmentTag)
+				.commit();
+	}
+
+	/**
+	 * Reattaches the currently displayed fragment.
+	 */
+
+	public void refreshCurrentFragment() {
+		getFragmentManager().beginTransaction().detach(currentFragment)
+				.attach(currentFragment).commit();
+	}
+
+	/**
+	 * @return The currently displayed fragment.
+	 */
+
+	public Fragment getCurrentFragment() {
+		return currentFragment;
+	}
+
+	/**
+	 * Sets the currently chosen tab to the map tab.
+	 */
+
+	public void setToMapTab() {
+		this.getActionBar().setSelectedNavigationItem(0);
 	}
 
 }

@@ -560,7 +560,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 			newUnits = GameLogic.generateNewUnits(ow.getLastVisit(),
 					new Date(), unitSize);
 
-		} else {
+		} else if(player2.getId() == BOT_ID) {
+			type = ProvinceType.BOT;
+			isAttackable = true;
+		}		
+		else {
 			// Province owned by somebody else
 			type = ProvinceType.OTHER_PLAYER;
 			int player2Strength = findPlayerStrength(player2);

@@ -35,14 +35,14 @@ public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		RelativeLayout rowView = (RelativeLayout) inflater.inflate(
+		RelativeLayout listItemView = (RelativeLayout) inflater.inflate(
 				R.layout.my_provinces_item, parent, false);
 
-		MainActivity.changeFonts(rowView);
+		MainActivity.changeFonts(listItemView);
 
-		TextView provinceNameView = (TextView) rowView
+		TextView provinceNameView = (TextView) listItemView
 				.findViewById(R.id.my_province_name);
-		TextView unitsView = (TextView) rowView
+		TextView unitsView = (TextView) listItemView
 				.findViewById(R.id.my_provinces_units);
 
 		ProvinceDTO province = provinceList.get(position);
@@ -50,32 +50,45 @@ public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 		provinceNameView.setText(province.getProvinceName());
 		unitsView.setText(String.valueOf(province.getUnitSize()));
 
-		boolean isHomeProvince = checkIfHomeProvince(province, rowView);
-		if (!isHomeProvince) {
-			FrameLayout rankFrame = (FrameLayout) rowView
-					.findViewById(R.id.province_rank);
-			TextView rankTextView = new TextView(context);
-			rankTextView.setText(String.valueOf(position));
-			rankTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-			rankTextView.setTextSize(24);
-			rankTextView.setGravity(Gravity.CENTER);
-			rankFrame.addView(rankTextView);
+		if (province.getType() == ProvinceType.HOME) {
+			setHomeIcon(listItemView);
+		} else {
+			setRank(listItemView, position);
 		}
 
-		return rowView;
+		return listItemView;
 	}
 
-	private boolean checkIfHomeProvince(ProvinceDTO province,
-			RelativeLayout rowView) {
-		if (province.getType() == ProvinceType.HOME) {
-			FrameLayout rankFrame = (FrameLayout) rowView
-					.findViewById(R.id.province_rank);
-			ImageView homeImage = new ImageView(context);
-			homeImage.setImageResource(R.drawable.castle_icon);
-			rankFrame.addView(homeImage);
-			return true;
-		}
-		return false;
+	/**
+	 * Sets the home icon as the province's rank.
+	 * 
+	 * @param listItemView
+	 */
+
+	private void setHomeIcon(RelativeLayout listItemView) {
+		FrameLayout rankFrame = (FrameLayout) listItemView
+				.findViewById(R.id.province_rank);
+		ImageView homeImage = new ImageView(context);
+		homeImage.setImageResource(R.drawable.castle_icon);
+		rankFrame.addView(homeImage);
+	}
+
+	/**
+	 * // * Sets the province's rank.
+	 * 
+	 * @param listItemView
+	 * @param rank
+	 */
+
+	private void setRank(RelativeLayout listItemView, int rank) {
+		FrameLayout rankFrame = (FrameLayout) listItemView
+				.findViewById(R.id.province_rank);
+		TextView rankTextView = new TextView(context);
+		rankTextView.setText(String.valueOf(rank));
+		rankTextView.setTypeface(MainActivity.GABRIOLA_FONT);
+		rankTextView.setTextSize(24);
+		rankTextView.setGravity(Gravity.CENTER);
+		rankFrame.addView(rankTextView);
 	}
 
 }

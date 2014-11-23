@@ -3,9 +3,6 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
-@SuppressWarnings("deprecation")
 public class LoginFragment extends Fragment {
-	private RelativeLayout loginLayout;
+	// non-static immutable variables (local constants)
 	private MainActivity activity;
-	private Resources resources;
+	private RelativeLayout loginLayout;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,7 +23,6 @@ public class LoginFragment extends Fragment {
 		loginLayout = (RelativeLayout) inflater.inflate(R.layout.login_layout,
 				container, false);
 		activity = (MainActivity) getActivity();
-		resources = activity.getResources();
 		MainActivity.changeFonts(loginLayout);
 		setButtonListeners();
 		return loginLayout;
@@ -35,10 +30,13 @@ public class LoginFragment extends Fragment {
 
 	@Override
 	public void onDestroyView() {
-		if (MainActivity.toast != null)
-			MainActivity.toast.cancel();
+		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
+
+	/**
+	 * Sets click listeners for the layout's buttons.
+	 */
 
 	private void setButtonListeners() {
 		Button startButton = (Button) loginLayout
@@ -54,9 +52,9 @@ public class LoginFragment extends Fragment {
 				String loginKey = keyEditText.getText().toString();
 				if (loginKey.length() == 16 || loginKey.equals("test")
 						|| loginKey.equals("johnny")) {
-					loginRequest(loginKey);
+					requestLogin(loginKey);
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_invalid_key));
 				}
 			}
@@ -69,41 +67,45 @@ public class LoginFragment extends Fragment {
 						.findViewById(R.id.login_email_textbox);
 				String email = emailEditText.getText().toString();
 				if (isValidEmail(email)) {
-					sendKeyRequest(email);
+					requestSendKey(email);
 				} else {
-					activity.showMessage(resources
+					activity.showToastMessage(activity
 							.getString(R.string.error_invalid_email));
 				}
 			}
 		});
 	}
 
-	private void loginRequest(String loginKey) {
+	/**
+	 * Does a login request with the given login key.
+	 * 
+	 * @param loginKey
+	 */
+
+	private void requestLogin(String loginKey) {
 		// test users
-		if (loginKey.equals("test")) {
-			SharedPreferences sharedPref = activity
-					.getPreferences(Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putString("sid", "BPUYYOU62flwiWJe");
-			editor.putInt("userId", 1);
-			editor.commit();
-			activity.updatePlayerInfo();
-			activity.getActionBar().setSelectedNavigationItem(0);
-		} else if (loginKey.equals("johnny")) {
-			SharedPreferences sharedPref = activity
-					.getPreferences(Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putString("sid", "UJ86IpW5xK8ZZH7t");
-			editor.putInt("userId", 5);
-			editor.commit();
-			activity.updatePlayerInfo();
-			activity.getActionBar().setSelectedNavigationItem(0);
-		}
+		if (loginKey.equals("test"))
+			activity.setUserData("BPUYYOU62flwiWJe", 1);
+		else if (loginKey.equals("johnny"))
+			activity.setUserData("UJ86IpW5xK8ZZH7t", 5);
+		activity.setToMapTab();
 	}
 
-	private void sendKeyRequest(String email) {
+	/**
+	 * Does a 'send login key' request with the given email.
+	 * 
+	 * @param email
+	 */
+
+	private void requestSendKey(String email) {
 
 	}
+
+	/**
+	 * Checks if the given email has a valid email pattern.
+	 * 
+	 * @param email
+	 */
 
 	private boolean isValidEmail(CharSequence email) {
 		if (email == null)
