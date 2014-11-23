@@ -17,6 +17,6 @@
     <!-- Height sizes -->
     <dimen name="height_header">40dp</dimen>
     <!-- Width sizes -->
-    <dimen name="width_list_item">30dp</dimen>
+    <dimen name="width_list_item">35dp</dimen>
 
 </resources>

@@ -50,7 +50,8 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		rankView.setText((position + 1) + ".");
 		nameView.setText(playerInfo.getUsername());
 		provincesView.setText(String.valueOf(playerInfo.getProvincesOwned()));
-		unitsView.setText(String.valueOf(playerInfo.getAverageUnits()));
+		unitsView.setText(String.valueOf((double) Math.round(playerInfo
+				.getAverageUnits() * 10) / 10));
 
 		return listItemView;
 	}

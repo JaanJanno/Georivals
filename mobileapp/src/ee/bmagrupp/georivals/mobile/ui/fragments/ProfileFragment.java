@@ -46,7 +46,8 @@ public class ProfileFragment extends Fragment implements TabItem {
 	 */
 
 	private void requestProfileData() {
-		ProfileEntryLoader profileEntryLoader = new ProfileEntryLoader(MainActivity.userId) {
+		ProfileEntryLoader profileEntryLoader = new ProfileEntryLoader(
+				MainActivity.userId) {
 			@Override
 			public void handleResponseObject(final ProfileEntry profileEntry) {
 				activity.runOnUiThread(new Runnable() {
@@ -72,6 +73,8 @@ public class ProfileFragment extends Fragment implements TabItem {
 	private void populateLayout() {
 		String username = profile.getUsername();
 		String email = profile.getEmail();
+		if (email.equals(""))
+			email = "-";
 		int totalUnits = profile.getTotalUnits();
 		int ownedProvinces = profile.getOwnedProvinces();
 
@@ -91,17 +94,18 @@ public class ProfileFragment extends Fragment implements TabItem {
 		emailTextview.setText(activity.getString(R.string.email_colon) + " "
 				+ email);
 		totalUnitsTextview.setText(activity.getString(R.string.units_total)
-				+ " " + Integer.toString(totalUnits));
+				+ " " + String.valueOf(totalUnits));
 		if (ownedProvinces != 0)
 			averageUnitsTextview.setText(activity
 					.getString(R.string.units_average)
 					+ " "
-					+ Integer.toString(totalUnits / ownedProvinces));
+					+ String.valueOf((double) Math.round((double) totalUnits
+							/ ownedProvinces * 10) / 10));
 		else
 			averageUnitsTextview.setText(activity
 					.getString(R.string.units_average) + " 0");
 		provincesTextview.setText(activity.getString(R.string.provinces_owned)
-				+ " " + Integer.toString(ownedProvinces));
+				+ " " + String.valueOf(ownedProvinces));
 
 	}
 
