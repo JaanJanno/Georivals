@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,8 @@ import java.util.Map;
  */
 
 public abstract class Connection implements Runnable {
+
+	private static final String ENCODING = "UTF-8";
 
 	private final String DEFAULT_CONTENT_TYPE = "application/json";
 
@@ -85,9 +89,18 @@ public abstract class Connection implements Runnable {
 
 	public void addParameter(String key, String value) {
 		if (parameters == null)
-			parameters = key + "=" + value;
+			parameters = createParameterPair(key, value);
 		else
-			parameters += "&" + key + "=" + value;
+			parameters += "&" + createParameterPair(key, value);
+	}
+	
+	private String createParameterPair(String key, String value){
+		try {
+			return URLEncoder.encode(key, ENCODING) + "=" + URLEncoder.encode(value, ENCODING);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return key + "=" + value;
+		}
 	}
 
 	/**
