@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceViewUILoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify.ChangeHomeUILoader;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify.RenameProvinceUILoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.ServerResult;
@@ -134,7 +135,7 @@ public class ProvinceFragment extends Fragment {
 				OnClickListener MakeHomeClickListener = new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-
+						showHomeChangeConfirmationDialog();
 					}
 				};
 				createButton(R.string.make_home, MakeHomeClickListener);
@@ -228,6 +229,59 @@ public class ProvinceFragment extends Fragment {
 				if (result == ServerResult.OK) {
 					activity.showToastMessage(activity
 							.getString(R.string.province_renamed));
+					activity.refreshCurrentFragment();
+				} else {
+					activity.showToastMessage(activity
+							.getString(R.string.error_unknown));
+				}
+
+			}
+
+			@Override
+			public void handleResponseObjectInBackground(
+					ServerResponse responseObject) {
+
+			}
+
+		};
+		l.retrieveObject();
+	}
+
+	/**
+	 * Sets up and displays a home change confirmation dialog.
+	 */
+
+	private void showHomeChangeConfirmationDialog() {
+		final CustomDialog homeChangeConfirmationDialog = new CustomDialog(
+				activity);
+		homeChangeConfirmationDialog
+				.setMessage(getString(R.string.confirmation_change_home));
+		homeChangeConfirmationDialog.hideInput();
+
+		homeChangeConfirmationDialog.setPositiveButton(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				homeChangeConfirmationDialog.dismiss();
+				requestHomeChange();
+			}
+		});
+		homeChangeConfirmationDialog.show();
+	}
+
+	/**
+	 * Sends a home change request to the server.
+	 */
+
+	private void requestHomeChange() {
+		ChangeHomeUILoader l = new ChangeHomeUILoader(provinceLatLng.latitude,
+				provinceLatLng.longitude, MainActivity.sid, activity) {
+
+			@Override
+			public void handleResponseObjectInUI(ServerResponse responseObject) {
+				ServerResult result = responseObject.getResult();
+				if (result == ServerResult.OK) {
+					activity.showToastMessage(activity
+							.getString(R.string.home_changed));
 					activity.refreshCurrentFragment();
 				} else {
 					activity.showToastMessage(activity

@@ -7,6 +7,7 @@
     <string name="choose_name">Choose you name:</string>
     <string name="choose_email">Enter your e-mail:</string>
     <string name="choose_home">Please choose your home province by clicking on a province or the button below.</string>
+    <string name="confirmation_change_home">Are you sure you want to make this province your new home?</string>
     <string name="confirmation_username1">Are you sure you want to choose \'</string>
     <string name="confirmation_username2">\' as your name?</string>
     <string name="confirmation_province">Do you want to make this your home province?</string>
@@ -25,6 +26,7 @@
     <string name="error_username_taken">Username is already in use!</string>
     <string name="general_information">General information</string>
     <string name="highscores">Highscores</string>
+    <string name="home_changed">Home changed!</string>
     <string name="login">Login</string>
     <string name="login_key">Login key</string>
     <string name="login_send_key">Send me my login key</string>
