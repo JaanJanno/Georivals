@@ -83,9 +83,9 @@ public class MovementServiceTest {
 		latitude = 24.4525;
 		longitude = 54.321;
 	}
-	
+
 	@Test
-	public void getMyMovementsTest(){
+	public void getMyMovementsTest() {
 		List<BeginMovementDTO> list = new ArrayList<>();
 		list.add(new BeginMovementDTO(7, 6));
 		double lat = 13.1235;
@@ -95,12 +95,12 @@ public class MovementServiceTest {
 				Double.toString(lat), Double.toString(lon), list,
 				"BPUYYOU62flwiWJe");
 		assertEquals("Result is ok", ServerResult.OK, response.getResult());
-		
+
 		List<MovementViewDTO> lst = movServ.getMyMovements("BPUYYOU62flwiWJe");
 		assertEquals("list should contain 1 element", 1, lst.size());
 		assertEquals("it is an attack", true, lst.get(0).isAttack());
 	}
-	
+
 	@Test
 	public void claimUnitsTest() {
 		Set<Ownership> lst = playerRepo.findBySid(sid).getOwnedProvinces();
@@ -172,6 +172,35 @@ public class MovementServiceTest {
 				.getProvinceName());
 		assertEquals("Unit unit id", 7, dtos.get(1).getUnitId());
 		assertEquals("Unit type", ProvinceType.HOME, dtos.get(1).getType());
+	}
+
+	@Test
+	public void getMyUnitsExcludeNormalProvince() {
+		List<MovementSelectionViewDTO> dtos = movServ.getMyUnits("-40.4225",
+				"144.963", "BPUYYOU62flwiWJe"); // Mr.TK
+
+		assertEquals("The number of units this player has", 1, dtos.size());
+
+		// Home province
+		assertEquals("Unit size", 10, dtos.get(0).getUnitSize());
+		assertEquals("Unit province name", "lzpD6mFm44", dtos.get(0)
+				.getProvinceName());
+		assertEquals("Unit unit id", 7, dtos.get(0).getUnitId());
+		assertEquals("Unit type", ProvinceType.HOME, dtos.get(0).getType());
+	}
+
+	@Test
+	public void getMyUnitsExcludeHome() {
+		List<MovementSelectionViewDTO> dtos = movServ.getMyUnits("-40.4195",
+				"144.961", "BPUYYOU62flwiWJe"); // Mr.TK
+
+		assertEquals("The number of units this player has", 1, dtos.size());
+
+		assertEquals("Unit type", ProvinceType.PLAYER, dtos.get(0).getType());
+		assertEquals("Unit size", 9, dtos.get(0).getUnitSize());
+		assertEquals("Unit id", 6, dtos.get(0).getUnitId());
+		assertEquals("Unit province name", "Kvukx9SCOB", dtos.get(0)
+				.getProvinceName());
 	}
 
 	@Test

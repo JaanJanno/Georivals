@@ -94,6 +94,33 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
+	public List<MovementSelectionViewDTO> getMyUnits(String lat, String lon,
+			String cookie) {
+		double latitude = CalculationUtil.normalizeLatitute(lat);
+		double longitude = CalculationUtil.normalizeLongitude(lon);
+		Player player = playerRepo.findBySid(cookie);
+		List<MovementSelectionViewDTO> movements = new ArrayList<>();
+		for (Ownership o : player.getOwnedProvinces()) {
+			if ((o.getProvince().getLatitude() != latitude)
+					&& (o.getProvince().getLongitude() != longitude)) {
+				for (Unit unit : o.getUnits()) {
+					movements.add(new MovementSelectionViewDTO(o
+							.getProvinceName(), unit.getId(), unit.getSize()));
+				}
+			}
+		}
+		if ((player.getHome().getProvince().getLatitude() != latitude)
+				&& (player.getHome().getProvince().getLongitude() != longitude)) {
+			for (Unit unit : player.getHome().getUnits()) {
+				movements.add(new MovementSelectionViewDTO(player.getHome()
+						.getProvinceName(), unit.getId(), unit.getSize(),
+						ProvinceType.HOME));
+			}
+		}
+		return movements;
+	}
+
+	@Override
 	public BeginMovementResponse moveUnitsTo(String lat, String lon,
 			List<BeginMovementDTO> beginMoveList, String cookie) {
 		double latitude = CalculationUtil.normalizeLatitute(lat);
@@ -128,14 +155,17 @@ public class MovementServiceImpl implements MovementService {
 	public List<MovementViewDTO> getMyMovements(String cookie) {
 		List<Movement> lst = movementRepo.findByPlayerSid(cookie);
 		ArrayList<MovementViewDTO> rtrn = new ArrayList<MovementViewDTO>();
-		for(Movement m : lst){
-			Ownership a = ownerRepo.findByProvinceId(m.getDestination().getId());
+		for (Movement m : lst) {
+			Ownership a = ownerRepo
+					.findByProvinceId(m.getDestination().getId());
 			int overall = m.getUnit().getSize();
 			boolean attack = false;
-			if(playerRepo.findOwner(a.getId()).getId() != m.getPlayer().getId()){
+			if (playerRepo.findOwner(a.getId()).getId() != m.getPlayer()
+					.getId()) {
 				attack = true;
 			}
-			rtrn.add(new MovementViewDTO(m.getId(), a.getProvinceName(), overall, attack, m.getEndDate()));
+			rtrn.add(new MovementViewDTO(m.getId(), a.getProvinceName(),
+					overall, attack, m.getEndDate()));
 		}
 		return rtrn;
 	}

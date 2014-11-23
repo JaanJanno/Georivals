@@ -59,6 +59,24 @@ public class MovementController {
 
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/myunits/exclude")
+	public ResponseEntity<List<MovementSelectionViewDTO>> getMyUnits(
+			@RequestParam(value = "latitude") String latitude,
+			@RequestParam(value = "longitude") String longitude,
+			@CookieValue(value = "sid") String cookie) {
+		LOG.info("MYUNITS: Creating list of units to move for " + cookie);
+		LOG.info("MYUNITS: excluding " + latitude + " and " + longitude);
+		if (cookie.equals("")) {
+			return new ResponseEntity<List<MovementSelectionViewDTO>>(
+					HttpStatus.FORBIDDEN);
+		}
+		List<MovementSelectionViewDTO> units = moveServ.getMyUnits(latitude,
+				longitude, cookie);
+		return new ResponseEntity<List<MovementSelectionViewDTO>>(units,
+				HttpStatus.OK);
+
+	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/to")
 	public ResponseEntity<BeginMovementResponse> moveTo(
 			@RequestParam(value = "latitude") String latitude,

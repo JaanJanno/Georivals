@@ -91,11 +91,37 @@ public class MovementControllerTest {
 	}
 
 	@Test
-	public void getMyProvincesTest() throws Exception {
+	public void getMyUnitsTest() throws Exception {
 		when(moveServ.getMyUnits("BPUYYOU62flwiWJe")).thenReturn(movList);
 		mockMvc.perform(
 				get("/movement/myunits").cookie(cookie).accept(
 						MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(print())
+				.andExpect(jsonPath("$.[0].unitId", is(18)))
+				.andExpect(jsonPath("$.[0].provinceName", is("Nurk")))
+				.andExpect(jsonPath("$.[0].unitSize", is(34)))
+				.andExpect(
+						jsonPath("$.[0].type",
+								is(ProvinceType.PLAYER.toString())))
+				.andExpect(jsonPath("$.[1].unitId", is(56)))
+				.andExpect(jsonPath("$.[1].provinceName", is("Kodu")))
+				.andExpect(jsonPath("$.[1].unitSize", is(2)))
+				.andExpect(
+						jsonPath("$.[1].type", is(ProvinceType.HOME.toString())));
+	}
+
+	@Test
+	public void getMyUnitsTestWithLatLon() throws Exception {
+		String lat = "23.4565";
+		String lon = "83.453";
+
+		when(moveServ.getMyUnits(lat, lon, "BPUYYOU62flwiWJe")).thenReturn(
+				movList);
+		mockMvc.perform(
+				get("/movement/myunits/exclude").param("latitude", lat)
+						.param("longitude", lon).cookie(cookie)
+						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andExpect(jsonPath("$.[0].unitId", is(18)))

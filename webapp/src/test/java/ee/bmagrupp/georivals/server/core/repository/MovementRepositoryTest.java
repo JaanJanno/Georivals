@@ -81,19 +81,10 @@ public class MovementRepositoryTest {
 		// Attack movement
 		cal.add(Calendar.SECOND, 22);
 		Province destination1 = provRepo.findOne(4);
-		// endDate = new Date();
 		Movement mov3 = new Movement(unit, player.getHome().getProvince(),
 				destination1, player, new Date(), cal.getTime());
 		moveRepo.save(mov3);
 
-		// // friendly movement
-		// cal.add(Calendar.SECOND, 20);
-		//
-		// Player player3 = playerRepo.findOne(5);
-		//
-		// Movement mov4 = new Movement(unit, player3.getHome().getProvince(),
-		// destination1, player3, new Date(), cal.getTime());
-		// moveRepo.save(mov4);
 	}
 
 	@Test
