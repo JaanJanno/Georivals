@@ -3,6 +3,7 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 import java.util.List;
 
 import android.app.Activity;
+import android.util.Log;
 
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
@@ -18,6 +19,8 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 public abstract class ProvinceUILoader extends ProvinceLoader {
 
 	private Activity activity;
+	private final long id;
+	private static long threadPoolIdCounter = 0;
 
 	/**
 	 * 
@@ -29,6 +32,11 @@ public abstract class ProvinceUILoader extends ProvinceLoader {
 	public ProvinceUILoader(String sid, CameraFOV fov, Activity activity) {
 		super(sid, fov);
 		this.activity = activity;
+		this.id = nextThrreadId();
+	}
+
+	private long nextThrreadId() {
+		return ++threadPoolIdCounter;
 	}
 
 	/**
@@ -39,14 +47,19 @@ public abstract class ProvinceUILoader extends ProvinceLoader {
 
 	@Override
 	public void handleResponseList(final List<ProvinceDTO> responseList) {
-		activity.runOnUiThread(new Runnable() {
+		if (id == threadPoolIdCounter) {
+			activity.runOnUiThread(new Runnable() {
 
-			@Override
-			public void run() {
-				handleResponseListInUI(responseList);
-			}
-		});
-		handleResponseListInBackground(responseList);
+				@Override
+				public void run() {
+					handleResponseListInUI(responseList);
+				}
+			});
+			handleResponseListInBackground(responseList);
+		} else {
+			Log.v("ProvinceLoader",
+					"Discarded old province loader thread from handle.");
+		}
 	}
 
 	/**
