@@ -1,6 +1,14 @@
 package ee.bmagrupp.georivals.mobile.models.highscore;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import com.google.gson.reflect.TypeToken;
+
 public class HighScoreEntry {
+
+	public static final Type listType = new TypeToken<ArrayList<HighScoreEntry>>() {
+	}.getType();
 
 	private int id;
 	private String username;

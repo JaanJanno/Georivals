@@ -1,10 +1,7 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import java.util.Map;
-
 import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.highscore.ProfileEntryLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.profile.ProfileEntryLoader;
 import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
@@ -49,8 +46,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 	 */
 
 	private void requestProfileData() {
-		ProfileEntryLoader profileEntryLoader = new ProfileEntryLoader(
-				Constants.PROFILE, MainActivity.userId) {
+		ProfileEntryLoader profileEntryLoader = new ProfileEntryLoader(MainActivity.userId) {
 			@Override
 			public void handleResponseObject(final ProfileEntry profileEntry) {
 				activity.runOnUiThread(new Runnable() {
@@ -65,13 +61,8 @@ public class ProfileFragment extends Fragment implements TabItem {
 					}
 				});
 			}
-
-			@Override
-			public void addRequestParameters(Map<String, String> parameters) {
-
-			}
 		};
-		profileEntryLoader.retrieveProfileEntry();
+		profileEntryLoader.retrieveObject();
 	}
 
 	/**

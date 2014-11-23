@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.core.communications.highscore.HighScoreListLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.highscore.HighScoreListLoader;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.HighScoreAdapter;
@@ -82,8 +82,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	 */
 
 	private void requestHighScoreData() {
-		HighScoreListLoader highScoreListLoader = new HighScoreListLoader(
-				ee.bmagrupp.georivals.mobile.core.communications.Constants.HIGHSCORE) {
+		HighScoreListLoader highScoreListLoader = new HighScoreListLoader() {
 
 			public void handleResponseList(final List<HighScoreEntry> list) {
 				activity.runOnUiThread(new Runnable() {
@@ -101,7 +100,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 				});
 			}
 		};
-		highScoreListLoader.retrieveHighScoreEntries();
+		highScoreListLoader.retrieveList();
 	}
 
 	/**
