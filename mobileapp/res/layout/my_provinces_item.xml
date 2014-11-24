@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/HeaderStyle" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem_LayoutStyle" >
 
     <FrameLayout
         android:id="@+id/province_rank"
-        style="@style/ListItemStyle"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="@dimen/margin_small" >
+        style="@style/ListItem_ViewStyle" >
     </FrameLayout>
 
     <TextView
         android:id="@+id/my_province_name"
-        style="@style/ListItemStyle"
-        android:layout_width="wrap_content"
-        android:layout_toEndOf="@+id/province_rank"
-        android:layout_toRightOf="@+id/province_rank" />
+        style="@style/TextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/my_provinces_units"
-        style="@style/ListItemStyle"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        style="@style/ListItem_ViewStyle" />
 
-</RelativeLayout>
+</LinearLayout>

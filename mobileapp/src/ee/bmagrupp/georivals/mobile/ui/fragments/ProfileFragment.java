@@ -78,34 +78,25 @@ public class ProfileFragment extends Fragment implements TabItem {
 		int totalUnits = profile.getTotalUnits();
 		int ownedProvinces = profile.getOwnedProvinces();
 
-		TextView usernameTextview = (TextView) profileLayout
-				.findViewById(R.id.profile_username);
-		TextView emailTextview = (TextView) profileLayout
-				.findViewById(R.id.profile_email);
-		TextView totalUnitsTextview = (TextView) profileLayout
-				.findViewById(R.id.profile_total_units);
-		TextView averageUnitsTextview = (TextView) profileLayout
-				.findViewById(R.id.profile_average_units);
-		TextView provincesTextview = (TextView) profileLayout
-				.findViewById(R.id.profile_provinces);
+		TextView generalInfo = (TextView) profileLayout
+				.findViewById(R.id.profile_general_info);
+		TextView strategicalInfo = (TextView) profileLayout
+				.findViewById(R.id.profile_strategical_info);
 
-		usernameTextview.setText(activity.getString(R.string.username_colon)
-				+ " " + username);
-		emailTextview.setText(activity.getString(R.string.email_colon) + " "
+		generalInfo.setText(activity.getString(R.string.username_colon)
+				+ username + "\n" + activity.getString(R.string.email_colon)
 				+ email);
-		totalUnitsTextview.setText(activity.getString(R.string.units_total)
-				+ " " + String.valueOf(totalUnits));
+
+		double averageUnits = 0;
 		if (ownedProvinces != 0)
-			averageUnitsTextview.setText(activity
-					.getString(R.string.units_average)
-					+ " "
-					+ String.valueOf((double) Math.round((double) totalUnits
-							/ ownedProvinces * 10) / 10));
-		else
-			averageUnitsTextview.setText(activity
-					.getString(R.string.units_average) + " 0");
-		provincesTextview.setText(activity.getString(R.string.provinces_owned)
-				+ " " + String.valueOf(ownedProvinces));
+			averageUnits = (double) Math.round((double) totalUnits
+					/ ownedProvinces * 10) / 10;
+
+		strategicalInfo.setText(activity.getString(R.string.units_total_number)
+				+ totalUnits + "\n"
+				+ activity.getString(R.string.units_average) + averageUnits
+				+ "\n" + activity.getString(R.string.provinces_owned)
+				+ ownedProvinces);
 
 	}
 

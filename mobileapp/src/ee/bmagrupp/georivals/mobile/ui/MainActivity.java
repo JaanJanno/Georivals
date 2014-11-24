@@ -30,6 +30,7 @@ import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +39,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -356,6 +358,14 @@ public class MainActivity extends Activity {
 	}
 
 	/**
+	 * Sets the currently chosen tab to the mission log tab.
+	 */
+
+	public void setToMissionLogTab() {
+		this.getActionBar().setSelectedNavigationItem(1);
+	}
+
+	/**
 	 * Checks if the device's maximum memory heap size is at least the minimum
 	 * allowed size. Devices with a lower heap size can't handle the edited map
 	 * and tend to crash because of insufficient memory.
@@ -393,6 +403,35 @@ public class MainActivity extends Activity {
 			alertDialog.show();
 
 		}
+	}
+
+	/**
+	 * Replaces the given view with a textview that has the given string.
+	 * 
+	 * @param layout
+	 *            Parent layout of the replaceable view.
+	 * @param replaceableView
+	 * @param textViewString
+	 */
+
+	public void replaceWithTextView(LinearLayout layout, View replaceableView,
+			String textViewString) {
+		final int index = layout.indexOfChild(replaceableView);
+		float replaceableViewWeight = ((LinearLayout.LayoutParams) replaceableView
+				.getLayoutParams()).weight;
+		layout.removeView(replaceableView);
+
+		TextView textView = new TextView(activity);
+		textView.setText(textViewString);
+		textView.setTypeface(MainActivity.GABRIOLA_FONT);
+		textView.setTextSize(18);
+		textView.setLayoutParams(new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				replaceableViewWeight - 0.09f));
+		textView.setGravity(Gravity.CENTER);
+
+		layout.addView(textView, index);
 	}
 
 }

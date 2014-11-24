@@ -1,9 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment" >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/profile_title_header"
@@ -20,14 +18,11 @@
     <View style="@style/HeaderLineStyle" />
 
     <TextView
-        android:id="@+id/profile_username"
+        android:id="@+id/profile_general_info"
         style="@style/TextStyle"
-        android:text="@string/username_colon" />
-
-    <TextView
-        android:id="@+id/profile_email"
-        style="@style/TextStyle"
-        android:text="@string/email_colon" />
+        android:layout_height="45dp"
+        android:layout_marginLeft="@dimen/margin_medium1"
+        android:layout_marginStart="@dimen/margin_medium1" />
 
     <TextView
         android:id="@+id/profile_strategical_header"
@@ -38,18 +33,9 @@
     <View style="@style/HeaderLineStyle" />
 
     <TextView
-        android:id="@+id/profile_total_units"
+        android:id="@+id/profile_strategical_info"
         style="@style/TextStyle"
-        android:text="@string/units_total_number" />
-
-    <TextView
-        android:id="@+id/profile_average_units"
-        style="@style/TextStyle"
-        android:text="@string/units_average" />
-
-    <TextView
-        android:id="@+id/profile_provinces"
-        style="@style/TextStyle"
-        android:text="@string/provinces_owned" />
+        android:layout_marginLeft="@dimen/margin_medium1"
+        android:layout_marginStart="@dimen/margin_medium1" />
 
 </LinearLayout>

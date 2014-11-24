@@ -11,36 +11,30 @@
 
     <View style="@style/HeaderLineStyle" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/my_provinces_icon_header"
-        style="@style/HeaderStyle" >
+        style="@style/ListItem_LayoutStyle" >
+
         <ImageView
             android:id="@+id/province_rank_icon"
-            style="@style/IconStyle"
-            android:layout_margin="@dimen/margin_small"
+            style="@style/ListItem_ViewStyle"
             android:contentDescription="@string/rank"
             android:src="@drawable/ic_rank" />
 
         <TextView
             android:id="@+id/my_provinces_name_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/province_rank_icon"
-            android:layout_toRightOf="@+id/province_rank_icon"
+            style="@style/TextStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="@string/name"
-            android:textColor="@color/dark_brown"
             android:textSize="@dimen/text_large2" />
 
         <ImageButton
             android:id="@+id/my_provinces_unit_image"
-            style="@style/IconStyle"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            style="@style/ListItem_ViewStyle"
             android:contentDescription="@null"
             android:src="@drawable/ic_unit" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View style="@style/HeaderLineStyle" />
 

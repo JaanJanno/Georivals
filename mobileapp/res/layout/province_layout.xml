@@ -6,18 +6,7 @@
     android:padding="10dp" >
 
     <TextView
-        android:id="@+id/province_name"
-        style="@style/TextStyle"
-        android:text="@string/province_name" />
-
-    <TextView
-        android:id="@+id/province_owner_name"
-        style="@style/TextStyle"
-        android:text="@string/owner_name" />
-
-    <TextView
-        android:id="@+id/province_unit_size"
-        style="@style/TextStyle"
-        android:text="@string/units_number" />
+        android:id="@+id/province_info"
+        style="@style/TextStyle" />
 
 </LinearLayout>

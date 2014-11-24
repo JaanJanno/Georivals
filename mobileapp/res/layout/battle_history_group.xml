@@ -3,7 +3,13 @@
     style="@style/ListItem_LayoutStyle.Expandable" >
 
     <TextView
-        android:id="@+id/movement_province_name"
+        android:id="@+id/battle_history_type"
+        style="@style/TextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/battle_history_result"
         style="@style/TextStyle" />
 
 </LinearLayout>

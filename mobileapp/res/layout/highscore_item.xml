@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/HeaderStyle" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem_LayoutStyle" >
 
     <TextView
         android:id="@+id/player_rank"
-        style="@style/ListItemStyle"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginRight="@dimen/margin_small" />
+        style="@style/ListItem_ViewStyle" />
 
     <TextView
         android:id="@+id/player_name"
-        style="@style/ListItemStyle"
-        android:layout_width="wrap_content"
-        android:layout_toEndOf="@+id/player_rank"
-        android:layout_toRightOf="@+id/player_rank" />
+        style="@style/TextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1" />
 
     <TextView
         android:id="@+id/provinces_owned"
-        style="@style/ListItemStyle"
-        android:layout_toLeftOf="@+id/average_units"
-        android:layout_toStartOf="@+id/average_units" />
+        style="@style/ListItem_ViewStyle" />
 
     <TextView
         android:id="@+id/average_units"
-        style="@style/ListItemStyle"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
+        style="@style/ListItem_ViewStyle" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -31,7 +31,6 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 	// non-static mutable variables
 	private List<ProvinceDTO> myProvincesList;
 	private MyProvincesAdapter adapter;
-	private MyProvincesViewUILoader myProvincesListLoader;
 	private LinearLayout myProvincesLayout;
 
 	@Override
@@ -57,8 +56,8 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 	 */
 
 	private void requestMyProvincesData() {
-		myProvincesListLoader = new MyProvincesViewUILoader(MainActivity.sid,
-				activity) {
+		MyProvincesViewUILoader myProvincesListLoader = new MyProvincesViewUILoader(
+				MainActivity.sid, activity) {
 
 			@Override
 			public void handleResponseListInUI(List<ProvinceDTO> responseList) {

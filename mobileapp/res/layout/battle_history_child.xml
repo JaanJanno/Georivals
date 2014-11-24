@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem_LayoutStyle.Expandable" >
+    style="@style/ListItem_LayoutStyle" >
 
     <TextView
-        android:id="@+id/movement_province_name"
+        android:id="@+id/battle_history_info"
         style="@style/TextStyle" />
 
 </LinearLayout>

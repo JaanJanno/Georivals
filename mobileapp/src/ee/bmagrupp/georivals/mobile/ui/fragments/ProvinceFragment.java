@@ -86,19 +86,15 @@ public class ProvinceFragment extends Fragment {
 	 */
 
 	private void populateLayout() {
-		TextView provinceNameTextview = (TextView) provinceLayout
-				.findViewById(R.id.province_name);
-		TextView ownerNameTextview = (TextView) provinceLayout
-				.findViewById(R.id.province_owner_name);
-		TextView unitsTextview = (TextView) provinceLayout
-				.findViewById(R.id.province_unit_size);
+		TextView provinceInfo = (TextView) provinceLayout
+				.findViewById(R.id.province_info);
 
-		provinceNameTextview.setText(activity.getString(R.string.province_name)
-				+ " " + province.getProvinceName());
-		ownerNameTextview.setText(activity.getString(R.string.owner_name) + " "
-				+ province.getOwnerName());
-		unitsTextview.setText(activity.getString(R.string.units_number) + " "
-				+ Integer.toString(province.getUnitSize()));
+		provinceInfo.setText(activity.getString(R.string.province_name)
+				+ province.getProvinceName() + "\n"
+				+ activity.getString(R.string.owner_name)
+				+ province.getOwnerName() + "\n"
+				+ activity.getString(R.string.units_number)
+				+ province.getUnitSize());
 
 		addButtons();
 	}

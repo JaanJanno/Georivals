@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ListItem_LayoutStyle" >
+
+    <Button
+        android:id="@+id/movement_overview_cancel"
+        style="@style/LoginButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:text="@string/movement_cancel" />
+
+</LinearLayout>

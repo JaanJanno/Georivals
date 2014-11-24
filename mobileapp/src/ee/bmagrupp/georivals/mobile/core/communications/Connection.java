@@ -93,10 +93,11 @@ public abstract class Connection implements Runnable {
 		else
 			parameters += "&" + createParameterPair(key, value);
 	}
-	
-	private String createParameterPair(String key, String value){
+
+	private String createParameterPair(String key, String value) {
 		try {
-			return URLEncoder.encode(key, ENCODING) + "=" + URLEncoder.encode(value, ENCODING);
+			return URLEncoder.encode(key, ENCODING) + "="
+					+ URLEncoder.encode(value, ENCODING);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return key + "=" + value;

@@ -34,8 +34,8 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		LinearLayout listItemView = (LinearLayout) inflater.inflate(
 				R.layout.movement_selection_group, parent, false);
-		MovementSelectionViewDTO province = movableUnitsList.get(groupPosition);
 		MainActivity.changeFonts(listItemView);
+		MovementSelectionViewDTO province = movableUnitsList.get(groupPosition);
 		TextView provinceNameTextView = (TextView) listItemView
 				.findViewById(R.id.movement_province_name);
 		provinceNameTextView.setText(province.getProvinceName());
@@ -49,7 +49,7 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		LinearLayout listItemView = (LinearLayout) inflater.inflate(
-				R.layout.movement_selection_item, parent, false);
+				R.layout.movement_selection_child, parent, false);
 		MainActivity.changeFonts(listItemView);
 		MovementSelectionViewDTO province = movableUnitsList.get(groupPosition);
 
@@ -122,23 +122,8 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public Object getGroup(int groupPosition) {
-		return null;
-	}
-
-	@Override
 	public int getGroupCount() {
 		return movableUnitsList.size();
-	}
-
-	@Override
-	public long getGroupId(int groupPosition) {
-		return groupPosition;
-	}
-
-	@Override
-	public Object getChild(int groupPosition, int childPosititon) {
-		return null;
 	}
 
 	@Override
@@ -147,17 +132,32 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
+	public Object getGroup(int groupPosition) {
+		return null;
+	}
+
+	@Override
+	public Object getChild(int groupPosition, int childPosititon) {
+		return null;
+	}
+
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
+
+	@Override
 	public long getChildId(int groupPosition, int childPosition) {
 		return childPosition;
 	}
 
 	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
+	public boolean hasStableIds() {
 		return false;
 	}
 
 	@Override
-	public boolean hasStableIds() {
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return false;
 	}
 

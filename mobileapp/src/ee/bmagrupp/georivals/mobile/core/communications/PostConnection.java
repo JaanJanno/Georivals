@@ -48,12 +48,12 @@ public abstract class PostConnection extends Connection {
 	 */
 
 	protected void httpRequest(HttpURLConnection connection) throws Exception {
-		handleRequestProperties(connection, true, getRequestMethod());	
+		handleRequestProperties(connection, true, getRequestMethod());
 		doIo(connection);
 		List<String> cookies = collectResponseCookies(connection);
 		handleResponseCookies(cookies);
 	}
-	
+
 	/*
 	 * Collects a response from server and calls its handling method.
 	 */

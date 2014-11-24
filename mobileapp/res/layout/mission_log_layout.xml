@@ -3,6 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <TextView
+        android:id="@+id/mission_log_title_header"
+        style="@style/HeaderStyle"
+        android:text="@string/mission_log" />
+
+    <View style="@style/HeaderLineStyle" />
+
+    <TextView
+        android:id="@+id/battle_history_title_header"
+        style="@style/HeaderStyle"
+        android:text="@string/battle_history" />
+
+    <View style="@style/HeaderLineStyle" />
+
+    <ExpandableListView
+        android:id="@+id/battle_history_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:divider="@color/dark_brown"
+        android:dividerHeight="1dp" >
+    </ExpandableListView>
+
+    <TextView
+        android:id="@+id/movement_overview_title_header"
+        style="@style/HeaderStyle"
+        android:text="@string/movement_overview" />
+
+    <View style="@style/HeaderLineStyle" />
+
+    <ExpandableListView
+        android:id="@+id/movement_overview_listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:divider="@color/dark_brown"
+        android:dividerHeight="1dp" >
+    </ExpandableListView>
 
 </LinearLayout>

@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
@@ -31,7 +31,7 @@ public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		RelativeLayout listItemView = (RelativeLayout) inflater.inflate(
+		LinearLayout listItemView = (LinearLayout) inflater.inflate(
 				R.layout.highscore_item, parent, false);
 
 		MainActivity.changeFonts(listItemView);

@@ -3,6 +3,7 @@
 
     <string name="app_name">Georivals</string>
     <string name="attack">Attack</string>
+    <string name="battle_history">Battle history</string>
     <string name="cancel">Cancel</string>
     <string name="choose_name">Choose you name:</string>
     <string name="choose_email">Enter your e-mail:</string>
@@ -16,8 +17,8 @@
     <string name="enter_key">Enter your login key:</string>
     <string name="enter_province_name">Please enter a new name for your province:</string>
     <string name="email">E-mail</string>
-    <string name="email_colon">E-mail:</string>
     <string name="email_info">E-mail is optional, but it will be useful in case you lose your phone and you will need backup.</string>
+    <string name="error_connection_fail">Failed to connect to the server.</string>
     <string name="error_get_location">Get your location first!</string>
     <string name="error_invalid_email">Invalid email!</string>
     <string name="error_invalid_key">Invalid login key!</string>
@@ -33,21 +34,21 @@
     <string name="login_send_key">Send me my login key</string>
     <string name="login_existing">I already have an account</string>
     <string name="logout">Log Out</string>
+    <string name="lost">Lost</string>
     <string name="make_home">Make home</string>
     <string name="map">Map</string>
     <string name="memory_too_low">Your device\'s memory is too low for this application.</string>
     <string name="mission_log">Mission log</string>
+    <string name="movement_cancel">Cancel movement</string>
+    <string name="movement_overview">Movement overview</string>
     <string name="movement_selection">Movement selection</string>
     <string name="my_provinces">My provinces</string>
     <string name="name">Name</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
-    <string name="owner_name">Owner name:</string>
     <string name="profile">Profile</string>
     <string name="province">Province</string>
-    <string name="provinces_owned">Number of provinces owned:</string>
     <string name="provinces_sort">Sort provinces</string>
-    <string name="province_name">Province name:</string>
     <string name="province_renamed">Province renamed!</string>
     <string name="rank">Rank</string>
     <string name="register">Register</string>
@@ -58,19 +59,44 @@
     <string name="start">Start</string>
     <string name="strategical_information">Strategical information</string>
     <string name="units_arrive">Units will arrive at</string>
-    <string name="units_average">Average number of units:</string>
-    <string name="units_number">Number of units:</string>
     <string name="units_send">Send units</string>
     <string name="units_sort">Sort units</string>
-    <string name="units_total_number">Total number of units:</string>
     <string name="units_total">Total units:</string>
     <string name="units_transfer">Transfer units</string>
     <string name="units_transfer_to">Transfer units to</string>
     <string name="user_created">User created!</string>
     <string name="username">Username</string>
-    <string name="username_colon">Username:</string>
     <string name="warning">Warning!</string>
     <string name="welcome">Welcome</string>
+    <string name="won">Won</string>
     <string name="yes">Yes</string>
+
+    <!-- Battle info strings -->
+    <string name="battle_info1">" - Initially had "</string>
+    <string name="battle_info2">" units and lost "</string>
+    <string name="battle_info3">" units in the battle."</string>
+
+    <!-- Movement info strings -->
+    <string name="movement_info_a1">"Attacking "</string>
+    <string name="movement_info_a2">" with "</string>
+    <string name="movement_info_a3">" units."</string>
+    <string name="movement_info_b1">"Sending "</string>
+    <string name="movement_info_b2">" units to "</string>
+    <string name="movement_info_arrival">"Arrival: "</string>
+
+    <!-- Empty list strings -->
+    <string name="no_battles">No recorded battles.</string>
+    <string name="no_movements">No current movements.</string>
+
+    <!-- Profile strings -->
+    <string name="username_colon">"Username: "</string>
+    <string name="email_colon">"E-mail: "</string>
+    <string name="units_total_number">"Total number of units: "</string>
+    <string name="units_average">"Average number of units: "</string>
+    <string name="provinces_owned">"Number of provinces owned: "</string>
+    <!-- Province view strings -->
+    <string name="province_name">"Province name: "</string>
+    <string name="owner_name">"Owner name: "</string>
+    <string name="units_number">"Number of units: "</string>
 
 </resources>

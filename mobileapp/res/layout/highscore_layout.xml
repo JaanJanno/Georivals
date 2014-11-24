@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment" >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/highscore_title_header"
@@ -12,48 +11,36 @@
 
     <View style="@style/HeaderLineStyle" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/highscore_icon_header"
-        style="@style/HeaderStyle" >
+        style="@style/ListItem_LayoutStyle" >
 
         <ImageView
             android:id="@+id/player_rank_icon"
-            style="@style/IconStyle"
-            android:layout_margin="@dimen/margin_small"
+            style="@style/ListItem_ViewStyle"
             android:contentDescription="@string/rank"
             android:src="@drawable/ic_rank" />
 
         <TextView
             android:id="@+id/name_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/player_rank_icon"
-            android:layout_toRightOf="@+id/player_rank_icon"
+            style="@style/TextStyle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:text="@string/name"
-            android:textColor="@color/dark_brown"
             android:textSize="@dimen/text_large2" />
 
         <ImageButton
-            android:id="@+id/unit_sort_button"
-            style="@style/IconStyle"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/units_sort"
-            android:onClick="sortByUnits"
-            android:src="@drawable/ic_unit" />
+            android:id="@+id/provinces_sort_button"
+            style="@style/ListItem_ViewStyle"
+            android:contentDescription="@string/provinces_sort"
+            android:src="@drawable/ic_provinces" />
 
         <ImageButton
-            android:id="@+id/provinces_sort_button"
-            style="@style/IconStyle"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/unit_sort_button"
-            android:layout_toStartOf="@+id/unit_sort_button"
-            android:contentDescription="@string/provinces_sort"
-            android:onClick="sortByProvinces"
-            android:src="@drawable/ic_provinces" />
-    </RelativeLayout>
+            android:id="@+id/unit_sort_button"
+            style="@style/ListItem_ViewStyle"
+            android:contentDescription="@string/units_sort"
+            android:src="@drawable/ic_unit" />
+    </LinearLayout>
 
     <View style="@style/HeaderLineStyle" />
 

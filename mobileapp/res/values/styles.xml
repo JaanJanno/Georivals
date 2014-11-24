@@ -37,26 +37,30 @@
     <style name="TextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/margin_small</item>
         <item name="android:textColor">@color/dark_brown</item>
         <item name="android:textSize">@dimen/text_large1</item>
-        <item name="android:layout_marginBottom">-10dp</item>
     </style>
 
-    <style name="IconStyle">
+    <style name="ListItem_ViewStyle">
         <item name="android:layout_width">@dimen/width_list_item</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">@dimen/margin_medium1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/dark_brown</item>
+        <item name="android:textSize">@dimen/text_large1</item>
+        <item name="android:gravity">center</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
-
-    <style name="ListItemStyle">
-        <item name="android:layout_width">@dimen/width_list_item</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:layout_marginRight">@dimen/margin_medium1</item>
-        <item name="android:textColor">@color/dark_brown</item>
-        <item name="android:textSize">@dimen/text_large1</item>
+    <style name="ListItem_LayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">@dimen/margin_small</item>
+        <item name="android:paddingRight">@dimen/margin_small</item>
+    </style>
+    
+    <style name="ListItem_LayoutStyle.Expandable">
+        <item name="android:paddingLeft">@dimen/margin_large1</item>
+        <item name="android:paddingRight">@dimen/margin_large1</item>
     </style>
 
 </resources>

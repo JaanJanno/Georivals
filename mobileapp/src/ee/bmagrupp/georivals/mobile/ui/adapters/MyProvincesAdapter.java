@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
@@ -35,7 +35,7 @@ public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		RelativeLayout listItemView = (RelativeLayout) inflater.inflate(
+		LinearLayout listItemView = (LinearLayout) inflater.inflate(
 				R.layout.my_provinces_item, parent, false);
 
 		MainActivity.changeFonts(listItemView);
@@ -65,7 +65,7 @@ public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 	 * @param listItemView
 	 */
 
-	private void setHomeIcon(RelativeLayout listItemView) {
+	private void setHomeIcon(LinearLayout listItemView) {
 		FrameLayout rankFrame = (FrameLayout) listItemView
 				.findViewById(R.id.province_rank);
 		ImageView homeImage = new ImageView(context);
@@ -80,13 +80,13 @@ public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 	 * @param rank
 	 */
 
-	private void setRank(RelativeLayout listItemView, int rank) {
+	private void setRank(LinearLayout listItemView, int rank) {
 		FrameLayout rankFrame = (FrameLayout) listItemView
 				.findViewById(R.id.province_rank);
 		TextView rankTextView = new TextView(context);
-		rankTextView.setText(String.valueOf(rank));
+		rankTextView.setText(rank + ".");
 		rankTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		rankTextView.setTextSize(24);
+		rankTextView.setTextSize(18);
 		rankTextView.setGravity(Gravity.CENTER);
 		rankFrame.addView(rankTextView);
 	}

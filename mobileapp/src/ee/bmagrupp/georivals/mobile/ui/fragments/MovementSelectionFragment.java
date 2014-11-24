@@ -34,8 +34,6 @@ public class MovementSelectionFragment extends Fragment {
 
 	// non-static mutable variables
 	private List<MovementSelectionViewDTO> movableUnitsList;
-	private MovementSelectionAdapter adapter;
-	private MovableUnitsUILoader movableUnitsListLoader;
 	private int totalUnitCount;
 	private int maxUnitCount;
 	private int[] selectedUnitCountList;
@@ -64,8 +62,8 @@ public class MovementSelectionFragment extends Fragment {
 	 */
 
 	private void requestMyProvincesData() {
-		movableUnitsListLoader = new MovableUnitsUILoader(MainActivity.sid,
-				activity) {
+		MovableUnitsUILoader movableUnitsListLoader = new MovableUnitsUILoader(
+				MainActivity.sid, activity) {
 
 			@Override
 			public void handleResponseObjectInUI(
@@ -129,7 +127,8 @@ public class MovementSelectionFragment extends Fragment {
 		ExpandableListView listview = (ExpandableListView) movementSelectionLayout
 				.findViewById(R.id.movement_selection_listview);
 		listview.setChildDivider(getResources().getDrawable(R.color.dark_brown));
-		adapter = new MovementSelectionAdapter(activity, movableUnitsList);
+		MovementSelectionAdapter adapter = new MovementSelectionAdapter(
+				activity, movableUnitsList);
 		listview.setAdapter(adapter);
 	}
 
@@ -164,11 +163,7 @@ public class MovementSelectionFragment extends Fragment {
 			public void handleResponseObjectInUI(
 					BeginMovementResponse responseObject) {
 				if (responseObject.getResult() == ServerResult.OK) {
-					activity.showToastMessage(activity
-							.getString(R.string.units_total)
-							+ " "
-							+ responseObject.getArrivalTime());
-					activity.setToMapTab();
+					activity.setToMissionLogTab();
 				} else {
 					activity.showToastMessage(activity
 							.getString(R.string.error_unknown));

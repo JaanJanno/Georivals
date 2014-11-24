@@ -3,7 +3,7 @@
     style="@style/ListItem_LayoutStyle.Expandable" >
 
     <TextView
-        android:id="@+id/movement_province_name"
+        android:id="@+id/movement_overview_info"
         style="@style/TextStyle" />
 
 </LinearLayout>

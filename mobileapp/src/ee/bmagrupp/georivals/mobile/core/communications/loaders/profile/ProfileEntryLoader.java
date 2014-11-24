@@ -12,17 +12,18 @@ import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
  * @author Jaan Janno
  */
 
-public abstract class ProfileEntryLoader extends GenericObjectLoader<ProfileEntry> {
+public abstract class ProfileEntryLoader extends
+		GenericObjectLoader<ProfileEntry> {
 
 	public ProfileEntryLoader(int userId) {
 		super(ProfileEntry.class, Constants.PROFILE + Integer.toString(userId));
 	}
-	
+
 	/**
 	 * Override this method to define the behavior after response has been
 	 * retrieved. Remember this method doesn't run on the UI thread!
 	 */
-	
+
 	@Override
 	public abstract void handleResponseObject(ProfileEntry responseObject);
 
