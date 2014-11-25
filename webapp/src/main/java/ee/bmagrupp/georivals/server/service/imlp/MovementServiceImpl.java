@@ -146,8 +146,13 @@ public class MovementServiceImpl implements MovementService {
 		for (BeginMovementDTO dto : beginMoveList) {
 			movList.add(createMovement(destination, dto, player));
 		}
-		// TODO End date calculation
-		return new BeginMovementResponse(movList.get(0).getEndDate(),
+		Date maximum = movList.get(0).getEndDate();
+		for(Movement mov : movList){
+			if(mov.getEndDate().getTime() > maximum.getTime()){
+				maximum = mov.getEndDate();
+			}
+		}
+		return new BeginMovementResponse(maximum,
 				ServerResult.OK);
 	}
 
