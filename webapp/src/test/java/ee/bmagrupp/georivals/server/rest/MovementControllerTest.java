@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -265,6 +266,24 @@ public class MovementControllerTest {
 						.param("longitude", lon)
 						.accept(MediaType.APPLICATION_JSON)).andExpect(
 				status().isForbidden());
+	}
+
+	@Test
+	public void cancelMovementTest() throws Exception {
+		String id = "3";
+
+		BeginMovementResponse movRes = new BeginMovementResponse(curDate,
+				ServerResult.OK);
+		when(moveServ.cancelMovement(Integer.valueOf(id), cookie.getValue()))
+				.thenReturn(movRes);
+
+		mockMvc.perform(
+				delete("/movement/delete").param("id", id).cookie(cookie)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())))
+				.andExpect(jsonPath("$.arrivalTime", is(curDate.getTime())));
+
 	}
 
 }

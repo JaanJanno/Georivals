@@ -113,4 +113,18 @@ public class MovementController {
 
 	}
 
+	@RequestMapping(method = RequestMethod.DELETE, value = "/delete")
+	public ResponseEntity<BeginMovementResponse> claimUnits(
+			@RequestParam int id, @CookieValue(value = "sid") String cookie) {
+		LOG.info("Deleting movement  " + id + " for " + cookie);
+		if (cookie.equals("")) {
+			return new ResponseEntity<BeginMovementResponse>(
+					HttpStatus.FORBIDDEN);
+		}
+		BeginMovementResponse response = moveServ.cancelMovement(id, cookie);
+		return new ResponseEntity<BeginMovementResponse>(response,
+				HttpStatus.OK);
+
+	}
+
 }
