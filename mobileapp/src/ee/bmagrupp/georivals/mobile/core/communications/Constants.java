@@ -44,7 +44,8 @@ public class Constants {
 	static final public String MOVEMENT = WEBPAGE + "movement/";
 	static final public String CLAIM = MOVEMENT + "claim/";
 	static final public String CANCEL_MOVE = MOVEMENT + "delete/";
-	static final public String MYUNITS = MOVEMENT + "myunits/exclude";
+	static final public String MYUNITS = MOVEMENT + "myunits/";
+	static final public String MYUNITSEXCLUDE = MYUNITS + "exclude/";
 	static final public String MOVE_TO = MOVEMENT + "to/";
 
 	// Battle

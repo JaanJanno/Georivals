@@ -26,7 +26,25 @@ public abstract class MovableUnitsUILoader extends MovableUnitsLoader {
 	 *            Android activity that is modified.
 	 */
 
-	public MovableUnitsUILoader(String sid, double latitude, double longitude, Activity activity) {
+	public MovableUnitsUILoader(String sid, Activity activity) {
+		super(sid);
+		this.activity = activity;
+	}
+
+	/**
+	 * 
+	 * @param sid
+	 *            Unique ID that identifies the player.
+	 * @param latitude
+	 *            Latitude request parameter.
+	 * @param longitude
+	 *            Longitude request parameter.
+	 * @param activity
+	 *            Android activity that is modified.
+	 */
+
+	public MovableUnitsUILoader(String sid, double latitude, double longitude,
+			Activity activity) {
 		super(sid, latitude, longitude);
 		this.activity = activity;
 	}
