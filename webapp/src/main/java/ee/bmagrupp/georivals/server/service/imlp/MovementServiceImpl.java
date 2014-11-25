@@ -202,6 +202,12 @@ public class MovementServiceImpl implements MovementService {
 		return new ServerResponse(ServerResult.OK, newUnits);
 	}
 
+	@Override
+	public BeginMovementResponse cancelMovement(int id, String cookie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private int claimHomeUnits(HomeOwnership home, Date curDate) {
 		int newUnits = addToUnits(home.getUnits(), home.getLastVisit(),
 				curDate, home.countUnits());

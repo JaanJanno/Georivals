@@ -93,4 +93,16 @@ public interface MovementService {
 	 * @return {@link ServerResponse}
 	 */
 	ServerResponse claimUnits(String lat, String lon, String cookie);
+
+	/**
+	 * Deletes this {@link Movement} and returns the {@link Unit} to their
+	 * origin province.
+	 * 
+	 * @param id
+	 *            {@link Movement} id
+	 * @param cookie
+	 *            Cookie value
+	 * @return {@link BeginMovementResponse}
+	 */
+	BeginMovementResponse cancelMovement(int id, String cookie);
 }
