@@ -1,12 +1,12 @@
 package ee.bmagrupp.georivals.mobile.ui.listeners;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
+import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 
 @SuppressWarnings("deprecation")
 public class TabListener implements ActionBar.TabListener {

@@ -2,9 +2,6 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 
 import java.util.List;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 @SuppressLint("InflateParams")
 public class MovementSelectionAdapter extends BaseExpandableListAdapter {

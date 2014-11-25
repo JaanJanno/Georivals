@@ -1,6 +1,7 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.battle.history;
 
 import java.util.List;
+
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;

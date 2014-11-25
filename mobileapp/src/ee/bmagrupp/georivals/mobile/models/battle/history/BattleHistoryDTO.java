@@ -2,7 +2,9 @@ package ee.bmagrupp.georivals.mobile.models.battle.history;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
 import com.google.gson.reflect.TypeToken;
+
 import ee.bmagrupp.georivals.mobile.models.battle.BattleType;
 
 /**

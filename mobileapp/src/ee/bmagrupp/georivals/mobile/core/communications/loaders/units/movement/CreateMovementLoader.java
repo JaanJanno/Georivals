@@ -1,6 +1,7 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement;
 
 import java.util.List;
+
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericPostLoader;
 import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementDTO;

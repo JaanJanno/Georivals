@@ -1,10 +1,5 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.profile.ProfileEntryLoader;
-import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.profile.ProfileEntryLoader;
+import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
+import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 
 public class ProfileFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)

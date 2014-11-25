@@ -4,6 +4,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import ee.bmagrupp.georivals.mobile.R;
@@ -13,14 +22,6 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.MyProvincesAdapter;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 public class MyProvincesFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)
@@ -60,7 +61,7 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 				MainActivity.sid, activity) {
 
 			@Override
-			public void handleResponseListInUI(List<ProvinceDTO> responseList) {
+			public void handleResponseInUI(List<ProvinceDTO> responseList) {
 				if (responseList != null) {
 					myProvincesList = responseList;
 					populateLayout();
@@ -72,7 +73,7 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 			}
 
 			@Override
-			public void handleResponseListInBackground(
+			public void handleResponseInBackground(
 					List<ProvinceDTO> responseList) {
 
 			}

@@ -1,7 +1,10 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units;
 
 import java.util.List;
+
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
 
 /**
@@ -14,7 +17,8 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
  * 
  */
 
-public abstract class MovableUnitsUILoader extends MovableUnitsLoader {
+public abstract class MovableUnitsUILoader extends MovableUnitsLoader implements
+		UILoadable<List<MovementSelectionViewDTO>> {
 
 	private Activity activity;
 
@@ -56,34 +60,8 @@ public abstract class MovableUnitsUILoader extends MovableUnitsLoader {
 	 */
 
 	@Override
-	public void handleResponse(
-			final List<MovementSelectionViewDTO> responseObject) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseObjectInUI(responseObject);
-			}
-		});
-		handleResponseObjectInBackground(responseObject);
+	public void handleResponse(List<MovementSelectionViewDTO> response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved response in UI.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInUI(
-			List<MovementSelectionViewDTO> responseObject);
-
-	/**
-	 * Override to handle retrieved response in background.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInBackground(
-			List<MovementSelectionViewDTO> responseObject);
 
 }

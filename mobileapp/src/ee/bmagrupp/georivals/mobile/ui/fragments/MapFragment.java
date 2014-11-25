@@ -3,12 +3,20 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,14 +42,6 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.listeners.MapClickListener;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.location.Location;
-import android.location.LocationManager;
 
 @SuppressLint("InflateParams")
 @SuppressWarnings("deprecation")
@@ -200,7 +200,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 				new CameraFOV(bounds), activity) {
 
 			@Override
-			public void handleResponseListInUI(List<ProvinceDTO> responseList) {
+			public void handleResponseInUI(List<ProvinceDTO> responseList) {
 				if (responseList != null) {
 					provinceList = responseList;
 					drawProvinces();
@@ -211,7 +211,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			}
 
 			@Override
-			public void handleResponseListInBackground(
+			public void handleResponseInBackground(
 					List<ProvinceDTO> responseList) {
 
 			}

@@ -3,20 +3,21 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 public class MovementOverviewAdapter extends BaseExpandableListAdapter {
 	private final Context context;

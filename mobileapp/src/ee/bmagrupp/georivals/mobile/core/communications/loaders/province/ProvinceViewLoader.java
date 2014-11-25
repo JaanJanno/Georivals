@@ -6,14 +6,13 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
  * Class for making a HTTP get request to the server and retrieving ProvinceDTO
- * parsed from JSON to objects. Use this by overriding the
- * handleResponse() method and calling retrieveResponse() method.
+ * parsed from JSON to objects. Use this by overriding the handleResponse()
+ * method and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */
 
-public abstract class ProvinceViewLoader extends
-		GenericLoader<ProvinceDTO> {
+public abstract class ProvinceViewLoader extends GenericLoader<ProvinceDTO> {
 
 	/**
 	 * 

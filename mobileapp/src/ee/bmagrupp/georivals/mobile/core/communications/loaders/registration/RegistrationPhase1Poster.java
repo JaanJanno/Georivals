@@ -16,12 +16,13 @@ public abstract class RegistrationPhase1Poster extends
 
 	/**
 	 * 
-	 * @param userName User name the user wants to select.
+	 * @param userName
+	 *            User name the user wants to select.
 	 */
 
 	public RegistrationPhase1Poster(String userName) {
 		super(ServerResponse.class, Constants.REGISTRATION_PHASE1);
 		addParameter("userName", userName);
 	}
-	
+
 }

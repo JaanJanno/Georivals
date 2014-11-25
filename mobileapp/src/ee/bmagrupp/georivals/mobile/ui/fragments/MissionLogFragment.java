@@ -2,33 +2,24 @@ package ee.bmagrupp.georivals.mobile.ui.fragments;
 
 import java.util.List;
 
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.battle.history.BattleHistoryUILoader;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.MovableUnitsUILoader;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement.CancelMovementUILoader;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement.MovementViewUILoader;
 import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
-import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.BattleHistoryAdapter;
 import ee.bmagrupp.georivals.mobile.ui.adapters.MovementOverviewAdapter;
-import ee.bmagrupp.georivals.mobile.ui.adapters.MovementSelectionAdapter;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
-import android.app.Fragment;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-@SuppressWarnings("unused")
 public class MissionLogFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
@@ -61,8 +52,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 				MainActivity.sid, activity) {
 
 			@Override
-			public void handleResponseObjectInUI(
-					List<BattleHistoryDTO> responseList) {
+			public void handleResponseInUI(List<BattleHistoryDTO> responseList) {
 				if (responseList != null
 						&& MainActivity.MISSION_LOG_FRAGMENT.isVisible()) {
 					battleHistoryList = responseList;
@@ -74,7 +64,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
+			public void handleResponseInBackground(
 					List<BattleHistoryDTO> responseObject) {
 
 			}
@@ -111,8 +101,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 				MainActivity.sid, activity) {
 
 			@Override
-			public void handleResponseListInUI(
-					List<MovementViewDTO> responseList) {
+			public void handleResponseInUI(List<MovementViewDTO> responseList) {
 				if (responseList != null
 						&& MainActivity.MISSION_LOG_FRAGMENT.isVisible()) {
 					movementOverviewList = responseList;
@@ -124,7 +113,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 			}
 
 			@Override
-			public void handleResponseListInBackground(
+			public void handleResponseInBackground(
 					List<MovementViewDTO> responseList) {
 
 			}
@@ -163,7 +152,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 				MainActivity.sid, movementId, activity) {
 
 			@Override
-			public void handleResponseObjectInUI(MovementViewDTO responseObject) {
+			public void handleResponseInUI(MovementViewDTO responseObject) {
 				if (responseObject != null) {
 					activity.refreshCurrentFragment();
 				} else {
@@ -173,7 +162,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
+			public void handleResponseInBackground(
 					MovementViewDTO responseObject) {
 
 			}

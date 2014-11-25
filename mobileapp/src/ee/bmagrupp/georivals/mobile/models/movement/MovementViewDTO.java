@@ -3,6 +3,7 @@ package ee.bmagrupp.georivals.mobile.models.movement;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+
 import com.google.gson.reflect.TypeToken;
 
 public class MovementViewDTO {

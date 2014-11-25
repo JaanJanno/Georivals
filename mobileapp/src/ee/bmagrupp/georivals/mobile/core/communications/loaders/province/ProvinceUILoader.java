@@ -4,7 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.util.Log;
-
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
@@ -16,7 +17,8 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
  * @author Jaan Janno
  */
 
-public abstract class ProvinceUILoader extends ProvinceLoader {
+public abstract class ProvinceUILoader extends ProvinceLoader implements
+		UILoadable<List<ProvinceDTO>> {
 
 	private Activity activity;
 	private final long id;
@@ -46,37 +48,13 @@ public abstract class ProvinceUILoader extends ProvinceLoader {
 	 */
 
 	@Override
-	public void handleResponse(final List<ProvinceDTO> responseList) {
+	public void handleResponse(List<ProvinceDTO> response) {
 		if (id == threadPoolIdCounter) {
-			activity.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					handleResponseListInUI(responseList);
-				}
-			});
-			handleResponseListInBackground(responseList);
+			UILoader.load(response, this, activity);
 		} else {
 			Log.v("ProvinceLoader",
 					"Discarded old province loader thread from handle.");
 		}
 	}
-
-	/**
-	 * Override to handle retrieved list in UI.
-	 * 
-	 * @param responseList
-	 */
-
-	abstract public void handleResponseListInUI(List<ProvinceDTO> responseList);
-
-	/**
-	 * Override to handle retrieved list in background.
-	 * 
-	 * @param responseList
-	 */
-
-	abstract public void handleResponseListInBackground(
-			List<ProvinceDTO> responseList);
 
 }

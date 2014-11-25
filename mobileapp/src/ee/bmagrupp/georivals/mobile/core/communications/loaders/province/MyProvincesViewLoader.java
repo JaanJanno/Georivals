@@ -1,6 +1,7 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
 import java.util.List;
+
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;

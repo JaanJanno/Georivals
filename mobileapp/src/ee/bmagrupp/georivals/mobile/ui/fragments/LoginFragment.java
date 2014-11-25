@@ -1,16 +1,16 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 public class LoginFragment extends Fragment {
 	// non-static immutable variables (local constants)

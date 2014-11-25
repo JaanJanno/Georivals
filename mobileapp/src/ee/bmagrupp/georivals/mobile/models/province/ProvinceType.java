@@ -1,5 +1,7 @@
 package ee.bmagrupp.georivals.mobile.models.province;
 
+import com.google.android.gms.games.Player;
+
 /**
  * Every {@link Province} falls under one of the following categories.
  * 

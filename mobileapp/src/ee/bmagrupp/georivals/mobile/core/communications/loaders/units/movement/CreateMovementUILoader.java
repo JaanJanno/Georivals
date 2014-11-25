@@ -1,7 +1,10 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement;
 
 import java.util.List;
+
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementDTO;
 import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementResponse;
 
@@ -13,7 +16,8 @@ import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementResponse;
  * @author Jaan Janno
  */
 
-public abstract class CreateMovementUILoader extends CreateMovementLoader {
+public abstract class CreateMovementUILoader extends CreateMovementLoader
+		implements UILoadable<BeginMovementResponse> {
 
 	private Activity activity;
 
@@ -44,33 +48,8 @@ public abstract class CreateMovementUILoader extends CreateMovementLoader {
 	 */
 
 	@Override
-	public void handleResponse(final BeginMovementResponse responseObject) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseObjectInUI(responseObject);
-			}
-		});
-		handleResponseObjectInBackground(responseObject);
+	public void handleResponse(BeginMovementResponse response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved object in UI.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInUI(
-			BeginMovementResponse responseObject);
-
-	/**
-	 * Override to handle retrieved object in background.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInBackground(
-			BeginMovementResponse responseObject);
 
 }

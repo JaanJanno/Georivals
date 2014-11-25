@@ -1,13 +1,13 @@
 package ee.bmagrupp.georivals.mobile.ui.widgets;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Dialog;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 public class CustomDialog extends Dialog {
 	private TextView messageTextView;

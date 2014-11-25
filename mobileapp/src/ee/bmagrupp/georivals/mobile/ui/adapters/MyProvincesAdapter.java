@@ -2,10 +2,6 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 
 import java.util.List;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
-import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.Gravity;
@@ -17,6 +13,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 	private final Context context;

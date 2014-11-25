@@ -2,9 +2,6 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 
 import java.util.List;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 public class BattleHistoryAdapter extends BaseExpandableListAdapter {
 	private final Context context;

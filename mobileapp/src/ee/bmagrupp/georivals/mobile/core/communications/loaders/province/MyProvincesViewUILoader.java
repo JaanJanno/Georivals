@@ -3,7 +3,8 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 import java.util.List;
 
 import android.app.Activity;
-
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
@@ -15,7 +16,8 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
  * 
  */
 
-public abstract class MyProvincesViewUILoader extends MyProvincesViewLoader {
+public abstract class MyProvincesViewUILoader extends MyProvincesViewLoader
+		implements UILoadable<List<ProvinceDTO>> {
 
 	private Activity activity;
 
@@ -39,34 +41,8 @@ public abstract class MyProvincesViewUILoader extends MyProvincesViewLoader {
 	 */
 
 	@Override
-	public void handleResponse(final List<ProvinceDTO> responseList) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseListInUI(responseList);
-			}
-		});
-		handleResponseListInBackground(responseList);
+	public void handleResponse(List<ProvinceDTO> response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved list in UI.
-	 * 
-	 * @param responseList
-	 *            List retrieved from server.
-	 */
-
-	abstract public void handleResponseListInUI(List<ProvinceDTO> responseList);
-
-	/**
-	 * Override to handle retrieved list in background.
-	 * 
-	 * @param responseList
-	 *            List retrieved from server.
-	 */
-
-	abstract public void handleResponseListInBackground(
-			List<ProvinceDTO> responseList);
 
 }

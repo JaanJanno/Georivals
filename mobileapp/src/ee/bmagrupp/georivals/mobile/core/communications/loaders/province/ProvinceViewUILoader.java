@@ -1,7 +1,9 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
-import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
  * Class for retrieving ProvinceViewDTO objects from server. Able to handle
@@ -11,7 +13,8 @@ import android.app.Activity;
  * @author Jaan Janno
  */
 
-public abstract class ProvinceViewUILoader extends ProvinceViewLoader {
+public abstract class ProvinceViewUILoader extends ProvinceViewLoader implements
+		UILoadable<ProvinceDTO> {
 
 	private Activity activity;
 
@@ -49,32 +52,8 @@ public abstract class ProvinceViewUILoader extends ProvinceViewLoader {
 	 */
 
 	@Override
-	public void handleResponse(final ProvinceDTO responseObject) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseObjectInUI(responseObject);
-			}
-		});
-		handleResponseObjectInBackground(responseObject);
+	public void handleResponse(ProvinceDTO response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved object in UI.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInUI(ProvinceDTO responseObject);
-
-	/**
-	 * Override to handle retrieved object in background.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInBackground(
-			ProvinceDTO responseObject);
 
 }

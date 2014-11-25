@@ -2,9 +2,6 @@ package ee.bmagrupp.georivals.mobile.ui.adapters;
 
 import java.util.List;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 public class HighScoreAdapter extends ArrayAdapter<HighScoreEntry> {
 	private final Context context;

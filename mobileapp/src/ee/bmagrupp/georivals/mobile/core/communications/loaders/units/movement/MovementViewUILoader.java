@@ -1,7 +1,10 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement;
 
 import java.util.List;
+
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
 
 /**
@@ -12,7 +15,8 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
  * @author Jaan Janno
  */
 
-public abstract class MovementViewUILoader extends MovementViewLoader {
+public abstract class MovementViewUILoader extends MovementViewLoader implements
+		UILoadable<List<MovementViewDTO>> {
 
 	private Activity activity;
 
@@ -36,33 +40,8 @@ public abstract class MovementViewUILoader extends MovementViewLoader {
 	 */
 
 	@Override
-	public void handleResponse(final List<MovementViewDTO> responseList) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseListInUI(responseList);
-			}
-		});
-		handleResponseListInBackground(responseList);
+	public void handleResponse(List<MovementViewDTO> response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved list in UI.
-	 * 
-	 * @param responseList
-	 */
-
-	abstract public void handleResponseListInUI(
-			List<MovementViewDTO> responseList);
-
-	/**
-	 * Override to handle retrieved list in background.
-	 * 
-	 * @param responseList
-	 */
-
-	abstract public void handleResponseListInBackground(
-			List<MovementViewDTO> responseList);
 
 }

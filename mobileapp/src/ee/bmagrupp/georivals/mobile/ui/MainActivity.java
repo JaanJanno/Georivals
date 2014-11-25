@@ -1,24 +1,9 @@
 package ee.bmagrupp.georivals.mobile.ui;
 
-import ee.bmagrupp.georivals.mobile.R;
-import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
-import ee.bmagrupp.georivals.mobile.core.location.service.LocationService;
-import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MovementSelectionFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MyProvincesFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.ProvinceFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.RegistrationFragment;
-import ee.bmagrupp.georivals.mobile.ui.listeners.TabListener;
-import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
-import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ActionBar.Tab;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -43,6 +28,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import ee.bmagrupp.georivals.mobile.R;
+import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
+import ee.bmagrupp.georivals.mobile.core.location.service.LocationService;
+import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MovementSelectionFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.MyProvincesFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.ProfileFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.ProvinceFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.RegistrationFragment;
+import ee.bmagrupp.georivals.mobile.ui.listeners.TabListener;
+import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
+import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 
 @SuppressWarnings("deprecation")
 @SuppressLint("InflateParams")

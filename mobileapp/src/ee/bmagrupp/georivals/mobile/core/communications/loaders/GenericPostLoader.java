@@ -62,8 +62,7 @@ public abstract class GenericPostLoader<T> extends GenericLoader<T> {
 	 * @param url
 	 */
 
-	public GenericPostLoader(Class<T> typeClass, Object post,
-			String url) {
+	public GenericPostLoader(Class<T> typeClass, Object post, String url) {
 		super(typeClass, url, "");
 		this.post = post;
 	}
@@ -80,8 +79,8 @@ public abstract class GenericPostLoader<T> extends GenericLoader<T> {
 	 *            Cookie string sent along with the request.
 	 */
 
-	public GenericPostLoader(Class<T> typeClass, Object post,
-			String url, String cookie) {
+	public GenericPostLoader(Class<T> typeClass, Object post, String url,
+			String cookie) {
 		super(typeClass, url, cookie);
 		this.post = post;
 	}

@@ -1,5 +1,16 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
+import android.app.Fragment;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import ee.bmagrupp.georivals.mobile.R;
@@ -13,16 +24,6 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
-import android.app.Fragment;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class ProvinceFragment extends Fragment {
 	// non-static immutable variables (local constants)
@@ -60,7 +61,7 @@ public class ProvinceFragment extends Fragment {
 				provinceLatLng.latitude, provinceLatLng.longitude, activity) {
 
 			@Override
-			public void handleResponseObjectInUI(ProvinceDTO responseObject) {
+			public void handleResponseInUI(ProvinceDTO responseObject) {
 				if (responseObject != null) {
 					province = responseObject;
 					populateLayout();
@@ -71,8 +72,7 @@ public class ProvinceFragment extends Fragment {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
-					ProvinceDTO responseObject) {
+			public void handleResponseInBackground(ProvinceDTO responseObject) {
 
 			}
 
@@ -255,7 +255,7 @@ public class ProvinceFragment extends Fragment {
 				MainActivity.sid, activity) {
 
 			@Override
-			public void handleResponseObjectInUI(ServerResponse responseObject) {
+			public void handleResponseInUI(ServerResponse responseObject) {
 				ServerResult result = responseObject.getResult();
 				if (result == ServerResult.OK) {
 					activity.showToastMessage(activity
@@ -269,8 +269,7 @@ public class ProvinceFragment extends Fragment {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
-					ServerResponse responseObject) {
+			public void handleResponseInBackground(ServerResponse responseObject) {
 
 			}
 
@@ -308,7 +307,7 @@ public class ProvinceFragment extends Fragment {
 				provinceLatLng.longitude, MainActivity.sid, activity) {
 
 			@Override
-			public void handleResponseObjectInUI(ServerResponse responseObject) {
+			public void handleResponseInUI(ServerResponse responseObject) {
 				ServerResult result = responseObject.getResult();
 				if (result == ServerResult.OK) {
 					activity.showToastMessage(activity
@@ -322,8 +321,7 @@ public class ProvinceFragment extends Fragment {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
-					ServerResponse responseObject) {
+			public void handleResponseInBackground(ServerResponse responseObject) {
 
 			}
 

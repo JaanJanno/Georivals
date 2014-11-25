@@ -1,7 +1,10 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.battle.history;
 
 import java.util.List;
+
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
 
 /**
@@ -13,7 +16,8 @@ import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
  * 
  */
 
-public abstract class BattleHistoryUILoader extends BattleHistoryLoader {
+public abstract class BattleHistoryUILoader extends BattleHistoryLoader
+		implements UILoadable<List<BattleHistoryDTO>> {
 
 	private Activity activity;
 
@@ -37,33 +41,8 @@ public abstract class BattleHistoryUILoader extends BattleHistoryLoader {
 	 */
 
 	@Override
-	public void handleResponse(final List<BattleHistoryDTO> responseObject) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseObjectInUI(responseObject);
-			}
-		});
-		handleResponseObjectInBackground(responseObject);
+	public void handleResponse(List<BattleHistoryDTO> response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved response in UI.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInUI(
-			List<BattleHistoryDTO> responseObject);
-
-	/**
-	 * Override to handle retrieved response in background.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInBackground(
-			List<BattleHistoryDTO> responseObject);
 
 }

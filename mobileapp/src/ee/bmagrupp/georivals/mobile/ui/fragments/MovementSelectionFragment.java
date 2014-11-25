@@ -5,6 +5,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.MovableUnitsUILoader;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement.CreateMovementUILoader;
@@ -16,16 +26,6 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementType;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.MovementSelectionAdapter;
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class MovementSelectionFragment extends Fragment {
 	// non-static immutable variables (local constants)
@@ -67,7 +67,7 @@ public class MovementSelectionFragment extends Fragment {
 				ProvinceFragment.province.getLongitude(), activity) {
 
 			@Override
-			public void handleResponseObjectInUI(
+			public void handleResponseInUI(
 					List<MovementSelectionViewDTO> responseList) {
 				if (responseList != null) {
 					movableUnitsList = responseList;
@@ -80,7 +80,7 @@ public class MovementSelectionFragment extends Fragment {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
+			public void handleResponseInBackground(
 					List<MovementSelectionViewDTO> responseList) {
 
 			}
@@ -161,8 +161,7 @@ public class MovementSelectionFragment extends Fragment {
 				ProvinceFragment.province.getLongitude(), activity) {
 
 			@Override
-			public void handleResponseObjectInUI(
-					BeginMovementResponse responseObject) {
+			public void handleResponseInUI(BeginMovementResponse responseObject) {
 				if (responseObject.getResult() == ServerResult.OK) {
 					activity.setToMissionLogTab();
 				} else {
@@ -172,7 +171,7 @@ public class MovementSelectionFragment extends Fragment {
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
+			public void handleResponseInBackground(
 					BeginMovementResponse responseObject) {
 
 			}

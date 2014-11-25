@@ -1,15 +1,15 @@
 package ee.bmagrupp.georivals.mobile.core.location;
 
+import android.app.Activity;
+import android.location.Location;
+import android.location.LocationListener;
+import android.util.Log;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.UnitClaimLoader;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.UnitClaimUILoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
-import android.app.Activity;
-import android.location.Location;
-import android.location.LocationListener;
-import android.util.Log;
 
 /**
  * Class for handling the movement of the player. Claims the players units when
@@ -48,14 +48,13 @@ public class LocationChangeUIHandler extends LocationChangeHandler implements
 				longitude, activity) {
 
 			@Override
-			public void handleResponseObjectInUI(ServerResponse responseObject) {
+			public void handleResponseInUI(ServerResponse responseObject) {
 				if (responseObject.getResult() == ServerResult.OK)
 					updateMap();
 			}
 
 			@Override
-			public void handleResponseObjectInBackground(
-					ServerResponse responseObject) {
+			public void handleResponseInBackground(ServerResponse responseObject) {
 				Log.v("Location", "ClaimUnits:" + longitude + ":" + latitude
 						+ ":" + responseObject);
 			}

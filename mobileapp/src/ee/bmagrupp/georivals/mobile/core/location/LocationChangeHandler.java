@@ -1,11 +1,11 @@
 package ee.bmagrupp.georivals.mobile.core.location;
 
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.UnitClaimLoader;
-import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.UnitClaimLoader;
+import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
  * Class for handling the movement of the player. Claims the players units in

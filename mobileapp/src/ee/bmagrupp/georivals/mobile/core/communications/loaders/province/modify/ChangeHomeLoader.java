@@ -6,15 +6,13 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
  * Class for sending a request to change the players home province. Use this by
- * overriding the handleResponse() method and calling retrieveResponse()
- * method.
+ * overriding the handleResponse() method and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  * 
  */
 
-public abstract class ChangeHomeLoader extends
-		GenericLoader<ServerResponse> {
+public abstract class ChangeHomeLoader extends GenericLoader<ServerResponse> {
 
 	/**
 	 * 

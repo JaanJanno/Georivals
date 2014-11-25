@@ -15,8 +15,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
  * @author Jaan Janno
  */
 
-public abstract class UnitClaimLoader extends
-		GenericLoader<ServerResponse> {
+public abstract class UnitClaimLoader extends GenericLoader<ServerResponse> {
 
 	/**
 	 * 

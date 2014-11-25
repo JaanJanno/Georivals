@@ -1,7 +1,5 @@
 package ee.bmagrupp.georivals.mobile.core.location.service;
 
-import ee.bmagrupp.georivals.mobile.core.location.LocationChangeHandler;
-import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +7,8 @@ import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import ee.bmagrupp.georivals.mobile.core.location.LocationChangeHandler;
+import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 /**
  * Background service, that claims units for the player in the background.

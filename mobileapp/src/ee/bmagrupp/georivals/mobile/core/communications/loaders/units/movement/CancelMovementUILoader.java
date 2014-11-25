@@ -1,6 +1,8 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units.movement;
 
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
 
 /**
@@ -11,7 +13,8 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
  * @author Jaan Janno
  */
 
-public abstract class CancelMovementUILoader extends CancelMovementLoader {
+public abstract class CancelMovementUILoader extends CancelMovementLoader
+		implements UILoadable<MovementViewDTO> {
 
 	private Activity activity;
 
@@ -37,32 +40,8 @@ public abstract class CancelMovementUILoader extends CancelMovementLoader {
 	 */
 
 	@Override
-	public void handleResponse(final MovementViewDTO responseObject) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseObjectInUI(responseObject);
-			}
-		});
-		handleResponseObjectInBackground(responseObject);
+	public void handleResponse(MovementViewDTO responseObject) {
+		UILoader.load(responseObject, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved object in UI.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInUI(MovementViewDTO responseObject);
-
-	/**
-	 * Override to handle retrieved object in background.
-	 * 
-	 * @param responseObject
-	 */
-
-	abstract public void handleResponseObjectInBackground(
-			MovementViewDTO responseObject);
 
 }

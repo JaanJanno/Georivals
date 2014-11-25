@@ -1,5 +1,16 @@
 package ee.bmagrupp.georivals.mobile.ui.fragments;
 
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import ee.bmagrupp.georivals.mobile.R;
@@ -10,16 +21,6 @@ import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.widgets.CustomDialog;
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
 public class RegistrationFragment extends Fragment {

@@ -1,6 +1,8 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify;
 
 import android.app.Activity;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
+import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
@@ -11,7 +13,8 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
  * 
  */
 
-public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
+public abstract class RenameProvinceUILoader extends RenameProvinceLoader
+		implements UILoadable<ServerResponse> {
 
 	private Activity activity;
 
@@ -42,34 +45,8 @@ public abstract class RenameProvinceUILoader extends RenameProvinceLoader {
 	 */
 
 	@Override
-	public void handleResponse(final ServerResponse responseObject) {
-		activity.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				handleResponseObjectInUI(responseObject);
-			}
-		});
-		handleResponseObjectInBackground(responseObject);
+	public void handleResponse(ServerResponse response) {
+		UILoader.load(response, this, activity);
 	}
-
-	/**
-	 * Override to handle retrieved response in UI.
-	 * 
-	 * @param responseObject
-	 *            Response retrieved from server.
-	 */
-
-	abstract public void handleResponseObjectInUI(ServerResponse responseObject);
-
-	/**
-	 * Override to handle retrieved response in background.
-	 * 
-	 * @param responseObject
-	 *            Response retrieved from server.
-	 */
-
-	abstract public void handleResponseObjectInBackground(
-			ServerResponse responseObject);
 
 }

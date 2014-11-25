@@ -4,21 +4,21 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.app.Fragment;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.highscore.HighScoreListLoader;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.HighScoreAdapter;
 import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 public class HighScoreFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)
