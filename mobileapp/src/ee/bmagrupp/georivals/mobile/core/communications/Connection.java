@@ -28,7 +28,7 @@ public abstract class Connection implements Runnable {
 
 	private static final String ENCODING = "UTF-8";
 
-	private final String DEFAULT_CONTENT_TYPE = "application/json";
+	private static final String DEFAULT_CONTENT_TYPE = "application/json";
 
 	private String urlString; // URL of the connection destination.
 	private String cookie = ""; // Cookie for the request.

@@ -1,9 +1,8 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.registration;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectPostLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
-import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
 
 /**
  * Class for handling the first phase of registration.
@@ -13,16 +12,16 @@ import ee.bmagrupp.georivals.mobile.models.registration.RegistrationDTO;
  */
 
 public abstract class RegistrationPhase1Poster extends
-		GenericObjectPostLoader<ServerResponse> {
+		GenericObjectLoader<ServerResponse> {
 
 	/**
 	 * 
-	 * @param post
-	 *            Info of registration. Provides name and email.
+	 * @param userName User name the user wants to select.
 	 */
 
-	public RegistrationPhase1Poster(RegistrationDTO post) {
-		super(ServerResponse.class, post, Constants.REGISTRATION_PHASE1);
+	public RegistrationPhase1Poster(String userName) {
+		super(ServerResponse.class, Constants.REGISTRATION_PHASE1);
+		addParamter("userName", userName);
 	}
 
 	/**

@@ -93,8 +93,7 @@ public class RegistrationFragment extends Fragment {
 	 */
 
 	private void registrationPhase1() {
-		RegistrationPhase1Poster p = new RegistrationPhase1Poster(
-				new RegistrationDTO(username, email)) {
+		RegistrationPhase1Poster p = new RegistrationPhase1Poster(username) {
 
 			@Override
 			public void handleResponseObject(ServerResponse responseObject) {
