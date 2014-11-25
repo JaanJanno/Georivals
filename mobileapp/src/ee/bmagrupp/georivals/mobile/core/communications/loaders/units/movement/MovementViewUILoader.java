@@ -7,7 +7,7 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
 /**
  * Class for retrieving MovementViewDTO lists from server. Able to handle
  * response straight on UI. Use this by overriding the list handling methods and
- * calling retrieveList() method.
+ * calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */

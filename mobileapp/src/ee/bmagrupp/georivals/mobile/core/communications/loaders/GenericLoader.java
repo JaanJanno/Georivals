@@ -154,7 +154,7 @@ abstract public class GenericLoader<T> implements Runnable {
 	 * @param value
 	 */
 
-	protected void addParamter(String key, String value) {
+	protected void addParameter(String key, String value) {
 		parameters.put(key, value);
 	}
 
@@ -175,5 +175,5 @@ abstract public class GenericLoader<T> implements Runnable {
 	 * retrieved. Remember this method doesn't run on the UI thread!
 	 */
 
-	abstract public void handleResponse(T responseObject);
+	abstract public void handleResponse(T response);
 }

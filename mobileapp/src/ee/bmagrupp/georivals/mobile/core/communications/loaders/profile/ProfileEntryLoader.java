@@ -7,7 +7,7 @@ import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 /**
  * Class for making a HTTP get request to the server and retrieving ProfileEntry
  * data parsed from JSON to objects. Use this by overriding the
- * handleResponse() method and calling retrieveProfileEntry() method.
+ * handleResponse() method and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */

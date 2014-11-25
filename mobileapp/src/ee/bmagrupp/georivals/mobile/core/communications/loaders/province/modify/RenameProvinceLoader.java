@@ -31,9 +31,9 @@ public abstract class RenameProvinceLoader extends
 			String newname, String sid) {
 		super(ServerResponse.class, Constants.RENAME_PROVINCE, "sid=" + sid);
 		setRequestMethod("POST");
-		addParamter("latitude", Double.toString(latitude));
-		addParamter("longitude", Double.toString(longitude));
-		addParamter("newname", newname);
+		addParameter("latitude", Double.toString(latitude));
+		addParameter("longitude", Double.toString(longitude));
+		addParameter("newname", newname);
 	}
 
 }

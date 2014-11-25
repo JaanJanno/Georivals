@@ -9,7 +9,7 @@ import ee.bmagrupp.georivals.mobile.models.battle.history.BattleHistoryDTO;
  * Class for sending a request to get players battle history. <br>
  * 
  * Use this by overriding the handleResponse() method and calling
- * retrieveList() method.
+ * retrieveResponse() method.
  * 
  * @author Jaan Janno
  * 

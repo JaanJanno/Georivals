@@ -21,7 +21,7 @@ public abstract class RegistrationPhase1Poster extends
 
 	public RegistrationPhase1Poster(String userName) {
 		super(ServerResponse.class, Constants.REGISTRATION_PHASE1);
-		addParamter("userName", userName);
+		addParameter("userName", userName);
 	}
 	
 }

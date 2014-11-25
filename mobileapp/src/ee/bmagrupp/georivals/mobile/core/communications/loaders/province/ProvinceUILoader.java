@@ -11,7 +11,7 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 /**
  * Class for retrieving ProvinceDTO lists from server. Able to handle response
  * straight on UI. Use this by overriding the list handling methods and calling
- * retrieveList() method.
+ * retrieveResponse() method.
  * 
  * @author Jaan Janno
  */

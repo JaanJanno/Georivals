@@ -6,7 +6,7 @@ import android.app.Activity;
 /**
  * Class for retrieving ProvinceViewDTO objects from server. Able to handle
  * response straight on UI. Use this by overriding the object handling methods
- * and calling retrieveObject() method.
+ * and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */

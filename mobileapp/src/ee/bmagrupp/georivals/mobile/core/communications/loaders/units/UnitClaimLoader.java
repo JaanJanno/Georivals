@@ -30,8 +30,8 @@ public abstract class UnitClaimLoader extends
 
 	public UnitClaimLoader(String sid, double latitude, double longitude) {
 		super(ServerResponse.class, Constants.CLAIM, "sid=" + sid);
-		addParamter("latitude", Double.toString(latitude));
-		addParamter("longitude", Double.toString(longitude));
+		addParameter("latitude", Double.toString(latitude));
+		addParameter("longitude", Double.toString(longitude));
 		setRequestMethod("POST");
 	}
 

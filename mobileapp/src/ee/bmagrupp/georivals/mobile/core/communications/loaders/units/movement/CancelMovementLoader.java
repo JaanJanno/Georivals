@@ -28,7 +28,7 @@ public abstract class CancelMovementLoader extends
 	public CancelMovementLoader(String sid, int movementId) {
 		super(MovementViewDTO.class, Constants.CANCEL_MOVE, "sid=" + sid);
 		setRequestMethod("DELETE");
-		addParamter("id", Integer.toString(movementId));
+		addParameter("id", Integer.toString(movementId));
 	}
 
 }

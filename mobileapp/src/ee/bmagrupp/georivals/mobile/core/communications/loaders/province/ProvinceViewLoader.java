@@ -7,7 +7,7 @@ import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 /**
  * Class for making a HTTP get request to the server and retrieving ProvinceDTO
  * parsed from JSON to objects. Use this by overriding the
- * handleResponse() method and calling retrieveObject() method.
+ * handleResponse() method and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */
@@ -44,8 +44,8 @@ public abstract class ProvinceViewLoader extends
 	 */
 
 	private void addParameters(Double latitude, Double longitude) {
-		addParamter("latitude", Double.toString(latitude));
-		addParamter("longitude", Double.toString(longitude));
+		addParameter("latitude", Double.toString(latitude));
+		addParameter("longitude", Double.toString(longitude));
 	}
 
 }

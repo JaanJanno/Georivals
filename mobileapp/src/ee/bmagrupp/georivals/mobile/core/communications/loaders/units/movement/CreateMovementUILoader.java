@@ -8,7 +8,7 @@ import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementResponse;
 /**
  * Class for handling creating new movements. Able to handle response straight
  * on UI. Use this by overriding the response handling methods and calling
- * retrieveObject() method.
+ * retrieveResponse() method.
  * 
  * @author Jaan Janno
  */

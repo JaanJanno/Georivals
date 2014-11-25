@@ -5,7 +5,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
  * Class for claiming units. Able to handle response straight on UI. Use this by
- * overriding the response handling methods and calling retrieveObject() method.
+ * overriding the response handling methods and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */

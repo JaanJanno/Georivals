@@ -34,8 +34,8 @@ public abstract class CreateMovementLoader extends
 			double latitude, double longitude) {
 		super(BeginMovementResponse.class, post.toArray(), Constants.MOVE_TO,
 				"sid=" + sid);
-		addParamter("latitude", Double.toString(latitude));
-		addParamter("longitude", Double.toString(longitude));
+		addParameter("latitude", Double.toString(latitude));
+		addParameter("longitude", Double.toString(longitude));
 	}
 
 }

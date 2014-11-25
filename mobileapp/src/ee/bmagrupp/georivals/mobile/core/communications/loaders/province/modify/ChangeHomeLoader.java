@@ -6,7 +6,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
  * Class for sending a request to change the players home province. Use this by
- * overriding the handleResponse() method and calling retrieveObject()
+ * overriding the handleResponse() method and calling retrieveResponse()
  * method.
  * 
  * @author Jaan Janno
@@ -28,8 +28,8 @@ public abstract class ChangeHomeLoader extends
 
 	public ChangeHomeLoader(double latitude, double longitude, String sid) {
 		super(ServerResponse.class, Constants.SET_HOME_PROVINCE, "sid=" + sid);
-		addParamter("latitude", Double.toString(latitude));
-		addParamter("longitude", Double.toString(longitude));
+		addParameter("latitude", Double.toString(latitude));
+		addParameter("longitude", Double.toString(longitude));
 		setRequestMethod("POST");
 	}
 

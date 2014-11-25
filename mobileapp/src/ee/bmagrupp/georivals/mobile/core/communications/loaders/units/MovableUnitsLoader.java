@@ -10,7 +10,7 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
  * province in given coordinates . <br>
  * 
  * Use this by overriding the handleResponse() method and calling
- * retrieveList() method.
+ * retrieveResponse() method.
  * 
  * @author Jaan Janno
  * 

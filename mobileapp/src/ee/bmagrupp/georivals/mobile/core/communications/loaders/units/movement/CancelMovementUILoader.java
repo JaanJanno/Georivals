@@ -6,7 +6,7 @@ import ee.bmagrupp.georivals.mobile.models.movement.MovementViewDTO;
 /**
  * Class for canceling a movement from server. Able to handle response straight
  * on UI. Use this by overriding the response handling methods and calling
- * retrieveObject() method.
+ * retrieveResponse() method.
  * 
  * @author Jaan Janno
  */
