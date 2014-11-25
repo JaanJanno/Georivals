@@ -36,7 +36,7 @@ Serveri käivitamiseks on vaja ainult käsku `mvn spring-boot:run`
 #### Andmebaasi setup
 `test` ehk mälus olev andmebaas kasutab andmeid, mis on kirjas `import.sql` failis. Postgres pead ise tõmbama.  Nende paroolid ja muu info peab ühtima  `application-postgres.properties` kirjeldatuga. Andmebaasi tabelid tekitab server ise. 
 
-Päris andmebaasi näidisandmeid hetkel ei impordita. TÄHTIS: import.sql andmed ei suurenda päris andmebaasi sequence'eid. Seega, kui sisestad testandmed ja siis tahad sinna otsa veel serveri kaudu andmeid lisada, siis kõik läheb katki. Lahendus on käsitsi suurendada sequence'ide algusarvu. Kui selliseks jamaks huvi puudub, siis kasuta mälus olevat andmebaasi. 
+Päris andmebaasi näidisandmeid hetkel ei impordita. TÄHTIS: import.sql andmed ei suurenda päris andmebaasi sequence'eid. Seega, kui sisestad testandmed ja siis tahad sinna otsa veel serveri kaudu andmeid lisada, siis kõik läheb katki. Lahendus on käsitsi suurendada sequence'ide algusarvu. Kui selliseks jamaks huvi puudub, siis kasuta mälus olevat andmebaasi, mis toimib kohe vaikimis seadistamata. 
 
 Herokus töötab andmebaas `DATABASE_URL` kaudu, nii et soovi kõrval võib Heroku stiilis Postgres ühendamise stringi süsteemi keskonnamuutujatesse panna. Sellisel juhul ei pea `application.properties` failis midagi muutma. 
 
