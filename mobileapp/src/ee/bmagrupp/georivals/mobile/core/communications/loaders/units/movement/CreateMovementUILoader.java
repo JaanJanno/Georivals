@@ -44,7 +44,7 @@ public abstract class CreateMovementUILoader extends CreateMovementLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final BeginMovementResponse responseObject) {
+	public void handleResponse(final BeginMovementResponse responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

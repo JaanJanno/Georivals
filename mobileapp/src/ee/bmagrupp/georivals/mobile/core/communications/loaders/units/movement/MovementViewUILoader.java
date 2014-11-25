@@ -36,7 +36,7 @@ public abstract class MovementViewUILoader extends MovementViewLoader {
 	 */
 
 	@Override
-	public void handleResponseList(final List<MovementViewDTO> responseList) {
+	public void handleResponse(final List<MovementViewDTO> responseList) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

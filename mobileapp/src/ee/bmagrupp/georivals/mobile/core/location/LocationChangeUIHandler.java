@@ -61,7 +61,7 @@ public class LocationChangeUIHandler extends LocationChangeHandler implements
 			}
 
 		};
-		l.retrieveObject();
+		l.retrieveResponse();
 	}
 
 	/*

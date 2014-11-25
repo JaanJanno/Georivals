@@ -1,5 +1,6 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,33 +10,50 @@ import ee.bmagrupp.georivals.mobile.core.communications.GsonParser;
 /**
  * Class for making a HTTP get request to the server and retrieving a generic
  * object parsed from JSON. To define the class of the object to be retrieved
- * put its class name in the <> brackets and pass its class as the first
- * argument to the constructor. Use this by overriding the
- * handleResponseObject() method and calling retrieveObject() method.
+ * put its class name in the <> brackets and pass its type/class as the first
+ * argument to the constructor. Use this by overriding the handleResponse()
+ * method and calling retrieveResponse() method.
  * 
  * @author Jaan Janno
  */
 
-abstract public class GenericObjectLoader<T> implements Runnable {
+abstract public class GenericLoader<T> implements Runnable {
 
-	final Class<T> typeParameterClass;
+	private Class<T> typeClass;
+	private Type typeToken;
 
 	protected String url; // URL of the connection destination.
-	protected String cookie = ""; // Cookie string;
+	protected String cookie; // Cookie string;
 	private Map<String, String> parameters = new HashMap<String, String>();
 
 	private String requestMethod;
 
 	/**
 	 * 
-	 * @param typeParameterClass
-	 *            Class of the object to be received.
+	 * @param typeToken
+	 *            Type of the object to be received.
 	 * @param url
+	 *            Url of the request.
 	 */
 
-	public GenericObjectLoader(Class<T> typeParameterClass, String url) {
+	public GenericLoader(Type typeToken, String url) {
+		this(typeToken, url, "");
+	}
+
+	/**
+	 * 
+	 * @param typeToken
+	 *            Type of the object to be received.
+	 * @param url
+	 *            Url of the request.
+	 * @param cookie
+	 *            Cookie string sent along with the request.
+	 */
+
+	public GenericLoader(Type typeToken, String url, String cookie) {
 		this.url = url;
-		this.typeParameterClass = typeParameterClass;
+		this.cookie = cookie;
+		this.typeToken = typeToken;
 	}
 
 	/**
@@ -43,13 +61,27 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * @param typeParameterClass
 	 *            Class of the object to be received.
 	 * @param url
+	 *            Url of the request.
 	 */
 
-	public GenericObjectLoader(Class<T> typeParameterClass, String url,
-			String cookie) {
+	public GenericLoader(Class<T> typeClass, String url) {
+		this(typeClass, url, "");
+	}
+
+	/**
+	 * 
+	 * @param typeParameterClass
+	 *            Class of the object to be received.
+	 * @param url
+	 *            Url of the request.
+	 * @param cookie
+	 *            Cookie string sent along with the request.
+	 */
+
+	public GenericLoader(Class<T> typeClass, String url, String cookie) {
 		this.url = url;
 		this.cookie = cookie;
-		this.typeParameterClass = typeParameterClass;
+		this.typeClass = typeClass;
 	}
 
 	/**
@@ -58,16 +90,20 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * the list as argument.
 	 */
 
-	public void retrieveObject() {
+	public void retrieveResponse() {
 		new Thread(this).start();
 	}
 
 	/*
-	 * Parses a JSON string and returns a generic object of class T.
+	 * Parses a JSON string and returns a generic object of class T. Uses the
+	 * type field.
 	 */
 
 	protected T getObjectFromJSON(String json) {
-		return (T) GsonParser.getInstance().fromJson(json, typeParameterClass);
+		if (typeClass != null)
+			return GsonParser.getInstance().fromJson(json, typeClass);
+		else
+			return GsonParser.getInstance().fromJson(json, typeToken);
 	}
 
 	/**
@@ -76,12 +112,22 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 
 	@Override
 	public void run() {
-		Connection c = new Connection(url, cookie) {
+		Connection c = createConnection();
+		handleParameters(c);
+		c.sendRequest();
+	}
+
+	/*
+	 * Creates a new connection.
+	 */
+
+	protected Connection createConnection() {
+		return new Connection(url, cookie) {
 
 			@Override
 			public void handleResponseBody(String response) {
 				T object = getObjectFromJSON(response);
-				handleResponseObject(object);
+				handleResponse(object);
 			}
 
 			@Override
@@ -89,8 +135,6 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 				// No cookies expected.
 			}
 		};
-		handleParameters(c);
-		c.sendRequest();
 	}
 
 	/**
@@ -131,5 +175,5 @@ abstract public class GenericObjectLoader<T> implements Runnable {
 	 * retrieved. Remember this method doesn't run on the UI thread!
 	 */
 
-	abstract public void handleResponseObject(T responseObject);
+	abstract public void handleResponse(T responseObject);
 }

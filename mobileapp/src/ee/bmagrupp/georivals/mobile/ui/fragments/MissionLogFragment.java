@@ -79,7 +79,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 
 			}
 		};
-		battleHistoryListLoader.retrieveList();
+		battleHistoryListLoader.retrieveResponse();
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 
 			}
 		};
-		movementViewListLoader.retrieveList();
+		movementViewListLoader.retrieveResponse();
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 
 			}
 		};
-		cancelMovementLoader.retrieveObject();
+		cancelMovementLoader.retrieveResponse();
 	}
 
 	@Override

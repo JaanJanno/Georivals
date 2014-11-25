@@ -1,7 +1,7 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.registration;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
@@ -12,7 +12,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
  */
 
 public abstract class RegistrationPhase1Poster extends
-		GenericObjectLoader<ServerResponse> {
+		GenericLoader<ServerResponse> {
 
 	/**
 	 * 
@@ -23,11 +23,5 @@ public abstract class RegistrationPhase1Poster extends
 		super(ServerResponse.class, Constants.REGISTRATION_PHASE1);
 		addParamter("userName", userName);
 	}
-
-	/**
-	 * Override this to handle registration response from server.
-	 */
-
-	@Override
-	abstract public void handleResponseObject(ServerResponse responseObject);
+	
 }

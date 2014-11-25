@@ -77,7 +77,7 @@ public class ProvinceFragment extends Fragment {
 			}
 
 		};
-		l.retrieveObject();
+		l.retrieveResponse();
 
 	}
 
@@ -275,7 +275,7 @@ public class ProvinceFragment extends Fragment {
 			}
 
 		};
-		l.retrieveObject();
+		l.retrieveResponse();
 	}
 
 	/**
@@ -328,7 +328,7 @@ public class ProvinceFragment extends Fragment {
 			}
 
 		};
-		l.retrieveObject();
+		l.retrieveResponse();
 	}
 
 }

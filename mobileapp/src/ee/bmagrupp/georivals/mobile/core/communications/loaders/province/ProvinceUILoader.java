@@ -46,7 +46,7 @@ public abstract class ProvinceUILoader extends ProvinceLoader {
 	 */
 
 	@Override
-	public void handleResponseList(final List<ProvinceDTO> responseList) {
+	public void handleResponse(final List<ProvinceDTO> responseList) {
 		if (id == threadPoolIdCounter) {
 			activity.runOnUiThread(new Runnable() {
 

@@ -1,12 +1,12 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
  * Class for sending a request to change the players home province. Use this by
- * overriding the handleResponseObject() method and calling retrieveObject()
+ * overriding the handleResponse() method and calling retrieveObject()
  * method.
  * 
  * @author Jaan Janno
@@ -14,7 +14,7 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
  */
 
 public abstract class ChangeHomeLoader extends
-		GenericObjectLoader<ServerResponse> {
+		GenericLoader<ServerResponse> {
 
 	/**
 	 * 
@@ -32,13 +32,5 @@ public abstract class ChangeHomeLoader extends
 		addParamter("longitude", Double.toString(longitude));
 		setRequestMethod("POST");
 	}
-
-	/**
-	 * Override this method to define the behavior after an ServerResult object
-	 * has been retrieved. Remember this method doesn't run on the UI thread!
-	 */
-
-	@Override
-	public abstract void handleResponseObject(ServerResponse responseObject);
 
 }

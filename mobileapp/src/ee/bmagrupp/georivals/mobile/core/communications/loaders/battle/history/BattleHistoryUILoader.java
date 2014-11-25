@@ -37,7 +37,7 @@ public abstract class BattleHistoryUILoader extends BattleHistoryLoader {
 	 */
 
 	@Override
-	public void handleResponseList(final List<BattleHistoryDTO> responseObject) {
+	public void handleResponse(final List<BattleHistoryDTO> responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

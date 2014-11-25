@@ -217,7 +217,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			}
 
 		};
-		l.retrieveList();
+		l.retrieveResponse();
 	}
 
 	/**

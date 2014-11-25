@@ -39,13 +39,13 @@ public class LocationChangeHandler implements LocationListener {
 		UnitClaimLoader l = new UnitClaimLoader(sid, latitude, longitude) {
 
 			@Override
-			public void handleResponseObject(ServerResponse responseObject) {
+			public void handleResponse(ServerResponse responseObject) {
 				Log.v("LocationService", "ClaimUnits:" + longitude + ":"
 						+ latitude + ":" + responseObject);
 			}
 
 		};
-		l.retrieveObject();
+		l.retrieveResponse();
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public abstract class CancelMovementUILoader extends CancelMovementLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final MovementViewDTO responseObject) {
+	public void handleResponse(final MovementViewDTO responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

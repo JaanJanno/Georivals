@@ -40,7 +40,7 @@ public abstract class ChangeHomeUILoader extends ChangeHomeLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final ServerResponse responseObject) {
+	public void handleResponse(final ServerResponse responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

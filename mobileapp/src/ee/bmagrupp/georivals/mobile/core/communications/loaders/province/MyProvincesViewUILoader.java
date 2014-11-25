@@ -39,7 +39,7 @@ public abstract class MyProvincesViewUILoader extends MyProvincesViewLoader {
 	 */
 
 	@Override
-	public void handleResponseList(final List<ProvinceDTO> responseList) {
+	public void handleResponse(final List<ProvinceDTO> responseList) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

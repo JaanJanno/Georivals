@@ -84,7 +84,7 @@ public class MovementSelectionFragment extends Fragment {
 
 			}
 		};
-		movableUnitsListLoader.retrieveList();
+		movableUnitsListLoader.retrieveResponse();
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class MovementSelectionFragment extends Fragment {
 			}
 
 		};
-		l.retrieveObject();
+		l.retrieveResponse();
 	}
 
 	/**

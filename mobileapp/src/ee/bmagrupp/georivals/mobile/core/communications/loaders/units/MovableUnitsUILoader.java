@@ -38,7 +38,7 @@ public abstract class MovableUnitsUILoader extends MovableUnitsLoader {
 	 */
 
 	@Override
-	public void handleResponseList(
+	public void handleResponse(
 			final List<MovementSelectionViewDTO> responseObject) {
 		activity.runOnUiThread(new Runnable() {
 

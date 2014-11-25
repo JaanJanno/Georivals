@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 		ProfileEntryLoader profileEntryLoader = new ProfileEntryLoader(
 				MainActivity.userId) {
 			@Override
-			public void handleResponseObject(final ProfileEntry profileEntry) {
+			public void handleResponse(final ProfileEntry profileEntry) {
 				activity.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 				});
 			}
 		};
-		profileEntryLoader.retrieveObject();
+		profileEntryLoader.retrieveResponse();
 	}
 
 	/**

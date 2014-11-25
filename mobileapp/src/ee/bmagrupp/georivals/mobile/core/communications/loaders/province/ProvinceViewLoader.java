@@ -1,19 +1,19 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 
 /**
  * Class for making a HTTP get request to the server and retrieving ProvinceDTO
  * parsed from JSON to objects. Use this by overriding the
- * handleResponseObject() method and calling retrieveObject() method.
+ * handleResponse() method and calling retrieveObject() method.
  * 
  * @author Jaan Janno
  */
 
 public abstract class ProvinceViewLoader extends
-		GenericObjectLoader<ProvinceDTO> {
+		GenericLoader<ProvinceDTO> {
 
 	/**
 	 * 
@@ -47,14 +47,5 @@ public abstract class ProvinceViewLoader extends
 		addParamter("latitude", Double.toString(latitude));
 		addParamter("longitude", Double.toString(longitude));
 	}
-
-	/**
-	 * Override this method to define the behavior after an ProvinceViewDTO
-	 * object has been retrieved. Remember this method doesn't run on the UI
-	 * thread!
-	 */
-
-	@Override
-	abstract public void handleResponseObject(ProvinceDTO responseObject);
 
 }

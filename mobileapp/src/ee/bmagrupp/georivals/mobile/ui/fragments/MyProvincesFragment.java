@@ -78,7 +78,7 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 			}
 
 		};
-		myProvincesListLoader.retrieveList();
+		myProvincesListLoader.retrieveResponse();
 	}
 
 	/**

@@ -96,7 +96,7 @@ public class RegistrationFragment extends Fragment {
 		RegistrationPhase1Poster p = new RegistrationPhase1Poster(username) {
 
 			@Override
-			public void handleResponseObject(ServerResponse responseObject) {
+			public void handleResponse(ServerResponse responseObject) {
 				if (responseObject.getResult() == ServerResult.OK)
 					showPhase1ConfirmationDialog();
 				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
@@ -107,7 +107,7 @@ public class RegistrationFragment extends Fragment {
 							.getString(R.string.error_unknown));
 			}
 		};
-		p.retrieveObject();
+		p.retrieveResponse();
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class RegistrationFragment extends Fragment {
 						homeLatLng.longitude)) {
 
 			@Override
-			public void handleResponseObject(final ServerResponse responseObject) {
+			public void handleResponse(final ServerResponse responseObject) {
 				activity.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -221,7 +221,7 @@ public class RegistrationFragment extends Fragment {
 
 			}
 		};
-		p2.retrieveObject();
+		p2.retrieveResponse();
 	}
 
 }

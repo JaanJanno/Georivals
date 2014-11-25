@@ -49,7 +49,7 @@ public abstract class ProvinceViewUILoader extends ProvinceViewLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final ProvinceDTO responseObject) {
+	public void handleResponse(final ProvinceDTO responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override

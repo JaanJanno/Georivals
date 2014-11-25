@@ -84,7 +84,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	private void requestHighScoreData() {
 		HighScoreListLoader highScoreListLoader = new HighScoreListLoader() {
 
-			public void handleResponseList(final List<HighScoreEntry> list) {
+			public void handleResponse(final List<HighScoreEntry> list) {
 				activity.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -100,7 +100,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 				});
 			}
 		};
-		highScoreListLoader.retrieveList();
+		highScoreListLoader.retrieveResponse();
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.units;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
@@ -10,13 +10,13 @@ import ee.bmagrupp.georivals.mobile.models.ServerResponse;
  * identified by sid in cookie.
  * 
  * Respons is gotten as a ServerResponse object that can be handled overriding
- * the handleResponseObject() method.
+ * the handleResponse() method.
  * 
  * @author Jaan Janno
  */
 
 public abstract class UnitClaimLoader extends
-		GenericObjectLoader<ServerResponse> {
+		GenericLoader<ServerResponse> {
 
 	/**
 	 * 
@@ -34,12 +34,5 @@ public abstract class UnitClaimLoader extends
 		addParamter("longitude", Double.toString(longitude));
 		setRequestMethod("POST");
 	}
-
-	/**
-	 * Override this to handle response gotten from the server.
-	 */
-
-	@Override
-	public abstract void handleResponseObject(ServerResponse responseObject);
 
 }

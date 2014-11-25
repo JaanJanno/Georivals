@@ -1,19 +1,19 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders.province.modify;
 
 import ee.bmagrupp.georivals.mobile.core.communications.Constants;
-import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericObjectLoader;
+import ee.bmagrupp.georivals.mobile.core.communications.loaders.GenericLoader;
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 
 /**
  * Class to make a POST to rename a province. Use by overriding the
- * handleResponseObject() method.
+ * handleResponse() method.
  * 
  * @author Jaan Janno
  * 
  */
 
 public abstract class RenameProvinceLoader extends
-		GenericObjectLoader<ServerResponse> {
+		GenericLoader<ServerResponse> {
 
 	/**
 	 * 
@@ -35,12 +35,5 @@ public abstract class RenameProvinceLoader extends
 		addParamter("longitude", Double.toString(longitude));
 		addParamter("newname", newname);
 	}
-
-	/**
-	 * Override this method to handle the response retrieved from the server.
-	 */
-
-	@Override
-	public abstract void handleResponseObject(ServerResponse responseObject);
 
 }

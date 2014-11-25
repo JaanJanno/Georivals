@@ -39,7 +39,7 @@ public abstract class UnitClaimUILoader extends UnitClaimLoader {
 	 */
 
 	@Override
-	public void handleResponseObject(final ServerResponse responseObject) {
+	public void handleResponse(final ServerResponse responseObject) {
 		activity.runOnUiThread(new Runnable() {
 
 			@Override
