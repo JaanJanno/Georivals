@@ -15,6 +15,8 @@ import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
+import ee.bmagrupp.georivals.server.core.domain.Unit;
+import ee.bmagrupp.georivals.server.core.domain.UnitState;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
@@ -111,6 +113,11 @@ public class ProvinceServiceImpl implements ProvinceService {
 			newHome = new Province(lat, long1);
 			provRepo.save(newHome);
 		}
+		else if(playerRepo.findOwnerOfProvince(newHome.getId()).getId() == player.getId()){
+			Ownership temp = ownerRepo.findByProvinceId(newHome.getId());
+			home = mergeUnits(home, temp);
+			ownerRepo.delete(temp);
+		}
 		home.setProvince(newHome);
 		home.setProvinceName(GeneratorUtil.generateString(PROVINCE_NAME_LENGTH,
 				lat, long1));
@@ -118,6 +125,18 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 		ServerResponse resp = new ServerResponse(ServerResult.OK);
 		return resp;
+	}
+
+	private HomeOwnership mergeUnits(HomeOwnership home, Ownership temp) {
+		for(Unit u : home.getUnits()){
+			if(u.getState() == UnitState.CLAIMED){
+				u.increaseSize(temp.countUnits());
+				if(u.getSize() > 100){
+					u.setSize(100);
+				}
+			}
+		}
+		return home;
 	}
 
 	@Override
