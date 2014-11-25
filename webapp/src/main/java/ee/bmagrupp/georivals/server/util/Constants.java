@@ -35,4 +35,5 @@ public class Constants {
 	public static final int PROVINCE_NAME_LENGTH = 10;
 	public static final int PLAYER_SID_LENGTH = 16;
 	public static final int PLAYER_START_UNITS = 10;
+	public static final double SPEED_CONSTANT = 4;
 }

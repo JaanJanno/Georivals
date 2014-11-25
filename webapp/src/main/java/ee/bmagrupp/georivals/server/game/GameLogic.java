@@ -23,7 +23,7 @@ import ee.bmagrupp.georivals.server.util.GeneratorUtil;
  */
 public class GameLogic {
 	// These are for testing purposes only
-	static int time = 10;
+	//static int time = 10;
 
 	/**
 	 * Checks if the player defined by player1Strength can attack the provinces
@@ -122,15 +122,16 @@ public class GameLogic {
 	 */
 	public static Date calculateTime(Province start, Province destination,
 			Date curDate) {
-		// TODO implement some sort of calculation
+		double latitude = Math.abs(destination.getLatitude() - start.getLatitude());
+		double longitude = Math.abs(destination.getLongitude() - start.getLongitude());
+		double distance = Math.sqrt(latitude*latitude + longitude*longitude);
+		
+		int time = (int)((distance / Constants.PROVINCE_HEIGHT) * Constants.SPEED_CONSTANT);
+		
 		Calendar cal = Calendar.getInstance(); // creates calendar
 	    cal.setTime(curDate); // sets calendar time/date
 	    cal.add(Calendar.SECOND, time);
 	    
-	    time-=2;
-	    if (time <= 0) {
-	    	time = 10;
-	    }
 		return cal.getTime();
 	}
 
