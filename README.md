@@ -72,6 +72,7 @@ Lisaks läheb vaja Android SDK Managerist:
 7. Vajuta Run > Run as Android application.
 8. Vali omale sobiv seade (oma telefon või emulaator) ja vajuta OK.
 9. Kui oled kõiki samme õigesti järginud, peaks programm nüüd käivituma.
+10. Kui soovida androidi emulaatoris kasutada kohalikku serverit, määrata ee.bmagrupp.georivals.mobile.core.communications.Constants klassis muutuja isLocalMobile = true; See töötab ainult google'i emulaatoriga, mitte genymotion'iga.
 
 #### Testide jooksutamine
 Testide jooksutamiseks on vaja kasutada Genymotioni emulaatorit või füüsilist seadet. Android Development Tools'iga kaasasolevat emulaatorit ei saa selleks kasutada, sest selle emulaatori Google Play Service'is on bug, mis seda takistab.
