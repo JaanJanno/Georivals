@@ -165,6 +165,8 @@ public class EndMovementServiceImpl implements EndMovementService {
 	 *            {@link Ownership}
 	 */
 	private void attackerWon(BattleHistory history, Movement mov, Ownership ow) {
+		String provName = ow.getProvinceName();
+
 		// delete defender units
 		deleteDefender(history, ow);
 
@@ -180,6 +182,7 @@ public class EndMovementServiceImpl implements EndMovementService {
 		unitRepo.save(mov.getUnit());
 		// create new ownership
 		Ownership newOw = new Ownership(mov.getDestination(), mov.getUnit());
+		newOw.setProvinceName(provName);
 		ownerRepo.save(newOw);
 		history.getAttacker().addOwnership(newOw);
 		playerRepo.save(history.getAttacker());

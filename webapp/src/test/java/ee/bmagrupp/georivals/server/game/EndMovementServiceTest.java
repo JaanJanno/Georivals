@@ -188,6 +188,11 @@ public class EndMovementServiceTest {
 				player, new Date(), endDate);
 		moveRepo.save(battleMov);
 
+		// name change
+		Ownership o = ownerRepo.findOne(3);
+		o.setProvinceName("Gringotts");
+		ownerRepo.save(o);
+
 		endMovServ.handleMovement(endDate);
 
 		assertTrue("No such movement",
@@ -195,10 +200,10 @@ public class EndMovementServiceTest {
 						.isEmpty());
 
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
-		
+
 		BattleHistory battle = null;
 		for (BattleHistory battleHistory : list) {
-			if(battleHistory.getLocation().getId() == 2) {
+			if (battleHistory.getLocation().getId() == 2) {
 				battle = battleHistory;
 				break;
 			}
@@ -215,6 +220,8 @@ public class EndMovementServiceTest {
 					.findOwnerOfProvince(2).getId());
 			assertEquals("Owner units", 27 - battle.getAttackerLosses(), ow
 					.getUnits().iterator().next().getSize());
+			assertEquals("Province has old name", "Gringotts",
+					ow.getProvinceName());
 
 			// Defender units gone
 			assertEquals("No defender units", null, unitRepo.findOne(2));
@@ -249,7 +256,8 @@ public class EndMovementServiceTest {
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
 		BattleHistory battle = null;
 		for (BattleHistory battleHistory : list) {
-			if((battleHistory.getLocation().getId() == 6)&&(battleHistory.getAttackerStrength() == 1)) {
+			if ((battleHistory.getLocation().getId() == 6)
+					&& (battleHistory.getAttackerStrength() == 1)) {
 				battle = battleHistory;
 				break;
 			}
@@ -310,7 +318,7 @@ public class EndMovementServiceTest {
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
 		BattleHistory battle = null;
 		for (BattleHistory battleHistory : list) {
-			if(battleHistory.getLocation().getId() == prov.getId()) {
+			if (battleHistory.getLocation().getId() == prov.getId()) {
 				battle = battleHistory;
 				break;
 			}
@@ -371,7 +379,7 @@ public class EndMovementServiceTest {
 		List<BattleHistory> list = (List<BattleHistory>) batHistRepo.findAll();
 		BattleHistory battle = null;
 		for (BattleHistory battleHistory : list) {
-			if(battleHistory.getLocation().getId() == prov.getId()) {
+			if (battleHistory.getLocation().getId() == prov.getId()) {
 				battle = battleHistory;
 				break;
 			}
