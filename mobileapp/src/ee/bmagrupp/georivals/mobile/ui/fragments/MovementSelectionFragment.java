@@ -63,7 +63,7 @@ public class MovementSelectionFragment extends Fragment {
 
 	private void requestMyProvincesData() {
 		MovableUnitsUILoader movableUnitsListLoader = new MovableUnitsUILoader(
-				MainActivity.sid, activity) {
+				MainActivity.sid, ProvinceFragment.province.getLatitude(), ProvinceFragment.province.getLongitude(), activity) {
 
 			@Override
 			public void handleResponseObjectInUI(

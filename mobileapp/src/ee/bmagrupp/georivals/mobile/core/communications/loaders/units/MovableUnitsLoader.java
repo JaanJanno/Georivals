@@ -25,9 +25,11 @@ public abstract class MovableUnitsLoader extends
 	 *            Unique ID that identifies the player.
 	 */
 
-	public MovableUnitsLoader(String sid) {
+	public MovableUnitsLoader(String sid, double latitude, double longitude) {
 		super(MovementSelectionViewDTO.listType, Constants.MYUNITS, "sid="
 				+ sid);
+		addParameter("latitude", Double.toString(latitude));
+		addParameter("longitude", Double.toString(longitude));
 	}
 
 }
