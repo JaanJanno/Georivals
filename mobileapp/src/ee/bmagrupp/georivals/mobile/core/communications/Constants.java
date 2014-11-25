@@ -12,7 +12,7 @@ public class Constants {
 		if (isLocalMobile)
 			WEBPAGE = "http://10.0.2.2:8080/"; // Only Google API emulators.
 		else
-			WEBPAGE = "http://pacific-plains-8541.herokuapp.com/";
+			WEBPAGE = "https://pacific-plains-8541.herokuapp.com/";
 	}
 
 	static final public String WEBPAGE;
