@@ -74,6 +74,21 @@ public class RegistrationServiceTest {
 	}
 
 	@Test
+	public void phase1successParameter() {
+		ServerResponse response = regServ.registrationPhase1("Smaug");
+		assertEquals("Response", ServerResult.OK, response.getResult());
+		assertEquals("Value", null, response.getValue());
+	}
+
+	@Test
+	public void phase1failParameter() {
+		ServerResponse response = regServ.registrationPhase1("Doge");
+		assertEquals("Response", ServerResult.USERNAME_IN_USE,
+				response.getResult());
+		assertEquals("Value", null, response.getValue());
+	}
+
+	@Test
 	public void phase2SuccessNewProvince() {
 		// Setup
 		RegistrationDTO dto = new RegistrationDTO();
@@ -196,21 +211,21 @@ public class RegistrationServiceTest {
 		assertEquals("Unit size", Constants.PLAYER_START_UNITS, unit.getSize());
 
 	}
-	
+
 	/**
 	 * @author Sander Tiganik
 	 */
 	@Test
-	public void createPlayerTest2(){
+	public void createPlayerTest2() {
 		String username = "LollipopGuildMaster";
 		String email = "Willy@Wonka.gm";
 		double lat = 35.3605653;
 		double long1 = 138.7277694;
-		
+
 		Player player = regServ.createPlayer(username, email, lat, long1);
 		lat = player.getHome().getProvince().getLatitude();
 		long1 = player.getHome().getProvince().getLongitude();
-		
+
 		assertEquals("Latitude", 35.3605, lat, 0.0001);
 		assertEquals("Longitude", 138.727, long1, 0.0005);
 	}

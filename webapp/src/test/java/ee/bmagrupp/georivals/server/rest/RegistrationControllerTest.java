@@ -3,7 +3,7 @@ package ee.bmagrupp.georivals.server.rest;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.Before;
@@ -99,6 +99,36 @@ public class RegistrationControllerTest {
 				post("/registration/phase1").content(reg1.toJson())
 						.contentType(MediaType.APPLICATION_JSON)
 						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.value", is((Object) null)))
+				.andExpect(
+						jsonPath("$.result",
+								is(ServerResult.USERNAME_IN_USE.toString())))
+				.andExpect(jsonPath("$.id", is(0)));
+	}
+
+	@Test
+	public void phase1successParameter() throws Exception {
+
+		when(authServ.registrationPhase1("Smaug")).thenReturn(goodResponse);
+
+		mockMvc.perform(
+				get("/registration/phase1").param("userName", "Smaug").accept(
+						MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.value", is((Object) null)))
+				.andExpect(jsonPath("$.result", is(ServerResult.OK.toString())))
+				.andExpect(jsonPath("$.id", is(0)));
+	}
+
+	@Test
+	public void phase1UserExistsParameter() throws Exception {
+
+		when(authServ.registrationPhase1("Smaug")).thenReturn(userNameInUse);
+
+		mockMvc.perform(
+				get("/registration/phase1").param("userName", "Smaug").accept(
+						MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.value", is((Object) null)))
 				.andExpect(

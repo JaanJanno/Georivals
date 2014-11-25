@@ -21,8 +21,8 @@ public interface RegistrationService {
 	 * Checks if a player with this username is present in the database.<br>
 	 * {@link ServerResponse} with result {@link ServerResult} OK if this
 	 * username is available. <br>
-	 * If this username exists in the database, a {@link ServerResponse}
-	 * with {@link ServerResult} USERNAME_IN_USE is sent.
+	 * If this username exists in the database, a {@link ServerResponse} with
+	 * {@link ServerResult} USERNAME_IN_USE is sent.
 	 * 
 	 * @param dto
 	 *            {@link RegistrationDTO} with username that is not null.
@@ -31,14 +31,27 @@ public interface RegistrationService {
 	public ServerResponse registrationPhase1(RegistrationDTO dto);
 
 	/**
+	 * Checks if a player with this username is present in the database.<br>
+	 * {@link ServerResponse} with result {@link ServerResult} OK if this
+	 * username is available. <br>
+	 * If this username exists in the database, a {@link ServerResponse} with
+	 * {@link ServerResult} USERNAME_IN_USE is sent.
+	 * 
+	 * @param userName
+	 *            userName to check
+	 * @return {@link ServerResponse}
+	 */
+	public ServerResponse registrationPhase1(String userName);
+
+	/**
 	 * Inserts the user specified by the {@link RegistrationDTO} into the
 	 * database. The home province is set to the province specified by the
 	 * latitude and longitude of the {@link RegistrationDTO}.<br>
-	 * {@link ServerResponse} with result {@link ServerResult} OK, if the
-	 * user has been saved. value will be the player's sid and id will be the
-	 * players id.<br>
-	 * If this username exists in the database, a {@link ServerResponse}
-	 * with {@link ServerResult} USERNAME_IN_USE is sent.
+	 * {@link ServerResponse} with result {@link ServerResult} OK, if the user
+	 * has been saved. value will be the player's sid and id will be the players
+	 * id.<br>
+	 * If this username exists in the database, a {@link ServerResponse} with
+	 * {@link ServerResult} USERNAME_IN_USE is sent.
 	 * 
 	 * @param dto
 	 *            {@link RegistrationDTO} with username, latitude and longitude

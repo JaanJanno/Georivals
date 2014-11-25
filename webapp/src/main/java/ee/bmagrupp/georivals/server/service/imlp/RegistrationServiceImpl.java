@@ -35,13 +35,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	@Override
 	public ServerResponse registrationPhase1(RegistrationDTO dto) {
-		Player player = playerRepo.findByUserName(dto.getUserName());
-		if (player == null) {
-			return new ServerResponse(ServerResult.OK);
-		} else {
-			return new ServerResponse(ServerResult.USERNAME_IN_USE);
-		}
+		return checkUserName(dto.getUserName());
 
+	}
+
+	@Override
+	public ServerResponse registrationPhase1(String userName) {
+		return checkUserName(userName);
 	}
 
 	@Override
@@ -78,6 +78,15 @@ public class RegistrationServiceImpl implements RegistrationService {
 		homeRepo.save(player.getHome());
 		playerRepo.save(player);
 		return player;
+	}
+
+	private ServerResponse checkUserName(String userName) {
+		Player player = playerRepo.findByUserName(userName);
+		if (player == null) {
+			return new ServerResponse(ServerResult.OK);
+		} else {
+			return new ServerResponse(ServerResult.USERNAME_IN_USE);
+		}
 	}
 
 }

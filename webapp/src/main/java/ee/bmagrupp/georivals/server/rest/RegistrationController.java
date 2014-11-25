@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.georivals.server.rest.domain.RegistrationDTO;
@@ -25,12 +26,22 @@ public class RegistrationController {
 	@Autowired
 	RegistrationService reghServ;
 
+	@Deprecated
 	@RequestMapping(method = RequestMethod.POST, value = "/phase1")
 	public ResponseEntity<ServerResponse> registrationPhase1(
 			@RequestBody RegistrationDTO registration) {
 		LOG.info("Registration phase 1" + registration.toJson());
 		ServerResponse response = reghServ
 				.registrationPhase1(registration);
+		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/phase1")
+	public ResponseEntity<ServerResponse> registrationPhase1(
+			@RequestParam String userName) {
+		LOG.info("Registration phase 1" +userName);
+		ServerResponse response = reghServ
+				.registrationPhase1(userName);
 		return new ResponseEntity<ServerResponse>(response, HttpStatus.OK);
 	}
 

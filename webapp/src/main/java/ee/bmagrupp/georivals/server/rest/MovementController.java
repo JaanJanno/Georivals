@@ -45,6 +45,7 @@ public class MovementController {
 
 	}
 
+	@Deprecated
 	@RequestMapping(method = RequestMethod.GET, value = "/myunits")
 	public ResponseEntity<List<MovementSelectionViewDTO>> getMyUnits(
 			@CookieValue(value = "sid") String cookie) {
