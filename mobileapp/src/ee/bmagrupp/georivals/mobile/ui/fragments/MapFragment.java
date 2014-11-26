@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -231,7 +232,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			ProvinceDTO province = provinceList.get(i);
 			ProvinceDTO drawnProvince = findDrawnProvince(province);
 			if (!provincesEqual(province, drawnProvince)) {
-				RelativeLayout provinceLayout;
+				LinearLayout provinceLayout;
 				if (province.getType() != ProvinceType.PLAYER
 						&& province.getType() != ProvinceType.HOME
 						&& (province.isUnderAttack() || !province
@@ -342,8 +343,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * @return The layout of a 'locked' and 'under attack' province tile.
 	 */
 
-	private RelativeLayout getSpecialProvinceLayout(ProvinceDTO province) {
-		RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater.from(
+	private LinearLayout getSpecialProvinceLayout(ProvinceDTO province) {
+		LinearLayout provinceLayout = (LinearLayout) LayoutInflater.from(
 				activity).inflate(R.layout.province_tile_special, null);
 		ImageView specialIcon = (ImageView) provinceLayout
 				.findViewById(R.id.province_special_icon);
@@ -370,24 +371,29 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * @return The layout of a normal province tile.
 	 */
 
-	private RelativeLayout getNormalProvinceLayout(ProvinceDTO province) {
-		RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater.from(
+	private LinearLayout getNormalProvinceLayout(ProvinceDTO province) {
+		LinearLayout provinceLayout = (LinearLayout) LayoutInflater.from(
 				activity).inflate(R.layout.province_tile_normal, null);
 		TextView provinceName = (TextView) provinceLayout
-				.findViewById(R.id.province_name);
+				.findViewById(R.id.province_name_text);
+		provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
 		int provinceColor;
 		if (province.getType() == ProvinceType.BOT) {
-			provinceName.setVisibility(View.INVISIBLE);
+			provinceName.setText("BOT");
 			provinceColor = resources.getColor(R.color.brown_transparent);
+			hideHomeIcon(provinceLayout);
 		} else {
 			provinceName.setText(province.getProvinceName());
-			provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
 			if (province.getType() == ProvinceType.HOME
 					|| province.getType() == ProvinceType.PLAYER) {
+				if (province.getType() == ProvinceType.PLAYER)
+					hideHomeIcon(provinceLayout);
 				provinceColor = resources.getColor(R.color.green_transparent);
-			} else
+			} else {
 				provinceColor = resources
 						.getColor(R.color.dark_brown_transparent);
+				hideHomeIcon(provinceLayout);
+			}
 		}
 
 		GradientDrawable provinceBackground = new GradientDrawable();
@@ -400,6 +406,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		return provinceLayout;
 	}
 
+	private void hideHomeIcon(LinearLayout provinceLayout) {
+		ImageView homeIcon = (ImageView) provinceLayout
+				.findViewById(R.id.province_home_icon);
+		homeIcon.setVisibility(View.GONE);
+	}
+
 	/**
 	 * Sets the unit count view of the province.
 	 * 
@@ -407,18 +419,19 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * @param unitCount
 	 */
 
-	private void setProvinceUnitCount(RelativeLayout provinceLayout,
-			int unitCount) {
+	private void setProvinceUnitCount(LinearLayout provinceLayout, int unitCount) {
 		TextView unitCountTextView = (TextView) provinceLayout
-				.findViewById(R.id.province_unit_count);
+				.findViewById(R.id.province_unit_count_text);
 		unitCountTextView.setText(String.valueOf(unitCount));
 		unitCountTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		RelativeLayout unitCountLayout = (RelativeLayout) provinceLayout
+				.findViewById(R.id.province_unit_count);
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) unitCountLayout
+				.getLayoutParams();
 		params.topMargin = (int) Math
 				.abs(2.5 * map.getCameraPosition().target.latitude);
-		unitCountTextView.setLayoutParams(params);
+		unitCountLayout.setLayoutParams(params);
 	}
 
 	/**
@@ -434,7 +447,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-		view.buildDrawingCache();
 		return view.getDrawingCache();
 	}
 

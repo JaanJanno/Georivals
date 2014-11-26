@@ -50,13 +50,13 @@ public class BattleServicImpl implements BattleService {
 			}
 			if (requestMaker.getId() == h.getAttacker().getId()) {
 				if (attackerWon) {
-					rtrn.add(new BattleHistoryDTO(h.getId(), provinceName, h
+					rtrn.add(0, new BattleHistoryDTO(h.getId(), provinceName, h
 							.getDefender().getUserName(), h
 							.getAttackerStrength(), h.getDefenderStrength(), h
 							.getAttackerLosses(), h.getDefenderLosses(),
 							BattleType.ATTACK_PLAYER_WON));
 				} else {
-					rtrn.add(new BattleHistoryDTO(h.getId(), provinceName, h
+					rtrn.add(0, new BattleHistoryDTO(h.getId(), provinceName, h
 							.getDefender().getUserName(), h
 							.getAttackerStrength(), h.getDefenderStrength(), h
 							.getAttackerLosses(), h.getDefenderLosses(),
@@ -64,13 +64,13 @@ public class BattleServicImpl implements BattleService {
 				}
 			} else {
 				if (attackerWon) {
-					rtrn.add(new BattleHistoryDTO(h.getId(), provinceName, h
+					rtrn.add(0, new BattleHistoryDTO(h.getId(), provinceName, h
 							.getAttacker().getUserName(), h
 							.getDefenderStrength(), h.getAttackerStrength(), h
 							.getDefenderLosses(), h.getAttackerLosses(),
 							BattleType.DEFENCE_PLAYER_LOST));
 				} else {
-					rtrn.add(new BattleHistoryDTO(h.getId(), provinceName, h
+					rtrn.add(0, new BattleHistoryDTO(h.getId(), provinceName, h
 							.getAttacker().getUserName(), h
 							.getDefenderStrength(), h.getAttackerStrength(), h
 							.getDefenderLosses(), h.getAttackerLosses(),
