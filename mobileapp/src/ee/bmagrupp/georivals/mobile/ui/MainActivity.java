@@ -74,6 +74,7 @@ public class MainActivity extends Activity {
 	public static int userId;
 	public static String sid = "";
 	public static boolean choosingHomeProvince;
+	private static boolean locationServiceEnabled = false;
 
 	// non-static mutable variables
 	private Fragment currentFragment;
@@ -103,7 +104,7 @@ public class MainActivity extends Activity {
 	 */
 
 	public boolean isLocationServiceEnabled() {
-		return sharedPref.getBoolean("locationServiceEnabled", false);
+		return locationServiceEnabled;
 	}
 
 	/**
@@ -115,9 +116,7 @@ public class MainActivity extends Activity {
 	 */
 
 	public void setLocationServiceEnabled(boolean locationServiceEnabled) {
-		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putBoolean("locationServiceEnabled", locationServiceEnabled);
-		editor.commit();
+		MainActivity.locationServiceEnabled = locationServiceEnabled;
 		setLocationService();
 	}
 
