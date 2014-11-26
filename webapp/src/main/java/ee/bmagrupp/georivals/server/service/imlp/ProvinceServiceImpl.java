@@ -121,8 +121,6 @@ public class ProvinceServiceImpl implements ProvinceService {
 			ownerRepo.delete(temp);
 		}
 		home.setProvince(newHome);
-		home.setProvinceName(GeneratorUtil.generateString(PROVINCE_NAME_LENGTH,
-				lat, long1));
 		homeRepo.save(home);
 
 		ServerResponse resp = new ServerResponse(ServerResult.OK);

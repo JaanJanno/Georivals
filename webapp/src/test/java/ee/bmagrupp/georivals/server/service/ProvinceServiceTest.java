@@ -94,6 +94,7 @@ public class ProvinceServiceTest {
 
 	@Test
 	public void testChangeHome() {
+		String name = playerRepo.findBySid(sid).getHome().getProvinceName();
 		ServerResponse resp = provServ.changeHomeProvince("127.54690235",
 				"45.598325", sid);
 		assertEquals(ServerResult.OK, resp.getResult());
@@ -101,6 +102,7 @@ public class ProvinceServiceTest {
 		HomeOwnership temp = playerRepo.findBySid(sid).getHome();
 		assertEquals(127.5465, temp.getProvince().getLatitude(), 0.0001);
 		assertEquals(45.599, temp.getProvince().getLongitude(), 0.001);
+		assertEquals("names have to persist", name,temp.getProvinceName());
 	}
 
 	@Test
