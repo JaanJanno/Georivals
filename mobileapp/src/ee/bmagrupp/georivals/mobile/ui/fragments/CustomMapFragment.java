@@ -28,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlay;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
+import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
@@ -46,8 +48,7 @@ import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 
 @SuppressLint("InflateParams")
 @SuppressWarnings("deprecation")
-public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements TabItem {
+public class CustomMapFragment extends MapFragment implements TabItem {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private Resources resources;
@@ -58,9 +59,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	// non-static mutable variables
 	private GoogleMap map;
-	private LatLng lastLatLng = new LatLng(59.437046, 24.753742);
-	private float lastZoom = 17;
-	private Location playerLocation;
+	private LatLng lastCameraLatLng = new LatLng(59.437046, 24.753742);
+	private float lastCameraZoom = 17;
 	private ArrayList<ProvinceDTO> drawnProvincesList = new ArrayList<ProvinceDTO>();
 	private List<ProvinceDTO> provinceList;
 
@@ -86,8 +86,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private void initializeMap() {
 		map = this.getMap();
 		if (map != null) {
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng,
-					lastZoom));
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastCameraLatLng,
+					lastCameraZoom));
 			map.setMyLocationEnabled(true);
 			map.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
 				@Override
@@ -131,7 +131,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		setHomeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (playerLocation != null) {
+				Location playerLocation = LocationChangeUIHandler
+						.getLastPlayerLocation();
+				long lastLocationUpdateTime = LocationChangeUIHandler
+						.getLastLocationUpdateTime();
+				int minTimeSinceLocationUpdate = 60 * 1000; // one minute
+				if (playerLocation != null
+						&& lastLocationUpdateTime + minTimeSinceLocationUpdate > System
+								.currentTimeMillis()) {
 					MainActivity.REGISTRATION_FRAGMENT
 							.showPhase2ConfirmationDialog(new LatLng(
 									playerLocation.getLatitude(),
@@ -146,8 +153,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	@Override
 	public void onDestroyView() {
-		lastLatLng = map.getCameraPosition().target;
-		lastZoom = map.getCameraPosition().zoom;
+		lastCameraLatLng = map.getCameraPosition().target;
+		lastCameraZoom = map.getCameraPosition().zoom;
 		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
@@ -456,7 +463,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 */
 
 	public LatLng getLastCameraLatLng() {
-		return lastLatLng;
+		return lastCameraLatLng;
 	}
 
 	/**
@@ -464,7 +471,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 */
 
 	public float getLastCameraZoom() {
-		return lastZoom;
+		return lastCameraZoom;
 	}
 
 	@Override

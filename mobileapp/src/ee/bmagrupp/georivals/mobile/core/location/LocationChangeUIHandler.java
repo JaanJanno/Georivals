@@ -21,6 +21,8 @@ import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 public class LocationChangeUIHandler extends LocationChangeHandler implements
 		LocationListener {
 
+	private static Location lastPlayerLocation;
+	private static long lastLocationUpdateTime;
 	private Activity activity;
 
 	/**
@@ -40,6 +42,9 @@ public class LocationChangeUIHandler extends LocationChangeHandler implements
 
 	@Override
 	public void onLocationChanged(Location location) {
+		setLastPlayerLocation(location);
+		setLastLocationUpdateTime(System.currentTimeMillis());
+
 		final double longitude = location.getLongitude();
 		final double latitude = location.getLatitude();
 
@@ -69,6 +74,22 @@ public class LocationChangeUIHandler extends LocationChangeHandler implements
 
 	private void updateMap() {
 		MainActivity.MAP_FRAGMENT.refreshMap();
+	}
+
+	private static void setLastPlayerLocation(Location location) {
+		lastPlayerLocation = location;
+	}
+
+	private static void setLastLocationUpdateTime(long time) {
+		lastLocationUpdateTime = time;
+	}
+
+	public static Location getLastPlayerLocation() {
+		return lastPlayerLocation;
+	}
+
+	public static long getLastLocationUpdateTime() {
+		return lastLocationUpdateTime;
 	}
 
 }

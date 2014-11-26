@@ -28,7 +28,7 @@ import ee.bmagrupp.georivals.mobile.ui.adapters.MovementSelectionAdapter;
 
 public class MovementSelectionFragment extends Fragment {
 	// non-static immutable variables (local constants)
-	private static MainActivity activity;
+	private MainActivity activity;
 	private LinearLayout movementSelectionLayout;
 
 	// non-static mutable variables
