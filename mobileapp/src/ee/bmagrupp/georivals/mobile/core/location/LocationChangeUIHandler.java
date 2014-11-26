@@ -9,7 +9,6 @@ import ee.bmagrupp.georivals.mobile.core.communications.loaders.units.UnitClaimU
 import ee.bmagrupp.georivals.mobile.models.ServerResponse;
 import ee.bmagrupp.georivals.mobile.models.ServerResult;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
 
 /**
  * Class for handling the movement of the player. Claims the players units when
@@ -69,7 +68,7 @@ public class LocationChangeUIHandler extends LocationChangeHandler implements
 	 */
 
 	private void updateMap() {
-		MapFragment.callMapRefresh();
+		MainActivity.MAP_FRAGMENT.refreshMap();
 	}
 
 }

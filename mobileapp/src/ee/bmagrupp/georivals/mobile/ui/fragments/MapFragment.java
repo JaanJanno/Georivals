@@ -56,9 +56,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private final double provinceLatitudeRadius = 0.0005;
 	private final double provinceLongitudeRadius = 0.001;
 
-	// static mutable variables
-	private static MapFragment instance;
-
 	// non-static mutable variables
 	private GoogleMap map;
 	private LatLng lastLatLng = new LatLng(59.437046, 24.753742);
@@ -158,22 +155,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	@Override
 	public void onStart() {
 		super.onStart();
-		instance = this;
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		instance = null;
-	}
-
-	/**
-	 * Calls for a map refresh when a MapFragment is open.
-	 */
-
-	public static void callMapRefresh() {
-		if (instance != null)
-			instance.refreshMap();
 	}
 
 	/**
@@ -181,7 +167,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * old ones cleared.
 	 */
 
-	private void refreshMap() {
+	public void refreshMap() {
 		if (map.getCameraPosition().zoom > 15)
 			requestProvinceListData();
 		else if (drawnProvincesList.size() > 0) {
