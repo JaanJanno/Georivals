@@ -100,17 +100,20 @@ public class MovementServiceImpl implements MovementService {
 		double longitude = CalculationUtil.normalizeLongitude(lon);
 		Player player = playerRepo.findBySid(cookie);
 		List<MovementSelectionViewDTO> movements = new ArrayList<>();
+		boolean isThisProvince = false;
 		for (Ownership o : player.getOwnedProvinces()) {
-			if ((o.getProvince().getLatitude() != latitude)
-					&& (o.getProvince().getLongitude() != longitude)) {
+			isThisProvince = (o.getProvince().getLatitude() == latitude)
+					&& (o.getProvince().getLongitude() == longitude);
+			if (!isThisProvince) {
 				for (Unit unit : o.getUnits()) {
 					movements.add(new MovementSelectionViewDTO(o
 							.getProvinceName(), unit.getId(), unit.getSize()));
 				}
 			}
 		}
-		if ((player.getHome().getProvince().getLatitude() != latitude)
-				&& (player.getHome().getProvince().getLongitude() != longitude)) {
+		isThisProvince = (player.getHome().getProvince().getLatitude() == latitude)
+				&& (player.getHome().getProvince().getLongitude() == longitude);
+		if (!isThisProvince) {
 			for (Unit unit : player.getHome().getUnits()) {
 				movements.add(new MovementSelectionViewDTO(player.getHome()
 						.getProvinceName(), unit.getId(), unit.getSize(),
@@ -147,13 +150,12 @@ public class MovementServiceImpl implements MovementService {
 			movList.add(createMovement(destination, dto, player));
 		}
 		Date maximum = movList.get(0).getEndDate();
-		for(Movement mov : movList){
-			if(mov.getEndDate().getTime() > maximum.getTime()){
+		for (Movement mov : movList) {
+			if (mov.getEndDate().getTime() > maximum.getTime()) {
 				maximum = mov.getEndDate();
 			}
 		}
-		return new BeginMovementResponse(maximum,
-				ServerResult.OK);
+		return new BeginMovementResponse(maximum, ServerResult.OK);
 	}
 
 	@Override
