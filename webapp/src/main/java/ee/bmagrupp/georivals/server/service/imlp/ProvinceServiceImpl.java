@@ -112,13 +112,17 @@ public class ProvinceServiceImpl implements ProvinceService {
 		if (newHome == null) {
 			newHome = new Province(lat, long1);
 			provRepo.save(newHome);
-		} else if (playerRepo.findOwnerOfProvince(newHome.getId()).getId() == player
-				.getId()) {
-			Ownership temp = ownerRepo.findByProvinceId(newHome.getId());
-			home = mergeUnits(home, temp);
-			// Remove ownership from player
-			player.getOwnedProvinces().remove(temp);
-			ownerRepo.delete(temp);
+		} else{
+			Player tempPlayer = playerRepo.findOwnerOfProvince(newHome.getId());
+			if(tempPlayer != null && tempPlayer.getId() == player.getId()){
+				Ownership temp = ownerRepo.findByProvinceId(newHome.getId());
+				if(temp != null){
+					home = mergeUnits(home, temp);
+					// Remove ownership from player
+					player.getOwnedProvinces().remove(temp);
+					ownerRepo.delete(temp);
+				}
+			}
 		}
 		home.setProvince(newHome);
 		homeRepo.save(home);
