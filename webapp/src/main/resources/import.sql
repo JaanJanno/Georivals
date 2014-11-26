@@ -66,3 +66,4 @@ INSERT INTO player_owned_provinces VALUES (4, 5);
 INSERT INTO player_owned_provinces VALUES (5, 6);
 
 INSERT INTO battle_history VALUES (1, 11, 21, true, '2014-10-18 13:49:28.243', 9, 9, 1, 2, 6);
+INSERT INTO battle_history VALUES (2, 3, 7, false, '2014-10-19 13:49:28.243', 5, 5, 2, 1, 6);

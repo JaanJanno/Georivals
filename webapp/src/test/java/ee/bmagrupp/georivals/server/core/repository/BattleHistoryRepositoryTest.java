@@ -1,8 +1,8 @@
-package ee.bmagrupp.georivals.server.service;
-
-import java.util.List;
+package ee.bmagrupp.georivals.server.core.repository;
 
 import static org.junit.Assert.*;
+
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -18,37 +18,32 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import ee.bmagrupp.georivals.server.Application;
-import ee.bmagrupp.georivals.server.rest.domain.BattleHistoryDTO;
-import ee.bmagrupp.georivals.server.rest.domain.BattleType;
+import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
 
 /**
- * Tests for {@link BattleService}
+ * Tests for {@link BattleHistoryRepository}
  * 
  * @author TKasekamp
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles("test")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		TransactionalTestExecutionListener.class })
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
-public class BattleServiceTest {
+public class BattleHistoryRepositoryTest {
 
 	@Autowired
-	BattleService battleServ;
+	BattleHistoryRepository batHistRepo;
 
 	@Test
-	public void getMyBattlesTest() {
-		List<BattleHistoryDTO> lst = battleServ.getBattles("BPUYYOU62flwiWJe");
-		assertEquals("Expected 2 battle history", 2, lst.size());
-		// First battle
-		assertEquals("TK won", BattleType.ATTACK_PLAYER_WON, lst.get(1)
-				.getType());
-		// Second defence battle
-		assertEquals("TK won", BattleType.DEFENCE_PLAYER_WON, lst.get(0)
-				.getType());
+	public void sortByDateTest() {
+		List<BattleHistory> battles = batHistRepo
+				.findBySidSortByDate("BPUYYOU62flwiWJe");
+		assertEquals("2 battles", 2, battles.size());
+		assertTrue("Newer battle should be first", battles.get(0).getDate()
+				.after(battles.get(1).getDate()));
 	}
-
 }
