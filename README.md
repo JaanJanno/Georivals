@@ -84,7 +84,7 @@ Siinkohal on soovitatud kasutada füüsilist seadet, sest Genymotioni emulaatori
 2. Lülita USB debugging telefonis sisse, kui see pole juba sisse lülitatud. (http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909)
 3. Ava mobileapp-test alamprojektis asuva MainTest faili ja vajuta Run > Run as.. > Android JUnit Test
 
-##### Genymotioni emulaatori installiminem, seadistamine ja selles testide jooksutamine
+##### Genymotioni emulaatori installimine, seadistamine ja selles testide jooksutamine
 1. Tõmmake ja installige sobiv Genymotioni versioon siit lehelt: https://cloud.genymotion.com/page/launchpad/download/ <br>
 Kui Teil pole VirtualBox juba installitud, on soovitatud valida see versioon, mis on koos VirtualBoxiga.
 2. Tõmmake ja installige sobiva kompilaatori plugin eelnevalt antud lehelt.
@@ -96,5 +96,5 @@ NB! Juhise seitsmendast sammust alates on normaalne, et Google Play Services emu
 6. Testide jooksutamiseks ava mobileapp-test alamprojektis asuva MainTest faili ja vajuta Run > Run as.. > Android JUnit Test
 
 ## In English
-'Vallutajad' is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be the ruler of the provinces and have enough soldiers, you need to visit the regions regularly.
+Georivals is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be the ruler of the provinces and have enough soldiers, you need to visit the regions regularly.
 
