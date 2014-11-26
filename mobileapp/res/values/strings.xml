@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Georivals</string>
-    <string name="attack">Attack</string>
+    <string name="attack">"Attack "</string>
     <string name="battle_history">Battle history</string>
     <string name="cancel">Cancel</string>
     <string name="choose_name">Choose you name:</string>
@@ -61,9 +61,9 @@
     <string name="units_arrive">Units will arrive at</string>
     <string name="units_send">Send units</string>
     <string name="units_sort">Sort units</string>
-    <string name="units_total">Total units:</string>
+    <string name="units_total">"Total units: "</string>
     <string name="units_transfer">Transfer units</string>
-    <string name="units_transfer_to">Transfer units to</string>
+    <string name="units_transfer_to">"Transfer units to "</string>
     <string name="user_created">User created!</string>
     <string name="username">Username</string>
     <string name="warning">Warning!</string>
@@ -94,6 +94,10 @@
     <string name="units_total_number">"Total number of units: "</string>
     <string name="units_average">"Average number of units: "</string>
     <string name="provinces_owned">"Number of provinces owned: "</string>
+    <string name="run_in_background">Run Georivals in the background</string>
+    <string name="service_disabled">Background service disabled!</string>
+    <string name="service_enabled">Background service enabled!</string>
+
     <!-- Province view strings -->
     <string name="province_name">"Province name: "</string>
     <string name="owner_name">"Owner name: "</string>

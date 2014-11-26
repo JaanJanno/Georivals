@@ -108,14 +108,12 @@ public class MovementSelectionFragment extends Fragment {
 		TextView titleTextView = (TextView) movementSelectionLayout
 				.findViewById(R.id.movement_selection_title_header);
 		if (movementType == MovementType.ATTACK) {
-			maxUnitCount = 100;
-			titleTextView.setText(activity.getString(R.string.attack) + " "
+			titleTextView.setText(activity.getString(R.string.attack)
 					+ ProvinceFragment.province.getProvinceName());
 		} else {
 			maxUnitCount = 100 - ProvinceFragment.province.getUnitSize();
 			titleTextView.setText(activity
 					.getString(R.string.units_transfer_to)
-					+ " "
 					+ ProvinceFragment.province.getProvinceName());
 		}
 	}
@@ -236,8 +234,12 @@ public class MovementSelectionFragment extends Fragment {
 		totalUnitCount += change;
 		TextView unitCount = (TextView) movementSelectionLayout
 				.findViewById(R.id.movement_selection_unit_count);
-		unitCount.setText(activity.getString(R.string.units_total) + " "
-				+ totalUnitCount + "/" + maxUnitCount);
+		if (movementType == MovementType.ATTACK)
+			unitCount.setText(activity.getString(R.string.units_total)
+					+ totalUnitCount);
+		else
+			unitCount.setText(activity.getString(R.string.units_total)
+					+ totalUnitCount + "/" + maxUnitCount);
 	}
 
 	/**

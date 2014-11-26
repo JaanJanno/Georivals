@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ee.bmagrupp.georivals.mobile.R;
@@ -98,6 +100,35 @@ public class ProfileFragment extends Fragment implements TabItem {
 				+ "\n" + activity.getString(R.string.provinces_owned)
 				+ ownedProvinces);
 
+		setRunInBackgroundCheckBox();
+	}
+
+	/**
+	 * Sets up the "Run Georivals in the background" checkbox, including its
+	 * listener.
+	 */
+
+	private void setRunInBackgroundCheckBox() {
+		CheckBox runInBackground = (CheckBox) profileLayout
+				.findViewById(R.id.setting_run_in_background);
+		runInBackground.setChecked(activity.isLocationServiceEnabled());
+
+		runInBackground
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						boolean locationServiceEnabled = activity
+								.isLocationServiceEnabled();
+						activity.setLocationServiceEnabled(!locationServiceEnabled);
+						if (locationServiceEnabled)
+							activity.showToastMessage(activity
+									.getString(R.string.service_disabled));
+						else
+							activity.showToastMessage(activity
+									.getString(R.string.service_enabled));
+					}
+				});
 	}
 
 	/**

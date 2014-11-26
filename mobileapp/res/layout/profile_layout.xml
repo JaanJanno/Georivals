@@ -35,7 +35,16 @@
     <TextView
         android:id="@+id/profile_strategical_info"
         style="@style/TextStyle"
+        android:layout_height="0dp"
         android:layout_marginLeft="@dimen/margin_medium1"
-        android:layout_marginStart="@dimen/margin_medium1" />
+        android:layout_marginStart="@dimen/margin_medium1"
+        android:layout_weight="1" />
+
+    <CheckBox
+        android:id="@+id/setting_run_in_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/checkbox_selector"
+        android:text="@string/run_in_background" />
 
 </LinearLayout>

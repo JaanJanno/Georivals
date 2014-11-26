@@ -46,7 +46,7 @@ public class MovementOverviewAdapter extends BaseExpandableListAdapter {
 			movementInfo.setText(context.getString(R.string.movement_info_a1)
 					+ movement.getDestinationName()
 					+ context.getString(R.string.movement_info_a2)
-					+ movement.getUnitSize() + " "
+					+ movement.getUnitSize()
 					+ context.getString(R.string.movement_info_a3) + "\n"
 					+ context.getString(R.string.movement_info_arrival)
 					+ changeDateFormat(movement.getEndDate()));

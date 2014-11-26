@@ -68,12 +68,12 @@ public class MainActivity extends Activity {
 			MY_PROVINCES_FRAGMENT };
 	private final MainActivity activity = this;
 	private ActionBar actionBar;
+	private SharedPreferences sharedPref;
 
 	// static mutable variables
 	public static int userId;
 	public static String sid = "";
 	public static boolean choosingHomeProvince;
-	private static boolean locationServiceEnabled = false;
 
 	// non-static mutable variables
 	private Fragment currentFragment;
@@ -86,6 +86,7 @@ public class MainActivity extends Activity {
 		GABRIOLA_FONT = Typeface.createFromAsset(getAssets(),
 				"fonts/Gabriola.ttf");
 		actionBar = getActionBar();
+		sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		createTabs();
 		addTabRibbon();
 		hideViews();
@@ -101,8 +102,8 @@ public class MainActivity extends Activity {
 	 *         background.
 	 */
 
-	public static boolean isLocationServiceEnabled() {
-		return locationServiceEnabled;
+	public boolean isLocationServiceEnabled() {
+		return sharedPref.getBoolean("locationServiceEnabled", false);
 	}
 
 	/**
@@ -114,7 +115,9 @@ public class MainActivity extends Activity {
 	 */
 
 	public void setLocationServiceEnabled(boolean locationServiceEnabled) {
-		MainActivity.locationServiceEnabled = locationServiceEnabled;
+		SharedPreferences.Editor editor = sharedPref.edit();
+		editor.putBoolean("locationServiceEnabled", locationServiceEnabled);
+		editor.commit();
 		setLocationService();
 	}
 
@@ -211,8 +214,6 @@ public class MainActivity extends Activity {
 	 */
 
 	public void setUserData(String sid, int userId) {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putString("sid", sid);
 		editor.putInt("userId", userId);
@@ -226,8 +227,6 @@ public class MainActivity extends Activity {
 	 */
 
 	public void updateUserInfo() {
-		SharedPreferences sharedPref = PreferenceManager
-				.getDefaultSharedPreferences(this);
 		userId = sharedPref.getInt("userId", 0);
 		sid = sharedPref.getString("sid", "");
 	}
@@ -242,6 +241,7 @@ public class MainActivity extends Activity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				cancelToastMessage();
 				toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
 				toast.show();
 			}

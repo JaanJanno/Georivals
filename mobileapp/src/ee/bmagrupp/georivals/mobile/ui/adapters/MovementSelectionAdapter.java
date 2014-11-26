@@ -14,6 +14,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
+import ee.bmagrupp.georivals.mobile.models.movement.MovementType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 @SuppressLint("InflateParams")
@@ -95,7 +96,8 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 						.getMaxUnitCount()
 						- MainActivity.MOVEMENT_SELECTION_FRAGMENT
 								.getTotalUnitCount();
-				if (progressChange >= maxChange) {
+				if (MainActivity.MOVEMENT_SELECTION_FRAGMENT.getMovementType() == MovementType.TRANSFER
+						&& progressChange >= maxChange) {
 					progressChange = maxChange;
 					progress = MainActivity.MOVEMENT_SELECTION_FRAGMENT
 							.getSelectedUnitCount(listItemPosition)
