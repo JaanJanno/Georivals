@@ -23,7 +23,6 @@ import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementDTO;
 import ee.bmagrupp.georivals.mobile.models.movement.BeginMovementResponse;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementType;
-import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 import ee.bmagrupp.georivals.mobile.ui.adapters.MovementSelectionAdapter;
 
@@ -199,29 +198,20 @@ public class MovementSelectionFragment extends Fragment {
 	 */
 
 	private void sortListEntries() {
-		if (movableUnitsList != null) {
-			Collections.sort(movableUnitsList,
-					new Comparator<MovementSelectionViewDTO>() {
-						@Override
-						public int compare(
-								final MovementSelectionViewDTO province1,
-								final MovementSelectionViewDTO province2) {
-							double unitSize1 = province1.getUnitSize();
-							double unitSize2 = province2.getUnitSize();
-							if (unitSize1 < unitSize2)
-								return 1;
-							else
-								return -1;
-						}
-					});
-			for (MovementSelectionViewDTO province : movableUnitsList) {
-				if (province.getType() == ProvinceType.HOME) {
-					movableUnitsList.remove(province);
-					movableUnitsList.add(0, province);
-					break;
-				}
-			}
-		}
+		Collections.sort(movableUnitsList,
+				new Comparator<MovementSelectionViewDTO>() {
+					@Override
+					public int compare(
+							final MovementSelectionViewDTO province1,
+							final MovementSelectionViewDTO province2) {
+						double unitSize1 = province1.getUnitSize();
+						double unitSize2 = province2.getUnitSize();
+						if (unitSize1 < unitSize2)
+							return 1;
+						else
+							return -1;
+					}
+				});
 	}
 
 	/**

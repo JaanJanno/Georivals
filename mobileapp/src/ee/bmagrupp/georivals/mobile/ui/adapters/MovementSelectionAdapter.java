@@ -15,6 +15,7 @@ import android.widget.TextView;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.mobile.models.movement.MovementType;
+import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
 import ee.bmagrupp.georivals.mobile.ui.MainActivity;
 
 @SuppressLint("InflateParams")
@@ -73,9 +74,13 @@ public class MovementSelectionAdapter extends BaseExpandableListAdapter {
 				.findViewById(R.id.movement_unit_slider);
 		unitSlider.setProgress(MainActivity.MOVEMENT_SELECTION_FRAGMENT
 				.getSelectedUnitCount(listItemPosition));
-		unitSlider.setMax(province.getUnitSize());
-		unitSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
+		if (province.getType() == ProvinceType.HOME)
+			unitSlider.setMax(province.getUnitSize());
+		else
+			unitSlider.setMax(province.getUnitSize() - 1);
+
+		unitSlider.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 

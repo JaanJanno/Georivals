@@ -104,7 +104,7 @@ public class MovementServiceImpl implements MovementService {
 		for (Ownership o : player.getOwnedProvinces()) {
 			isThisProvince = (o.getProvince().getLatitude() == latitude)
 					&& (o.getProvince().getLongitude() == longitude);
-			if (!isThisProvince) {
+			if (!isThisProvince && o.countUnits() > 1) {
 				for (Unit unit : o.getUnits()) {
 					movements.add(new MovementSelectionViewDTO(o
 							.getProvinceName(), unit.getId(), unit.getSize()));
