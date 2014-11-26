@@ -112,10 +112,12 @@ public class ProvinceServiceImpl implements ProvinceService {
 		if (newHome == null) {
 			newHome = new Province(lat, long1);
 			provRepo.save(newHome);
-		}
-		else if(playerRepo.findOwnerOfProvince(newHome.getId()).getId() == player.getId()){
+		} else if (playerRepo.findOwnerOfProvince(newHome.getId()).getId() == player
+				.getId()) {
 			Ownership temp = ownerRepo.findByProvinceId(newHome.getId());
 			home = mergeUnits(home, temp);
+			// Remove ownership from player
+			player.getOwnedProvinces().remove(temp);
 			ownerRepo.delete(temp);
 		}
 		home.setProvince(newHome);
@@ -128,10 +130,10 @@ public class ProvinceServiceImpl implements ProvinceService {
 	}
 
 	private HomeOwnership mergeUnits(HomeOwnership home, Ownership temp) {
-		for(Unit u : home.getUnits()){
-			if(u.getState() == UnitState.CLAIMED){
+		for (Unit u : home.getUnits()) {
+			if (u.getState() == UnitState.CLAIMED) {
 				u.increaseSize(temp.countUnits());
-				if(u.getSize() > 100){
+				if (u.getSize() > 100) {
 					u.setSize(100);
 				}
 			}
