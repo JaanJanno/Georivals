@@ -60,21 +60,26 @@ public class ProvinceServiceGeneratorTest {
 		fov2 = new CameraFOV(59.4146016, 24.7276848, 59.4194347, 24.7342740);
 		playerID = 1; // ID for Mr. TK
 	}
-	
+
 	@Test
-	public void homeProvinceTest(){
+	public void homeProvinceTest() {
 		Player player = playerRepo.findByUserName("Mr. TK");
-		double swlatitude = player.getHome().getProvince().getLatitude() - 3 * Constants.PROVINCE_HEIGHT;
-		double swlongitude = player.getHome().getProvince().getLongitude() - 3 * Constants.PROVINCE_WIDTH;
-		double nelatitude = player.getHome().getProvince().getLatitude() + 3 * Constants.PROVINCE_HEIGHT;
-		double nelongitude = player.getHome().getProvince().getLongitude() + 3 * Constants.PROVINCE_WIDTH;
+		double swlatitude = player.getHome().getProvince().getLatitude() - 3
+				* Constants.PROVINCE_HEIGHT;
+		double swlongitude = player.getHome().getProvince().getLongitude() - 3
+				* Constants.PROVINCE_WIDTH;
+		double nelatitude = player.getHome().getProvince().getLatitude() + 3
+				* Constants.PROVINCE_HEIGHT;
+		double nelongitude = player.getHome().getProvince().getLongitude() + 3
+				* Constants.PROVINCE_WIDTH;
 		String cookie = "BPUYYOU62flwiWJe";
-		CameraFOV fov = new CameraFOV(swlatitude, swlongitude, nelatitude, nelongitude);
+		CameraFOV fov = new CameraFOV(swlatitude, swlongitude, nelatitude,
+				nelongitude);
 		List<ProvinceDTO> lst = provServ.getProvinces(fov, cookie);
-		
+
 		boolean found = false;
-		for(ProvinceDTO p : lst){
-			if(p.getType() == ProvinceType.HOME){
+		for (ProvinceDTO p : lst) {
+			if (p.getType() == ProvinceType.HOME) {
 				found = true;
 				break;
 			}
@@ -91,6 +96,7 @@ public class ProvinceServiceGeneratorTest {
 		for (ProvinceDTO a : provList) {
 			assertEquals("Nobody should have any new units", 0,
 					a.getNewUnitSize());
+			assertTrue("All provinces attackable", a.isAttackable());
 		}
 	}
 

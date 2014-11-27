@@ -484,8 +484,14 @@ public class ProvinceServiceImpl implements ProvinceService {
 		} else {
 			// Province owned by somebody else
 			type = ProvinceType.OTHER_PLAYER;
-			int player2Strength = findPlayerStrength(player2);
-			isAttackable = GameLogic.canAttack(playerStrength, player2Strength);
+			// If no player then all provinces attackable
+			if (player != null) {
+				int player2Strength = findPlayerStrength(player2);
+				isAttackable = GameLogic.canAttack(playerStrength,
+						player2Strength);
+			} else {
+				isAttackable = true;
+			}
 		}
 
 		return new ProvinceDTO(prov.getLatitude(), prov.getLongitude(), type,
