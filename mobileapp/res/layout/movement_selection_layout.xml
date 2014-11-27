@@ -16,8 +16,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.70"
         android:divider="@color/dark_brown"
-        android:dividerHeight="1dp" >
-    </ExpandableListView>
+        android:dividerHeight="1dp" />
 
     <View style="@style/HeaderLineStyle" />
 

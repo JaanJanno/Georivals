@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:ignore="ContentDescription" >
 
     <TextView
         android:id="@+id/my_provinces_title_header"
@@ -18,7 +20,6 @@
         <ImageView
             android:id="@+id/province_rank_icon"
             style="@style/ListItem_ViewStyle"
-            android:contentDescription="@string/rank"
             android:src="@drawable/ic_rank" />
 
         <TextView
@@ -32,7 +33,6 @@
         <ImageButton
             android:id="@+id/my_provinces_unit_image"
             style="@style/ListItem_ViewStyle"
-            android:contentDescription="@null"
             android:src="@drawable/ic_unit" />
     </LinearLayout>
 

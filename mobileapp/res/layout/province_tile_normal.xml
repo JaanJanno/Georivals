@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5px" >
+    android:padding="5px"
+    tools:ignore="RtlHardcoded,PxUsage,ContentDescription" >
 
     <RelativeLayout
         android:id="@+id/province_name"
@@ -17,7 +19,6 @@
             android:layout_marginLeft="30px"
             android:layout_marginRight="30px"
             android:layout_marginTop="10px"
-            android:contentDescription="@null"
             android:src="@drawable/castle_name" />
 
         <TextView
@@ -35,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3px"
             android:layout_marginTop="3px"
-            android:contentDescription="@null"
             android:src="@drawable/castle_icon" />
     </RelativeLayout>
 
@@ -48,7 +48,6 @@
             android:id="@+id/province_unit_count_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@null"
             android:src="@drawable/units_count" />
 
         <TextView

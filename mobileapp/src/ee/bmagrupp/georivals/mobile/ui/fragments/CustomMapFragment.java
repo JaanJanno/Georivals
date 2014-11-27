@@ -48,7 +48,8 @@ import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 
 @SuppressLint("InflateParams")
 @SuppressWarnings("deprecation")
-public class CustomMapFragment extends MapFragment implements TabItem {
+public class CustomMapFragment extends MapFragment implements TabItem,
+		OnMyLocationButtonClickListener, OnCameraChangeListener {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private Resources resources;
@@ -89,29 +90,27 @@ public class CustomMapFragment extends MapFragment implements TabItem {
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastCameraLatLng,
 					lastCameraZoom));
 			map.setMyLocationEnabled(true);
-			map.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
-				@Override
-				public boolean onMyLocationButtonClick() {
-					LocationManager locationManager = (LocationManager) activity
-							.getSystemService(Context.LOCATION_SERVICE);
-					if (!locationManager
-							.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-						activity.showToastMessage("GPS is disabled!");
-					} else {
-						activity.showToastMessage("Waiting for location...");
-						return false;
-					}
-					return false;
-				}
-			});
+			map.setOnMyLocationButtonClickListener(this);
 			map.setOnMapClickListener(new MapClickListener(activity));
-			map.setOnCameraChangeListener(new OnCameraChangeListener() {
-				@Override
-				public void onCameraChange(CameraPosition position) {
-					refreshMap();
-				}
-			});
+			map.setOnCameraChangeListener(this);
 		}
+	}
+
+	@Override
+	public boolean onMyLocationButtonClick() {
+		LocationManager locationManager = (LocationManager) activity
+				.getSystemService(Context.LOCATION_SERVICE);
+		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			activity.showToastMessage("GPS is disabled!");
+		} else {
+			activity.showToastMessage("Waiting for location...");
+		}
+		return false;
+	}
+
+	@Override
+	public void onCameraChange(CameraPosition position) {
+		refreshMap();
 	}
 
 	/**
@@ -483,4 +482,5 @@ public class CustomMapFragment extends MapFragment implements TabItem {
 	public int getTabNameId() {
 		return tabNameId;
 	}
+
 }
