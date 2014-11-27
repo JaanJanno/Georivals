@@ -282,7 +282,7 @@ public class MainActivity extends Activity {
 		if (MAP_FRAGMENT.isVisible())
 			showExitConfirmationDialog();
 		else
-			changeFragment(MainActivity.MAP_FRAGMENT, getString(R.string.map));
+			setToMapTab();
 	}
 
 	/**

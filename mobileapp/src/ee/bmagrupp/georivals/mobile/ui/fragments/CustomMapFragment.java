@@ -370,15 +370,16 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 				.findViewById(R.id.province_name_text);
 		provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
 		int provinceColor;
-		if (province.getType() == ProvinceType.BOT) {
+		ProvinceType provinceType = province.getType();
+		if (provinceType == ProvinceType.BOT) {
 			provinceName.setText("BOT");
 			provinceColor = resources.getColor(R.color.brown_transparent);
 			hideHomeIcon(provinceLayout);
 		} else {
 			provinceName.setText(province.getProvinceName());
-			if (province.getType() == ProvinceType.HOME
-					|| province.getType() == ProvinceType.PLAYER) {
-				if (province.getType() == ProvinceType.PLAYER)
+			if (provinceType == ProvinceType.HOME
+					|| provinceType == ProvinceType.PLAYER) {
+				if (provinceType == ProvinceType.PLAYER)
 					hideHomeIcon(provinceLayout);
 				provinceColor = resources.getColor(R.color.green_transparent);
 			} else {

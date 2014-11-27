@@ -53,7 +53,8 @@ public class LocationChangeUIHandler extends LocationChangeHandler implements
 
 			@Override
 			public void handleResponseInUI(ServerResponse responseObject) {
-				if (responseObject.getResult() == ServerResult.OK)
+				if (responseObject != null
+						&& responseObject.getResult() == ServerResult.OK)
 					updateMap();
 			}
 
