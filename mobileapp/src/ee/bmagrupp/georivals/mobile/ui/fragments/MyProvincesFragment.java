@@ -27,7 +27,7 @@ public class MyProvincesFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private final int tabNameId = R.string.my_provinces;
-	private final int tabIconId = R.drawable.places_icon;
+	private final int tabIconId = R.drawable.globe_icon;
 
 	// non-static mutable variables
 	private List<ProvinceDTO> myProvincesList;

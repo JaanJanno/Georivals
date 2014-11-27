@@ -54,7 +54,7 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 	private MainActivity activity;
 	private Resources resources;
 	private final int tabNameId = R.string.map;
-	private final int tabIconId = R.drawable.places_icon;
+	private final int tabIconId = R.drawable.globe_icon;
 	private final double provinceLatitudeRadius = 0.0005;
 	private final double provinceLongitudeRadius = 0.001;
 

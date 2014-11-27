@@ -19,7 +19,8 @@
             android:layout_marginLeft="30px"
             android:layout_marginRight="30px"
             android:layout_marginTop="10px"
-            android:src="@drawable/castle_name" />
+            android:src="@drawable/castle_name"
+            android:layout_centerInParent="true" />
 
         <TextView
             android:id="@+id/province_name_text"
@@ -34,8 +35,7 @@
             android:id="@+id/province_home_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3px"
-            android:layout_marginTop="3px"
+            android:layout_marginTop="-4px"
             android:src="@drawable/castle_icon" />
     </RelativeLayout>
 

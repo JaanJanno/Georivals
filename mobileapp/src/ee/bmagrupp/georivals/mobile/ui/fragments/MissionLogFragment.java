@@ -25,7 +25,7 @@ public class MissionLogFragment extends Fragment implements TabItem {
 	private MainActivity activity;
 	private LinearLayout missionLogLayout;
 	private final int tabNameId = R.string.mission_log;
-	private final int tabIconId = R.drawable.log_icon;
+	private final int tabIconId = R.drawable.shield_icon;
 
 	private List<BattleHistoryDTO> battleHistoryList;
 	private List<MovementViewDTO> movementOverviewList;

@@ -4,7 +4,7 @@
     android:id="@+id/tab_item"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    tools:ignore="ContentDescription" >
+    tools:ignore="ContentDescription,RtlHardcoded" >
 
     <ImageView
         android:id="@+id/tab_item_icon"
@@ -15,8 +15,7 @@
         android:id="@+id/tab_item_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
+        android:layout_toRightOf="@+id/tab_item_icon"
         android:gravity="center"
         android:textColor="@color/brown"
         android:textSize="@dimen/text_medium" />
