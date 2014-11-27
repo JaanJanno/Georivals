@@ -269,7 +269,7 @@ public class ProvinceServiceTest {
 		assertEquals("Province unit size", 9, prov1.getUnitSize());
 		// assertEquals("Province new units", 0, prov1.getNewUnitSize());
 		assertEquals("Province owner name", "Mr. TK", prov1.getOwnerName());
-		assertEquals("Attackable", false, prov1.isAttackable());
+		assertEquals("Attackable", true, prov1.isAttackable());
 		assertEquals("Under attack", false, prov1.isUnderAttack());
 	}
 
