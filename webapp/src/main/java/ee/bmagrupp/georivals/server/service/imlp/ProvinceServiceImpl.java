@@ -78,12 +78,20 @@ public class ProvinceServiceImpl implements ProvinceService {
 
 	@Override
 	public List<ProvinceDTO> getMyProvinces(String cookie) {
-		Player player = playerRepo.findBySid(cookie);
-		Set<Ownership> provinces = player.getOwnedProvinces();
 		ArrayList<ProvinceDTO> list = new ArrayList<ProvinceDTO>();
+		Player player = playerRepo.findBySid(cookie);
+		if(player == null){
+			return list;
+		}
+		Set<Ownership> provinces = player.getOwnedProvinces();
 		HomeOwnership home = player.getHome();
-		Province homeProvince = home.getProvince();
-		list.add(createHomeProvince(homeProvince, player));
+		if(home != null){
+			Province homeProvince = home.getProvince();
+			list.add(createHomeProvince(homeProvince, player));
+		}
+		if(provinces == null){
+			return list;
+		}
 		for (Ownership a : provinces) {
 			Province temp = a.getProvince();
 			boolean underAttack = movementRepo.checkIfDestination(temp.getId());
