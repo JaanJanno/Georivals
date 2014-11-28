@@ -28,7 +28,7 @@
     <TextView
         android:id="@+id/profile_strategical_header"
         style="@style/HeaderStyle"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small2"
         android:text="@string/strategical_information" />
 
     <View style="@style/HeaderLineStyle" />

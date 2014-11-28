@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem_LayoutStyle" >
-
-    <FrameLayout
-        android:id="@+id/province_rank"
-        style="@style/ListItem_ViewStyle" >
-    </FrameLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ListItem_LayoutStyle"
+    tools:ignore="ContentDescription,RtlHardcoded" >
 
     <TextView
-        android:id="@+id/my_province_name"
-        style="@style/TextStyle"
-        android:layout_width="0dp"
-        android:layout_weight="1" />
+        android:id="@+id/my_provinces_name"
+        style="@style/TextStyle" />
 
-    <TextView
-        android:id="@+id/my_provinces_units"
-        style="@style/ListItem_ViewStyle" />
+    <ImageView
+        android:id="@+id/my_provinces_home_icon"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/my_provinces_name"
+        android:src="@drawable/castle_icon" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" >
+
+        <ImageView
+            android:id="@+id/my_provinces_swords_icon"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/swords_icon" >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/my_provinces_units"
+            style="@style/TextStyle"
+            android:layout_marginLeft="@dimen/margin_small1"
+            android:layout_marginRight="@dimen/margin_small1"
+            android:layout_toRightOf="@id/my_provinces_swords_icon" />
+
+        <TextView
+            android:id="@+id/my_provinces_claimable_units"
+            style="@style/TextStyle"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/my_provinces_units"
+            android:paddingTop="@dimen/margin_small1"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/text_medium1" />
+    </RelativeLayout>
+
+</RelativeLayout>

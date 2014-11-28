@@ -43,6 +43,8 @@
     <string name="movement_overview">Movement overview</string>
     <string name="movement_selection">Movement selection</string>
     <string name="my_provinces">My provinces</string>
+    <string name="my_provinces_info">Here is the list of your provinces and the troops available and 
+        available to claim once visiting the territory.</string>
     <string name="name">Name</string>
     <string name="no">No</string>
     <string name="ok">OK</string>

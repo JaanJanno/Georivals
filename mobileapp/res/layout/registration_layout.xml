@@ -22,7 +22,7 @@
         android:id="@+id/registration_email_label"
         style="@style/LoginStyle"
         android:layout_below="@id/registration_username_textbox"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small2"
         android:text="@string/choose_email" />
 
     <EditText
@@ -37,7 +37,7 @@
         android:layout_below="@id/registration_email_textbox"
         android:lineSpacingExtra="-3dp"
         android:text="@string/email_info"
-        android:textSize="@dimen/text_medium" />
+        android:textSize="@dimen/text_medium1" />
 
     <Button
         android:id="@+id/registration_start"

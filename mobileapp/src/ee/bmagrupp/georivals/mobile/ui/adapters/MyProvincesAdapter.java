@@ -4,14 +4,12 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
@@ -35,60 +33,31 @@ public class MyProvincesAdapter extends ArrayAdapter<ProvinceDTO> {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		LinearLayout listItemView = (LinearLayout) inflater.inflate(
+		RelativeLayout listItemView = (RelativeLayout) inflater.inflate(
 				R.layout.my_provinces_item, parent, false);
 
 		MainActivity.changeFonts(listItemView);
 
 		TextView provinceNameView = (TextView) listItemView
-				.findViewById(R.id.my_province_name);
+				.findViewById(R.id.my_provinces_name);
 		TextView unitsView = (TextView) listItemView
 				.findViewById(R.id.my_provinces_units);
+		TextView claimableUnitsView = (TextView) listItemView
+				.findViewById(R.id.my_provinces_claimable_units);
 
 		ProvinceDTO province = provinceList.get(position);
 
 		provinceNameView.setText(province.getProvinceName());
 		unitsView.setText(String.valueOf(province.getUnitSize()));
+		claimableUnitsView.setText("(+" + province.getNewUnitSize() + ")");
 
-		if (province.getType() == ProvinceType.HOME) {
-			setHomeIcon(listItemView);
-		} else {
-			setRank(listItemView, position);
+		if (province.getType() != ProvinceType.HOME) {
+			ImageView homeIcon = (ImageView) listItemView
+					.findViewById(R.id.my_provinces_home_icon);
+			homeIcon.setVisibility(View.GONE);
 		}
 
 		return listItemView;
-	}
-
-	/**
-	 * Sets the home icon as the province's rank.
-	 * 
-	 * @param listItemView
-	 */
-
-	private void setHomeIcon(LinearLayout listItemView) {
-		FrameLayout rankFrame = (FrameLayout) listItemView
-				.findViewById(R.id.province_rank);
-		ImageView homeImage = new ImageView(context);
-		homeImage.setImageResource(R.drawable.castle_icon);
-		rankFrame.addView(homeImage);
-	}
-
-	/**
-	 * // * Sets the province's rank.
-	 * 
-	 * @param listItemView
-	 * @param rank
-	 */
-
-	private void setRank(LinearLayout listItemView, int rank) {
-		FrameLayout rankFrame = (FrameLayout) listItemView
-				.findViewById(R.id.province_rank);
-		TextView rankTextView = new TextView(context);
-		rankTextView.setText(rank + ".");
-		rankTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		rankTextView.setTextSize(18);
-		rankTextView.setGravity(Gravity.CENTER);
-		rankFrame.addView(rankTextView);
 	}
 
 }

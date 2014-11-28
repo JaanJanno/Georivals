@@ -15,7 +15,7 @@
     <EditText
         android:id="@+id/dialog_input"
         style="@style/TextboxStyle"
-        android:layout_marginTop="@dimen/margin_small" >
+        android:layout_marginTop="@dimen/margin_small2" >
 
         <requestFocus />
     </EditText>
@@ -28,14 +28,14 @@
         <Button
             android:id="@+id/dialog_positive_button"
             style="@style/LoginButtonStyle"
-            android:layout_marginRight="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small2"
             android:layout_weight="0.5"
             android:text="@string/yes" />
 
         <Button
             android:id="@+id/dialog_negative_button"
             style="@style/LoginButtonStyle"
-            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginLeft="@dimen/margin_small2"
             android:layout_weight="0.5"
             android:text="@string/no" />
     </LinearLayout>

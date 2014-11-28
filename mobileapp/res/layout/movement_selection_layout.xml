@@ -29,7 +29,7 @@
     <Button
         android:id="@+id/movement_selection_button"
         style="@style/LoginButtonStyle"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_small2"
         android:text="@string/units_send" />
 
 </LinearLayout>
