@@ -1,49 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/my_provinces_title_header"
-        style="@style/HeaderStyle"
-        android:text="@string/my_provinces" />
-
-    <View style="@style/HeaderLineStyle" />
-
-    <LinearLayout
-        android:id="@+id/my_provinces_icon_header"
-        style="@style/ListItem_LayoutStyle" >
-
-        <ImageView
-            android:id="@+id/province_rank_icon"
-            style="@style/ListItem_ViewStyle"
-            android:contentDescription="@string/rank"
-            android:src="@drawable/ic_rank" />
-
-        <TextView
-            android:id="@+id/my_provinces_name_title"
-            style="@style/TextStyle"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="@string/name"
-            android:textSize="@dimen/text_large2" />
-
-        <ImageButton
-            android:id="@+id/my_provinces_unit_image"
-            style="@style/ListItem_ViewStyle"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_unit" />
-    </LinearLayout>
-
-    <View style="@style/HeaderLineStyle" />
+    android:orientation="vertical"
+    android:padding="@dimen/margin_medium2"
+    tools:ignore="ContentDescription" >
 
     <ListView
         android:id="@+id/my_provinces_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:divider="@color/dark_brown"
         android:dividerHeight="1dp" >
     </ListView>
+
+    <View style="@style/HeaderLineStyle" />
+
+    <TextView
+        style="@style/TextStyle"
+        android:layout_marginTop="@dimen/margin_medium2"
+        android:gravity="center"
+        android:text="@string/my_provinces_info"
+        android:textSize="@dimen/text_medium2" />
 
 </LinearLayout>

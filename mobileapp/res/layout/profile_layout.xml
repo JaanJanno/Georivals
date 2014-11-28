@@ -1,7 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:ignore="RtlHardcoded" >
 
     <TextView
         android:id="@+id/profile_title_header"
@@ -21,13 +23,12 @@
         android:id="@+id/profile_general_info"
         style="@style/TextStyle"
         android:layout_height="45dp"
-        android:layout_marginLeft="@dimen/margin_medium1"
-        android:layout_marginStart="@dimen/margin_medium1" />
+        android:layout_marginLeft="@dimen/margin_medium1" />
 
     <TextView
         android:id="@+id/profile_strategical_header"
         style="@style/HeaderStyle"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small2"
         android:text="@string/strategical_information" />
 
     <View style="@style/HeaderLineStyle" />
@@ -37,7 +38,6 @@
         style="@style/TextStyle"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/margin_medium1"
-        android:layout_marginStart="@dimen/margin_medium1"
         android:layout_weight="1" />
 
     <CheckBox

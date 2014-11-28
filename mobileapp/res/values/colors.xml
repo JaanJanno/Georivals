@@ -5,6 +5,7 @@
     <item name="white" type="color">#FFFFFF</item>
     <item name="light_gray" type="color">#F3F3F3</item>
     <item name="gray" type="color">#DADADC</item>
+    <item name="dark_gray" type="color">#606060</item>
     <item name="brown_transparent" type="color">#32C8AA85</item>
     <item name="brown" type="color">#C8AA85</item>
     <item name="dark_brown_transparent" type="color">#32433B35</item>

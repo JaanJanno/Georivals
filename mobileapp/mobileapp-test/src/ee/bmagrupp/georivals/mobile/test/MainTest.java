@@ -130,22 +130,13 @@ public class MainTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		if (isNetworkAvailable()) {
 			waitForField(MainActivity.PROFILE_FRAGMENT.getProfile(), 1000);
 
-			TextView username = (TextView) activity
-					.findViewById(R.id.profile_username);
-			TextView email = (TextView) activity
-					.findViewById(R.id.profile_email);
-			TextView totalUnits = (TextView) activity
-					.findViewById(R.id.profile_total_units);
-			TextView averageUnits = (TextView) activity
-					.findViewById(R.id.profile_average_units);
-			TextView provinces = (TextView) activity
-					.findViewById(R.id.profile_provinces);
+			TextView generalInfo = (TextView) activity
+					.findViewById(R.id.profile_general_info);
+			TextView strategicalInfo = (TextView) activity
+					.findViewById(R.id.profile_strategical_info);
 
-			assertTrue(!username.getText().equals(""));
-			assertTrue(!email.getText().equals(""));
-			assertTrue(!totalUnits.getText().equals(""));
-			assertTrue(!averageUnits.getText().equals(""));
-			assertTrue(!provinces.getText().equals(""));
+			assertTrue(!generalInfo.getText().equals(""));
+			assertTrue(!strategicalInfo.getText().equals(""));
 		}
 	}
 

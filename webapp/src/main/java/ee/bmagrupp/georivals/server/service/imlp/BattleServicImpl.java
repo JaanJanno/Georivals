@@ -32,7 +32,7 @@ public class BattleServicImpl implements BattleService {
 
 	@Override
 	public List<BattleHistoryDTO> getBattles(String cookie) {
-		List<BattleHistory> lst = battleRepo.findBySid(cookie);
+		List<BattleHistory> lst = battleRepo.findBySidSortByDate(cookie);
 		Player requestMaker = playerRepo.findBySid(cookie);
 		ArrayList<BattleHistoryDTO> rtrn = new ArrayList<BattleHistoryDTO>();
 		for (BattleHistory h : lst) {

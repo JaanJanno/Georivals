@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/dialog"
     android:orientation="vertical"
-    android:padding="@dimen/margin_large1" >
+    android:padding="@dimen/margin_large1"
+    tools:ignore="RtlHardcoded" >
 
     <TextView
         android:id="@+id/dialog_message"
@@ -13,7 +15,7 @@
     <EditText
         android:id="@+id/dialog_input"
         style="@style/TextboxStyle"
-        android:layout_marginTop="@dimen/margin_small" >
+        android:layout_marginTop="@dimen/margin_small2" >
 
         <requestFocus />
     </EditText>
@@ -26,18 +28,14 @@
         <Button
             android:id="@+id/dialog_positive_button"
             style="@style/LoginButtonStyle"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium1"
+            android:layout_marginRight="@dimen/margin_small2"
             android:layout_weight="0.5"
             android:text="@string/yes" />
 
         <Button
             android:id="@+id/dialog_negative_button"
             style="@style/LoginButtonStyle"
-            android:layout_marginLeft="@dimen/margin_small"
-            android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_medium1"
+            android:layout_marginLeft="@dimen/margin_small2"
             android:layout_weight="0.5"
             android:text="@string/no" />
     </LinearLayout>

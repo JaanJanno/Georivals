@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlay;
@@ -36,6 +38,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.communications.loaders.province.ProvinceUILoader;
+import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
 import ee.bmagrupp.georivals.mobile.models.map.CameraFOV;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceDTO;
 import ee.bmagrupp.georivals.mobile.models.province.ProvinceType;
@@ -45,24 +48,20 @@ import ee.bmagrupp.georivals.mobile.ui.widgets.TabItem;
 
 @SuppressLint("InflateParams")
 @SuppressWarnings("deprecation")
-public class MapFragment extends com.google.android.gms.maps.MapFragment
-		implements TabItem {
+public class CustomMapFragment extends MapFragment implements TabItem,
+		OnMyLocationButtonClickListener, OnCameraChangeListener {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private Resources resources;
 	private final int tabNameId = R.string.map;
-	private final int tabIconId = R.drawable.places_icon;
+	private final int tabIconId = R.drawable.globe_icon;
 	private final double provinceLatitudeRadius = 0.0005;
 	private final double provinceLongitudeRadius = 0.001;
 
-	// static mutable variables
-	private static MapFragment instance;
-
 	// non-static mutable variables
 	private GoogleMap map;
-	private LatLng lastLatLng = new LatLng(59.437046, 24.753742);
-	private float lastZoom = 17;
-	private Location playerLocation;
+	private LatLng lastCameraLatLng = new LatLng(59.437046, 24.753742);
+	private float lastCameraZoom = 17;
 	private ArrayList<ProvinceDTO> drawnProvincesList = new ArrayList<ProvinceDTO>();
 	private List<ProvinceDTO> provinceList;
 
@@ -88,32 +87,30 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	private void initializeMap() {
 		map = this.getMap();
 		if (map != null) {
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLatLng,
-					lastZoom));
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastCameraLatLng,
+					lastCameraZoom));
 			map.setMyLocationEnabled(true);
-			map.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
-				@Override
-				public boolean onMyLocationButtonClick() {
-					LocationManager locationManager = (LocationManager) activity
-							.getSystemService(Context.LOCATION_SERVICE);
-					if (!locationManager
-							.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-						activity.showToastMessage("GPS is disabled!");
-					} else {
-						activity.showToastMessage("Waiting for location...");
-						return false;
-					}
-					return false;
-				}
-			});
+			map.setOnMyLocationButtonClickListener(this);
 			map.setOnMapClickListener(new MapClickListener(activity));
-			map.setOnCameraChangeListener(new OnCameraChangeListener() {
-				@Override
-				public void onCameraChange(CameraPosition position) {
-					refreshMap();
-				}
-			});
+			map.setOnCameraChangeListener(this);
 		}
+	}
+
+	@Override
+	public boolean onMyLocationButtonClick() {
+		LocationManager locationManager = (LocationManager) activity
+				.getSystemService(Context.LOCATION_SERVICE);
+		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			activity.showToastMessage("GPS is disabled!");
+		} else {
+			activity.showToastMessage("Waiting for location...");
+		}
+		return false;
+	}
+
+	@Override
+	public void onCameraChange(CameraPosition position) {
+		refreshMap();
 	}
 
 	/**
@@ -133,7 +130,14 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		setHomeButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (playerLocation != null) {
+				Location playerLocation = LocationChangeUIHandler
+						.getLastPlayerLocation();
+				long lastLocationUpdateTime = LocationChangeUIHandler
+						.getLastLocationUpdateTime();
+				int minTimeSinceLocationUpdate = 60 * 1000; // one minute
+				if (playerLocation != null
+						&& lastLocationUpdateTime + minTimeSinceLocationUpdate > System
+								.currentTimeMillis()) {
 					MainActivity.REGISTRATION_FRAGMENT
 							.showPhase2ConfirmationDialog(new LatLng(
 									playerLocation.getLatitude(),
@@ -148,8 +152,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 
 	@Override
 	public void onDestroyView() {
-		lastLatLng = map.getCameraPosition().target;
-		lastZoom = map.getCameraPosition().zoom;
+		lastCameraLatLng = map.getCameraPosition().target;
+		lastCameraZoom = map.getCameraPosition().zoom;
 		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
@@ -157,22 +161,11 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	@Override
 	public void onStart() {
 		super.onStart();
-		instance = this;
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		instance = null;
-	}
-
-	/**
-	 * Calls for a map refresh when a MapFragment is open.
-	 */
-
-	public static void callMapRefresh() {
-		if (instance != null)
-			instance.refreshMap();
 	}
 
 	/**
@@ -180,7 +173,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * old ones cleared.
 	 */
 
-	private void refreshMap() {
+	public void refreshMap() {
 		if (map.getCameraPosition().zoom > 15)
 			requestProvinceListData();
 		else if (drawnProvincesList.size() > 0) {
@@ -231,7 +224,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 			ProvinceDTO province = provinceList.get(i);
 			ProvinceDTO drawnProvince = findDrawnProvince(province);
 			if (!provincesEqual(province, drawnProvince)) {
-				RelativeLayout provinceLayout;
+				LinearLayout provinceLayout;
 				if (province.getType() != ProvinceType.PLAYER
 						&& province.getType() != ProvinceType.HOME
 						&& (province.isUnderAttack() || !province
@@ -342,8 +335,8 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * @return The layout of a 'locked' and 'under attack' province tile.
 	 */
 
-	private RelativeLayout getSpecialProvinceLayout(ProvinceDTO province) {
-		RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater.from(
+	private LinearLayout getSpecialProvinceLayout(ProvinceDTO province) {
+		LinearLayout provinceLayout = (LinearLayout) LayoutInflater.from(
 				activity).inflate(R.layout.province_tile_special, null);
 		ImageView specialIcon = (ImageView) provinceLayout
 				.findViewById(R.id.province_special_icon);
@@ -370,24 +363,30 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * @return The layout of a normal province tile.
 	 */
 
-	private RelativeLayout getNormalProvinceLayout(ProvinceDTO province) {
-		RelativeLayout provinceLayout = (RelativeLayout) LayoutInflater.from(
+	private LinearLayout getNormalProvinceLayout(ProvinceDTO province) {
+		LinearLayout provinceLayout = (LinearLayout) LayoutInflater.from(
 				activity).inflate(R.layout.province_tile_normal, null);
 		TextView provinceName = (TextView) provinceLayout
-				.findViewById(R.id.province_name);
+				.findViewById(R.id.province_name_text);
+		provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
 		int provinceColor;
-		if (province.getType() == ProvinceType.BOT) {
-			provinceName.setVisibility(View.INVISIBLE);
+		ProvinceType provinceType = province.getType();
+		if (provinceType == ProvinceType.BOT) {
+			provinceName.setText("BOT");
 			provinceColor = resources.getColor(R.color.brown_transparent);
+			hideHomeIcon(provinceLayout);
 		} else {
 			provinceName.setText(province.getProvinceName());
-			provinceName.setTypeface(MainActivity.GABRIOLA_FONT);
-			if (province.getType() == ProvinceType.HOME
-					|| province.getType() == ProvinceType.PLAYER) {
+			if (provinceType == ProvinceType.HOME
+					|| provinceType == ProvinceType.PLAYER) {
+				if (provinceType == ProvinceType.PLAYER)
+					hideHomeIcon(provinceLayout);
 				provinceColor = resources.getColor(R.color.green_transparent);
-			} else
+			} else {
 				provinceColor = resources
 						.getColor(R.color.dark_brown_transparent);
+				hideHomeIcon(provinceLayout);
+			}
 		}
 
 		GradientDrawable provinceBackground = new GradientDrawable();
@@ -400,6 +399,12 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		return provinceLayout;
 	}
 
+	private void hideHomeIcon(LinearLayout provinceLayout) {
+		ImageView homeIcon = (ImageView) provinceLayout
+				.findViewById(R.id.province_home_icon);
+		homeIcon.setVisibility(View.GONE);
+	}
+
 	/**
 	 * Sets the unit count view of the province.
 	 * 
@@ -407,18 +412,19 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 * @param unitCount
 	 */
 
-	private void setProvinceUnitCount(RelativeLayout provinceLayout,
-			int unitCount) {
+	private void setProvinceUnitCount(LinearLayout provinceLayout, int unitCount) {
 		TextView unitCountTextView = (TextView) provinceLayout
-				.findViewById(R.id.province_unit_count);
+				.findViewById(R.id.province_unit_count_text);
 		unitCountTextView.setText(String.valueOf(unitCount));
 		unitCountTextView.setTypeface(MainActivity.GABRIOLA_FONT);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		RelativeLayout unitCountLayout = (RelativeLayout) provinceLayout
+				.findViewById(R.id.province_unit_count);
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) unitCountLayout
+				.getLayoutParams();
 		params.topMargin = (int) Math
 				.abs(2.5 * map.getCameraPosition().target.latitude);
-		unitCountTextView.setLayoutParams(params);
+		unitCountLayout.setLayoutParams(params);
 	}
 
 	/**
@@ -434,7 +440,6 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-		view.buildDrawingCache();
 		return view.getDrawingCache();
 	}
 
@@ -458,7 +463,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 */
 
 	public LatLng getLastCameraLatLng() {
-		return lastLatLng;
+		return lastCameraLatLng;
 	}
 
 	/**
@@ -466,7 +471,7 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	 */
 
 	public float getLastCameraZoom() {
-		return lastZoom;
+		return lastCameraZoom;
 	}
 
 	@Override
@@ -478,4 +483,5 @@ public class MapFragment extends com.google.android.gms.maps.MapFragment
 	public int getTabNameId() {
 		return tabNameId;
 	}
+
 }

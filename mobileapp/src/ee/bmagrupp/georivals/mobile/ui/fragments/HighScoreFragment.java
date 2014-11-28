@@ -24,7 +24,7 @@ public class HighScoreFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private final int tabNameId = R.string.highscores;
-	private final int tabIconId = R.drawable.leaders_icon;
+	private final int tabIconId = R.drawable.trophy_icon;
 	private final int sortByUnits = 1;
 	private final int sortByProvinces = 2;
 	private LinearLayout highscoreLayout;

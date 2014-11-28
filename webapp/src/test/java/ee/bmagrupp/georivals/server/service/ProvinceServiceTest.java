@@ -2,9 +2,6 @@ package ee.bmagrupp.georivals.server.service;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-import java.util.Set;
-
 import javax.transaction.Transactional;
 
 import org.junit.Before;
@@ -105,39 +102,44 @@ public class ProvinceServiceTest {
 		HomeOwnership temp = playerRepo.findBySid(sid).getHome();
 		assertEquals(127.5465, temp.getProvince().getLatitude(), 0.0001);
 		assertEquals(45.599, temp.getProvince().getLongitude(), 0.001);
-		assertEquals("names have to persist", name,temp.getProvinceName());
+		assertEquals("names have to persist", name, temp.getProvinceName());
 	}
-	
+
 	@Test
-	public void changeHomeTest2(){
-		Ownership o = playerRepo.findBySid(sid).getOwnedProvinces().iterator().next();
+	public void changeHomeTest2() {
+		Ownership o = playerRepo.findBySid(sid).getOwnedProvinces().iterator()
+				.next();
 		String lat = String.valueOf(o.getProvince().getLatitude());
 		String long1 = String.valueOf(o.getProvince().getLongitude());
-		
+
 		ServerResponse resp = provServ.changeHomeProvince(lat, long1, sid);
-		assertEquals("OK", ServerResult.OK ,resp.getResult());
-		
+		assertEquals("OK", ServerResult.OK, resp.getResult());
+
 		HomeOwnership home = playerRepo.findBySid(sid).getHome();
 		double latValue = Double.valueOf(lat);
 		double longValue = Double.valueOf(long1);
-		assertEquals("latitude", latValue,home.getProvince().getLatitude(), 0.0001);
-		assertEquals("longitude", longValue,home.getProvince().getLongitude(), 0.0001);
+		assertEquals("latitude", latValue, home.getProvince().getLatitude(),
+				0.0001);
+		assertEquals("longitude", longValue, home.getProvince().getLongitude(),
+				0.0001);
 	}
-	
+
 	@Test
-	public void changeHomeTest3(){
+	public void changeHomeTest3() {
 		String lat = "45.6545";
 		String long1 = "98.123";
 		double latValue = Double.valueOf(lat);
 		double longValue = Double.valueOf(long1);
 		provRepo.save(new Province(latValue, longValue));
-		
+
 		ServerResponse resp = provServ.changeHomeProvince(lat, long1, sid);
-		assertEquals("OK", ServerResult.OK ,resp.getResult());
-		
+		assertEquals("OK", ServerResult.OK, resp.getResult());
+
 		HomeOwnership home = playerRepo.findBySid(sid).getHome();
-		assertEquals("latitude", latValue,home.getProvince().getLatitude(), 0.0001);
-		assertEquals("longitude", longValue,home.getProvince().getLongitude(), 0.0001);
+		assertEquals("latitude", latValue, home.getProvince().getLatitude(),
+				0.0001);
+		assertEquals("longitude", longValue, home.getProvince().getLongitude(),
+				0.0001);
 	}
 
 	@Test
@@ -267,7 +269,7 @@ public class ProvinceServiceTest {
 		assertEquals("Province unit size", 9, prov1.getUnitSize());
 		// assertEquals("Province new units", 0, prov1.getNewUnitSize());
 		assertEquals("Province owner name", "Mr. TK", prov1.getOwnerName());
-		assertEquals("Attackable", false, prov1.isAttackable());
+		assertEquals("Attackable", true, prov1.isAttackable());
 		assertEquals("Under attack", false, prov1.isUnderAttack());
 	}
 

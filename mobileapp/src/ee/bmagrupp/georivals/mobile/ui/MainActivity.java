@@ -33,7 +33,7 @@ import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
 import ee.bmagrupp.georivals.mobile.core.location.service.LocationService;
 import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.MapFragment;
+import ee.bmagrupp.georivals.mobile.ui.fragments.CustomMapFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MovementSelectionFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MyProvincesFragment;
@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 	public static final ProvinceFragment PROVINCE_FRAGMENT = new ProvinceFragment();
 	public static final RegistrationFragment REGISTRATION_FRAGMENT = new RegistrationFragment();
 	public static final LoginFragment LOGIN_FRAGMENT = new LoginFragment();
-	public static final MapFragment MAP_FRAGMENT = new MapFragment();
+	public static final CustomMapFragment MAP_FRAGMENT = new CustomMapFragment();
 	public static final MissionLogFragment MISSION_LOG_FRAGMENT = new MissionLogFragment();
 	public static final ProfileFragment PROFILE_FRAGMENT = new ProfileFragment();
 	public static final HighScoreFragment HIGH_SCORE_FRAGMENT = new HighScoreFragment();
@@ -115,7 +115,8 @@ public class MainActivity extends Activity {
 	 *            Service remains running in background?
 	 */
 
-	public void setLocationServiceEnabled(boolean locationServiceEnabled) {
+	public synchronized void setLocationServiceEnabled(
+			boolean locationServiceEnabled) {
 		MainActivity.locationServiceEnabled = locationServiceEnabled;
 		setLocationService();
 	}
@@ -225,7 +226,7 @@ public class MainActivity extends Activity {
 	 * variables.
 	 */
 
-	public void updateUserInfo() {
+	public synchronized void updateUserInfo() {
 		userId = sharedPref.getInt("userId", 0);
 		sid = sharedPref.getString("sid", "");
 	}
@@ -281,7 +282,7 @@ public class MainActivity extends Activity {
 		if (MAP_FRAGMENT.isVisible())
 			showExitConfirmationDialog();
 		else
-			changeFragment(MainActivity.MAP_FRAGMENT, getString(R.string.map));
+			setToMapTab();
 	}
 
 	/**

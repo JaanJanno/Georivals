@@ -21,7 +21,12 @@ import ee.bmagrupp.georivals.server.Application;
 import ee.bmagrupp.georivals.server.rest.domain.BattleHistoryDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BattleType;
 
-
+/**
+ * Tests for {@link BattleService}
+ * 
+ * @author TKasekamp
+ *
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @ActiveProfiles("test")
@@ -30,15 +35,20 @@ import ee.bmagrupp.georivals.server.rest.domain.BattleType;
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class BattleServiceTest {
-	
+
 	@Autowired
 	BattleService battleServ;
-	
-	@Test 
-	public void getMyBattlesTest(){
+
+	@Test
+	public void getMyBattlesTest() {
 		List<BattleHistoryDTO> lst = battleServ.getBattles("BPUYYOU62flwiWJe");
-		assertEquals("Expected 1 battle history", 1, lst.size());
-		assertEquals("TK won", BattleType.ATTACK_PLAYER_WON, lst.get(0).getType());
-	}	
-	
+		assertEquals("Expected 2 battle history", 2, lst.size());
+		// First battle
+		assertEquals("TK won", BattleType.ATTACK_PLAYER_WON, lst.get(1)
+				.getType());
+		// Second defence battle
+		assertEquals("TK won", BattleType.DEFENCE_PLAYER_WON, lst.get(0)
+				.getType());
+	}
+
 }

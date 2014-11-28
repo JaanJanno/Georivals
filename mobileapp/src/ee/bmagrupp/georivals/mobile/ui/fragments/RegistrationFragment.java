@@ -206,6 +206,7 @@ public class RegistrationFragment extends Fragment {
 							Button setHomeButton = (Button) activity
 									.findViewById(R.id.set_home_current);
 							setHomeButton.setVisibility(View.INVISIBLE);
+							activity.refreshCurrentFragment();
 							MainActivity.choosingHomeProvince = false;
 							activity.setUserData(sid, userId);
 							activity.showToastMessage(activity

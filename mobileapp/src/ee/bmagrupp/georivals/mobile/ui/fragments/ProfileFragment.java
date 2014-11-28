@@ -19,7 +19,7 @@ public class ProfileFragment extends Fragment implements TabItem {
 	// non-static immutable variables (local constants)
 	private MainActivity activity;
 	private final int tabNameId = R.string.profile;
-	private final int tabIconId = R.drawable.profile_icon;
+	private final int tabIconId = R.drawable.player_icon;
 	private LinearLayout profileLayout;
 
 	// non-static mutable variables

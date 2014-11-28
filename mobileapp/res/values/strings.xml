@@ -5,7 +5,7 @@
     <string name="attack">"Attack "</string>
     <string name="battle_history">Battle history</string>
     <string name="cancel">Cancel</string>
-    <string name="choose_name">Choose you name:</string>
+    <string name="choose_name">Choose your name:</string>
     <string name="choose_email">Enter your e-mail:</string>
     <string name="choose_home">Please choose your home province by clicking on a province or the button below.</string>
     <string name="confirmation_change_home">Are you sure you want to make this province your new home?</string>
@@ -43,6 +43,8 @@
     <string name="movement_overview">Movement overview</string>
     <string name="movement_selection">Movement selection</string>
     <string name="my_provinces">My provinces</string>
+    <string name="my_provinces_info">Here is the list of your provinces and the troops available and 
+        available to claim once visiting the territory.</string>
     <string name="name">Name</string>
     <string name="no">No</string>
     <string name="ok">OK</string>

@@ -16,8 +16,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.70"
         android:divider="@color/dark_brown"
-        android:dividerHeight="1dp" >
-    </ExpandableListView>
+        android:dividerHeight="1dp" />
 
     <View style="@style/HeaderLineStyle" />
 
@@ -30,7 +29,7 @@
     <Button
         android:id="@+id/movement_selection_button"
         style="@style/LoginButtonStyle"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_small2"
         android:text="@string/units_send" />
 
 </LinearLayout>

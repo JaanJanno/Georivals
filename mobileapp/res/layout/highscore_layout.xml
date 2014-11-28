@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:ignore="ContentDescription" >
 
     <TextView
         android:id="@+id/highscore_title_header"
@@ -18,7 +19,6 @@
         <ImageView
             android:id="@+id/player_rank_icon"
             style="@style/ListItem_ViewStyle"
-            android:contentDescription="@string/rank"
             android:src="@drawable/ic_rank" />
 
         <TextView
@@ -32,13 +32,11 @@
         <ImageButton
             android:id="@+id/provinces_sort_button"
             style="@style/ListItem_ViewStyle"
-            android:contentDescription="@string/provinces_sort"
             android:src="@drawable/ic_provinces" />
 
         <ImageButton
             android:id="@+id/unit_sort_button"
             style="@style/ListItem_ViewStyle"
-            android:contentDescription="@string/units_sort"
             android:src="@drawable/ic_unit" />
     </LinearLayout>
 
