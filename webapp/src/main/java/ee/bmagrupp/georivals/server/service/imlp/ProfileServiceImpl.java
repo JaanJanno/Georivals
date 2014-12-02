@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
+import ee.bmagrupp.georivals.server.game.PlayerService;
 import ee.bmagrupp.georivals.server.rest.domain.PlayerProfile;
 import ee.bmagrupp.georivals.server.service.ProfileService;
 
@@ -21,6 +22,9 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	PlayerRepository playerRepo;
+
+	@Autowired
+	PlayerService playerServ;
 
 	@Override
 	public PlayerProfile getPlayerProfile(int id) {
@@ -50,10 +54,9 @@ public class ProfileServiceImpl implements ProfileService {
 	private PlayerProfile createProfileEntry(Player player) {
 		if (player == null)
 			return null;
-		int totalUnits = player.findPlayerUnitCount();
-		int ownedProvinces = player.getOwnedProvinces().size() + 1; // + 1 ==
-																	// home
-																	// province
+		int totalUnits = playerServ.calculatePlayerStrength(player);
+		// +1 for home province
+		int ownedProvinces = player.getOwnedProvinces().size() + 1;
 
 		return new PlayerProfile(player.getId(), player.getUserName(),
 				player.getEmail(), totalUnits, ownedProvinces);

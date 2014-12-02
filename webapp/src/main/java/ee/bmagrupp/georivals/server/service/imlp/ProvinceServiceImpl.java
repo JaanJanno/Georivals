@@ -24,6 +24,7 @@ import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.game.GameLogic;
+import ee.bmagrupp.georivals.server.game.PlayerService;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
@@ -55,6 +56,9 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Autowired
 	private MovementRepository movementRepo;
 
+	@Autowired
+	private PlayerService playerServ;
+
 	/**
 	 * This is a delegating method. The real action is in
 	 * {@link #getProvince(double, double, Player, int)}.
@@ -80,16 +84,16 @@ public class ProvinceServiceImpl implements ProvinceService {
 	public List<ProvinceDTO> getMyProvinces(String cookie) {
 		ArrayList<ProvinceDTO> list = new ArrayList<ProvinceDTO>();
 		Player player = playerRepo.findBySid(cookie);
-		if(player == null){
+		if (player == null) {
 			return list;
 		}
 		Set<Ownership> provinces = player.getOwnedProvinces();
 		HomeOwnership home = player.getHome();
-		if(home != null){
+		if (home != null) {
 			Province homeProvince = home.getProvince();
 			list.add(createHomeProvince(homeProvince, player));
 		}
-		if(provinces == null){
+		if (provinces == null) {
 			return list;
 		}
 		for (Ownership a : provinces) {
@@ -301,7 +305,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 		if (player == null) {
 			return PLAYER_DEFAULT_STRENGTH;
 		}
-		return player.findPlayerUnitCount();
+		return playerServ.calculatePlayerStrength(player);
 	}
 
 	/**

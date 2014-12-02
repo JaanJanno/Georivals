@@ -27,6 +27,7 @@ import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.game.GameLogic;
 import ee.bmagrupp.georivals.server.game.MovementWorker;
+import ee.bmagrupp.georivals.server.game.PlayerService;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
@@ -73,6 +74,9 @@ public class MovementServiceImpl implements MovementService {
 
 	@Resource
 	MovementWorker worker;
+
+	@Autowired
+	PlayerService playerServ;
 
 	@Override
 	public List<MovementSelectionViewDTO> getMyUnits(String cookie) {
@@ -130,7 +134,7 @@ public class MovementServiceImpl implements MovementService {
 		double longitude = CalculationUtil.normalizeLongitude(lon);
 
 		Player player = playerRepo.findBySid(cookie);
-		int playerStrength = player.findPlayerUnitCount();
+		int playerStrength = playerServ.calculatePlayerStrength(player);
 
 		Province destination = provRepo.findWithLatLong(latitude, longitude);
 		if (destination == null) {

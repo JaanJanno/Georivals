@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
+import ee.bmagrupp.georivals.server.game.PlayerService;
 import ee.bmagrupp.georivals.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.georivals.server.service.HighScoreService;
 import ee.bmagrupp.georivals.server.util.Constants;
@@ -22,6 +23,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 
 	@Autowired
 	PlayerRepository playerRepo;
+
+	@Autowired
+	PlayerService playerServ;
 
 	@Override
 	public HighScoreEntry findById(int id) {
@@ -37,7 +41,7 @@ public class HighScoreServiceImpl implements HighScoreService {
 		List<Player> pList = (List<Player>) playerRepo.findAll();
 		List<HighScoreEntry> highList = new ArrayList<>();
 		for (Player player : pList) {
-			if(player.getId() != Constants.BOT_ID){
+			if (player.getId() != Constants.BOT_ID) {
 				highList.add(createHighScore(player));
 			}
 		}
@@ -46,9 +50,9 @@ public class HighScoreServiceImpl implements HighScoreService {
 
 	private HighScoreEntry createHighScore(Player player) {
 		// needs to be double, so that calculating average also returns double
-		double provinces = player.getOwnedProvinces().size() + 1; //Home area is ALWAYS available. It is not possible for this value to be 0
-		double units = player.findPlayerUnitCount();
-		
+		double provinces = player.getOwnedProvinces().size() + 1;
+		double units = playerServ.calculatePlayerStrength(player);
+
 		double average = 0;
 
 		if (provinces != 0) {
