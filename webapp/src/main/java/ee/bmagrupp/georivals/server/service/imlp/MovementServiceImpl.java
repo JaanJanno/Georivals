@@ -19,7 +19,6 @@ import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
-import ee.bmagrupp.georivals.server.core.domain.UnitState;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
@@ -37,7 +36,6 @@ import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.MovementService;
 import ee.bmagrupp.georivals.server.util.CalculationUtil;
-import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.ServerResult;
 import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MIN;
 
@@ -212,39 +210,36 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public BeginMovementResponse cancelMovement(int id, String cookie) {
-		List<Movement> lst = movementRepo.findByPlayerSid(cookie);
-		if(lst != null){
-			for(Movement m : lst){
-				if(m.getId() == id){
-					Province destination = m.getDestination();
-					HomeOwnership home = playerRepo.findBySid(cookie).getHome();
-					for(Unit u : home.getUnits()){
-						if(u.getState() == UnitState.CLAIMED){
-							u.increaseSize(m.getUnit().getSize());
-							if (u.getSize() > 100){
-								u.setSize(100);
-							}
-						}
-					}
-					homeRepo.save(home);
-					Ownership destinationOwner = ownerRepo.findByProvinceId(destination.getId());
-					if(destinationOwner != null){
-						if(movementRepo.findByDestination(destination.getId()) == null 
-								&& playerRepo.findOwner(destinationOwner.getId()).getId() == Constants.BOT_ID){
-							ownerRepo.delete(destinationOwner);
-							provRepo.delete(destination);
-						}
-					}
-					else{
-						if(movementRepo.findByDestination(destination.getId()) == null){
-							provRepo.delete(destination);
-						}
-					}
-				}
-			}
+		Movement movement = movementRepo.findOne(id);
+
+		BeginMovementResponse response = null;
+		if (movement == null) {
+			LOG.info("Tried to cancel movement that does not exist");
+			response = new BeginMovementResponse(new Date(), ServerResult.FAIL);
 		}
-		BeginMovementResponse resp = new BeginMovementResponse(new Date(), ServerResult.OK);
-		return resp;
+		LOG.info("Cancelling movement " + movement.logString());
+		if (!movement.getPlayer().getSid().equals(cookie)) {
+			LOG.info("NOT AUTHORISED: Player with sid " + cookie
+					+ " tried to cancel movement " + id);
+			response = new BeginMovementResponse(new Date(), ServerResult.FAIL);
+		}
+		// Checking if origin is home province
+		Player player = movement.getPlayer();
+		if (movement.getOrigin().getId() == player.getHome().getProvince()
+				.getId()) {
+			Unit homeUnit = player.getHome().getUnits().iterator().next();
+			homeUnit.increaseSize(movement.getUnit().getSize());
+			unitRepo.save(homeUnit);
+			response = new BeginMovementResponse(new Date(), ServerResult.OK);
+		}
+		Ownership ow = ownerRepo.findByProvinceId(movement.getOrigin().getId());
+		if (ow == null) {
+			LOG.info("Ownership of this province does not exist");
+			response = new BeginMovementResponse(new Date(), ServerResult.FAIL);
+		}
+		// TODO continue here
+		// The code above is half-finished
+		return response;
 	}
 
 	private int claimHomeUnits(HomeOwnership home, Date curDate) {

@@ -16,6 +16,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -269,6 +270,7 @@ public class MovementControllerTest {
 	}
 
 	@Test
+	@Ignore
 	public void cancelMovementTest() throws Exception {
 		String id = "3";
 
