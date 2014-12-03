@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -79,6 +80,7 @@ public class MainActivity extends Activity {
 	// non-static mutable variables
 	private Fragment currentFragment;
 	private Toast toast;
+	private LocationListener locationListener = new LocationChangeUIHandler(this);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -142,7 +144,7 @@ public class MainActivity extends Activity {
 		LocationManager l = (LocationManager) getApplicationContext()
 				.getSystemService(Context.LOCATION_SERVICE);
 		l.requestLocationUpdates("gps", UNIT_CLAIM_INTERVAL,
-				UNIT_CLAIM_MIN_DISTANCE, new LocationChangeUIHandler(this));
+				UNIT_CLAIM_MIN_DISTANCE, locationListener );
 	}
 
 	/**
@@ -432,6 +434,20 @@ public class MainActivity extends Activity {
 		textView.setGravity(Gravity.CENTER);
 
 		layout.addView(textView, index);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setUnitClaimHandler();
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		LocationManager l = (LocationManager) getApplicationContext()
+				.getSystemService(Context.LOCATION_SERVICE);
+		l.removeUpdates(locationListener);
 	}
 
 }
