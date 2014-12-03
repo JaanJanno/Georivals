@@ -19,6 +19,7 @@ import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
+import ee.bmagrupp.georivals.server.core.domain.UnitState;
 import ee.bmagrupp.georivals.server.core.repository.HomeOwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
@@ -36,6 +37,7 @@ import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
 import ee.bmagrupp.georivals.server.service.MovementService;
 import ee.bmagrupp.georivals.server.util.CalculationUtil;
+import ee.bmagrupp.georivals.server.util.Constants;
 import ee.bmagrupp.georivals.server.util.ServerResult;
 import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MIN;
 
@@ -210,8 +212,39 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public BeginMovementResponse cancelMovement(int id, String cookie) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Movement> lst = movementRepo.findByPlayerSid(cookie);
+		if(lst != null){
+			for(Movement m : lst){
+				if(m.getId() == id){
+					Province destination = m.getDestination();
+					HomeOwnership home = playerRepo.findBySid(cookie).getHome();
+					for(Unit u : home.getUnits()){
+						if(u.getState() == UnitState.CLAIMED){
+							u.increaseSize(m.getUnit().getSize());
+							if (u.getSize() > 100){
+								u.setSize(100);
+							}
+						}
+					}
+					homeRepo.save(home);
+					Ownership destinationOwner = ownerRepo.findByProvinceId(destination.getId());
+					if(destinationOwner != null){
+						if(movementRepo.findByDestination(destination.getId()) == null 
+								&& playerRepo.findOwner(destinationOwner.getId()).getId() == Constants.BOT_ID){
+							ownerRepo.delete(destinationOwner);
+							provRepo.delete(destination);
+						}
+					}
+					else{
+						if(movementRepo.findByDestination(destination.getId()) == null){
+							provRepo.delete(destination);
+						}
+					}
+				}
+			}
+		}
+		BeginMovementResponse resp = new BeginMovementResponse(new Date(), ServerResult.OK);
+		return resp;
 	}
 
 	private int claimHomeUnits(HomeOwnership home, Date curDate) {
