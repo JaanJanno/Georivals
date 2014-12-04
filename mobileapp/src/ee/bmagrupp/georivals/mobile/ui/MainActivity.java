@@ -80,7 +80,8 @@ public class MainActivity extends Activity {
 	// non-static mutable variables
 	private Fragment currentFragment;
 	private Toast toast;
-	private LocationListener locationListener = new LocationChangeUIHandler(this);
+	private LocationListener locationListener = new LocationChangeUIHandler(
+			this);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -144,7 +145,7 @@ public class MainActivity extends Activity {
 		LocationManager l = (LocationManager) getApplicationContext()
 				.getSystemService(Context.LOCATION_SERVICE);
 		l.requestLocationUpdates("gps", UNIT_CLAIM_INTERVAL,
-				UNIT_CLAIM_MIN_DISTANCE, locationListener );
+				UNIT_CLAIM_MIN_DISTANCE, locationListener);
 	}
 
 	/**
@@ -435,13 +436,13 @@ public class MainActivity extends Activity {
 
 		layout.addView(textView, index);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 		setUnitClaimHandler();
 	}
-	
+
 	@Override
 	protected void onStop() {
 		super.onStop();

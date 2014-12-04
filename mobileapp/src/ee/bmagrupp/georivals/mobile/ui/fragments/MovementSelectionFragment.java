@@ -135,12 +135,13 @@ public class MovementSelectionFragment extends Fragment {
 	 */
 
 	private void setSendUnitsButton() {
-		Button sendButton = (Button) movementSelectionLayout
+		Button sendUnitsButton = (Button) movementSelectionLayout
 				.findViewById(R.id.movement_selection_button);
-		sendButton.setOnClickListener(new OnClickListener() {
+		sendUnitsButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+				v.setEnabled(false);
 				requestUnitMovement();
 			}
 		});
@@ -152,6 +153,8 @@ public class MovementSelectionFragment extends Fragment {
 
 	private void requestUnitMovement() {
 		List<BeginMovementDTO> movementList = createMovementList();
+		final Button sendUnitsButton = (Button) movementSelectionLayout
+				.findViewById(R.id.movement_selection_button);
 
 		if (movementList.size() > 0) {
 			CreateMovementUILoader l = new CreateMovementUILoader(movementList,
@@ -161,6 +164,7 @@ public class MovementSelectionFragment extends Fragment {
 				@Override
 				public void handleResponseInUI(
 						BeginMovementResponse responseObject) {
+					sendUnitsButton.setEnabled(true);
 					if (responseObject.getResult() == ServerResult.OK) {
 						activity.setToMissionLogTab();
 					} else {
@@ -177,6 +181,8 @@ public class MovementSelectionFragment extends Fragment {
 
 			};
 			l.retrieveResponse();
+		} else {
+			sendUnitsButton.setEnabled(true);
 		}
 	}
 

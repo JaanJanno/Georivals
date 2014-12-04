@@ -54,12 +54,12 @@ public class RegistrationFragment extends Fragment {
 	 */
 
 	private void setButtonListeners() {
-		Button startButton = (Button) registrationLayout
+		Button registrationButton = (Button) registrationLayout
 				.findViewById(R.id.registration_start);
 		TextView existingAccountTextView = (TextView) registrationLayout
 				.findViewById(R.id.registration_existing_account);
 
-		startButton.setOnClickListener(new OnClickListener() {
+		registrationButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				EditText usernameEditText = (EditText) activity
@@ -74,6 +74,7 @@ public class RegistrationFragment extends Fragment {
 				} else {
 					username = usernameString;
 					email = emailString;
+					v.setEnabled(false);
 					registrationPhase1();
 				}
 			}
@@ -98,6 +99,9 @@ public class RegistrationFragment extends Fragment {
 
 			@Override
 			public void handleResponse(ServerResponse responseObject) {
+				Button registrationButton = (Button) registrationLayout
+						.findViewById(R.id.registration_start);
+				registrationButton.setEnabled(true);
 				if (responseObject.getResult() == ServerResult.OK)
 					showPhase1ConfirmationDialog();
 				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
