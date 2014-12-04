@@ -98,18 +98,23 @@ public class RegistrationFragment extends Fragment {
 		RegistrationPhase1Poster p = new RegistrationPhase1Poster(username) {
 
 			@Override
-			public void handleResponse(ServerResponse responseObject) {
-				Button registrationButton = (Button) registrationLayout
-						.findViewById(R.id.registration_start);
-				registrationButton.setEnabled(true);
-				if (responseObject.getResult() == ServerResult.OK)
-					showPhase1ConfirmationDialog();
-				else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
-					activity.showToastMessage(activity
-							.getString(R.string.error_username_taken));
-				else
-					activity.showToastMessage(activity
-							.getString(R.string.error_unknown));
+			public void handleResponse(final ServerResponse responseObject) {
+				activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Button registrationButton = (Button) registrationLayout
+								.findViewById(R.id.registration_start);
+						registrationButton.setEnabled(true);
+						if (responseObject.getResult() == ServerResult.OK)
+							showPhase1ConfirmationDialog();
+						else if (responseObject.getResult() == ServerResult.USERNAME_IN_USE)
+							activity.showToastMessage(activity
+									.getString(R.string.error_username_taken));
+						else
+							activity.showToastMessage(activity
+									.getString(R.string.error_unknown));
+					}
+				});
 			}
 		};
 		p.retrieveResponse();

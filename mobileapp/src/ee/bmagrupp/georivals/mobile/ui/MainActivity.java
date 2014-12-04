@@ -241,14 +241,9 @@ public class MainActivity extends Activity {
 	 */
 
 	public void showToastMessage(final String message) {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				cancelToastMessage();
-				toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
-				toast.show();
-			}
-		});
+		cancelToastMessage();
+		toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
+		toast.show();
 	}
 
 	/**
