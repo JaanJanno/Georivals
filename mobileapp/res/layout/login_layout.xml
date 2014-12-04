@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/login_key_label"
-        style="@style/LoginStyle"
+        style="@style/BasicViewStyle"
         android:text="@string/enter_key" />
 
     <EditText
@@ -20,13 +20,13 @@
 
     <Button
         android:id="@+id/login_start"
-        style="@style/LoginButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_below="@id/login_key_textbox"
         android:text="@string/start" />
 
     <TextView
         android:id="@+id/login_email_label"
-        style="@style/LoginStyle"
+        style="@style/BasicViewStyle"
         android:layout_below="@id/login_start"
         android:layout_marginTop="@dimen/margin_large1"
         android:text="@string/choose_email" />
@@ -40,7 +40,7 @@
 
     <Button
         android:id="@+id/login_send_key"
-        style="@style/LoginButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_below="@id/login_email_textbox"
         android:text="@string/login_send_key" />
 

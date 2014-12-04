@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/dialog_message"
-        style="@style/LoginStyle" />
+        style="@style/BasicViewStyle" />
 
     <EditText
         android:id="@+id/dialog_input"
@@ -27,14 +27,14 @@
 
         <Button
             android:id="@+id/dialog_positive_button"
-            style="@style/LoginButtonStyle"
+            style="@style/ButtonStyle"
             android:layout_marginRight="@dimen/margin_small2"
             android:layout_weight="0.5"
             android:text="@string/yes" />
 
         <Button
             android:id="@+id/dialog_negative_button"
-            style="@style/LoginButtonStyle"
+            style="@style/ButtonStyle"
             android:layout_marginLeft="@dimen/margin_small2"
             android:layout_weight="0.5"
             android:text="@string/no" />

@@ -107,7 +107,7 @@ public class MovementOverviewAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return 1;
+		return 0; // 0 - cancel movement disabled; 1 - cancel movement enabled
 	}
 
 	@Override

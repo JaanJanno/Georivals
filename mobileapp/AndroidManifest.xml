@@ -35,21 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="ee.bmagrupp.georivals.mobile.ui.IntroActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="ee.bmagrupp.georivals.mobile.ui.LoginActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="ee.bmagrupp.georivals.mobile.ui.RegisterActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" >
-        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

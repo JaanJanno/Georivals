@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/registration_username_label"
-        style="@style/LoginStyle"
+        style="@style/BasicViewStyle"
         android:text="@string/choose_name" />
 
     <EditText
@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/registration_email_label"
-        style="@style/LoginStyle"
+        style="@style/BasicViewStyle"
         android:layout_below="@id/registration_username_textbox"
         android:layout_marginTop="@dimen/margin_small2"
         android:text="@string/choose_email" />
@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/registration_email_info"
-        style="@style/LoginStyle"
+        style="@style/BasicViewStyle"
         android:layout_below="@id/registration_email_textbox"
         android:lineSpacingExtra="-3dp"
         android:text="@string/email_info"
@@ -41,14 +41,14 @@
 
     <Button
         android:id="@+id/registration_start"
-        style="@style/LoginButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_below="@id/registration_email_info"
         android:layout_marginTop="@dimen/margin_large1"
         android:text="@string/start" />
 
     <TextView
         android:id="@+id/registration_existing_account"
-        style="@style/LoginStyle"
+        style="@style/BasicViewStyle"
         android:layout_below="@id/registration_start"
         android:layout_marginTop="@dimen/margin_medium1"
         android:text="@string/login_existing"

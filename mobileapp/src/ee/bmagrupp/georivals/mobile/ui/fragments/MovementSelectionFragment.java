@@ -153,28 +153,31 @@ public class MovementSelectionFragment extends Fragment {
 	private void requestUnitMovement() {
 		List<BeginMovementDTO> movementList = createMovementList();
 
-		CreateMovementUILoader l = new CreateMovementUILoader(movementList,
-				MainActivity.sid, ProvinceFragment.province.getLatitude(),
-				ProvinceFragment.province.getLongitude(), activity) {
+		if (movementList.size() > 0) {
+			CreateMovementUILoader l = new CreateMovementUILoader(movementList,
+					MainActivity.sid, ProvinceFragment.province.getLatitude(),
+					ProvinceFragment.province.getLongitude(), activity) {
 
-			@Override
-			public void handleResponseInUI(BeginMovementResponse responseObject) {
-				if (responseObject.getResult() == ServerResult.OK) {
-					activity.setToMissionLogTab();
-				} else {
-					activity.showToastMessage(activity
-							.getString(R.string.error_unknown));
+				@Override
+				public void handleResponseInUI(
+						BeginMovementResponse responseObject) {
+					if (responseObject.getResult() == ServerResult.OK) {
+						activity.setToMissionLogTab();
+					} else {
+						activity.showToastMessage(activity
+								.getString(R.string.error_unknown));
+					}
 				}
-			}
 
-			@Override
-			public void handleResponseInBackground(
-					BeginMovementResponse responseObject) {
+				@Override
+				public void handleResponseInBackground(
+						BeginMovementResponse responseObject) {
 
-			}
+				}
 
-		};
-		l.retrieveResponse();
+			};
+			l.retrieveResponse();
+		}
 	}
 
 	/**
@@ -188,7 +191,7 @@ public class MovementSelectionFragment extends Fragment {
 			if (unitCount != 0)
 				movementList.add(new BeginMovementDTO(movableUnitsList.get(
 						index).getUnitId(), unitCount));
-			index += 1;
+			index++;
 		}
 		return movementList;
 	}
