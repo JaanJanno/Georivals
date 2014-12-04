@@ -211,19 +211,18 @@ public class EndMovementServiceImpl implements EndMovementService {
 		// delete movement unit
 		unitRepo.delete(unitId);
 
-		boolean ownedByBot = history.getDefender().getUserName()
-				.equals(Constants.BOT_NAME);
-		boolean isDestination = movRepo.checkIfDestination(history
-				.getLocation().getId());
-		if (ownedByBot && !isDestination) {
-			LOG.info("Deleting BOT ownership and unit");
-			deleteDefender(history, ow);
-		} else {
-			// decrease defenders unit
-			ow.getUnits().iterator().next()
-					.increaseSize(-history.getDefenderLosses());
-			unitRepo.save(ow.getUnits());
-		}
+		/* DISABLED BOT OWNERSHIP DELETING
+		 * boolean ownedByBot = history.getDefender().getUserName()
+		 * .equals(Constants.BOT_NAME); boolean isDestination =
+		 * movRepo.checkIfDestination(history .getLocation().getId()); if
+		 * (ownedByBot && !isDestination) {
+		 * LOG.info("Deleting BOT ownership and unit"); deleteDefender(history,
+		 * ow); } else { // decrease defenders unit
+		 */
+		ow.getUnits().iterator().next()
+				.increaseSize(-history.getDefenderLosses());
+		unitRepo.save(ow.getUnits());
+		// }
 	}
 
 	/**
