@@ -1,9 +1,10 @@
 package ee.bmagrupp.georivals.server.game;
 
-import static ee.bmagrupp.georivals.server.util.Constants.BOT_STRENGTH_CONSTANT;
 import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MAX;
 import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MIN;
 import static ee.bmagrupp.georivals.server.util.Constants.UNIT_GENERATION_TIME;
+import static ee.bmagrupp.georivals.server.util.Constants.BOT_MAX_UNITS;
+import static ee.bmagrupp.georivals.server.util.Constants.BOT_MIN_UNITS;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,7 +24,7 @@ import ee.bmagrupp.georivals.server.util.GeneratorUtil;
  */
 public class GameLogic {
 	// These are for testing purposes only
-	//static int time = 10;
+	// static int time = 10;
 
 	/**
 	 * Checks if the player defined by player1Strength can attack the provinces
@@ -87,16 +88,12 @@ public class GameLogic {
 	 * 
 	 * @param latitude
 	 * @param longitude
-	 * @param playerStrength
 	 * @author TKasekamp
 	 * @return int
 	 */
-	public static int botUnits(double latitude, double longitude,
-			int playerStrength) {
-		int min = (playerStrength / 2)
-				- (int) (playerStrength * BOT_STRENGTH_CONSTANT);
-		int max = (playerStrength / 2)
-				+ (int) (playerStrength * BOT_STRENGTH_CONSTANT);
+	public static int botUnits(double latitude, double longitude) {
+		int min = BOT_MIN_UNITS;
+		int max = BOT_MAX_UNITS;
 		long seed = (long) (((latitude * 1000.0) + ((longitude) / 1000.0)) * 1000000);
 		Random rand = new Random(seed);
 		int botStrength = rand.nextInt((max - min) + 1) + min;
@@ -122,16 +119,19 @@ public class GameLogic {
 	 */
 	public static Date calculateTime(Province start, Province destination,
 			Date curDate) {
-		double latitude = Math.abs(destination.getLatitude() - start.getLatitude());
-		double longitude = Math.abs(destination.getLongitude() - start.getLongitude());
-		double distance = Math.sqrt(latitude*latitude + longitude*longitude);
-		
-		int time = (int)((distance / Constants.PROVINCE_HEIGHT) * Constants.SPEED_CONSTANT);
-		
+		double latitude = Math.abs(destination.getLatitude()
+				- start.getLatitude());
+		double longitude = Math.abs(destination.getLongitude()
+				- start.getLongitude());
+		double distance = Math
+				.sqrt(latitude * latitude + longitude * longitude);
+
+		int time = (int) ((distance / Constants.PROVINCE_HEIGHT) * Constants.SPEED_CONSTANT);
+
 		Calendar cal = Calendar.getInstance(); // creates calendar
-	    cal.setTime(curDate); // sets calendar time/date
-	    cal.add(Calendar.SECOND, time);
-	    
+		cal.setTime(curDate); // sets calendar time/date
+		cal.add(Calendar.SECOND, time);
+
 		return cal.getTime();
 	}
 

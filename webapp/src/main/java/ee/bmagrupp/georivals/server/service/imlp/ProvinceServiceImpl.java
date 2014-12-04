@@ -403,7 +403,7 @@ public class ProvinceServiceImpl implements ProvinceService {
 			int playerStrength) {
 		String provName = GeneratorUtil.generateString(PROVINCE_NAME_LENGTH,
 				lat, lon);
-		int unitCount = GameLogic.botUnits(lat, lon, playerStrength);
+		int unitCount = GameLogic.botUnits(lat, lon);
 		return new ProvinceDTO(lat, lon, provName, unitCount);
 	}
 

@@ -380,7 +380,7 @@ public class MovementServiceImpl implements MovementService {
 	private Province createBotOwnership(Province province, int playerStrength) {
 		LOG.info("Creating BOT ownership for " + province.toString());
 		Unit unit = new Unit(GameLogic.botUnits(province.getLatitude(),
-				province.getLongitude(), playerStrength));
+				province.getLongitude()));
 		unitRepo.save(unit);
 		Ownership ow = new Ownership(province, unit);
 		ownerRepo.save(ow);
