@@ -59,20 +59,23 @@ Lisaks läheb vaja Android SDK Managerist:
 * Nutitelefon Androidiga 4.0 või kõrgem.
 
 #### Projekti seadistamine
-1. Lae alla Aardejahi giti repositoorium.
-2. Impordi mobileapp alamkausta projektina toimetades Eclipse'i keskkonnas järgnevalt: Git Repositories > Add an existing local Git Repository to this view > Directory: ...\Georivals > Finish > Parem klõps mobileapp kaustal > Import projects... > Import existing project > Next > Finish.
-3. Impordi Google Play services library projektina. (http://developer.android.com/google/play-services/setup.html, http://developer.android.com/tools/projects/projects-eclipse.html#SettingUpLibraryProject)
-4. Lisa Google Play services Aardejahi projekti Android library'ks. (http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
-5. Kui soovid oma telefoni kasutada:
+1. Lae alla Georivals giti repositoorium.
+2. Lisa mobileapp kausta project.properties fail, kirjuta sellesse "target=android-21" ja salvesta see.
+3. Impordi mobileapp alamkausta projektina toimetades Eclipse'i keskkonnas järgnevalt: Git Repositories > Add an existing local Git Repository to this view > Directory: ...\Georivals > Finish > Parem klõps mobileapp kaustal > Import projects... > Import existing project > Next > Finish.
+4. Impordi Google Play services library projektina. (http://developer.android.com/google/play-services/setup.html, http://developer.android.com/tools/projects/projects-eclipse.html#SettingUpLibraryProject)
+5. Lisa Google Play services Georivals projekti Android library'ks. (http://developer.android.com/tools/projects/projects-eclipse.html#ReferencingLibraryProject)
+6. Kui Sa oled siiani kõik õigesti teinud ja Eclipse viskab ikka punaseid veateateid, tee Eclipse'ile restart.
+7. Kui soovid oma telefoni kasutada:
 	1. Ühenda telefon arvutiga.
 	2. Lülita USB debugging telefonis sisse. (http://www.phonearena.com/news/How-to-enable-USB-debugging-on-Android_id53909)
-6. Kui soovid Android emulaatorit kasutada:
+8. Kui soovid emulaatorit kasutada, siis on soovitav kasutada Genymotioni emulaatorit, mis on stabiilsem (vt. allpool "Genymotioni emulaatori installimine...". 
+Võimalik on ka kasutada ADT emulaatorit, mis pole nii stabiilne:
 	1. Vali Android Virtual Device Manager.
 	2. Loo uus seade, valides Target'iks 'Google APIs - API Level 19', RAM'iks 256 ja märgi "Use Host GPU". Muu võid vabal valikul valida.
-7. Vajuta Run > Run as Android application.
-8. Vali omale sobiv seade (oma telefon või emulaator) ja vajuta OK.
-9. Kui oled kõiki samme õigesti järginud, peaks programm nüüd käivituma.
-10. Kui soovida androidi emulaatoris kasutada kohalikku serverit, määrata ee.bmagrupp.georivals.mobile.core.communications.Constants klassis muutuja isLocalMobile = true; See töötab ainult google'i emulaatoriga, mitte genymotion'iga.
+9. Vajuta Run > Run as Android application.
+10. Vali omale sobiv seade (oma telefon või emulaator) ja vajuta OK.
+11. Kui oled kõiki samme õigesti järginud, peaks programm nüüd käivituma.
+12. Kui soovida androidi emulaatoris kasutada kohalikku serverit, määrata ee.bmagrupp.georivals.mobile.core.communications.Constants klassis muutuja isLocalMobile = true; See töötab ainult google'i emulaatoriga, mitte genymotion'iga.
 
 #### Testide jooksutamine
 Testide jooksutamiseks on vaja kasutada Genymotioni emulaatorit või füüsilist seadet. Android Development Tools'iga kaasasolevat emulaatorit ei saa selleks kasutada, sest selle emulaatori Google Play Service'is on bug, mis seda takistab.
