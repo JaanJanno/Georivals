@@ -85,9 +85,9 @@ public class LoginFragment extends Fragment {
 	private void requestLogin(String loginKey) {
 		// test users
 		if (loginKey.equals("test"))
-			activity.setUserData("BPUYYOU62flwiWJe", 1);
+			activity.setUserData("BPUYYOU62flwiWJe", 1, null);
 		else if (loginKey.equals("johnny"))
-			activity.setUserData("UJ86IpW5xK8ZZH7t", 5);
+			activity.setUserData("UJ86IpW5xK8ZZH7t", 5, null);
 		activity.setToMapTab();
 	}
 

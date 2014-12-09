@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.location.LocationManager;
@@ -60,8 +59,8 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 
 	// non-static mutable variables
 	private GoogleMap map;
-	private LatLng lastCameraLatLng = new LatLng(59.437046, 24.753742);
-	private float lastCameraZoom = 17;
+	private LatLng defaultCameraLatLng = new LatLng(59.437046, 24.753742);
+	private float defaultCameraZoom = 17;
 	private ArrayList<ProvinceDTO> drawnProvincesList = new ArrayList<ProvinceDTO>();
 	private List<ProvinceDTO> provinceList;
 
@@ -87,8 +86,8 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 	private void initializeMap() {
 		map = this.getMap();
 		if (map != null) {
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastCameraLatLng,
-					lastCameraZoom));
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+					defaultCameraLatLng, defaultCameraZoom));
 			map.setMyLocationEnabled(true);
 			map.setOnMyLocationButtonClickListener(this);
 			map.setOnMapClickListener(new MapClickListener(activity));
@@ -152,8 +151,8 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 
 	@Override
 	public void onDestroyView() {
-		lastCameraLatLng = map.getCameraPosition().target;
-		lastCameraZoom = map.getCameraPosition().zoom;
+		defaultCameraLatLng = map.getCameraPosition().target;
+		defaultCameraZoom = map.getCameraPosition().zoom;
 		activity.cancelToastMessage();
 		super.onDestroyView();
 	}
@@ -177,9 +176,13 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 		if (map.getCameraPosition().zoom > 15)
 			requestProvinceListData();
 		else if (drawnProvincesList.size() > 0) {
-			map.clear();
-			drawnProvincesList.clear();
+			clearMap();
 		}
+	}
+
+	public void clearMap() {
+		map.clear();
+		drawnProvincesList.clear();
 	}
 
 	/**
@@ -351,7 +354,8 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 
 		GradientDrawable provinceBackground = new GradientDrawable();
 		provinceBackground.setColor(provinceColor);
-		provinceBackground.setStroke(1, Color.BLACK);
+		provinceBackground.setStroke(1,
+				resources.getColor(R.color.black_transparent));
 		provinceLayout.setBackgroundDrawable(provinceBackground);
 
 		return provinceLayout;
@@ -372,9 +376,10 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 		int provinceColor;
 		ProvinceType provinceType = province.getType();
 		if (provinceType == ProvinceType.BOT) {
-			provinceName.setText("BOT");
+			RelativeLayout provinceNameLayout = (RelativeLayout) provinceLayout
+					.findViewById(R.id.province_name);
+			provinceNameLayout.setVisibility(View.INVISIBLE);
 			provinceColor = resources.getColor(R.color.brown_transparent);
-			hideHomeIcon(provinceLayout);
 		} else {
 			provinceName.setText(province.getProvinceName());
 			if (provinceType == ProvinceType.HOME
@@ -383,15 +388,15 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 					hideHomeIcon(provinceLayout);
 				provinceColor = resources.getColor(R.color.green_transparent);
 			} else {
-				provinceColor = resources
-						.getColor(R.color.dark_brown_transparent);
+				provinceColor = resources.getColor(R.color.brown_transparent);
 				hideHomeIcon(provinceLayout);
 			}
 		}
 
 		GradientDrawable provinceBackground = new GradientDrawable();
 		provinceBackground.setColor(provinceColor);
-		provinceBackground.setStroke(1, Color.BLACK);
+		provinceBackground.setStroke(1,
+				resources.getColor(R.color.black_transparent));
 		provinceLayout.setBackgroundDrawable(provinceBackground);
 
 		setProvinceUnitCount(provinceLayout, province.getUnitSize());
@@ -463,7 +468,7 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 	 */
 
 	public LatLng getLastCameraLatLng() {
-		return lastCameraLatLng;
+		return defaultCameraLatLng;
 	}
 
 	/**
@@ -471,7 +476,7 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 	 */
 
 	public float getLastCameraZoom() {
-		return lastCameraZoom;
+		return defaultCameraZoom;
 	}
 
 	@Override
@@ -482,6 +487,10 @@ public class CustomMapFragment extends MapFragment implements TabItem,
 	@Override
 	public int getTabNameId() {
 		return tabNameId;
+	}
+
+	public void setDefaultCameraLatLng(LatLng latLng) {
+		this.defaultCameraLatLng = latLng;
 	}
 
 }

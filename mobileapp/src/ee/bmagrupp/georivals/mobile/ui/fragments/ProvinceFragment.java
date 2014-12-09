@@ -310,6 +310,9 @@ public class ProvinceFragment extends Fragment {
 			public void handleResponseInUI(ServerResponse responseObject) {
 				ServerResult result = responseObject.getResult();
 				if (result == ServerResult.OK) {
+					MainActivity.MAP_FRAGMENT.clearMap();
+					activity.setUserData(null, 0, new LatLng(
+							provinceLatLng.latitude, provinceLatLng.longitude));
 					activity.showToastMessage(activity
 							.getString(R.string.home_changed));
 					activity.refreshCurrentFragment();

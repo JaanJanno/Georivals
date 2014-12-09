@@ -6,8 +6,7 @@ import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoad
 import ee.bmagrupp.georivals.mobile.models.profile.ProfileEntry;
 
 /**
- * Class for loading a profile entry from server and handling
- * them on UI.<br>
+ * Class for loading a profile entry from server and handling them on UI.<br>
  * 
  * Override the response handling methods to use it. Call retrieveResponse to
  * send the query to server.

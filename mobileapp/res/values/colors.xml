@@ -2,16 +2,17 @@
 <resources>
 
     <item name="black" type="color">#000000</item>
+    <item name="black_transparent" type="color">#80000000</item>    
     <item name="white" type="color">#FFFFFF</item>
     <item name="light_gray" type="color">#F3F3F3</item>
     <item name="gray" type="color">#DADADC</item>
     <item name="dark_gray" type="color">#606060</item>
     <item name="brown_transparent" type="color">#32C8AA85</item>
     <item name="brown" type="color">#C8AA85</item>
-    <item name="dark_brown_transparent" type="color">#32433B35</item>
+    <item name="dark_brown_transparent" type="color">#8088745E</item>
     <item name="dark_brown" type="color">#433B35</item>
     <item name="red_transparent" type="color">#32FA5858</item>
     <item name="dark_red" type="color">#691F0F</item>
-    <item name="green_transparent" type="color">#32AECE63</item>
+    <item name="green_transparent" type="color">#CC848F45 </item>
 
 </resources>

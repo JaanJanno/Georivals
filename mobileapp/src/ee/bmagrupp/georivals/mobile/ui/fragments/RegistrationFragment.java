@@ -195,7 +195,7 @@ public class RegistrationFragment extends Fragment {
 	 * @param homeLatLng
 	 */
 
-	private void registrationPhase2(LatLng homeLatLng) {
+	private void registrationPhase2(final LatLng homeLatLng) {
 		RegistrationPhase2Poster p2 = new RegistrationPhase2Poster(
 				new RegistrationDTO(username, email, homeLatLng.latitude,
 						homeLatLng.longitude)) {
@@ -217,7 +217,7 @@ public class RegistrationFragment extends Fragment {
 							setHomeButton.setVisibility(View.INVISIBLE);
 							activity.refreshCurrentFragment();
 							MainActivity.choosingHomeProvince = false;
-							activity.setUserData(sid, userId);
+							activity.setUserData(sid, userId, homeLatLng);
 							activity.showToastMessage(activity
 									.getString(R.string.user_created));
 						} else if (result == ServerResult.USERNAME_IN_USE) {

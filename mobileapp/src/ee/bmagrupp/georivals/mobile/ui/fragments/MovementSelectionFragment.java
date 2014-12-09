@@ -128,6 +128,9 @@ public class MovementSelectionFragment extends Fragment {
 		MovementSelectionAdapter adapter = new MovementSelectionAdapter(
 				activity, movableUnitsList);
 		listview.setAdapter(adapter);
+
+		listview.performItemClick(listview.getAdapter().getView(0, null, null),
+				0, listview.getAdapter().getItemId(0));
 	}
 
 	/**
@@ -191,7 +194,7 @@ public class MovementSelectionFragment extends Fragment {
 	 */
 
 	private List<BeginMovementDTO> createMovementList() {
-		List<BeginMovementDTO> movementList = new ArrayList<>();
+		List<BeginMovementDTO> movementList = new ArrayList<BeginMovementDTO>();
 		int index = 0;
 		for (int unitCount : selectedUnitCountList) {
 			if (unitCount != 0)

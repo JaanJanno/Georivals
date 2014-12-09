@@ -1,5 +1,7 @@
 package ee.bmagrupp.georivals.mobile.ui;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -210,28 +212,44 @@ public class MainActivity extends Activity {
 	}
 
 	/**
-	 * Sets the given SID and user id into shared preferences.
+	 * Sets the given SID, user id and home coordinates into shared preferences.
 	 * 
 	 * @param sid
 	 * @param userId
+	 * @param homeLatLng
 	 */
 
-	public void setUserData(String sid, int userId) {
+	public void setUserData(String sid, int userId, LatLng homeLatLng) {
 		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString("sid", sid);
-		editor.putInt("userId", userId);
+		if (sid != null)
+			editor.putString("sid", sid);
+		if (userId != 0)
+			editor.putInt("userId", userId);
+		if (homeLatLng != null) {
+			editor.putLong("homeLatitude",
+					Double.doubleToRawLongBits(homeLatLng.latitude));
+			editor.putLong("homeLongitude",
+					Double.doubleToRawLongBits(homeLatLng.longitude));
+		}
 		editor.commit();
 		updateUserInfo();
 	}
 
 	/**
 	 * Gets the SID and user id from shared preferences and saves them as static
-	 * variables.
+	 * variables. Also gets the home coordinates and sets
 	 */
 
 	public synchronized void updateUserInfo() {
 		userId = sharedPref.getInt("userId", 0);
 		sid = sharedPref.getString("sid", "");
+		double homeLatitude = Double.longBitsToDouble(sharedPref.getLong(
+				"homeLatitude", 0));
+		double homeLongitude = Double.longBitsToDouble(sharedPref.getLong(
+				"homeLongitude", 0));
+		if (homeLatitude != 0 && homeLongitude != 0)
+			MAP_FRAGMENT.setDefaultCameraLatLng(new LatLng(homeLatitude,
+					homeLongitude));
 	}
 
 	/**
