@@ -4,10 +4,10 @@ import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 import ee.bmagrupp.georivals.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.ServerResult;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 
 /**
  * Interface that will handle the authentication and registration of players.

@@ -6,8 +6,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
+import ee.bmagrupp.georivals.server.game.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.GeneratorUtil;
 
 /**
  * Tests for {@link GeneratorUtil}.

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ee.bmagrupp.georivals.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 import ee.bmagrupp.georivals.server.service.RegistrationService;
-import ee.bmagrupp.georivals.server.util.ServerResult;
 
 @RestController
 @RequestMapping("/registration")

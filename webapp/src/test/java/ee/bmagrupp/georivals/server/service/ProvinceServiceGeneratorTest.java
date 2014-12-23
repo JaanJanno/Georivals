@@ -21,11 +21,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import ee.bmagrupp.georivals.server.Application;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
-import ee.bmagrupp.georivals.server.util.Constants;
 
 /**
  * Integration tests for {@link ProvinceService}. Only focused on generating

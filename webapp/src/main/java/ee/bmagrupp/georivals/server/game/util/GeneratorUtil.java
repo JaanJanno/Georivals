@@ -1,4 +1,4 @@
-package ee.bmagrupp.georivals.server.util;
+package ee.bmagrupp.georivals.server.game.util;
 
 import java.util.Date;
 import java.util.Random;

@@ -27,13 +27,13 @@ import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
+import ee.bmagrupp.georivals.server.game.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.GeneratorUtil;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
-import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * The {@link ProvinceServiceGeneratorTest} tests are mostly focused on the

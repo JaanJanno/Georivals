@@ -1,4 +1,5 @@
-package ee.bmagrupp.georivals.server.util;
+package ee.bmagrupp.georivals.server.game.util;
+
 
 /**
  * Various static methods.

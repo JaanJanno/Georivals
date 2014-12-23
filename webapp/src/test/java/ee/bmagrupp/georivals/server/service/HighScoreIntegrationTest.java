@@ -16,9 +16,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import ee.bmagrupp.georivals.server.Application;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 import ee.bmagrupp.georivals.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.georivals.server.service.HighScoreService;
-import ee.bmagrupp.georivals.server.util.Constants;
 import static org.junit.Assert.*;
 
 /**

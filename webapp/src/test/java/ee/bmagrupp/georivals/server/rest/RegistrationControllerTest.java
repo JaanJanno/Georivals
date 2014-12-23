@@ -24,8 +24,8 @@ import ee.bmagrupp.georivals.server.Application;
 import ee.bmagrupp.georivals.server.rest.RegistrationController;
 import ee.bmagrupp.georivals.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 import ee.bmagrupp.georivals.server.service.RegistrationService;
-import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * Tests for {@link RegistrationController} by mocking the hell out of

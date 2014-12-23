@@ -16,8 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
+import ee.bmagrupp.georivals.server.game.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.GeneratorUtil;
 
 @Entity
 public class Ownership implements Serializable {

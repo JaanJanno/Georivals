@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static ee.bmagrupp.georivals.server.util.Constants.*;
+import static ee.bmagrupp.georivals.server.game.util.Constants.*;
 import ee.bmagrupp.georivals.server.core.domain.HomeOwnership;
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Player;
@@ -25,14 +25,14 @@ import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
 import ee.bmagrupp.georivals.server.game.GameLogic;
 import ee.bmagrupp.georivals.server.game.PlayerService;
+import ee.bmagrupp.georivals.server.game.util.CalculationUtil;
+import ee.bmagrupp.georivals.server.game.util.GeneratorUtil;
 import ee.bmagrupp.georivals.server.rest.domain.CameraFOV;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 import ee.bmagrupp.georivals.server.service.ProvinceService;
-import ee.bmagrupp.georivals.server.util.CalculationUtil;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
-import ee.bmagrupp.georivals.server.util.ServerResult;
 
 @Service
 public class ProvinceServiceImpl implements ProvinceService {

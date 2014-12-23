@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import static ee.bmagrupp.georivals.server.util.Constants.BOT_MAX_UNITS;
-import static ee.bmagrupp.georivals.server.util.Constants.BOT_MIN_UNITS;
+import static ee.bmagrupp.georivals.server.game.util.Constants.BOT_MAX_UNITS;
+import static ee.bmagrupp.georivals.server.game.util.Constants.BOT_MIN_UNITS;
 
 /**
  * Tests for {@link GameLogic}

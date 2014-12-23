@@ -12,11 +12,11 @@ import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.repository.BattleHistoryRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
+import ee.bmagrupp.georivals.server.game.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.GeneratorUtil;
 import ee.bmagrupp.georivals.server.rest.domain.BattleHistoryDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BattleType;
 import ee.bmagrupp.georivals.server.service.BattleService;
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
 
 @Service
 public class BattleServicImpl implements BattleService {

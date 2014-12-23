@@ -38,7 +38,7 @@ import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
-import ee.bmagrupp.georivals.server.util.ServerResult;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 
 /**
  * Tests for {@link MovementService}

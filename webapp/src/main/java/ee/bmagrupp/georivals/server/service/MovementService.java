@@ -13,7 +13,7 @@ import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
-import ee.bmagrupp.georivals.server.util.ServerResult;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 
 /**
  * Everything to do with moving units around.

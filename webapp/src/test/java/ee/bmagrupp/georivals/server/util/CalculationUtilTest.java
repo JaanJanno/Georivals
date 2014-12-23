@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ee.bmagrupp.georivals.server.game.util.CalculationUtil;
+
 /**
  * Tests for {@link CalculationUtil}
  * 

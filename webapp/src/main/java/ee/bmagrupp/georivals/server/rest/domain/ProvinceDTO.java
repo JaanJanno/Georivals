@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.server.rest.domain;
 
-import ee.bmagrupp.georivals.server.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 
 /**
  * DTO used for doing everything with provinces. This includes MapView,

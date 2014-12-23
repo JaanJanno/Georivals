@@ -2,8 +2,6 @@ package ee.bmagrupp.georivals.server.rest.domain;
 
 import java.util.Date;
 
-import ee.bmagrupp.georivals.server.util.ServerResult;
-
 public class BeginMovementResponse {
 	private Date arrivalTime;
 	private ServerResult result;

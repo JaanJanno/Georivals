@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.game.PlayerService;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 import ee.bmagrupp.georivals.server.rest.domain.HighScoreEntry;
 import ee.bmagrupp.georivals.server.service.HighScoreService;
-import ee.bmagrupp.georivals.server.util.Constants;
 
 @Service
 public class HighScoreServiceImpl implements HighScoreService {

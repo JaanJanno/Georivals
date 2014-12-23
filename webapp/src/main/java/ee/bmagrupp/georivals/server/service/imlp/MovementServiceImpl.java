@@ -28,16 +28,16 @@ import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
 import ee.bmagrupp.georivals.server.game.GameLogic;
 import ee.bmagrupp.georivals.server.game.MovementWorker;
 import ee.bmagrupp.georivals.server.game.PlayerService;
+import ee.bmagrupp.georivals.server.game.util.CalculationUtil;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementDTO;
 import ee.bmagrupp.georivals.server.rest.domain.BeginMovementResponse;
 import ee.bmagrupp.georivals.server.rest.domain.MovementSelectionViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.MovementViewDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ProvinceType;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 import ee.bmagrupp.georivals.server.service.MovementService;
-import ee.bmagrupp.georivals.server.util.CalculationUtil;
-import ee.bmagrupp.georivals.server.util.ServerResult;
-import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MIN;
+import static ee.bmagrupp.georivals.server.game.util.Constants.PROVINCE_UNIT_MIN;
 
 /**
  * Implementation of movement stuff.

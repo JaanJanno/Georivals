@@ -21,11 +21,11 @@ import ee.bmagrupp.georivals.server.core.domain.Province;
 import ee.bmagrupp.georivals.server.core.domain.Unit;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.ProvinceRepository;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 import ee.bmagrupp.georivals.server.rest.domain.RegistrationDTO;
 import ee.bmagrupp.georivals.server.rest.domain.ServerResponse;
+import ee.bmagrupp.georivals.server.rest.domain.ServerResult;
 import ee.bmagrupp.georivals.server.service.RegistrationService;
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * Integration tests for {@link RegistrationService}. This service is fully

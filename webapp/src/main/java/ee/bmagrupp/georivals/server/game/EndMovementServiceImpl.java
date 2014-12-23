@@ -24,7 +24,7 @@ import ee.bmagrupp.georivals.server.core.repository.MovementRepository;
 import ee.bmagrupp.georivals.server.core.repository.OwnershipRepository;
 import ee.bmagrupp.georivals.server.core.repository.PlayerRepository;
 import ee.bmagrupp.georivals.server.core.repository.UnitRepository;
-import ee.bmagrupp.georivals.server.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 
 @Transactional
 @Service

@@ -1,10 +1,10 @@
 package ee.bmagrupp.georivals.server.game;
 
-import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MAX;
-import static ee.bmagrupp.georivals.server.util.Constants.PROVINCE_UNIT_MIN;
-import static ee.bmagrupp.georivals.server.util.Constants.UNIT_GENERATION_TIME;
-import static ee.bmagrupp.georivals.server.util.Constants.BOT_MAX_UNITS;
-import static ee.bmagrupp.georivals.server.util.Constants.BOT_MIN_UNITS;
+import static ee.bmagrupp.georivals.server.game.util.Constants.BOT_MAX_UNITS;
+import static ee.bmagrupp.georivals.server.game.util.Constants.BOT_MIN_UNITS;
+import static ee.bmagrupp.georivals.server.game.util.Constants.PROVINCE_UNIT_MAX;
+import static ee.bmagrupp.georivals.server.game.util.Constants.PROVINCE_UNIT_MIN;
+import static ee.bmagrupp.georivals.server.game.util.Constants.UNIT_GENERATION_TIME;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -12,8 +12,8 @@ import java.util.Random;
 
 import ee.bmagrupp.georivals.server.core.domain.Ownership;
 import ee.bmagrupp.georivals.server.core.domain.Province;
-import ee.bmagrupp.georivals.server.util.Constants;
-import ee.bmagrupp.georivals.server.util.GeneratorUtil;
+import ee.bmagrupp.georivals.server.game.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.GeneratorUtil;
 
 /**
  * Stuff that makes the game work. Most of it should be here. If it isn't, well,

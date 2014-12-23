@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ee.bmagrupp.georivals.server.util.Constants;
+import ee.bmagrupp.georivals.server.game.util.Constants;
 
 @RestController
 @RequestMapping("/download")

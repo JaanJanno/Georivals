@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import ee.bmagrupp.georivals.server.core.domain.BattleHistory;
 import ee.bmagrupp.georivals.server.core.domain.Player;
 import ee.bmagrupp.georivals.server.core.domain.Province;
-import static ee.bmagrupp.georivals.server.util.Constants.ATTACKER_ODDS;
+import static ee.bmagrupp.georivals.server.game.util.Constants.ATTACKER_ODDS;
 
 @Service
 public class BattleLogic {

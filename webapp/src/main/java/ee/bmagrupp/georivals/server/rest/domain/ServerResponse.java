@@ -1,6 +1,5 @@
 package ee.bmagrupp.georivals.server.rest.domain;
 
-import ee.bmagrupp.georivals.server.util.ServerResult;
 
 /**
  * Multifunfctional object used for all kinds of stuff. Code responsibly,
