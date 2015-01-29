@@ -7,6 +7,18 @@ Latest mobile app apk: http://pacific-plains-8541.herokuapp.com/download
 
 Server accessible from: http://pacific-plains-8541.herokuapp.com/
 
+## Introduction
+
+Georivals is a massively multiplayer online real-time strategy mobile game. The whole world is divided into provinces and the goal is to conquer as many as possible. 
+
+#### Core mechanics:
+* Conquer provinces from both AI and other players
+* Gather units by physically visiting owned provinces
+* New units are generated every 24 hours
+* Manage attacks and unit movements
+* Procedurally generated AI enemies
+* Compate scores with other players
+
 ## Eesti keeles
 'Georivals' on mobiilirakendus, mis ühendab endas meelelahutuse, sportlikkuse, taktikalise mõtlemise ja nutikuse. See on taktikaline sõjamäng, kus sa juhid vägesid, saadad neid sõtta ning kaitsed oma kodu. Aga selleks, et alad oleksid alluvad ja et sul jätkuks sõjamehi, tuleb neid pidevalt külastada.
 
@@ -97,7 +109,3 @@ Kui vastavad juhised jäävad kusagil arusaamatuks, võite lugeda ka järgneva l
 NB! Juhise seitsmendast sammust alates on normaalne, et Google Play Services emulaatoris kokku jookseb, kui Te pole veel jõudnud sellele uuenduse teha Google Play-s.
 5. Kui emulaator ja Google Play Services on installitud ja seadistatud, siis käivita see emulaator. (Eclipse'is saab seadmete nimekirja avada Ctrl+6 vajutades.)
 6. Testide jooksutamiseks ava mobileapp-test alamprojektis asuva MainTest faili ja vajuta Run > Run as.. > Android JUnit Test
-
-## In English
-Georivals is a mobile application, which combines entertainment, sport, tactical thinking and cleverness. It is a tactical war game where you lead armies, send them to war and defend your home. But in order for you to be the ruler of the provinces and have enough soldiers, you need to visit the regions regularly.
-
