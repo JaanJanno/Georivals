@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
+
 /**
  * Class for making a HTTP get request as default. Request runs on separate
  * thread. Capable of retrieving a response and a list of cookies in string
@@ -150,14 +152,16 @@ public abstract class Connection implements Runnable {
 	 */
 
 	private void doIo(HttpURLConnection connection) {
-		String serverResponse = "";
-		try {
-			serverResponse = readStream(connection.getInputStream());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		handleResponseBody(serverResponse);
-	}
+        try {
+            if (connection.getResponseCode() < HttpStatus.SC_BAD_REQUEST) {
+                handleResponseBody(readStream(connection.getInputStream()));
+            } else {
+                System.err.println("Server error: " + readStream(connection.getErrorStream()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	/*
 	 * Collects cookies from header.

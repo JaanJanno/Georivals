@@ -1,7 +1,5 @@
 package ee.bmagrupp.georivals.mobile.ui;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -31,12 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import ee.bmagrupp.georivals.mobile.R;
 import ee.bmagrupp.georivals.mobile.core.location.LocationChangeUIHandler;
 import ee.bmagrupp.georivals.mobile.core.location.service.LocationService;
+import ee.bmagrupp.georivals.mobile.ui.fragments.CustomMapFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.HighScoreFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.LoginFragment;
-import ee.bmagrupp.georivals.mobile.ui.fragments.CustomMapFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MissionLogFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MovementSelectionFragment;
 import ee.bmagrupp.georivals.mobile.ui.fragments.MyProvincesFragment;

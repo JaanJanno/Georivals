@@ -1,6 +1,6 @@
 package ee.bmagrupp.georivals.mobile.core.communications.loaders;
 
-import java.io.DataOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -105,10 +105,10 @@ public abstract class GenericPostLoader<T> extends GenericLoader<T> {
 			}
 
 			@Override
-			public void writeToConnection(DataOutputStream writer)
+			public void writeToConnection(BufferedWriter writer)
 					throws IOException {
 				String json = GsonParser.getInstance().toJson(post);
-				writer.writeBytes(json);
+				writer.write(json);
 			}
 		};
 	}

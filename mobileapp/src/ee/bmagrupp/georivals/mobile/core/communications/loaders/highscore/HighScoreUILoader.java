@@ -3,7 +3,6 @@ package ee.bmagrupp.georivals.mobile.core.communications.loaders.highscore;
 import java.util.List;
 
 import android.app.Activity;
-
 import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoadable;
 import ee.bmagrupp.georivals.mobile.core.communications.uiloaderinterface.UILoader;
 import ee.bmagrupp.georivals.mobile.models.highscore.HighScoreEntry;

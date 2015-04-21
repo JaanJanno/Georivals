@@ -1,10 +1,13 @@
 package ee.bmagrupp.georivals.mobile.core.communications;
 
-import java.io.DataOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.util.List;
+
+import org.apache.http.HttpStatus;
 
 /**
  * Class for making a HTTP post request as default. Request method can be
@@ -59,14 +62,17 @@ public abstract class PostConnection extends Connection {
 	 */
 
 	private void doIo(HttpURLConnection connection) {
-		String serverResponse = "";
 		try {
 			writeStream(connection.getOutputStream());
-			serverResponse = readStream(connection.getInputStream());
+			if (connection.getResponseCode() < HttpStatus.SC_BAD_REQUEST) {
+				handleResponseBody(readStream(connection.getInputStream()));
+			} else {
+				System.err.println("Server error: "
+						+ readStream(connection.getErrorStream()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		handleResponseBody(serverResponse);
 	}
 
 	/*
@@ -74,7 +80,7 @@ public abstract class PostConnection extends Connection {
 	 */
 
 	private void writeStream(OutputStream out) throws Exception {
-		DataOutputStream writer = new DataOutputStream(out);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
 		writeToConnection(writer);
 		writer.flush();
 		writer.close();
@@ -88,7 +94,7 @@ public abstract class PostConnection extends Connection {
 	 * @throws IOException
 	 */
 
-	public abstract void writeToConnection(DataOutputStream writer)
+	public abstract void writeToConnection(BufferedWriter writer)
 			throws IOException;
 
 }
